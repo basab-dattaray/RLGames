@@ -12,7 +12,7 @@ from ws.RLInterfaces.NeuralNet import NeuralNet
 import torch
 import torch.optim as optim
 
-from .OthelloNNet import OthelloNNet
+from ws.RLAgents.self_play.alpha_zero._game.othello._ml_lib.pytorch.OthelloNNet import OthelloNNet
 
 nnet_params = dotdict({
     'lr': 0.001,

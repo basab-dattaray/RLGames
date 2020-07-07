@@ -5,7 +5,7 @@ import coloredlogs
 from ws.Demos.Demo010_self_play__alpha_zero.othello.demo_5.mini_with_recursive_mcts.ARGS import args
 from ws.RLAgents.self_play.alpha_zero.train.Coach import Coach
 from ws.RLEnvironments.self_play_games.othello.OthelloGame import OthelloGame as Game
-from ws.RLAgents.self_play.alpha_zero._game.othello._ml_lib.pytorch.NNet import NeuralNetWrapper
+from ws.RLAgents.self_play.alpha_zero.train.NeuralNetWrapper import NeuralNetWrapper
 # from ws.RLAgents.self_play.alpha_zero.misc.utils import *
 
 log = logging.getLogger(__name__)
