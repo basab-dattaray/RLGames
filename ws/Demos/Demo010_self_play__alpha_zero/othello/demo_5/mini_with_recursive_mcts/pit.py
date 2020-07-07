@@ -22,38 +22,38 @@ human_vs_cpu = True
 
 dir_path, app_name = AppInfo.fn_get_path_and_app_name(__file__)
 
-g = OthelloGame(5)
+game = OthelloGame(args.board_size)
 
 
 # all players
-rp = RandomPlayer(g).play
-gp = GreedyPlayer(g).play
-hp = HumanPlayer(g).play
+random_player_policy = lambda g: RandomPlayer(g).play
+greedy_player_policy = lambda g: GreedyPlayer(g).play
+human_player_policy = lambda g: HumanPlayer(g).play
 
 
 
 # nnet players
-n1 = NeuralNetWrapper(args, g)
+n1 = NeuralNetWrapper(args, game)
 
 
 
 n1.load_checkpoint('tmp/','best.pth.tar')
 
 args1 = dotdict({'numMCTSSims': 50, 'cpuct':1.0})
-mcts1 = MCTS(g, n1, args1)
+mcts1 = MCTS(game, n1, args1)
 n1p = lambda x: np.argmax(mcts1.getActionProb(x, temp=0))
 
 if human_vs_cpu:
-    player2 = hp
+    player2 = human_player_policy(game)
 else:
-    n2 = NeuralNetWrapper(g)
+    n2 = NeuralNetWrapper(game)
     n2.load_checkpoint('./pretrained_models/othello/pytorch/', '8x8_100checkpoints_best.pth.tar')
     args2 = dotdict({'numMCTSSims': 50, 'cpuct': 1.0})
-    mcts2 = MCTS(g, n2, args2)
+    mcts2 = MCTS(game, n2, args2)
     n2p = lambda x: np.argmax(mcts2.getActionProb(x, temp=0))
 
     player2 = n2p  # Player 2 is neural network if it's cpu vs cpu.
 
-arena = Arena.Arena(n1p, player2, g, display=OthelloGame.display)
+arena = Arena.Arena(n1p, player2, game, display=OthelloGame.display)
 
 print(arena.playGames(2, verbose=True))

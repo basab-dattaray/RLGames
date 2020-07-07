@@ -16,5 +16,6 @@ args = dotdict({
     'numItersForTrainExamplesHistory': 20,
 
     'epochs': 2,
+    'board_size': 5,
 
 })

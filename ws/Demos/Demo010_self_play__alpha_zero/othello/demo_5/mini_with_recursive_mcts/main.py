@@ -15,7 +15,7 @@ coloredlogs.install(level='INFO')  # Change this to DEBUG to see more info.
 
 def main():
     log.info('Loading %s...', Game.__name__)
-    g = Game(5)
+    g = Game(args.board_size)
 
     log.info('Loading %s...', NeuralNetWrapper.__name__)
     nnet = NeuralNetWrapper(args, g)
