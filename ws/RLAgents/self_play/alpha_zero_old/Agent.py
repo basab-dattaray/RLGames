@@ -14,7 +14,7 @@ from ws.RLAgents.self_play.alpha_zero_old.train.Coach import Coach
 from ws.RLEnvironments.othello.OthelloGame import OthelloGame as Game, OthelloGame
 from ws.RLAgents.self_play.alpha_zero_old.othello.OthelloPlayers import fn_get_random_policy, fn_get_human_policy
 
-from ws.RLAgents.self_play.alpha_zero_old.othello.pytorch.NNetWrapper import NNetWrapper as NNet
+from ws.RLAgents.self_play.alpha_zero_old.othello.pytorch.NNetWrapper_old import NNetWrapper_old as NNet
 from ws.RLAgents.self_play.alpha_zero_old.Services import Services
 from ws.RLInterfaces.PolicyTypes import PolicyTypes
 from ws.RLUtils.decorators.breadcrumbs import encapsulate

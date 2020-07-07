@@ -5,13 +5,13 @@ class NeuralNet():
     network does not consider the current player, and instead only deals with
     the canonical form of the board.
 
-    See othello/NNetWrapper.py for an example implementation.
+    See othello/NNet.py for an example implementation.
     """
 
-    def __init__(self, services):
+    def __init__(self, game):
         pass
 
-    def train(self, examples, iteration_info, chart):
+    def train(self, examples):
         """
         This function trains the neural network with examples obtained from
         self-play.
@@ -36,13 +36,7 @@ class NeuralNet():
         """
         pass
 
-    def fn_predict_action(self, board):
-        pass
-
-    def fn_get_best_action_policy_func (self, fn_predict_action):
-        pass
-
-    def save_the_model(self, folder, filename):
+    def save_checkpoint(self, folder, filename):
         """
         Saves the current neural network (with its parameters) in
         folder/filename

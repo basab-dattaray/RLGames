@@ -6,7 +6,7 @@ from ws.RLAgents.self_play.alpha_zero_old.Services import Services
 from ws.RLAgents.self_play.alpha_zero_old.othello.pytorch.test.ConfigParams import ConfigParams
 # from ws.RLInterfaces.Game import Game
 from ws.RLEnvironments.othello.OthelloGame import OthelloGame as Game, OthelloGame
-from ws.RLAgents.self_play.alpha_zero_old.othello.pytorch.NNetWrapper import NNetWrapper as NNet
+from ws.RLAgents.self_play.alpha_zero_old.othello.pytorch.NNetWrapper_old import NNetWrapper_old as NNet
 
 @pytest.fixture(scope='module')
 def ref_services():

@@ -2,7 +2,7 @@
 import pytest
 
 from ws.RLAgents.self_play.alpha_zero_old.Services import Services
-from ws.RLAgents.self_play.alpha_zero_old.othello.pytorch.NNetWrapper import NNetWrapper
+from ws.RLAgents.self_play.alpha_zero_old.othello.pytorch.NNetWrapper_old import NNetWrapper_old
 from ws.RLAgents.self_play.alpha_zero_old.search.test.ConfigParams import ConfigParams
 
 from ws.RLInterfaces.PolicyTypes import PolicyTypes
@@ -12,7 +12,7 @@ def ref_support():
     config_params = ConfigParams()
 
     services = Services(config_params, __file__)
-    neural_net = NNetWrapper(services)
+    neural_net = NNetWrapper_old(services)
     state = services.game.getInitBoard()
 
 

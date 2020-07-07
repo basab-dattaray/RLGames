@@ -1,7 +1,7 @@
 from __future__ import print_function
 import sys
 sys.path.append('..')
-from ws.RLInterfaces.Game import Game
+from ws.RLInterfaces.Game_old import Game
 from .OthelloLogic import Board
 import numpy as np
 

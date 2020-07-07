@@ -9,12 +9,12 @@ import numpy as np
 
 sys.path.append('../../')
 from ws.RLAgents.self_play.alpha_zero_old.othello.pytorch.utils import *
-from ws.RLInterfaces.NeuralNet import NeuralNet
+from ws.RLInterfaces.NeuralNet_old import NeuralNet
 
 import torch
 import torch.optim as optim
 
-from .OthelloNNet import OthelloNNet as onnet
+from .OthelloNNet_old import OthelloNNet_old as onnet
 
 args = dotdict({
     'lr': 0.001,
@@ -26,7 +26,7 @@ args = dotdict({
 })
 
 
-class NNetWrapper(NeuralNet):
+class NNetWrapper_old(NeuralNet):
     def __init__(self, services):
         if 'epochs' in services.args.keys():
             args.epochs = services.args['epochs']

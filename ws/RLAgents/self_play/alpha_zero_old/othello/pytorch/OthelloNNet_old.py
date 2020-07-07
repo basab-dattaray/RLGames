@@ -6,14 +6,14 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 
-class OthelloNNet(nn.Module):
+class OthelloNNet_old(nn.Module):
     def __init__(self, board_size, args):
         # game params
         self.board_x = self.board_y = board_size
         self.action_size = board_size ** 2
         self.args = args
 
-        super(OthelloNNet, self).__init__()
+        super(OthelloNNet_old, self).__init__()
         self.conv1 = nn.Conv2d(1, args.num_channels, 3, stride=1, padding=1)
         self.conv2 = nn.Conv2d(args.num_channels, args.num_channels, 3, stride=1, padding=1)
         self.conv3 = nn.Conv2d(args.num_channels, args.num_channels, 3, stride=1)

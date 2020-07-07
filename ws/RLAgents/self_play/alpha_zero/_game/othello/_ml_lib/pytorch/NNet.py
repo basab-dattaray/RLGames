@@ -7,12 +7,12 @@ from tqdm import tqdm
 
 sys.path.append('../../')
 from utils import *
-from NeuralNet import NeuralNet
+from ws.RLInterfaces.NeuralNet import NeuralNet
 
 import torch
 import torch.optim as optim
 
-from .OthelloNNet import OthelloNNet as onnet
+from .OthelloNNet import OthelloNNet
 
 args = dotdict({
     'lr': 0.001,
@@ -26,7 +26,7 @@ args = dotdict({
 
 class NNetWrapper(NeuralNet):
     def __init__(self, game):
-        self.nnet = onnet(game, args)
+        self.nnet = OthelloNNet(game, args)
         self.board_x, self.board_y = game.getBoardSize()
         self.action_size = game.getActionSize()
 
