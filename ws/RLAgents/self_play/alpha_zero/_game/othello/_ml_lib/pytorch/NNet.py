@@ -17,15 +17,15 @@ from .OthelloNNet import OthelloNNet
 nnet_params = dotdict({
     'lr': 0.001,
     'dropout': 0.3,
-    'epochs': 2,
+    # 'epochs': 2,
     'batch_size': 64,
     'cuda': torch.cuda.is_available(),
     'num_channels': 512,
 })
 
-
 class NNetWrapper(NeuralNet):
-    def __init__(self, game):
+    def __init__(self, args, game):
+        self.args = args
         self.nnet = OthelloNNet(game, nnet_params)
         self.board_x, self.board_y = game.getBoardSize()
         self.action_size = game.getActionSize()
@@ -39,7 +39,7 @@ class NNetWrapper(NeuralNet):
         """
         optimizer = optim.Adam(self.nnet.parameters())
 
-        for epoch in range(nnet_params.epochs):
+        for epoch in range(self.args.epochs):
             print('EPOCH ::: ' + str(epoch + 1))
             self.nnet.train()
             pi_losses = AverageMeter()

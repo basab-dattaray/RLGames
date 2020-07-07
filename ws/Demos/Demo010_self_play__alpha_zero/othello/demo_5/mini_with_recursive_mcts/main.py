@@ -6,7 +6,7 @@ from ws.Demos.Demo010_self_play__alpha_zero.othello.demo_5.mini_with_recursive_m
 from ws.RLAgents.self_play.alpha_zero.train.Coach import Coach
 from othello.OthelloGame import OthelloGame as Game
 from ws.RLAgents.self_play.alpha_zero._game.othello._ml_lib.pytorch.NNet import NNetWrapper
-from ws.RLAgents.self_play.alpha_zero.misc.utils import *
+# from ws.RLAgents.self_play.alpha_zero.misc.utils import *
 
 log = logging.getLogger(__name__)
 
@@ -18,7 +18,7 @@ def main():
     g = Game(5)
 
     log.info('Loading %s...', NNetWrapper.__name__)
-    nnet = NNetWrapper(g)
+    nnet = NNetWrapper(args, g)
 
     if args.load_model:
         log.info('Loading checkpoint "%s/%s"...', args.load_folder_file)

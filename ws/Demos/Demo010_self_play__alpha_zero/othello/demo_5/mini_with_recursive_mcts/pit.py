@@ -1,8 +1,11 @@
+from ws.Demos.Demo010_self_play__alpha_zero.othello.demo_5.mini_with_recursive_mcts.ARGS import args
 from ws.RLAgents.self_play.alpha_zero.play import Arena
+from ws.RLAgents.self_play.alpha_zero.play.HumanPlayer import HumanPlayer
 from ws.RLAgents.self_play.alpha_zero.search.recursive.MCTS import MCTS
 from othello.OthelloGame import OthelloGame
-from othello.OthelloPlayers import *
-from ws.RLAgents.self_play.alpha_zero._game.othello._ml_lib.pytorch.NNet import NNetWrapper as NNet
+from ws.RLAgents.self_play.alpha_zero.play.RandomPlayer import RandomPlayer
+from ws.RLAgents.self_play.alpha_zero.play.GreedyPlayer import GreedyPlayer
+from ws.RLAgents.self_play.alpha_zero._game.othello._ml_lib.pytorch.NNet import NNetWrapper
 
 from ws.RLUtils.common.AppInfo import AppInfo
 
@@ -24,13 +27,13 @@ g = OthelloGame(5)
 
 # all players
 rp = RandomPlayer(g).play
-gp = GreedyOthelloPlayer(g).play
-hp = HumanOthelloPlayer(g).play
+gp = GreedyPlayer(g).play
+hp = HumanPlayer(g).play
 
 
 
 # nnet players
-n1 = NNet(g)
+n1 = NNetWrapper(args, g)
 
 
 
@@ -43,7 +46,7 @@ n1p = lambda x: np.argmax(mcts1.getActionProb(x, temp=0))
 if human_vs_cpu:
     player2 = hp
 else:
-    n2 = NNet(g)
+    n2 = NNetWrapper(g)
     n2.load_checkpoint('./pretrained_models/othello/pytorch/', '8x8_100checkpoints_best.pth.tar')
     args2 = dotdict({'numMCTSSims': 50, 'cpuct': 1.0})
     mcts2 = MCTS(g, n2, args2)
