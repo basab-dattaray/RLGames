@@ -3,7 +3,8 @@
 from tensorflow.python.keras import Sequential
 from tensorflow.python.keras.activations import relu, linear
 from tensorflow.python.keras.layers import Dense
-from tensorflow.python.keras.optimizers import adam
+from tensorflow.python.keras.optimizer_v2.adagrad import Adagrad
+from tensorflow.python.keras.optimizer_v2.adam import Adam
 
 from ws.RLInterfaces.PARAM_KEY_NAMES import *
 from .replay_mgt import fn_replay_mgr
@@ -42,7 +43,7 @@ def impl_mgr(app_info, state_size, action_size):
         model.add(Dense(150, input_dim=state_size, activation=relu))
         model.add(Dense(120, activation=relu))
         model.add(Dense(action_size, activation=linear))
-        model.compile(loss='mse', optimizer=adam(lr=_learning_rate))
+        model.compile(loss='mse', optimizer=Adam(lr=_learning_rate))
         return model
 
     def fnAct(state):
