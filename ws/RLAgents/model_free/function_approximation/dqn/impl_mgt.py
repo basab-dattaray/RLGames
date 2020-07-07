@@ -1,15 +1,19 @@
 # from tensorflow.python.keras.optimizers import adam
+# from tensorflow.python.keras.optimizers import adam
+from tensorflow.python.keras import Sequential
+from tensorflow.python.keras.activations import relu, linear
+from tensorflow.python.keras.layers import Dense
 from tensorflow.python.keras.optimizers import adam
 
 from ws.RLInterfaces.PARAM_KEY_NAMES import *
 from .replay_mgt import fn_replay_mgr
 
 import random
-from keras import Sequential
-
-from keras.layers import Dense
-
-from keras.activations import relu, linear
+# from keras import Sequential
+#
+# from keras.layers import Dense
+#
+# from keras.activations import relu, linear
 import numpy as np
 import os
 
