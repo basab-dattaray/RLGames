@@ -29,7 +29,7 @@ class Persister():
     def fn_xfer_model_using_file(self, from_net, to_net):
         try:
             from_net.save_the_model(folder=self.temp_folder, filename=Persister.TEMP_FILE_NAME)
-            to_net.load_checkpoint(folder=self.temp_folder, filename=Persister.TEMP_FILE_NAME)
+            to_net.load_checkpoint(rel_folder=self.temp_folder, filename=Persister.TEMP_FILE_NAME)
             return None
         except Exception as x:
             return('fn_xfer_model_using_file: ' + x)
@@ -54,7 +54,7 @@ class Persister():
         try:
             file_path = os.path.join(self.model_folder, Persister.MODEL_FILE_NAME)
             if os.path.exists(file_path):
-                neural_net.load_checkpoint(folder=self.model_folder, filename=Persister.MODEL_FILE_NAME)
+                neural_net.load_checkpoint(rel_folder=self.model_folder, filename=Persister.MODEL_FILE_NAME)
                 return None
             else:
                 return fn_name + "; " + f"No File {file_path} available for Loading"

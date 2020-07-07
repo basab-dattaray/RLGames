@@ -90,7 +90,6 @@ class NeuralNetWrapper(NeuralNet):
         with torch.no_grad():
             pi, v = self.nnet(board)
 
-        # print('PREDICTION TIME TAKEN : {0:03f}'.format(time.time()-start))
         return torch.exp(pi).data.cpu().numpy()[0], v.data.cpu().numpy()[0]
 
     def loss_pi(self, targets, outputs):
@@ -99,7 +98,8 @@ class NeuralNetWrapper(NeuralNet):
     def loss_v(self, targets, outputs):
         return torch.sum((targets - outputs.view(-1)) ** 2) / targets.size()[0]
 
-    def save_checkpoint(self, folder='checkpoint', filename='checkpoint.pth.tar'):
+    def save_checkpoint(self, rel_folder='checkpoint', filename='checkpoint.pth.tar'):
+        folder = os.path.join(self.args.demo_folder, rel_folder)
         filepath = os.path.join(folder, filename)
         filepath_abs = os.path.abspath(filepath)
         if not os.path.exists(folder):
@@ -111,8 +111,8 @@ class NeuralNetWrapper(NeuralNet):
             'state_dict': self.nnet.state_dict(),
         }, filepath)
 
-    def load_checkpoint(self, folder='checkpoint', filename='checkpoint.pth.tar'):
-        # https://github.com/pytorch/examples/blob/master/imagenet/main.py#L98
+    def load_checkpoint(self, rel_folder='checkpoint', filename='checkpoint.pth.tar'):
+        folder = os.path.join(self.args.demo_folder, rel_folder)
         filepath = os.path.join(folder, filename)
         if not os.path.exists(filepath):
             raise ("No model in path {}".format(filepath))
