@@ -1,4 +1,4 @@
-from ws.RLAgents.self_play.alpha_0.misc.utils import dotdict
+from ws.RLAgents.self_play.alpha_zero.misc.utils import dotdict
 
 args = dotdict({
     'numIters': 7,

@@ -17,9 +17,9 @@ class PolicyBroker():
         pass
 
     def fn_get_best_action_policy(self, policy_type, neural_net, actor= None):
-        if 'POLICY_RULES' in self.services.args:
+        if 'POLICY_RULES' in self.services.nnet_params:
             self.policy_dict = {}
-            for k, v in self.services.args.POLICY_RULES.items():
+            for k, v in self.services.nnet_params.POLICY_RULES.items():
                 self.policy_dict[k] = v
 
         policy_algo = self.default_policy_algo

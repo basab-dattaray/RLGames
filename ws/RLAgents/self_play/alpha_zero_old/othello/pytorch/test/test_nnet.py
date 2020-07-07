@@ -21,8 +21,8 @@ def test_fn_get_best_predicted_action(ref_support):
 
     # SETUP
     services = ref_support
-    max_num_action = services.args.board_size ** 2
-    game = Game(services.args.board_size)
+    max_num_action = services.nnet_params.board_size ** 2
+    game = Game(services.nnet_params.board_size)
     board = game.getInitBoard()
     nnet = NNet(services)
 
@@ -38,7 +38,7 @@ def test_fn_get_best_action_policy(ref_support):
     # SETUP
     services = ref_support
 
-    game = Game(services.args.board_size)
+    game = Game(services.nnet_params.board_size)
     board = game.getInitBoard()
     nnet = NNet(services)
 

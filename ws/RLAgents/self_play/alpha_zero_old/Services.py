@@ -16,7 +16,7 @@ class Services():
     # MODEL_REL_PATH = './models'
     def __init__(self, config_params, calling_filepath):
 
-        self.args = config_params.args
+        self.args = config_params.nnet_params
         filepathname_parts = calling_filepath.rsplit('/', 1)
         self.cwd = filepathname_parts[0]
         self.persister = Persister(self.cwd)

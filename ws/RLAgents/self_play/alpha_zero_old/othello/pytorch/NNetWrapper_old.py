@@ -28,14 +28,14 @@ args = dotdict({
 
 class NNetWrapper_old(NeuralNet):
     def __init__(self, services):
-        if 'epochs' in services.args.keys():
-            args.epochs = services.args['epochs']
+        if 'epochs' in services.nnet_params.keys():
+            args.epochs = services.nnet_params['epochs']
 
         self.services = services
-        self.board_x = self.board_y = services.args.board_size
-        self.action_size = services.args.board_size ** 2
+        self.board_x = self.board_y = services.nnet_params.board_size
+        self.action_size = services.nnet_params.board_size ** 2
 
-        self.nnet = onnet(services.args.board_size, args)
+        self.nnet = onnet(services.nnet_params.board_size, args)
 
 
         if args.cuda:
@@ -78,9 +78,9 @@ class NNetWrapper_old(NeuralNet):
                 l_v = self.loss_v(target_vs, out_v)
 
                 model_loss_val_fraction = 0.5
-                if 'model_loss_value_fraction' in self.services.args:
-                    if self.services.args.model_loss_val_fraction > 0.0 and self.services.args.model_loss_val_fraction < 1:
-                        model_loss_val_fraction = self.services.args.model_loss_val_fraction
+                if 'model_loss_value_fraction' in self.services.nnet_params:
+                    if self.services.nnet_params.model_loss_val_fraction > 0.0 and self.services.nnet_params.model_loss_val_fraction < 1:
+                        model_loss_val_fraction = self.services.nnet_params.model_loss_val_fraction
 
                 total_loss = (1 - model_loss_val_fraction) * l_pi + model_loss_val_fraction * l_v
 

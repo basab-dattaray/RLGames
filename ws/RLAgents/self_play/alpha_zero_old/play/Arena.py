@@ -19,8 +19,8 @@ class Arena():
         self.display = display
 
         self.show_board = False
-        if 'debug_board' in services.args.keys():
-            if services.args['debug_board'] == 1:
+        if 'debug_board' in services.nnet_params.keys():
+            if services.nnet_params['debug_board'] == 1:
                 self.show_board = True
 
         self.game_count = 0

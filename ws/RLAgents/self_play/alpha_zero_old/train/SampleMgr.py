@@ -13,7 +13,7 @@ class SampleMgr():
         if not skipping_first_pass_because_samples_are_loaded or iter_index > 1:
             samples = self.sample_generator.fn_generate_samples()
             self.sample_repo.fn_append_batch_of_samples(samples)
-        while self.sample_repo.fn_get_the_number_of_sample_batches() > self.services.args.num_sample_buffers:
+        while self.sample_repo.fn_get_the_number_of_sample_batches() > self.services.nnet_params.num_sample_buffers:
             self.sample_repo.fn_pop_a_batch_of_samples()
         training_samples = self.sample_repo.fn_get_shuffled_samples()
         return training_samples

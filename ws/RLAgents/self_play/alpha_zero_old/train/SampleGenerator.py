@@ -56,16 +56,16 @@ class SampleGenerator():
         return sample_data
 
     def fn_generate_samples(self):
-        all_samples = deque([], maxlen=self.services.args.sample_buffer_size)
+        all_samples = deque([], maxlen=self.services.nnet_params.sample_buffer_size)
 
         # self.services.fn_record(f'Generates Samples with {self.args.num_episodes} Episodes')
-        for episode_num in range(1, self.services.args.num_episodes + 1):
+        for episode_num in range(1, self.services.nnet_params.num_episodes + 1):
             samples = self.executeEpisode()
             if samples is not None:
                 all_samples += samples
 
-                self.services.fn_record(f'  SAMPLE GEN EPISODE {episode_num} of {self.services.args.num_episodes}:  {len(samples)} samples generated')
+                self.services.fn_record(f'  SAMPLE GEN EPISODE {episode_num} of {self.services.nnet_params.num_episodes}:  {len(samples)} samples generated')
             else:
-                self.services.fn_record(f'  SAMPLE GEN EPISODE {episode_num} of {self.services.args.num_episodes}:  !!! No Samples were generated')
+                self.services.fn_record(f'  SAMPLE GEN EPISODE {episode_num} of {self.services.nnet_params.num_episodes}:  !!! No Samples were generated')
         self.services.fn_record(f'Total Samples Collected: {len(all_samples)}')
         return all_samples

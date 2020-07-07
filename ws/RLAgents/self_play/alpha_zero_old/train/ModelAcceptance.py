@@ -6,16 +6,16 @@ class ModelAcceptance():
         self.services = services
 
         self.win_ratio_reduction_rate = .1
-        if 'win_ratio_reduction_rate' in self.services.args:
-            self.win_ratio_reduction_rate = services.args.win_ratio_reduction_rate
+        if 'win_ratio_reduction_rate' in self.services.nnet_params:
+            self.win_ratio_reduction_rate = services.nnet_params.win_ratio_reduction_rate
 
         msg, params = services.persister.fn_load_params()
         if msg is None and 'model_acceptance_win_ratio' in params.keys():
             self.model_acceptance_win_ratio = params['model_acceptance_win_ratio']
         else:
             self.model_acceptance_win_ratio = 0.6
-            if 'model_acceptance_win_ratio' in self.services.args:
-                self.model_acceptance_win_ratio = services.args.model_acceptance_win_ratio
+            if 'model_acceptance_win_ratio' in self.services.nnet_params:
+                self.model_acceptance_win_ratio = services.nnet_params.model_acceptance_win_ratio
 
         self.model_acceptance_ending_win_ratio = 0.5
 

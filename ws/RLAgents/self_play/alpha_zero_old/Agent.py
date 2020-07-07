@@ -137,8 +137,8 @@ class Agent():
     def fn_change_configs(self, configs):
         if configs is not None:
             for k,v in configs.items():
-                if k in self.config_params.args:
-                    self.config_params.args[k] = v
+                if k in self.config_params.nnet_params:
+                    self.config_params.nnet_params[k] = v
                     self.services.fn_record(f'{k}={v}')
         return self
 

@@ -2,39 +2,23 @@ import logging
 
 import coloredlogs
 
+from ws.Demos.Demo010_self_play__alpha_zero.othello.demo_5.mini_with_recursive_mcts.ARGS import args
 from ws.RLAgents.self_play.alpha_zero.train.Coach import Coach
 from othello.OthelloGame import OthelloGame as Game
-from ws.RLAgents.self_play.alpha_zero._game.othello._ml_lib.pytorch.NNet import NNetWrapper as nn
+from ws.RLAgents.self_play.alpha_zero._game.othello._ml_lib.pytorch.NNet import NNetWrapper
 from ws.RLAgents.self_play.alpha_zero.misc.utils import *
 
 log = logging.getLogger(__name__)
 
 coloredlogs.install(level='INFO')  # Change this to DEBUG to see more info.
 
-args = dotdict({
-    'numIters': 3,
-    'numEps': 3,              # Number of complete self-play games to simulate during a new iteration.
-    'tempThreshold': 15,        #
-    'updateThreshold': 0.0,     # During arena playoff, new neural net will be accepted if threshold or more of games are won.
-    'maxlenOfQueue': 200000,    # Number of game examples to train the neural networks.
-    'numMCTSSims': 25,          # Number of games moves for MCTS to simulate.
-    'arenaCompare': 4,         # Number of games to play during arena play to determine if new net will be accepted.
-    'cpuct': 1,
-
-    'checkpoint': 'tmp/',
-    'load_model': False,
-    'load_folder_file': ('tmp/','best.pth.tar'),
-    'numItersForTrainExamplesHistory': 20,
-
-})
-
 
 def main():
     log.info('Loading %s...', Game.__name__)
     g = Game(5)
 
-    log.info('Loading %s...', nn.__name__)
-    nnet = nn(g)
+    log.info('Loading %s...', NNetWrapper.__name__)
+    nnet = NNetWrapper(g)
 
     if args.load_model:
         log.info('Loading checkpoint "%s/%s"...', args.load_folder_file)

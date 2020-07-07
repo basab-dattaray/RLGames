@@ -43,7 +43,7 @@ class Coach():
                 {'axis_label': 'value loss', 'color_black_background': 'orange'},
                 {'axis_label': 'action probability loss', 'color_black_background': 'blue'}
             ],
-            average_interval=self.services.args.mean_log_interval, skip_interval=self.services.args.skip_log_interval
+            average_interval=self.services.nnet_params.mean_log_interval, skip_interval=self.services.nnet_params.skip_log_interval
         )
         self.sample_mgr = SampleMgr(services, nnet)
         self.model_acceptance = ModelAcceptance(services)
@@ -53,8 +53,8 @@ class Coach():
 
         upgraded_model_count = 0
         iter_index = 0
-        max_iterations = self.services.args['num_iterations']
-        while (upgraded_model_count < self.services.args['num_model_upgrades'] ) \
+        max_iterations = self.services.nnet_params['num_iterations']
+        while (upgraded_model_count < self.services.nnet_params['num_model_upgrades']) \
                 and (iter_index < max_iterations):
             iter_index += 1
 
@@ -70,8 +70,8 @@ class Coach():
 
             self.services.fn_record(f'@@@ Upgraded Model')
 
-            iteration_info = {'max_iterations': self.services.args['num_iterations'], 'iteration_index': iter_index,
-                              'max_model_upgrades': self.services.args['num_model_upgrades'], 'new_model_count': upgraded_model_count}
+            iteration_info = {'max_iterations': self.services.nnet_params['num_iterations'], 'iteration_index': iter_index,
+                              'max_model_upgrades': self.services.nnet_params['num_model_upgrades'], 'new_model_count': upgraded_model_count}
 
             training_samples = self.sample_mgr.fn_get_training_samples(iter_index, self.skipping_first_pass_because_samples_are_loaded)
 
@@ -93,7 +93,7 @@ class Coach():
             new_policy_wins, prev_policy_wins, draws = arena.playGames(
                 next_system_policy,
                 prev_system_policy,
-                self.services.args.num_training_eval_games)
+                self.services.nnet_params.num_training_eval_games)
 
             self.services.fn_record('  NEW/PREV WINS : %d / %d ; DRAWS : %d' % (new_policy_wins, prev_policy_wins, draws))
             win_ratio = float(new_policy_wins) / (prev_policy_wins + new_policy_wins)
