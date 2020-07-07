@@ -3,11 +3,11 @@ import os
 import shutil
 
 
-from ws.RLAgents.self_play.alpha_zero.play.Arena import Arena
-from ws.RLAgents.self_play.alpha_zero.train.ModelAcceptance import ModelAcceptance
-from ws.RLAgents.self_play.alpha_zero.train.SampleMgr import SampleMgr
-from ws.RLAgents.self_play.alpha_zero.train.SampleRepository import SampleRepository
-from ws.RLAgents.self_play.alpha_zero.train.SampleGenerator import SampleGenerator
+from ws.RLAgents.self_play.alpha_zero_old.play.Arena import Arena
+from ws.RLAgents.self_play.alpha_zero_old.train.ModelAcceptance import ModelAcceptance
+from ws.RLAgents.self_play.alpha_zero_old.train.SampleMgr import SampleMgr
+from ws.RLAgents.self_play.alpha_zero_old.train.SampleRepository import SampleRepository
+from ws.RLAgents.self_play.alpha_zero_old.train.SampleGenerator import SampleGenerator
 
 from ws.RLInterfaces.PolicyTypes import PolicyTypes
 from ws.RLUtils.monitoring.charting.Chart import Chart

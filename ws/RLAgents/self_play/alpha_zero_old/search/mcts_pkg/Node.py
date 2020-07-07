@@ -2,7 +2,7 @@ import math
 import uuid
 import numpy
 
-from ws.RLAgents.self_play.alpha_zero.search.mcts_pkg.Rollout import Rollout
+from ws.RLAgents.self_play.alpha_zero_old.search.mcts_pkg.Rollout import Rollout
 
 
 class Node(object):

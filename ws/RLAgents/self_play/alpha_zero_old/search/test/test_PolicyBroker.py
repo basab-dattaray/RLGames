@@ -1,9 +1,9 @@
 
 import pytest
 
-from ws.RLAgents.self_play.alpha_zero.Services import Services
-from ws.RLAgents.self_play.alpha_zero.othello.pytorch.NNetWrapper import NNetWrapper
-from ws.RLAgents.self_play.alpha_zero.search.test.ConfigParams import ConfigParams
+from ws.RLAgents.self_play.alpha_zero_old.Services import Services
+from ws.RLAgents.self_play.alpha_zero_old.othello.pytorch.NNetWrapper import NNetWrapper
+from ws.RLAgents.self_play.alpha_zero_old.search.test.ConfigParams import ConfigParams
 
 from ws.RLInterfaces.PolicyTypes import PolicyTypes
 

@@ -1,5 +1,5 @@
-from ws.RLAgents.self_play.alpha_zero.search.mcts_pkg.Mcts import Mcts
-from ws.RLAgents.self_play.alpha_zero.search.mcts_recursive_pkg.MctsRecursive import MctsRecursive
+from ws.RLAgents.self_play.alpha_zero_old.search.mcts_pkg.Mcts import Mcts
+from ws.RLAgents.self_play.alpha_zero_old.search.mcts_recursive_pkg.MctsRecursive import MctsRecursive
 from ws.RLEnvironments.othello.MctsAdaptor import MctsAdapter
 
 

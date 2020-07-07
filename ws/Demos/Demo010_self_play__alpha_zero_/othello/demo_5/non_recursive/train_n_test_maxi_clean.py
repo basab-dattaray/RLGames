@@ -1,5 +1,5 @@
 from ws.Demos.Demo010_self_play__alpha_zero_.othello.demo_5.non_recursive.ConfigParams import ConfigParams
-from ws.RLAgents.self_play.alpha_zero.Agent import Agent
+from ws.RLAgents.self_play.alpha_zero_old.Agent import Agent
 
 if __name__ == "__main__":
     Agent.fn_init(__file__, ConfigParams()) \

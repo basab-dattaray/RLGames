@@ -1,6 +1,6 @@
 import numpy
 
-from ws.RLAgents.self_play.alpha_zero.othello.pytorch.NNetWrapper import NNetWrapper
+from ws.RLAgents.self_play.alpha_zero_old.othello.pytorch.NNetWrapper import NNetWrapper
 from ws.RLInterfaces.PolicyAlgos import PolicyAlgos
 
 

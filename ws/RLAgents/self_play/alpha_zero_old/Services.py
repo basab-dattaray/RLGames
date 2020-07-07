@@ -1,13 +1,13 @@
 import os
 import shutil
 
-from ws.RLAgents.self_play.alpha_zero.play.Arena import Arena
-from ws.RLAgents.self_play.alpha_zero.search.MctsSelector import MctsSelector
-from ws.RLAgents.self_play.alpha_zero.search.PolicyBroker import PolicyBroker
+from ws.RLAgents.self_play.alpha_zero_old.play.Arena import Arena
+from ws.RLAgents.self_play.alpha_zero_old.search.MctsSelector import MctsSelector
+from ws.RLAgents.self_play.alpha_zero_old.search.PolicyBroker import PolicyBroker
 from ws.RLEnvironments.othello.OthelloGame import OthelloGame as Game, OthelloGame
 from ws.RLInterfaces.PARAM_KEY_NAMES import ARCHIVES
 from ws.RLUtils.monitoring.tracing.log_mgt import log_mgr
-from ws.RLAgents.self_play.alpha_zero.Persister import Persister
+from ws.RLAgents.self_play.alpha_zero_old.Persister import Persister
 from ws.RLUtils.monitoring.tracing.prnt_mgt import prnt_mgr
 
 

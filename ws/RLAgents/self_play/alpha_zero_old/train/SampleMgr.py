@@ -1,5 +1,5 @@
-from ws.RLAgents.self_play.alpha_zero.train.SampleGenerator import SampleGenerator
-from ws.RLAgents.self_play.alpha_zero.train.SampleRepository import SampleRepository
+from ws.RLAgents.self_play.alpha_zero_old.train.SampleGenerator import SampleGenerator
+from ws.RLAgents.self_play.alpha_zero_old.train.SampleRepository import SampleRepository
 
 
 class SampleMgr():

@@ -8,7 +8,7 @@ import numpy as np
 # from ws.RLUtils.monitoring.charting.Chart import Chart
 
 sys.path.append('../../')
-from ws.RLAgents.self_play.alpha_zero.othello.pytorch.utils import *
+from ws.RLAgents.self_play.alpha_zero_old.othello.pytorch.utils import *
 from ws.RLInterfaces.NeuralNet import NeuralNet
 
 import torch

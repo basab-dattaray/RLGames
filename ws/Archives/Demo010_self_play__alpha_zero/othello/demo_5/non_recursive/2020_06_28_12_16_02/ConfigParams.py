@@ -1,6 +1,6 @@
 
 
-from ws.RLAgents.self_play.alpha_zero.othello.pytorch.utils import dotdict
+from ws.RLAgents.self_play.alpha_zero_old.othello.pytorch.utils import dotdict
 
 
 class ConfigParams():
