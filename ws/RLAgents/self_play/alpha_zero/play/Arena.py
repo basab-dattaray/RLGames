@@ -19,7 +19,7 @@ class Arena():
                      display in othello/OthelloGame). Is necessary for verbose
                      mode.
 
-        see othello/RandomPlayer.py for an example. See pit.py for pitting
+        see othello/RandomPlayer.py for an example. See demo_test_system_vs_human.py for pitting
         human players/other baselines with each other.
         """
         self.player1 = player1
