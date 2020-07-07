@@ -11,23 +11,22 @@ from ws.RLUtils.common.AppInfo import AppInfo
 
 import numpy as np
 
-fn_random_player_policy = lambda g: RandomPlayer(g).play
-fn_greedy_player_policy = lambda g: GreedyPlayer(g).play
-fn_human_player_policy = lambda g: HumanPlayer(g).play
 
-dir_path, app_name = AppInfo.fn_get_path_and_app_name(__file__)
+def fn_test_human(game):
+    fn_random_player_policy = lambda g: RandomPlayer(g).play
+    fn_greedy_player_policy = lambda g: GreedyPlayer(g).play
+    fn_human_player_policy = lambda g: HumanPlayer(g).play
+    dir_path, app_name = AppInfo.fn_get_path_and_app_name(__file__)
 
-game = OthelloGame(args.board_size)
-system_nn = NeuralNetWrapper(args, game)
+    system_nn = NeuralNetWrapper(args, game)
+    system_nn.load_checkpoint('tmp/', 'best.pth.tar')
+    # args1 = dotdict({'numMCTSSims': 50, 'cpuct':1.0})
+    system_mcts = MCTS(game, system_nn, args)
+    fn_system_policy = lambda x: np.argmax(system_mcts.getActionProb(x, temp=0))
+    fn_contender_policy = fn_human_player_policy(game)
+    arena = Arena.Arena(fn_system_policy, fn_contender_policy, game, display=OthelloGame.display)
+    print(arena.playGames(2, verbose=True))
 
-system_nn.load_checkpoint('tmp/', 'best.pth.tar')
 
-# args1 = dotdict({'numMCTSSims': 50, 'cpuct':1.0})
-system_mcts = MCTS(game, system_nn, args)
-fn_system_policy = lambda x: np.argmax(system_mcts.getActionProb(x, temp=0))
 
-fn_contender_policy = fn_human_player_policy(game)
-
-arena = Arena.Arena(fn_system_policy, fn_contender_policy, game, display=OthelloGame.display)
-
-print(arena.playGames(2, verbose=True))
+fn_test_human(game = OthelloGame(args.board_size))
