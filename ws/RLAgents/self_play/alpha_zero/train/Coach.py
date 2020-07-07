@@ -8,8 +8,8 @@ from random import shuffle
 import numpy as np
 from tqdm import tqdm
 
-from Arena import Arena
-from MCTS import MCTS
+from ws.RLAgents.self_play.alpha_zero.play.Arena import Arena
+from ws.RLAgents.self_play.alpha_zero.search.recursive.MCTS import MCTS
 
 log = logging.getLogger(__name__)
 

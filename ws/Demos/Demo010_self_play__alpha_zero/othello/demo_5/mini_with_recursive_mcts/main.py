@@ -2,10 +2,10 @@ import logging
 
 import coloredlogs
 
-from Coach import Coach
+from ws.RLAgents.self_play.alpha_zero.train.Coach import Coach
 from othello.OthelloGame import OthelloGame as Game
 from ws.RLAgents.self_play.alpha_zero._game.othello._ml_lib.pytorch.NNet import NNetWrapper as nn
-from utils import *
+from ws.RLAgents.self_play.alpha_zero.misc.utils import *
 
 log = logging.getLogger(__name__)
 

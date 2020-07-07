@@ -1,7 +1,5 @@
-
-
-import Arena
-from MCTS import MCTS
+from ws.RLAgents.self_play.alpha_zero.play import Arena
+from ws.RLAgents.self_play.alpha_zero.search.recursive.MCTS import MCTS
 from othello.OthelloGame import OthelloGame
 from othello.OthelloPlayers import *
 from ws.RLAgents.self_play.alpha_zero._game.othello._ml_lib.pytorch.NNet import NNetWrapper as NNet
@@ -9,7 +7,7 @@ from ws.RLAgents.self_play.alpha_zero._game.othello._ml_lib.pytorch.NNet import 
 from ws.RLUtils.common.AppInfo import AppInfo
 
 import numpy as np
-from utils import *
+from ws.RLAgents.self_play.alpha_zero.misc.utils import *
 
 """
 use this script to play any two agents against each other, or play manually with

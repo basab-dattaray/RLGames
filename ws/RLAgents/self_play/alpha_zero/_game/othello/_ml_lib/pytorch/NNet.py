@@ -6,7 +6,7 @@ import numpy as np
 from tqdm import tqdm
 
 sys.path.append('../../')
-from utils import *
+from ws.RLAgents.self_play.alpha_zero.misc.utils import *
 from ws.RLInterfaces.NeuralNet import NeuralNet
 
 import torch
