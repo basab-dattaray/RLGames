@@ -1,0 +1,53 @@
+2020-06-27 23:03:17,723 - 
+2020-06-27 23:03:17,723 - SESSION ID: session_1
+2020-06-27 23:03:17,723 - model_acceptance_win_ratio=0.6
+2020-06-27 23:03:17,723 - num_training_eval_games=4
+2020-06-27 23:03:17,723 - POLICY_RULES={'POLICY_TRAINING_EXECUTION': 'MCTS', 'POLICY_TRAINING_EVAL': 'DIRECT_MODEL'}
+2020-06-27 23:03:17,723 - num_episodes=5
+2020-06-27 23:03:17,723 - num_iterations=2
+2020-06-27 23:03:17,723 - epochs=2
+2020-06-27 23:03:17,723 - num_of_mcts_simulations=12
+2020-06-27 23:03:18,103 - @@@ Model loaded
+2020-06-27 23:03:18,103 - 
+2020-06-27 23:03:18,103 - SAMPLE GEN ITERATION 1 of 2
+2020-06-27 23:03:18,149 - @@@ Upgraded Model
+2020-06-27 23:03:22,958 -   SAMPLE GEN EPISODE 1 of 5:  !!! No Samples were generated
+2020-06-27 23:03:27,721 -   SAMPLE GEN EPISODE 2 of 5:  !!! No Samples were generated
+2020-06-27 23:03:32,483 -   SAMPLE GEN EPISODE 3 of 5:  !!! No Samples were generated
+2020-06-27 23:03:37,254 -   SAMPLE GEN EPISODE 4 of 5:  !!! No Samples were generated
+2020-06-27 23:03:42,020 -   SAMPLE GEN EPISODE 5 of 5:  !!! No Samples were generated
+2020-06-27 23:03:42,020 - Total Samples Collected: 0
+2020-06-27 23:03:42,020 - @@@ Training the Model Nnet with 0 samples
+2020-06-27 23:03:42,020 - TRAINING runs in 2 epochs
+2020-06-27 23:03:42,020 -   TRAINING EPOCH 1 out of 2
+2020-06-27 23:03:42,020 -   TRAINING EPOCH 2 out of 2
+2020-06-27 23:03:42,020 - 
+2020-06-27 23:03:42,020 - PITTING AGAINST PREVIOUS VERSION
+2020-06-27 23:03:42,257 - @@@ play game   1: result= -1,  first_player=  1, last_player= 1 turns= 21 ,   score=  -5,      [ 10 / -15 /   0]  ==>  plusses trending: 0.0
+2020-06-27 23:03:42,540 - @@@ play game   2: result= -1,  first_player=  1, last_player= 1 turns= 21 ,   score=   1,      [ 13 / -12 /   0]  ==>  plusses trending: 0.0
+2020-06-27 23:03:42,746 - @@@ play game   3: result= -1,  first_player= -1, last_player=-1 turns= 17 ,   score=  17,      [ 19 /  -2 /   0]  ==>  plusses trending: 0.0
+2020-06-27 23:03:42,999 - @@@ play game   4: result= -1,  first_player= -1, last_player=-1 turns= 21 ,   score=  15,      [ 20 /  -5 /   0]  ==>  plusses trending: 0.0
+2020-06-27 23:03:43,015 -   NEW/PREV WINS : 0 / 4 ; DRAWS : 0
+2020-06-27 23:03:43,015 -   REJECTING NEW MODEL: win_ratio = 0.0 threshold: 0.6, Model Acceptance: 0 of 1
+2020-06-27 23:03:43,057 - 
+2020-06-27 23:03:43,057 - SAMPLE GEN ITERATION 2 of 2
+2020-06-27 23:03:43,084 - @@@ Upgraded Model
+2020-06-27 23:03:49,311 -   SAMPLE GEN EPISODE 1 of 5:  !!! No Samples were generated
+2020-06-27 23:03:54,441 -   SAMPLE GEN EPISODE 2 of 5:  !!! No Samples were generated
+2020-06-27 23:03:59,612 -   SAMPLE GEN EPISODE 3 of 5:  !!! No Samples were generated
+2020-06-27 23:04:04,960 -   SAMPLE GEN EPISODE 4 of 5:  !!! No Samples were generated
+2020-06-27 23:04:10,022 -   SAMPLE GEN EPISODE 5 of 5:  !!! No Samples were generated
+2020-06-27 23:04:10,022 - Total Samples Collected: 0
+2020-06-27 23:04:10,022 - @@@ Training the Model Nnet with 0 samples
+2020-06-27 23:04:10,023 - TRAINING runs in 2 epochs
+2020-06-27 23:04:10,023 -   TRAINING EPOCH 1 out of 2
+2020-06-27 23:04:10,023 -   TRAINING EPOCH 2 out of 2
+2020-06-27 23:04:10,023 - 
+2020-06-27 23:04:10,023 - PITTING AGAINST PREVIOUS VERSION
+2020-06-27 23:04:10,255 - @@@ play game   1: result=  1,  first_player=  1, last_player= 1 turns= 21 ,   score=  15,      [ 20 /  -5 /   0]  ==>  plusses trending: 100.0
+2020-06-27 23:04:10,573 - @@@ play game   2: result= -1,  first_player=  1, last_player=-1 turns= 20 ,   score= -12,      [  6 / -18 /   0]  ==>  plusses trending: 50.0
+2020-06-27 23:04:10,817 - @@@ play game   3: result= -1,  first_player= -1, last_player=-1 turns= 21 ,   score=   9,      [ 17 /  -8 /   0]  ==>  plusses trending: 33.33333333333333
+2020-06-27 23:04:11,008 - @@@ play game   4: result=  1,  first_player= -1, last_player= 1 turns= 16 ,   score= -18,      [  1 / -19 /   0]  ==>  plusses trending: 50.0
+2020-06-27 23:04:11,023 -   NEW/PREV WINS : 2 / 2 ; DRAWS : 0
+2020-06-27 23:04:11,023 -   REJECTING NEW MODEL: win_ratio = 0.5 threshold: 0.5909090909090909, Model Acceptance: 0 of 2
+2020-06-27 23:04:11,224 - Total Time Taken = 53.50263595581055 seconds

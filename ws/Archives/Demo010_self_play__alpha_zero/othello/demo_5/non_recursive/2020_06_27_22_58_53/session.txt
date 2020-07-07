@@ -1,0 +1,49 @@
+2020-06-27 22:58:21,932 - 
+2020-06-27 22:58:21,932 - SESSION ID: session_1
+2020-06-27 22:58:21,932 - model_acceptance_win_ratio=0.6
+2020-06-27 22:58:21,932 - num_training_eval_games=4
+2020-06-27 22:58:21,932 - POLICY_RULES={'POLICY_TRAINING_EXECUTION': 'MCTS', 'POLICY_TRAINING_EVAL': 'DIRECT_MODEL'}
+2020-06-27 22:58:21,932 - num_episodes=3
+2020-06-27 22:58:21,932 - num_iterations=2
+2020-06-27 22:58:21,932 - epochs=2
+2020-06-27 22:58:21,932 - num_of_mcts_simulations=12
+2020-06-27 22:58:22,461 - @@@ Model loaded
+2020-06-27 22:58:22,461 - 
+2020-06-27 22:58:22,461 - SAMPLE GEN ITERATION 1 of 2
+2020-06-27 22:58:22,511 - @@@ Upgraded Model
+2020-06-27 22:58:27,345 -   SAMPLE GEN EPISODE 1 of 3:  !!! No Samples were generated
+2020-06-27 22:58:32,114 -   SAMPLE GEN EPISODE 2 of 3:  !!! No Samples were generated
+2020-06-27 22:58:36,879 -   SAMPLE GEN EPISODE 3 of 3:  !!! No Samples were generated
+2020-06-27 22:58:36,879 - Total Samples Collected: 0
+2020-06-27 22:58:36,880 - @@@ Training the Model Nnet with 0 samples
+2020-06-27 22:58:36,880 - TRAINING runs in 2 epochs
+2020-06-27 22:58:36,880 -   TRAINING EPOCH 1 out of 2
+2020-06-27 22:58:36,880 -   TRAINING EPOCH 2 out of 2
+2020-06-27 22:58:36,880 - 
+2020-06-27 22:58:36,880 - PITTING AGAINST PREVIOUS VERSION
+2020-06-27 22:58:37,114 - @@@ play game   1: result= -1,  first_player=  1, last_player= 1 turns= 21 ,   score=  -3,      [ 11 / -14 /   0]  ==>  plusses trending: 0.0
+2020-06-27 22:58:37,384 - @@@ play game   2: result= -1,  first_player=  1, last_player= 1 turns= 21 ,   score=  -9,      [  8 / -17 /   0]  ==>  plusses trending: 0.0
+2020-06-27 22:58:37,563 - @@@ play game   3: result= -1,  first_player= -1, last_player=-1 turns= 15 ,   score=   5,      [ 12 /  -7 /   0]  ==>  plusses trending: 0.0
+2020-06-27 22:58:37,793 - @@@ play game   4: result=  1,  first_player= -1, last_player= 1 turns= 18 ,   score= -10,      [  6 / -16 /   0]  ==>  plusses trending: 25.0
+2020-06-27 22:58:37,810 -   NEW/PREV WINS : 1 / 3 ; DRAWS : 0
+2020-06-27 22:58:37,810 -   REJECTING NEW MODEL: win_ratio = 0.25 threshold: 0.6, Model Acceptance: 0 of 1
+2020-06-27 22:58:37,851 - 
+2020-06-27 22:58:37,851 - SAMPLE GEN ITERATION 2 of 2
+2020-06-27 22:58:37,878 - @@@ Upgraded Model
+2020-06-27 22:58:42,736 -   SAMPLE GEN EPISODE 1 of 3:  !!! No Samples were generated
+2020-06-27 22:58:47,564 -   SAMPLE GEN EPISODE 2 of 3:  !!! No Samples were generated
+2020-06-27 22:58:52,389 -   SAMPLE GEN EPISODE 3 of 3:  !!! No Samples were generated
+2020-06-27 22:58:52,390 - Total Samples Collected: 0
+2020-06-27 22:58:52,390 - @@@ Training the Model Nnet with 0 samples
+2020-06-27 22:58:52,390 - TRAINING runs in 2 epochs
+2020-06-27 22:58:52,390 -   TRAINING EPOCH 1 out of 2
+2020-06-27 22:58:52,390 -   TRAINING EPOCH 2 out of 2
+2020-06-27 22:58:52,390 - 
+2020-06-27 22:58:52,390 - PITTING AGAINST PREVIOUS VERSION
+2020-06-27 22:58:52,585 - @@@ play game   1: result= -1,  first_player=  1, last_player=-1 turns= 18 ,   score= -10,      [  6 / -16 /   0]  ==>  plusses trending: 0.0
+2020-06-27 22:58:52,816 - @@@ play game   2: result=  1,  first_player=  1, last_player= 1 turns= 13 ,   score=   3,      [ 10 /  -7 /   0]  ==>  plusses trending: 50.0
+2020-06-27 22:58:53,067 - @@@ play game   3: result=  1,  first_player= -1, last_player=-1 turns= 21 ,   score=   1,      [ 13 / -12 /   0]  ==>  plusses trending: 66.66666666666666
+2020-06-27 22:58:53,272 - @@@ play game   4: result= -1,  first_player= -1, last_player=-1 turns= 17 ,   score=   5,      [ 13 /  -8 /   0]  ==>  plusses trending: 50.0
+2020-06-27 22:58:53,295 -   NEW/PREV WINS : 2 / 2 ; DRAWS : 0
+2020-06-27 22:58:53,296 -   REJECTING NEW MODEL: win_ratio = 0.5 threshold: 0.5909090909090909, Model Acceptance: 0 of 2
+2020-06-27 22:58:53,493 - Total Time Taken = 31.562901973724365 seconds

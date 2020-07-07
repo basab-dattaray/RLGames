@@ -1,0 +1,45 @@
+{
+  "STRATEGY": "model_free.temporal_difference.sampling.monte_carlo",
+
+  "NUM_EPISODES": 500,
+  "BATCH_SIZE": 64,
+  "GAMMA": 0.99,
+  "LEARNING_RATE": 0.01,
+  "EPSILON": 0.1,
+  "RHO": 0.99,
+  "DISCOUNT_FACTOR": 0.9,
+
+  "ENV_NAME": "Gridworld-v1",
+  "ENV_DISPLAY_ON": 1,
+
+
+  "display": {
+    "APP_NAME": "Monte Carlo",
+    "BOARD_BLOCKERS": [  {"x": 1, "y": 2, "reward": -100},  {"x": 2, "y": 1, "reward": -100}],
+    "BOARD_GOAL": {"x":2,"y":2, "reward": 100},
+    "UNIT": 100,
+    "WIDTH": 6,
+    "HEIGHT": 5,
+    "BUTTON0": {
+      "LABEL": "",
+      "FN": ""
+    },
+    "BUTTON1": {
+      "LABEL": "",
+      "FN": ""
+    },
+    "BUTTON2": {
+      "LABEL": "",
+      "FN": ""
+    },
+    "BUTTON3": {
+      "LABEL": "",
+      "FN": ""
+    },
+    "BUTTON4": {
+      "LABEL": "Run",
+      "FN": "run_mc"
+    }
+  }
+}
+

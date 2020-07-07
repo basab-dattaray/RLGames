@@ -1,0 +1,118 @@
+import signal
+
+from time import sleep
+
+from ws.RLInterfaces.PARAM_KEY_NAMES import *
+from ws.RLAgents.model_free.policy_gradient.progress_mgt import progress_mgr
+from ws.RLUtils.common.config_mgt import config_mgr
+
+from ws.RLUtils.common.module_loader import load_function
+from ws.RLUtils.modelling.archive_mgt import archive_mgr
+
+
+def agent_mgr(app_info, env, arg_dict=None):
+    fn_get_key_as_bool, fn_get_key_as_int, _ = config_mgr(app_info)
+    is_single_episode_result = fn_get_key_as_bool(REWARD_CALCULATED_FROM_SINGLE_EPISODES)
+    app_info['ENV'] = env
+    impl_mgr = load_function('impl_mgr', 'impl_mgt', app_info[AGENT_FOLDER_PATH])
+
+    fn_act, fn_add_transition, fn_save_to_neural_net, fn_load_from_neural_net, fn_should_update_network = impl_mgr(app_info)
+
+    refobj_archive_mgr = archive_mgr(
+        fn_save_to_neural_net,
+        fn_load_from_neural_net,
+        app_info[RESULTS_ARCHIVE_PATH],
+        app_info[RESULTS_CURRENT_PATH],
+        app_info[MAX_RESULT_COUNT]
+    )
+
+    chart, fn_show_training_progress, fn_has_reached_goal = progress_mgr(app_info)
+
+    _episode_num = 0
+
+    fn_record = app_info[FN_RECORD]
+
+    def exit_gracefully(signum, frame):
+        fn_record('!!! TERMINATING EARLY!!!')
+        msg = refobj_archive_mgr.fn_archive_all(app_info, fn_save_model=refobj_archive_mgr.fn_save_model)
+
+        chart.fn_close()
+        fn_record(msg)
+        env.fnClose()
+        exit()
+
+    def fn_run(fn_show_training_progress,
+               supress_graph=False,
+               fn_should_update_network=fn_should_update_network,
+               consecutive_goal_hits_needed_for_success=None
+               ):
+        nonlocal _episode_num
+
+        # if supress_graph:
+        #     fn_supress_graphing()
+
+        signal.signal(signal.SIGINT, exit_gracefully)
+        _episode_num = 1
+        done = False
+        while _episode_num <= app_info[NUM_EPISODES] and not done:
+            running_reward, num_steps = fn_run_episode(fn_should_update_network=fn_should_update_network)
+            fn_show_training_progress(_episode_num, running_reward, num_steps)
+
+            done = fn_has_reached_goal(running_reward, consecutive_goal_hits_needed_for_success)
+            _episode_num += 1
+        chart.fn_close()
+
+    def fn_run_episode(fn_should_update_network=None, do_render=False):
+
+        state = env.fnReset()
+        running_reward = 0
+        reward = 0
+        step = 0
+        done = False
+        while step < app_info[MAX_STEPS_PER_EPISODE] and not done:
+            step += 1
+
+            if do_render:
+                env.fnDoRender()
+                sleep(.01)
+
+            action = fn_act(state)
+            state, reward, done, _ = env.fnStep(action)
+
+            fn_add_transition(reward, done)
+
+            if fn_should_update_network is not None:
+                fn_should_update_network(done)
+
+            running_reward += reward
+
+        env.fnClose()
+
+        val = reward if is_single_episode_result else running_reward
+        return val, step
+
+    def fn_run_train():
+        if refobj_archive_mgr.fn_load_model is not None:
+            if refobj_archive_mgr.fn_load_model():
+                fn_record('SUCCESS in loading model')
+            else:
+                fn_record('FAILED in loading model')
+
+        fn_run(fn_show_training_progress, fn_should_update_network=fn_should_update_network)
+
+        fn_record(refobj_archive_mgr.fn_archive_all(app_info, refobj_archive_mgr.fn_save_model))
+
+
+    def fn_run_test():
+        if refobj_archive_mgr.fn_load_model is None:
+            fn_record("ERROR:: Loading Model: model function missing")
+            return
+
+        if not refobj_archive_mgr.fn_load_model():
+            fn_record("ERROR:: Loading Model: model data missing")
+            return
+
+        fn_run(fn_show_training_progress, supress_graph=True, consecutive_goal_hits_needed_for_success=1)
+        fn_run_episode(do_render=True)
+
+    return fn_run_train, fn_run_test

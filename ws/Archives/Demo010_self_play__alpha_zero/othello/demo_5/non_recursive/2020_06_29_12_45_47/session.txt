@@ -1,0 +1,52 @@
+2020-06-29 12:44:29,594 - @@@ DEMO NAME:: train_mini
+2020-06-29 12:44:29,594 - @@@ PATH:: /Users/bd/Documents/WorkSpace/DeepLearning/dev/alpha-zero-general/ws/Demos/Demo010_self_play__alpha_zero/othello/demo_5/non_recursive/train_mini.py
+2020-06-29 12:44:29,595 - 
+2020-06-29 12:44:29,595 - SESSION ID: session_1
+2020-06-29 12:44:29,595 - model_acceptance_win_ratio=0.6
+2020-06-29 12:44:29,596 - win_ratio_reduction_rate=1
+2020-06-29 12:44:29,596 - num_training_eval_games=4
+2020-06-29 12:44:29,596 - POLICY_RULES={'POLICY_TRAINING_EXECUTION': 'MCTS_RECURSIVE', 'POLICY_TRAINING_EVAL': 'MCTS_RECURSIVE'}
+2020-06-29 12:44:29,596 - num_episodes=3
+2020-06-29 12:44:29,596 - num_iterations=2
+2020-06-29 12:44:29,596 - epochs=2
+2020-06-29 12:44:29,596 - num_of_mcts_simulations=12
+2020-06-29 12:44:30,052 - @@@ Model loaded
+2020-06-29 12:44:30,052 - 
+2020-06-29 12:44:30,052 - SAMPLE GEN ITERATION 1 of 2
+2020-06-29 12:44:30,091 - @@@ Upgraded Model
+2020-06-29 12:44:35,041 -   SAMPLE GEN EPISODE 1 of 3:  160 samples generated
+2020-06-29 12:44:39,778 -   SAMPLE GEN EPISODE 2 of 3:  160 samples generated
+2020-06-29 12:44:43,606 -   SAMPLE GEN EPISODE 3 of 3:  144 samples generated
+2020-06-29 12:44:43,606 - Total Samples Collected: 464
+2020-06-29 12:44:43,606 - @@@ Training the Model Nnet with 464 samples
+2020-06-29 12:44:43,606 - TRAINING runs in 2 epochs
+2020-06-29 12:44:43,606 -   TRAINING EPOCH 1 out of 2
+2020-06-29 12:44:49,949 -   TRAINING EPOCH 2 out of 2
+2020-06-29 12:44:55,531 - 
+2020-06-29 12:44:55,531 - PITTING AGAINST PREVIOUS VERSION
+2020-06-29 12:44:57,585 - @@@ play game   1: result= -1,  first_player=  1, last_player= 1 turns= 19 ,   score=  -3,      [ 10 / -13 /   0]  ==>  plusses trending: 0.0
+2020-06-29 12:44:59,758 - @@@ play game   2: result=  1,  first_player=  1, last_player= 1 turns= 21 ,   score=  11,      [ 18 /  -7 /   0]  ==>  plusses trending: 50.0
+2020-06-29 12:45:01,882 - @@@ play game   3: result= -1,  first_player= -1, last_player=-1 turns= 21 ,   score=   3,      [ 14 / -11 /   0]  ==>  plusses trending: 33.33333333333333
+2020-06-29 12:45:04,163 - @@@ play game   4: result=  1,  first_player= -1, last_player= 1 turns= 20 ,   score=  -2,      [ 11 / -13 /   0]  ==>  plusses trending: 50.0
+2020-06-29 12:45:04,179 -   NEW/PREV WINS : 2 / 2 ; DRAWS : 0
+2020-06-29 12:45:04,180 -   REJECTING NEW MODEL: win_ratio = 0.5 threshold: 0.5833333333333333, Model Acceptance: 0 of 1
+2020-06-29 12:45:04,213 - 
+2020-06-29 12:45:04,213 - SAMPLE GEN ITERATION 2 of 2
+2020-06-29 12:45:04,241 - @@@ Upgraded Model
+2020-06-29 12:45:08,349 -   SAMPLE GEN EPISODE 1 of 3:  144 samples generated
+2020-06-29 12:45:12,327 -   SAMPLE GEN EPISODE 2 of 3:  144 samples generated
+2020-06-29 12:45:16,120 -   SAMPLE GEN EPISODE 3 of 3:  144 samples generated
+2020-06-29 12:45:16,120 - Total Samples Collected: 432
+2020-06-29 12:45:16,121 - @@@ Training the Model Nnet with 896 samples
+2020-06-29 12:45:16,121 - TRAINING runs in 2 epochs
+2020-06-29 12:45:16,121 -   TRAINING EPOCH 1 out of 2
+2020-06-29 12:45:27,615 -   TRAINING EPOCH 2 out of 2
+2020-06-29 12:45:39,005 - 
+2020-06-29 12:45:39,006 - PITTING AGAINST PREVIOUS VERSION
+2020-06-29 12:45:41,094 - @@@ play game   1: result= -1,  first_player=  1, last_player=-1 turns= 20 ,   score= -16,      [  4 / -20 /   0]  ==>  plusses trending: 0.0
+2020-06-29 12:45:43,322 - @@@ play game   2: result= -1,  first_player=  1, last_player=-1 turns= 20 ,   score= -14,      [  5 / -19 /   0]  ==>  plusses trending: 0.0
+2020-06-29 12:45:45,566 - @@@ play game   3: result=  0,  first_player= -1, last_player= 1 turns= 20 ,   score=   0,      [ 12 / -12 /   0]  ==>  plusses trending: 16.666666666666664
+2020-06-29 12:45:47,600 - @@@ play game   4: result= -1,  first_player= -1, last_player=-1 turns= 21 ,   score=  19,      [ 22 /  -3 /   0]  ==>  plusses trending: 12.5
+2020-06-29 12:45:47,618 -   NEW/PREV WINS : 0 / 3 ; DRAWS : 1
+2020-06-29 12:45:47,618 -   REJECTING NEW MODEL: win_ratio = 0.0 threshold: 0.5416666666666666, Model Acceptance: 0 of 2
+2020-06-29 12:45:47,818 - Total Time Taken = 78.22422885894775 seconds

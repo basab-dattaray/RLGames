@@ -1,0 +1,50 @@
+2020-06-26 23:29:25,544 - 
+2020-06-26 23:29:25,544 - SESSION ID: session_1
+2020-06-26 23:29:25,544 - model_acceptance_win_ratio=0.5
+2020-06-26 23:29:25,544 - num_training_eval_games=4
+2020-06-26 23:29:25,544 - POLICY_RULES={'POLICY_TRAINING_EXECUTION': 'MCTS', 'POLICY_TRAINING_EVAL': 'DIRECT_MODEL'}
+2020-06-26 23:29:25,545 - num_episodes=3
+2020-06-26 23:29:25,545 - num_iterations=2
+2020-06-26 23:29:25,545 - epochs=2
+2020-06-26 23:29:25,545 - num_of_mcts_simulations=12
+2020-06-26 23:29:25,895 - fn_load_model; No File /Users/bd/Documents/WorkSpace/DeepLearning/dev/alpha-zero-general/ws/Demos/Demo010_self_play__alpha_zero/othello/demo_5/non_recursive/workspace/model.tar available for Loading
+2020-06-26 23:29:25,896 - 
+2020-06-26 23:29:25,896 - SAMPLE GEN ITERATION 1 of 2
+2020-06-26 23:29:30,643 -   SAMPLE GEN EPISODE 1 of 3:  !!! No Samples were generated
+2020-06-26 23:29:35,110 -   SAMPLE GEN EPISODE 2 of 3:  160 samples generated
+2020-06-26 23:29:39,895 -   SAMPLE GEN EPISODE 3 of 3:  168 samples generated
+2020-06-26 23:29:39,895 - Total Samples Collected: 328
+2020-06-26 23:29:39,937 - @@@ Upgraded Model
+2020-06-26 23:29:39,938 - @@@ Training the Model Nnet with 328 samples
+2020-06-26 23:29:39,938 - TRAINING EPOCHS: 2
+2020-06-26 23:29:39,938 -   TRAINING EPOCH 1 out of 2
+2020-06-26 23:29:44,597 -   TRAINING EPOCH 2 out of 2
+2020-06-26 23:29:48,788 - 
+2020-06-26 23:29:48,788 - PITTING AGAINST PREVIOUS VERSION
+2020-06-26 23:29:48,895 - @@@ play game   1: result=  1,  first_player=  1, last_player=-1 turns= 10 ,   score=   2,      [  8 /  -6 /   0]  ==>  plusses trending: 100.0
+2020-06-26 23:29:49,144 - @@@ play game   2: result= -1,  first_player=  1, last_player= 1 turns= 21 ,   score=  -1,      [ 12 / -13 /   0]  ==>  plusses trending: 50.0
+2020-06-26 23:29:49,329 - @@@ play game   3: result=  1,  first_player= -1, last_player= 1 turns= 16 ,   score=  -8,      [  6 / -14 /   0]  ==>  plusses trending: 66.66666666666666
+2020-06-26 23:29:49,578 - @@@ play game   4: result=  1,  first_player= -1, last_player= 1 turns= 20 ,   score= -10,      [  7 / -17 /   0]  ==>  plusses trending: 75.0
+2020-06-26 23:29:49,594 -   NEW/PREV WINS : 3 / 1 ; DRAWS : 0
+2020-06-26 23:29:49,594 -   ACCEPTING NEW MODEL: win_ratio = 0.75 threshold: 0.5 Model Acceptance: 1 of 1
+2020-06-26 23:29:49,624 - @@@ Saved samples: 1 batches comprising 328 samples
+2020-06-26 23:29:49,641 - 
+2020-06-26 23:29:49,642 - SAMPLE GEN ITERATION 2 of 2
+2020-06-26 23:29:54,175 -   SAMPLE GEN EPISODE 1 of 3:  !!! No Samples were generated
+2020-06-26 23:29:58,419 -   SAMPLE GEN EPISODE 2 of 3:  !!! No Samples were generated
+2020-06-26 23:30:03,021 -   SAMPLE GEN EPISODE 3 of 3:  !!! No Samples were generated
+2020-06-26 23:30:03,021 - Total Samples Collected: 0
+2020-06-26 23:30:03,055 - @@@ Upgraded Model
+2020-06-26 23:30:03,055 - @@@ Training the Model Nnet with 328 samples
+2020-06-26 23:30:03,055 - TRAINING EPOCHS: 2
+2020-06-26 23:30:03,055 -   TRAINING EPOCH 1 out of 2
+2020-06-26 23:30:07,194 -   TRAINING EPOCH 2 out of 2
+2020-06-26 23:30:11,108 - 
+2020-06-26 23:30:11,108 - PITTING AGAINST PREVIOUS VERSION
+2020-06-26 23:30:11,328 - @@@ play game   1: result= -1,  first_player=  1, last_player= 1 turns= 21 ,   score=  -1,      [ 12 / -13 /   0]  ==>  plusses trending: 0.0
+2020-06-26 23:30:11,561 - @@@ play game   2: result= -1,  first_player=  1, last_player= 1 turns= 21 ,   score=  -5,      [ 10 / -15 /   0]  ==>  plusses trending: 0.0
+2020-06-26 23:30:11,765 - @@@ play game   3: result=  1,  first_player= -1, last_player= 1 turns= 18 ,   score= -12,      [  5 / -17 /   0]  ==>  plusses trending: 33.33333333333333
+2020-06-26 23:30:11,874 - @@@ play game   4: result= -1,  first_player= -1, last_player= 1 turns=  8 ,   score=   4,      [  8 /  -4 /   0]  ==>  plusses trending: 25.0
+2020-06-26 23:30:11,891 -   NEW/PREV WINS : 1 / 3 ; DRAWS : 0
+2020-06-26 23:30:11,891 -   REJECTING NEW MODEL: win_ratio = 0.25 threshold: 0.5, Model Acceptance: 1 of 2
+2020-06-26 23:30:12,046 - Total Time Taken = 46.51370716094971 seconds

@@ -1,0 +1,10 @@
+2020-06-27 23:36:56,469 - 
+2020-06-27 23:36:56,469 - SESSION ID: session_1
+2020-06-27 23:36:56,469 - model_acceptance_win_ratio=0.95
+2020-06-27 23:36:56,470 - num_training_eval_games=4
+2020-06-27 23:36:56,470 - POLICY_RULES={'POLICY_TRAINING_EXECUTION': 'MCTS_RECURSIVE', 'POLICY_TRAINING_EVAL': 'MCTS_RECURSIVE'}
+2020-06-27 23:36:56,470 - num_episodes=3
+2020-06-27 23:36:56,470 - num_iterations=2
+2020-06-27 23:36:56,470 - epochs=2
+2020-06-27 23:36:56,470 - num_of_mcts_simulations=12
+2020-06-27 23:37:31,489 - @@@ Chart Saved

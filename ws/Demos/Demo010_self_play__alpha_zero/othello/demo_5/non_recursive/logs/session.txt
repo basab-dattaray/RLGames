@@ -1,0 +1,17 @@
+2020-07-03 00:20:27,412 - @@@ DEMO NAME:: train_mini
+2020-07-03 00:20:27,412 - @@@ PATH:: /Users/bd/Documents/WorkSpace/DeepLearning/original/RLBench/ws/Demos/Demo010_self_play__alpha_zero/othello/demo_5/non_recursive/train_mini.py
+2020-07-03 00:20:27,413 - 
+2020-07-03 00:20:27,413 - SESSION ID: session_1
+2020-07-03 00:20:27,413 - model_acceptance_win_ratio=0.6
+2020-07-03 00:20:27,413 - win_ratio_reduction_rate=1
+2020-07-03 00:20:27,413 - num_training_eval_games=4
+2020-07-03 00:20:27,413 - POLICY_RULES={'POLICY_TRAINING_EXECUTION': 'MCTS', 'POLICY_TRAINING_EVAL': 'MCTS'}
+2020-07-03 00:20:27,413 - num_episodes=3
+2020-07-03 00:20:27,413 - num_iterations=2
+2020-07-03 00:20:27,413 - epochs=2
+2020-07-03 00:20:27,413 - num_of_mcts_simulations=12
+2020-07-03 00:20:28,519 - @@@ Model loaded
+2020-07-03 00:20:28,519 - 
+2020-07-03 00:20:28,519 - SAMPLE GEN ITERATION 1 of 2
+2020-07-03 00:20:28,555 - @@@ Upgraded Model
+2020-07-03 00:20:33,459 -   SAMPLE GEN EPISODE 1 of 3:  160 samples generated

@@ -1,0 +1,17 @@
+2020-06-30 08:39:06,693 - @@@ DEMO NAME:: train_mini
+2020-06-30 08:39:06,694 - @@@ PATH:: /Users/bd/Documents/WorkSpace/DeepLearning/dev/alpha-zero-general/ws/Demos/Demo010_self_play__alpha_zero/othello/demo_5/non_recursive/train_mini.py
+2020-06-30 08:39:06,694 - 
+2020-06-30 08:39:06,694 - SESSION ID: session_1
+2020-06-30 08:39:06,695 - model_acceptance_win_ratio=0.6
+2020-06-30 08:39:06,695 - win_ratio_reduction_rate=1
+2020-06-30 08:39:06,695 - num_training_eval_games=4
+2020-06-30 08:39:06,695 - POLICY_RULES={'POLICY_TRAINING_EXECUTION': 'MCTS_RECURSIVE', 'POLICY_TRAINING_EVAL': 'MCTS_RECURSIVE'}
+2020-06-30 08:39:06,695 - num_episodes=3
+2020-06-30 08:39:06,695 - num_iterations=2
+2020-06-30 08:39:06,695 - epochs=2
+2020-06-30 08:39:06,696 - num_of_mcts_simulations=12
+2020-06-30 08:39:07,433 - @@@ Model loaded
+2020-06-30 08:39:07,433 - 
+2020-06-30 08:39:07,434 - SAMPLE GEN ITERATION 1 of 2
+2020-06-30 08:39:07,481 - @@@ Upgraded Model
+2020-06-30 08:46:07,293 - @@@ Chart Saved

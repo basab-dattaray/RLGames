@@ -1,0 +1,52 @@
+2020-06-30 09:24:23,672 - @@@ DEMO NAME:: train_mini
+2020-06-30 09:24:23,673 - @@@ PATH:: /Users/bd/Documents/WorkSpace/DeepLearning/dev/alpha-zero-general/ws/Demos/Demo010_self_play__alpha_zero/othello/demo_5/non_recursive/train_mini.py
+2020-06-30 09:24:23,673 - 
+2020-06-30 09:24:23,673 - SESSION ID: session_1
+2020-06-30 09:24:23,673 - model_acceptance_win_ratio=0.6
+2020-06-30 09:24:23,674 - win_ratio_reduction_rate=1
+2020-06-30 09:24:23,674 - num_training_eval_games=4
+2020-06-30 09:24:23,674 - POLICY_RULES={'POLICY_TRAINING_EXECUTION': 'MCTS_RECURSIVE', 'POLICY_TRAINING_EVAL': 'MCTS_RECURSIVE'}
+2020-06-30 09:24:23,674 - num_episodes=3
+2020-06-30 09:24:23,674 - num_iterations=2
+2020-06-30 09:24:23,674 - epochs=2
+2020-06-30 09:24:23,674 - num_of_mcts_simulations=12
+2020-06-30 09:24:24,411 - @@@ Model loaded
+2020-06-30 09:24:24,412 - 
+2020-06-30 09:24:24,412 - SAMPLE GEN ITERATION 1 of 2
+2020-06-30 09:24:24,452 - @@@ Upgraded Model
+2020-06-30 09:33:41,764 -   SAMPLE GEN EPISODE 1 of 3:  160 samples generated
+2020-06-30 09:33:47,172 -   SAMPLE GEN EPISODE 2 of 3:  160 samples generated
+2020-06-30 09:33:52,004 -   SAMPLE GEN EPISODE 3 of 3:  144 samples generated
+2020-06-30 09:33:52,004 - Total Samples Collected: 464
+2020-06-30 09:33:52,005 - @@@ Training the Model Nnet with 464 samples
+2020-06-30 09:33:52,005 - TRAINING runs in 2 epochs
+2020-06-30 09:33:52,005 -   TRAINING EPOCH 1 out of 2
+2020-06-30 09:33:58,039 -   TRAINING EPOCH 2 out of 2
+2020-06-30 09:34:04,143 - 
+2020-06-30 09:34:04,143 - PITTING AGAINST PREVIOUS VERSION
+2020-06-30 09:34:05,002 - @@@ play game   1: result= -1,  first_player=  1, last_player=-1 turns=  8 ,   score=  -4,      [  4 /  -8 /   0]  ==>  plusses trending: 0.0
+2020-06-30 09:34:07,140 - @@@ play game   2: result= -1,  first_player=  1, last_player= 1 turns= 19 ,   score=  -9,      [  7 / -16 /   0]  ==>  plusses trending: 0.0
+2020-06-30 09:34:09,875 - @@@ play game   3: result= -1,  first_player= -1, last_player=-1 turns= 21 ,   score=  15,      [ 20 /  -5 /   0]  ==>  plusses trending: 0.0
+2020-06-30 09:34:12,672 - @@@ play game   4: result= -1,  first_player= -1, last_player= 1 turns= 18 ,   score=   4,      [ 13 /  -9 /   0]  ==>  plusses trending: 0.0
+2020-06-30 09:34:12,693 -   NEW/PREV WINS : 0 / 4 ; DRAWS : 0
+2020-06-30 09:34:12,693 -   REJECTING NEW MODEL: win_ratio = 0.0 threshold: 0.5416666666666666, Model Acceptance: 0 of 1
+2020-06-30 09:34:12,731 - 
+2020-06-30 09:34:12,731 - SAMPLE GEN ITERATION 2 of 2
+2020-06-30 09:34:12,762 - @@@ Upgraded Model
+2020-06-30 09:34:17,456 -   SAMPLE GEN EPISODE 1 of 3:  144 samples generated
+2020-06-30 09:34:22,134 -   SAMPLE GEN EPISODE 2 of 3:  144 samples generated
+2020-06-30 09:34:26,637 -   SAMPLE GEN EPISODE 3 of 3:  144 samples generated
+2020-06-30 09:34:26,637 - Total Samples Collected: 432
+2020-06-30 09:34:26,639 - @@@ Training the Model Nnet with 896 samples
+2020-06-30 09:34:26,640 - TRAINING runs in 2 epochs
+2020-06-30 09:34:26,640 -   TRAINING EPOCH 1 out of 2
+2020-06-30 09:34:38,645 -   TRAINING EPOCH 2 out of 2
+2020-06-30 09:34:51,226 - 
+2020-06-30 09:34:51,226 - PITTING AGAINST PREVIOUS VERSION
+2020-06-30 09:34:53,832 - @@@ play game   1: result= -1,  first_player=  1, last_player=-1 turns= 20 ,   score= -16,      [  4 / -20 /   0]  ==>  plusses trending: 0.0
+2020-06-30 09:34:56,085 - @@@ play game   2: result= -1,  first_player=  1, last_player=-1 turns= 20 ,   score= -16,      [  4 / -20 /   0]  ==>  plusses trending: 0.0
+2020-06-30 09:34:58,593 - @@@ play game   3: result= -1,  first_player= -1, last_player=-1 turns= 21 ,   score=   5,      [ 15 / -10 /   0]  ==>  plusses trending: 0.0
+2020-06-30 09:35:01,215 - @@@ play game   4: result= -1,  first_player= -1, last_player= 1 turns= 18 ,   score=   4,      [ 13 /  -9 /   0]  ==>  plusses trending: 0.0
+2020-06-30 09:35:01,238 -   NEW/PREV WINS : 0 / 4 ; DRAWS : 0
+2020-06-30 09:35:01,238 -   REJECTING NEW MODEL: win_ratio = 0.0 threshold: 0.5208333333333333, Model Acceptance: 0 of 2
+2020-06-30 09:35:01,573 - Total Time Taken = 637.9005680084229 seconds

@@ -1,0 +1,50 @@
+2020-06-27 16:13:07,955 - 
+2020-06-27 16:13:07,955 - SESSION ID: session_1
+2020-06-27 16:13:07,955 - model_acceptance_win_ratio=0.95
+2020-06-27 16:13:07,955 - num_training_eval_games=4
+2020-06-27 16:13:07,956 - POLICY_RULES={'POLICY_TRAINING_EXECUTION': 'MCTS_RECURSIVE', 'POLICY_TRAINING_EVAL': 'MCTS_RECURSIVE'}
+2020-06-27 16:13:07,956 - num_episodes=3
+2020-06-27 16:13:07,956 - num_iterations=2
+2020-06-27 16:13:07,956 - epochs=2
+2020-06-27 16:13:07,956 - num_of_mcts_simulations=12
+2020-06-27 16:13:08,307 - fn_load_model; No File /Users/bd/Documents/WorkSpace/DeepLearning/dev/alpha-zero-general/ws/Demos/Demo010_self_play__alpha_zero/othello/demo_5/recursive/workspace/model.tar available for Loading
+2020-06-27 16:13:08,307 - 
+2020-06-27 16:13:08,307 - SAMPLE GEN ITERATION 1 of 2
+2020-06-27 16:13:12,729 -   SAMPLE GEN EPISODE 1 of 3:  160 samples generated
+2020-06-27 16:13:17,149 -   SAMPLE GEN EPISODE 2 of 3:  168 samples generated
+2020-06-27 16:13:21,694 -   SAMPLE GEN EPISODE 3 of 3:  168 samples generated
+2020-06-27 16:13:21,694 - Total Samples Collected: 496
+2020-06-27 16:13:21,738 - @@@ Upgraded Model
+2020-06-27 16:13:21,738 - @@@ Training the Model Nnet with 496 samples
+2020-06-27 16:13:21,738 - TRAINING runs in 2 epochs
+2020-06-27 16:13:21,739 -   TRAINING EPOCH 1 out of 2
+2020-06-27 16:13:28,267 -   TRAINING EPOCH 2 out of 2
+2020-06-27 16:13:34,123 - 
+2020-06-27 16:13:34,124 - PITTING AGAINST PREVIOUS VERSION
+2020-06-27 16:13:36,240 - @@@ play game   1: result=  1,  first_player=  1, last_player= 1 turns= 17 ,   score=   7,      [ 14 /  -7 /   0]  ==>  plusses trending: 100.0
+2020-06-27 16:13:37,698 - @@@ play game   2: result=  1,  first_player=  1, last_player= 1 turns= 11 ,   score=   7,      [ 11 /  -4 /   0]  ==>  plusses trending: 100.0
+2020-06-27 16:13:39,877 - @@@ play game   3: result=  1,  first_player= -1, last_player=-1 turns= 19 ,   score=  -3,      [ 10 / -13 /   0]  ==>  plusses trending: 100.0
+2020-06-27 16:13:42,025 - @@@ play game   4: result=  1,  first_player= -1, last_player= 1 turns= 20 ,   score= -10,      [  7 / -17 /   0]  ==>  plusses trending: 100.0
+2020-06-27 16:13:42,042 -   NEW/PREV WINS : 4 / 0 ; DRAWS : 0
+2020-06-27 16:13:42,042 -   ACCEPTING NEW MODEL: win_ratio = 1.0 threshold: <bound method ModelAcceptance.fn_get_comparison_acceptance_ratio of <ws.RLAgents.self_play.alpha_zero.train.ModelAcceptance.ModelAcceptance object at 0x7fd3d3633a00>> Model Acceptance: 1 of 1
+2020-06-27 16:13:42,079 - @@@ Saved samples: 1 batches comprising 496 samples
+2020-06-27 16:13:42,095 - 
+2020-06-27 16:13:42,095 - SAMPLE GEN ITERATION 2 of 2
+2020-06-27 16:13:46,267 -   SAMPLE GEN EPISODE 1 of 3:  !!! No Samples were generated
+2020-06-27 16:13:50,507 -   SAMPLE GEN EPISODE 2 of 3:  168 samples generated
+2020-06-27 16:13:54,780 -   SAMPLE GEN EPISODE 3 of 3:  168 samples generated
+2020-06-27 16:13:54,780 - Total Samples Collected: 336
+2020-06-27 16:13:54,816 - @@@ Upgraded Model
+2020-06-27 16:13:54,816 - @@@ Training the Model Nnet with 832 samples
+2020-06-27 16:13:54,816 - TRAINING runs in 2 epochs
+2020-06-27 16:13:54,816 -   TRAINING EPOCH 1 out of 2
+2020-06-27 16:14:06,492 -   TRAINING EPOCH 2 out of 2
+2020-06-27 16:14:17,899 - 
+2020-06-27 16:14:17,899 - PITTING AGAINST PREVIOUS VERSION
+2020-06-27 16:14:20,166 - @@@ play game   1: result=  1,  first_player=  1, last_player= 1 turns= 21 ,   score=   5,      [ 15 / -10 /   0]  ==>  plusses trending: 100.0
+2020-06-27 16:14:22,175 - @@@ play game   2: result=  1,  first_player=  1, last_player= 1 turns= 21 ,   score=   5,      [ 15 / -10 /   0]  ==>  plusses trending: 100.0
+2020-06-27 16:14:24,407 - @@@ play game   3: result= -1,  first_player= -1, last_player=-1 turns= 21 ,   score=   9,      [ 17 /  -8 /   0]  ==>  plusses trending: 66.66666666666666
+2020-06-27 16:14:26,534 - @@@ play game   4: result=  1,  first_player= -1, last_player= 1 turns= 18 ,   score=  -4,      [  9 / -13 /   0]  ==>  plusses trending: 75.0
+2020-06-27 16:14:26,551 -   NEW/PREV WINS : 3 / 1 ; DRAWS : 0
+2020-06-27 16:14:26,552 -   REJECTING NEW MODEL: win_ratio = 0.75 threshold: <bound method ModelAcceptance.fn_get_comparison_acceptance_ratio of <ws.RLAgents.self_play.alpha_zero.train.ModelAcceptance.ModelAcceptance object at 0x7fd3d3633a00>> , Model Acceptance: 1 of 2
+2020-06-27 16:14:26,758 - Total Time Taken = 78.80508089065552 seconds
