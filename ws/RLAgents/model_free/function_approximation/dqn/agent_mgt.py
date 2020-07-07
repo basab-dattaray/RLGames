@@ -6,8 +6,8 @@ from ws.RLAgents.model_free.function_approximation.dqn.impl_mgt import impl_mgr
 
 
 def agent_mgr(app_info, env):
-    _action_size = env.fnGetActionDimensions()[0]
-    _state_size = env.fnGetStateDimensions()[0]
+    _action_size = env.fnGetActionDimensions()
+    _state_size = env.fnGetStateDimensions()
 
     fnReset, fn_remember, fnAct, fnReplay, fnSaveWeights, fnLoadWeights = impl_mgr(app_info, _state_size, _action_size)
 
