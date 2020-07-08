@@ -1,4 +1,5 @@
 import logging
+import signal
 
 import numpy
 
@@ -12,16 +13,35 @@ from ws.RLAgents.self_play.alpha_zero.train.Coach import Coach
 from ws.RLEnvironments.self_play_games.othello.OthelloGame import OthelloGame as Game, OthelloGame
 from ws.RLAgents.self_play.alpha_zero.train.NeuralNetWrapper import NeuralNetWrapper
 from ws.RLUtils.common.AppInfo import AppInfo
+from ws.RLUtils.decorators.breadcrumbs import encapsulate
 
 
 class Agent():
+    @classmethod
+    def fn_init(cls, args, file_path):
+        return Agent(args, file_path)
+
     def __init__(self, args, file_path):
         self.log = logging.getLogger(__name__)
         self.args = args
         self.args.demo_folder, self.args.demo_name = AppInfo.fn_get_path_and_app_name(file_path)
         self.game = OthelloGame(args.board_size)
 
+    def exit_gracefully(self, signum, frame):
+        #
+        # if self.services.chart is not None:
+        #     self.services.chart.fn_close()
+        #     self.services.fn_record('@@@ Chart Saved')
+        #
+        # self.fn_archive_it()
+        #
+        # self.services.fn_record('TERMINATED EARLY AFTER SAVING MODEL WEIGHTS')
+        # self.services.fn_record(f'Total Time Taken = {time() - self.start_time} seconds')
+        exit()
+
+    @encapsulate
     def fn_train(self):
+        signal.signal(signal.SIGINT, self.exit_gracefully)
         self.log.info('Loading %s...', Game.__name__)
 
         self.log.info('Loading %s...', NeuralNetWrapper.__name__)
@@ -42,18 +62,48 @@ class Agent():
 
         self.log.info('Starting the learning process 🎉')
         c.learn()
+        return self
 
-    def fn_test_human(self):
-        fn_random_player_policy = lambda g: RandomPlayer(g).play
-        fn_greedy_player_policy = lambda g: GreedyPlayer(g).play
+    @encapsulate
+    def fn_test_against_human(self):
         fn_human_player_policy = lambda g: HumanPlayer(g).play
-        dir_path, app_name = AppInfo.fn_get_path_and_app_name(__file__)
+        self.fn_test(fn_human_player_policy)
+        return self
 
+    @encapsulate
+    def fn_test_againt_random(self):
+        fn_random_player_policy = lambda g: RandomPlayer(g).play
+        self.fn_test(fn_random_player_policy)
+        return self
+
+    @encapsulate
+    def fn_test_against_greedy(self):
+        fn_random_player_policy = lambda g: RandomPlayer(g).play
+        self.fn_test(fn_random_player_policy)
+        return self
+
+    def fn_test(self, fn_player_policy):
+        signal.signal(signal.SIGINT, self.exit_gracefully)
         system_nn = NeuralNetWrapper(args, self.game)
         system_nn.load_checkpoint('tmp/', 'best.pth.tar')
         # args1 = dotdict({'numMCTSSims': 50, 'cpuct':1.0})
         system_mcts = MCTS(self.game, system_nn, args)
         fn_system_policy = lambda x: numpy.argmax(system_mcts.getActionProb(x, temp=0))
-        fn_contender_policy = fn_human_player_policy(self.game)
+        fn_contender_policy = fn_player_policy(self.game)
         arena = Arena(fn_system_policy, fn_contender_policy, self.game, display=OthelloGame.display)
         print(arena.playGames(2, verbose=True))
+
+    @encapsulate
+    def fn_change_args(self, args):
+        if args is not None:
+            for k,v in args.items():
+                self.args[k] = v
+                print(f'args[{k}] = {v}')
+        return self
+
+    @encapsulate
+    def fn_show_args(self):
+        for k,v in self.args.items():
+            print(f'args[{k}] = {v}')
+
+        return self
