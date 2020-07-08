@@ -15,7 +15,6 @@ from ws.RLAgents.self_play.alpha_zero.train.NeuralNetWrapper import NeuralNetWra
 from ws.RLUtils.common.AppInfo import AppInfo
 from ws.RLUtils.decorators.breadcrumbs import encapsulate
 
-
 class Agent():
     @classmethod
     def fn_init(cls, args, file_path):
