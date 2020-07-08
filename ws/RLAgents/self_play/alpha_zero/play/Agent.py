@@ -78,7 +78,7 @@ class Agent():
 
     @encapsulate
     def fn_test_against_greedy(self):
-        fn_random_player_policy = lambda g: RandomPlayer(g).play
+        fn_random_player_policy = lambda g: GreedyPlayer(g).play
         self.fn_test(fn_random_player_policy, num_of_test_games= self.args.num_of_test_games)
         return self
 
