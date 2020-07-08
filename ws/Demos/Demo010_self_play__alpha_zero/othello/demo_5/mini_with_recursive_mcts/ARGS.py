@@ -15,8 +15,9 @@ args = dotdict({
     'load_folder_file': ('tmp/','best.pth.tar'),
     'numItersForTrainExamplesHistory': 20,
 
-    'epochs': 2,
+    'epochs': 3,
     'board_size': 5,
     'num_of_test_games': 8,
+    'mcts_recurive': 1,
 
 })
