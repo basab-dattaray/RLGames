@@ -1,4 +1,4 @@
-from ws.RLAgents.self_play.alpha_0.misc.utils import dotdict
+from ws.RLAgents.self_play.alpha_zero.misc.utils import dotdict
 
 args = dotdict({
     'numIters': 7,
@@ -10,13 +10,13 @@ args = dotdict({
     'arenaCompare': 40,         # Number of games to play during arena play to determine if new net will be accepted.
     'cpuct': 1,
 
-    'checkpoint': './temp/',
+    'checkpoint': 'tmp/',
     'load_model': False,
-    'load_folder_file': ('/dev/models/5x100x50','best.pth.tar'),
+    'load_folder_file': ('tmp/','best.pth.tar'),
     'numItersForTrainExamplesHistory': 20,
 
+    'epochs': 10,
     'board_size': 5,
-
-    'test_num_games': 500
+    'num_of_test_games': 8,
 
 })
