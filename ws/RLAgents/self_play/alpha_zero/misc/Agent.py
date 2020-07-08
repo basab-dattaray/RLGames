@@ -25,7 +25,7 @@ class Agent():
         self.log = logging.getLogger(__name__)
         self.args = args
         self.args.demo_folder, self.args.demo_name = AppInfo.fn_get_path_and_app_name(file_path)
-        self.game = OthelloGame(args.board_size)
+        self.game = OthelloGame(self.args.board_size)
 
     def exit_gracefully(self, signum, frame):
         #
@@ -45,18 +45,18 @@ class Agent():
         self.log.info('Loading %s...', Game.__name__)
 
         self.log.info('Loading %s...', NeuralNetWrapper.__name__)
-        nnet = NeuralNetWrapper(args, self.game)
+        nnet = NeuralNetWrapper(self.args, self.game)
 
-        if args.load_model:
-            self.log.info('Loading checkpoint "%s/%s"...', args.load_folder_file)
-            nnet.load_checkpoint(args.load_folder_file[0], args.load_folder_file[1])
+        if self.args.load_model:
+            self.log.info('Loading checkpoint "%s/%s"...', self.args.load_folder_file)
+            nnet.load_checkpoint(self.args.load_folder_file[0], self.args.load_folder_file[1])
         else:
             self.log.warning('Not loading a checkpoint!')
 
         self.log.info('Loading the Coach...')
-        c = Coach(self.game, nnet, args)
+        c = Coach(self.game, nnet, self.args)
 
-        if args.load_model:
+        if self.args.load_model:
             self.log.info("Loading 'trainExamples' from file...")
             c.loadTrainExamples()
 
@@ -84,10 +84,10 @@ class Agent():
 
     def fn_test(self, fn_player_policy, verbose= False, num_of_test_games=2):
         signal.signal(signal.SIGINT, self.exit_gracefully)
-        system_nn = NeuralNetWrapper(args, self.game)
+        system_nn = NeuralNetWrapper(self.args, self.game)
         system_nn.load_checkpoint('tmp/', 'best.pth.tar')
         # args1 = dotdict({'numMCTSSims': 50, 'cpuct':1.0})
-        system_mcts = MCTS(self.game, system_nn, args)
+        system_mcts = MCTS(self.game, system_nn, self.args)
         fn_system_policy = lambda x: numpy.argmax(system_mcts.getActionProb(x, temp=0))
         fn_contender_policy = fn_player_policy(self.game)
         arena = Arena(fn_system_policy, fn_contender_policy, self.game, display=OthelloGame.display)
