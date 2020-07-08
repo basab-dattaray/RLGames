@@ -26,6 +26,7 @@ class Agent():
         self.args.demo_folder, self.args.demo_name = AppInfo.fn_get_path_and_app_name(file_path)
         self.args.mcts_recursive = AppInfo.fn_arg_as_bool(self.args, 'mcts_recursive')
         self.game = OthelloGame(self.args.board_size)
+        # self.mcts_frame =
 
     def exit_gracefully(self, signum, frame):
         #
