@@ -24,7 +24,7 @@ class Agent():
         self.log = logging.getLogger(__name__)
         self.args = args
         self.args.demo_folder, self.args.demo_name = AppInfo.fn_get_path_and_app_name(file_path)
-        self.args.mcts_recurive = AppInfo.fn_arg_as_bool(self.args, 'mcts_recursive')
+        self.args.mcts_recursive = AppInfo.fn_arg_as_bool(self.args, 'mcts_recursive')
         self.game = OthelloGame(self.args.board_size)
 
     def exit_gracefully(self, signum, frame):

@@ -1,7 +1,7 @@
 
 import coloredlogs
 
-from ws.Demos.Demo010_self_play__alpha_zero.othello.demo_5.mini_with_recursive_mcts.ARGS import args
+from ws.Demos.Demo010_self_play__alpha_zero.othello.demo_5.mini.ARGS import args
 from ws.RLAgents.self_play.alpha_zero.misc.Agent import Agent
 
 coloredlogs.install(level='INFO')  # Change this to DEBUG to see more info.

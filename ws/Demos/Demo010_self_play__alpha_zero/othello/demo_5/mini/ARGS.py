@@ -18,6 +18,6 @@ args = dotdict({
     'epochs': 3,
     'board_size': 5,
     'num_of_test_games': 8,
-    'mcts_recurive': 0,
+    # 'mcts_recursive': 0,
 
 })
