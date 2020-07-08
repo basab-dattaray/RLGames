@@ -17,5 +17,6 @@ args = dotdict({
 
     'epochs': 2,
     'board_size': 5,
+    'num_of_test_games': 8,
 
 })

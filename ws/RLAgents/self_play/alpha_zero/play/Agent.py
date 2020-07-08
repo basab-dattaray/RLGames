@@ -67,22 +67,22 @@ class Agent():
     @encapsulate
     def fn_test_against_human(self):
         fn_human_player_policy = lambda g: HumanPlayer(g).play
-        self.fn_test(fn_human_player_policy)
+        self.fn_test(fn_human_player_policy, verbose= True)
         return self
 
     @encapsulate
     def fn_test_againt_random(self):
         fn_random_player_policy = lambda g: RandomPlayer(g).play
-        self.fn_test(fn_random_player_policy)
+        self.fn_test(fn_random_player_policy, num_of_test_games= self.args.num_of_test_games)
         return self
 
     @encapsulate
     def fn_test_against_greedy(self):
         fn_random_player_policy = lambda g: RandomPlayer(g).play
-        self.fn_test(fn_random_player_policy)
+        self.fn_test(fn_random_player_policy, num_of_test_games= self.args.num_of_test_games)
         return self
 
-    def fn_test(self, fn_player_policy):
+    def fn_test(self, fn_player_policy, verbose= False, num_of_test_games=2):
         signal.signal(signal.SIGINT, self.exit_gracefully)
         system_nn = NeuralNetWrapper(args, self.game)
         system_nn.load_checkpoint('tmp/', 'best.pth.tar')
@@ -91,7 +91,7 @@ class Agent():
         fn_system_policy = lambda x: numpy.argmax(system_mcts.getActionProb(x, temp=0))
         fn_contender_policy = fn_player_policy(self.game)
         arena = Arena(fn_system_policy, fn_contender_policy, self.game, display=OthelloGame.display)
-        print(arena.playGames(2, verbose=True))
+        print(arena.playGames(num_of_test_games, verbose=verbose))
 
     @encapsulate
     def fn_change_args(self, args):
