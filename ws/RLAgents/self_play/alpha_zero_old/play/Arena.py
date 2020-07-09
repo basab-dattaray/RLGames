@@ -1,7 +1,6 @@
 # import logging
 import gc
 import numpy
-from tqdm import tqdm
 
 # from ws.RLEnvironments.othello import OthelloGame
 from ws.RLEnvironments.othello.OthelloGame import OthelloGame

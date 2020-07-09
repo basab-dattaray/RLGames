@@ -1,6 +1,6 @@
 import logging
 
-from tqdm import tqdm
+
 
 log = logging.getLogger(__name__)
 
@@ -26,6 +26,7 @@ class Arena():
         self.player2 = player2
         self.game = game
         self.display = display
+        self.game_num = 0
 
     def playGame(self, verbose=False):
         """
@@ -61,7 +62,9 @@ class Arena():
                 assert self.display
                 print("Game over: Turn ", str(it), "Result ", str(self.game.getGameEnded(board, 1)))
                 self.display(board)
-            return curPlayer * self.game.getGameEnded(board, curPlayer)
+            result = curPlayer * self.game.getGameEnded(board, curPlayer)
+            print(f'Game number={self.game_num}; curPlayer={curPlayer}; result={result}')
+            return result
         except Exception as x:
             print(x)
 
@@ -80,7 +83,7 @@ class Arena():
         oneWon = 0
         twoWon = 0
         draws = 0
-        for _ in tqdm(range(num), desc="Arena.playGames (1)"):
+        for _ in range(num):
             gameResult = self.playGame(verbose=verbose)
             if gameResult == 1:
                 oneWon += 1
@@ -91,7 +94,7 @@ class Arena():
 
         self.player1, self.player2 = self.player2, self.player1
 
-        for _ in tqdm(range(num), desc="Arena.playGames (2)"):
+        for _ in range(num):
             gameResult = self.playGame(verbose=verbose)
             if gameResult == -1:
                 oneWon += 1

@@ -6,7 +6,7 @@ from pickle import Pickler, Unpickler
 from random import shuffle
 
 import numpy as np
-from tqdm import tqdm
+
 
 from ws.RLAgents.self_play.alpha_zero.play.Arena import Arena
 from ws.RLAgents.self_play.alpha_zero.search.MctsSelector import MctsSelector
@@ -94,10 +94,14 @@ class Coach():
             if not self.skipFirstSelfPlay or i > 1:
                 iterationTrainExamples = deque([], maxlen=self.args.maxlenOfQueue)
 
-                for _ in tqdm(range(self.args.numEps), desc="Self Play"):
-                    self.mcts = MctsSelector(self.game, self.nnet, self.args)  # reset search tree
-                    iterationTrainExamples += self.executeEpisode()
-
+                for i in range(self.args.numEps):
+                    print(f'episode num={i}')
+                    try:
+                        self.mcts = MctsSelector(self.game, self.nnet, self.args)  # reset search tree
+                        iterationTrainExamples += self.executeEpisode()
+                    except Exception as x:
+                        print(f'Episode num={i}')
+                    j = 1
                 # save the iteration examples to the history 
                 self.trainExamplesHistory.append(iterationTrainExamples)
 

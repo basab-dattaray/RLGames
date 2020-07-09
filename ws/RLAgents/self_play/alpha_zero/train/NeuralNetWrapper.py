@@ -3,7 +3,7 @@ import sys
 import time
 
 import numpy as np
-from tqdm import tqdm
+
 
 sys.path.append('../../')
 from ws.RLAgents.self_play.alpha_zero.misc.utils import *
@@ -47,7 +47,7 @@ class NeuralNetWrapper(NeuralNet):
 
             batch_count = int(len(examples) / nnet_params.batch_size)
 
-            t = tqdm(range(batch_count), desc='Training Net')
+            t = range(batch_count)
             for _ in t:
                 sample_ids = np.random.randint(len(examples), size=nnet_params.batch_size)
                 boards, pis, vs = list(zip(*[examples[i] for i in sample_ids]))
@@ -68,7 +68,7 @@ class NeuralNetWrapper(NeuralNet):
                 # record loss
                 pi_losses.update(l_pi.item(), boards.size(0))
                 v_losses.update(l_v.item(), boards.size(0))
-                t.set_postfix(Loss_pi=pi_losses, Loss_v=v_losses)
+                # t.set_postfix(Loss_pi=pi_losses, Loss_v=v_losses)
 
                 # compute gradient and do SGD step
                 optimizer.zero_grad()
