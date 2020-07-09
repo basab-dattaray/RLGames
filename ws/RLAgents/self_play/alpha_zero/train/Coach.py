@@ -10,7 +10,7 @@ import numpy as np
 
 from ws.RLAgents.self_play.alpha_zero.play.Arena import Arena
 from ws.RLAgents.self_play.alpha_zero.search.MctsSelector import MctsSelector
-from ws.RLAgents.self_play.alpha_zero.search.recursive.MCTS import MCTS
+# from ws.RLAgents.self_play.alpha_zero.search.recursive.MCTS import MCTS
 
 log = logging.getLogger(__name__)
 
@@ -96,12 +96,10 @@ class Coach():
 
                 for i in range(self.args.numEps):
                     print(f'episode num={i}')
-                    try:
-                        self.mcts = MctsSelector(self.game, self.nnet, self.args)  # reset search tree
-                        iterationTrainExamples += self.executeEpisode()
-                    except Exception as x:
-                        print(f'Episode num={i}')
-                    j = 1
+
+                    self.mcts = MctsSelector(self.game, self.nnet, self.args)  # reset search tree
+                    iterationTrainExamples += self.executeEpisode()
+
                 # save the iteration examples to the history 
                 self.trainExamplesHistory.append(iterationTrainExamples)
 

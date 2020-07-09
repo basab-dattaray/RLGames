@@ -12,14 +12,17 @@ coloredlogs.install(level='INFO')  # Change this to DEBUG to see more info.
 #     agent.fn_train()
 
 if __name__ == "__main__":
-    Agent.fn_init(args, __file__). \
-        fn_change_args({
-            'mcts_recursive': 1,
-        }). \
-        fn_train().\
-        fn_change_args({
-            'numMCTSSims': 50,
-        }). \
-        fn_show_args(). \
-        fn_test_against_greedy(). \
-        fn_test_againt_random()
+    try:
+        Agent.fn_init(args, __file__). \
+            fn_change_args({
+                'mcts_recursive': 1,
+            }). \
+            fn_train().\
+            fn_change_args({
+                'numMCTSSims': 50,
+            }). \
+            fn_show_args(). \
+            fn_test_against_greedy(). \
+            fn_test_againt_random()
+    except Exception as x:
+        print(f'*** DEMO ---{x}')

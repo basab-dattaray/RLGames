@@ -42,34 +42,37 @@ class Mcts():
         return counts
 
     def __fn_execute_monte_carlo_tree_search(self, state):
+        try:
+            if self.root_node is None:
 
-        if self.root_node is None:
+                self.root_node = Node(
+                    self,
+                    self.max_num_actions,
+                    self.explore_exploit_ratio,
 
-            self.root_node = Node(
-                self,
-                self.max_num_actions,
-                self.explore_exploit_ratio,
+                    val=0.0,
+                    parent_node=None,
+                    state= state
+                )
+                #! self.root_node.fn_expand_node()
 
-                val=0.0,
-                parent_node=None,
-                state= state
-            )
-            #! self.root_node.fn_expand_node()
+            selected_node = self.root_node.fn_select_from_available_leaf_nodes()
 
-        selected_node = self.root_node.fn_select_from_available_leaf_nodes()
+            # if selected_node is None:
+            #     return None
 
-        # if selected_node is None:
-        #     return None
+            if selected_node.fn_is_already_visited():
+                selected_node = selected_node.fn_expand_node()
+                if selected_node is None:
+                    return None
+                pass
 
-        if selected_node.fn_is_already_visited():
-            selected_node = selected_node.fn_expand_node()
-            if selected_node is None:
-                return None
+            score, terminal_state = selected_node.fn_rollout()
+            if terminal_state: print(f'*** score={score}')
+            selected_node.fn_back_propagate( score)
             pass
-
-        score = selected_node.fn_rollout()
-        selected_node.fn_back_propagate( score)
-        pass
+        except Exception as x:
+            print('***' + x)
 
     def __fn_reset_mcts(self):
         self.root_node = None

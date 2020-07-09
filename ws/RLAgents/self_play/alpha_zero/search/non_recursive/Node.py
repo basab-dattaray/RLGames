@@ -90,7 +90,7 @@ class Node(object):
 
         rollout_impl = Rollout(self.ref_mcts.fn_predict_action_probablities)
 
-        opponent_val, action_probs, is_terminal_state =  rollout_impl.fn_get_rollout_value(
+        opponent_val, action_probs, terminal_state =  rollout_impl.fn_get_rollout_value(
             self.ref_mcts.fn_terminal_state_status, self.state
         )
 
@@ -111,7 +111,7 @@ class Node(object):
         #         state = new_state
 
         val =  -opponent_val
-        return val
+        return val, terminal_state
 
     def fn_back_propagate(self, val):
         current_node = self
