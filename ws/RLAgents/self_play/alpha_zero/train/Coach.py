@@ -9,6 +9,7 @@ import numpy as np
 from tqdm import tqdm
 
 from ws.RLAgents.self_play.alpha_zero.play.Arena import Arena
+from ws.RLAgents.self_play.alpha_zero.search.MctsSelector import MctsSelector
 from ws.RLAgents.self_play.alpha_zero.search.recursive.MCTS import MCTS
 
 log = logging.getLogger(__name__)
@@ -25,7 +26,7 @@ class Coach():
         self.nnet = nnet
         self.pnet = self.nnet.__class__(args, self.game)  # the competitor network
         self.args = args
-        self.mcts = MCTS(self.game, self.nnet, self.args)
+        self.mcts = MctsSelector(self.game, self.nnet, self.args)
         self.trainExamplesHistory = []  # history of examples from args.numItersForTrainExamplesHistory latest iterations
         self.skipFirstSelfPlay = False  # can be overriden in loadTrainExamples()
 
@@ -66,7 +67,16 @@ class Coach():
             r = self.game.getGameEnded(board, self.curPlayer)
 
             if r != 0:
-                return [(x[0], x[2], r * ((-1) ** (x[1] != self.curPlayer))) for x in trainExamples]
+                # return [(x[0], x[2], r * ((-1) ** (x[1] != self.curPlayer))) for x in trainExamples]
+                return self.fn_form_sample_data(self.curPlayer, r, trainExamples)
+
+    def fn_form_sample_data(self, current_player, run_result, training_samples, early_termination=False):
+        sample_data = []
+        for x in training_samples:
+            state, player, action_prob = x[0], x[1], x[2]
+            result = run_result * (1 if (player == current_player) else -1)
+            sample_data.append([state, action_prob, result])
+        return sample_data
 
     def learn(self):
         """
@@ -85,7 +95,7 @@ class Coach():
                 iterationTrainExamples = deque([], maxlen=self.args.maxlenOfQueue)
 
                 for _ in tqdm(range(self.args.numEps), desc="Self Play"):
-                    self.mcts = MCTS(self.game, self.nnet, self.args)  # reset search tree
+                    self.mcts = MctsSelector(self.game, self.nnet, self.args)  # reset search tree
                     iterationTrainExamples += self.executeEpisode()
 
                 # save the iteration examples to the history 
@@ -108,10 +118,10 @@ class Coach():
             # training new network, keeping a copy of the old one
             self.nnet.save_checkpoint(rel_folder=self.args.checkpoint, filename='temp.pth.tar')
             self.pnet.load_checkpoint(rel_folder=self.args.checkpoint, filename='temp.pth.tar')
-            pmcts = MCTS(self.game, self.pnet, self.args)
+            pmcts = MctsSelector(self.game, self.pnet, self.args)
 
             self.nnet.train(trainExamples)
-            nmcts = MCTS(self.game, self.nnet, self.args)
+            nmcts = MctsSelector(self.game, self.nnet, self.args)
 
             log.info('PITTING AGAINST PREVIOUS VERSION')
             arena = Arena(lambda x: np.argmax(pmcts.getActionProb(x, temp=0)),
@@ -137,7 +147,7 @@ class Coach():
         filename = os.path.join(folder, self.getCheckpointFile(iteration) + ".examples")
         with open(filename, "wb+") as f:
             Pickler(f).dump(self.trainExamplesHistory)
-        f.closed
+        # f.closed
 
     def loadTrainExamples(self):
         modelFile = os.path.join(self.args.load_folder_file[0], self.args.load_folder_file[1])

@@ -8,6 +8,7 @@ from ws.RLAgents.self_play.alpha_zero.play.Arena import Arena
 from ws.RLAgents.self_play.alpha_zero.play.GreedyPlayer import GreedyPlayer
 from ws.RLAgents.self_play.alpha_zero.play.HumanPlayer import HumanPlayer
 from ws.RLAgents.self_play.alpha_zero.play.RandomPlayer import RandomPlayer
+from ws.RLAgents.self_play.alpha_zero.search.MctsSelector import MctsSelector
 from ws.RLAgents.self_play.alpha_zero.search.recursive.MCTS import MCTS
 from ws.RLAgents.self_play.alpha_zero.train.Coach import Coach
 from ws.RLEnvironments.self_play_games.othello.OthelloGame import OthelloGame as Game, OthelloGame
@@ -88,7 +89,7 @@ class Agent():
         system_nn = NeuralNetWrapper(self.args, self.game)
         system_nn.load_checkpoint('tmp/', 'best.pth.tar')
         # args1 = dotdict({'numMCTSSims': 50, 'cpuct':1.0})
-        system_mcts = MCTS(self.game, system_nn, self.args)
+        system_mcts = MctsSelector(self.game, system_nn, self.args)
         fn_system_policy = lambda x: numpy.argmax(system_mcts.getActionProb(x, temp=0))
         fn_contender_policy = fn_player_policy(self.game)
         arena = Arena(fn_system_policy, fn_contender_policy, self.game, display=OthelloGame.display)

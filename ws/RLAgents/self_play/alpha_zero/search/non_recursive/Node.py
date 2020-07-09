@@ -2,7 +2,7 @@ import math
 import uuid
 import numpy
 
-from zearch.mcts_non_recursive.Rollout import Rollout
+from ws.RLAgents.self_play.alpha_zero.search.non_recursive.Rollout import Rollout
 
 
 class Node(object):

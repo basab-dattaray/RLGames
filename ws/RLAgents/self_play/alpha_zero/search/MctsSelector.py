@@ -6,10 +6,10 @@ from ws.RLAgents.self_play.alpha_zero.search.recursive.MCTS import MCTS
 class MctsSelector():
 
     def __init__(self, game, nnet, args):
-
         if not args.mcts_recursive:
             self.mcts_adapter = MctsAdapter(game, nnet, args)
-            max_num_actions = args.board_size ** 2
+            max_num_actions = game.getActionSize()
+
             mcts = Mcts(
                 fn_find_next_state = self.mcts_adapter.fn_find_next_state,
                 fn_predict_action_probablities=self.mcts_adapter.fn_predict_action_probablities,
@@ -21,7 +21,9 @@ class MctsSelector():
             )
             self.getActionProb = lambda board, temp: mcts.fn_get_action_probabilities(board)
         else:
-            old_mcts = MCTS(game, nnet, args)
-            self.getActionProb = lambda canonicalBoard, temp: old_mcts.getActionProb(canonicalBoard, temp)
+            mcts = MCTS(game, nnet, args)
+            self.getActionProb = lambda canonicalBoard, temp: mcts.getActionProb(canonicalBoard, temp)
         pass
+
+
 
