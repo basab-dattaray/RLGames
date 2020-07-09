@@ -74,12 +74,14 @@ class MCTS():
 
         s = self.game.stringRepresentation(canonicalBoard)
 
+        # ROLLOUT 1 - actual result
         if s not in self.Es:
             self.Es[s] = self.game.getGameEnded(canonicalBoard, 1)
         if self.Es[s] != 0:
             # terminal node
             return -self.Es[s]
 
+        # ROLLOUT 2 - uses prediction
         if s not in self.Ps:
             # leaf node
             self.Ps[s], v = self.nnet.predict(canonicalBoard)
@@ -101,6 +103,7 @@ class MCTS():
             self.Ns[s] = 0
             return -v
 
+        # SELECTION
         valids = self.Vs[s]
         cur_best = -float('inf')
         best_act = -1
@@ -122,13 +125,15 @@ class MCTS():
         next_s, next_player = self.game.getNextState(canonicalBoard, 1, a)
         next_s = self.game.getCanonicalForm(next_s, next_player)
 
+        # EXPANSION
         v = self.search(next_s)
 
-        if (s, a) in self.Qsa:
+        # BACKPROP
+        if (s, a) in self.Qsa: # UPDATE EXISTING
             self.Qsa[(s, a)] = (self.Nsa[(s, a)] * self.Qsa[(s, a)] + v) / (self.Nsa[(s, a)] + 1)
             self.Nsa[(s, a)] += 1
 
-        else:
+        else: # UPDATE FIRST TIME
             self.Qsa[(s, a)] = v
             self.Nsa[(s, a)] = 1
 

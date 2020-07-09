@@ -24,10 +24,10 @@ class Rollout():
 
     def fn_get_rollout_value(self, fn_terminal_state_status, state):
         ret_val = None
-        # if fn_terminal_state_status is not None:
-        #     ret_val = fn_terminal_state_status(state)
-        #     if ret_val != 0:
-        #         return ret_val, None, True
+        if fn_terminal_state_status is not None:
+            ret_val = fn_terminal_state_status(state)
+            if ret_val != 0:
+                return ret_val, None, True
 
         val, action_probs = self.fn_get_value(state)
 
