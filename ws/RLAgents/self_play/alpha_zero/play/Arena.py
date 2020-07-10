@@ -65,7 +65,7 @@ class Arena():
             print("Game over: Turn ", str(it), "Result ", str(self.game.getGameEnded(board, 1)))
             self.display(board)
         result = curPlayer * self.game.getGameEnded(board, curPlayer)
-        print(f'Game number={self.game_num}; curPlayer={curPlayer}; result={result}')
+        #! print(f'Game number={self.game_num}; curPlayer={curPlayer}; result={result}')
         self.game_num += 1
         return result
 

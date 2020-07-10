@@ -98,7 +98,7 @@ class Coach():
                 iterationTrainExamples = deque([], maxlen=self.args.maxlenOfQueue)
 
                 for i in range(self.args.numEps):
-                    print(f'episode num={i}')
+                    #! print(f'episode num={i}')
 
                     self.mcts = MctsSelector(self.game, self.nnet, self.args)  # reset search tree
                     episode_result = self.executeEpisode()

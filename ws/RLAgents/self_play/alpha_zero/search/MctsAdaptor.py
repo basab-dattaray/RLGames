@@ -19,7 +19,7 @@ class MctsAdapter():
     @staticmethod
     def __next_state_mgr(fn_get_game_next_state_for_player, fn_get_current_state_for_player):
         def fn_find_next_state(state, action):
-            next_player, next_state, _ = fn_get_game_next_state_for_player(state, 1, action)
+            next_player, next_state = fn_get_game_next_state_for_player(state, 1, action)
             if next_state is None:
                 return None
             new_state = fn_get_current_state_for_player(next_state, next_player)
