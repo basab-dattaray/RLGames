@@ -43,13 +43,9 @@ class Node(object):
             return None
         state_dims = numpy.shape(parent_state)
         x, y = (int(parent_action / state_dims[0]), parent_action % state_dims[1])
-        try:
-            if parent_state[x][y] == 0:
-                parent_state[x][y] = 1
 
-        except Exception as x:
-            print(x)
-            exit()
+        if parent_state[x][y] == 0:
+            parent_state[x][y] = 1
 
         return parent_state
 
@@ -129,7 +125,7 @@ class Node(object):
     def __fn_add_children_nodes(self, normalized_valid_action_probabilities):
 
         children = {}
-        for action_num, action_probability in enumerate(normalized_valid_action_probabilities):
+        for action_num, action_probability in enumerate(normalized_valid_action_probabilities[:-1]):
             if action_probability > 0:
 
                 child_node = Node(

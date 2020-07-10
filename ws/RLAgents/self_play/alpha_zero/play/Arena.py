@@ -38,35 +38,37 @@ class Arena():
             or
                 draw result returned from the game that is neither 1, -1, nor 0.
         """
-        try:
-            players = [self.player2, None, self.player1]
-            curPlayer = 1
-            board = self.game.getInitBoard()
-            it = 0
-            while self.game.getGameEnded(board, curPlayer) == 0:
-                it += 1
-                if verbose:
-                    assert self.display
-                    print("Turn ", str(it), "Player ", str(curPlayer))
-                    self.display(board)
-                action = players[curPlayer + 1](self.game.getCanonicalForm(board, curPlayer))
 
-                valids = self.game.getValidMoves(self.game.getCanonicalForm(board, curPlayer), 1)
-
-                if valids[action] == 0:
-                    log.error(f'Action {action} is not valid!')
-                    log.debug(f'valids = {valids}')
-                    assert valids[action] > 0
-                board, curPlayer = self.game.getNextState(board, curPlayer, action)
+        players = [self.player2, None, self.player1]
+        curPlayer = 1
+        board = self.game.getInitBoard()
+        it = 0
+        while self.game.getGameEnded(board, curPlayer) == 0:
+            it += 1
             if verbose:
                 assert self.display
-                print("Game over: Turn ", str(it), "Result ", str(self.game.getGameEnded(board, 1)))
+                print("Turn ", str(it), "Player ", str(curPlayer))
                 self.display(board)
-            result = curPlayer * self.game.getGameEnded(board, curPlayer)
-            print(f'Game number={self.game_num}; curPlayer={curPlayer}; result={result}')
-            return result
-        except Exception as x:
-            print(x)
+            action = players[curPlayer + 1](self.game.getCanonicalForm(board, curPlayer))
+
+            valids = self.game.getValidMoves(self.game.getCanonicalForm(board, curPlayer), 1)
+
+
+            if valids[action] == 0:
+                break
+                # log.error(f'Action {action} is not valid!')
+                # log.debug(f'valids = {valids}')
+                # assert valids[action] > 0
+            board, curPlayer = self.game.getNextState(board, curPlayer, action)
+        if verbose:
+            assert self.display
+            print("Game over: Turn ", str(it), "Result ", str(self.game.getGameEnded(board, 1)))
+            self.display(board)
+        result = curPlayer * self.game.getGameEnded(board, curPlayer)
+        print(f'Game number={self.game_num}; curPlayer={curPlayer}; result={result}')
+        self.game_num += 1
+        return result
+
 
     def playGames(self, num, verbose=False):
         """

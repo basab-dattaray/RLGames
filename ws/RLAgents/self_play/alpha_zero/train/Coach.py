@@ -57,6 +57,9 @@ class Coach():
             temp = int(episodeStep < self.args.tempThreshold)
 
             pi = self.mcts.getActionProb(canonicalBoard, temp=temp)
+            if pi is None:
+                return None
+
             sym = self.game.getSymmetries(canonicalBoard, pi)
             for b, p in sym:
                 trainExamples.append([b, self.curPlayer, p, None])
@@ -98,7 +101,9 @@ class Coach():
                     print(f'episode num={i}')
 
                     self.mcts = MctsSelector(self.game, self.nnet, self.args)  # reset search tree
-                    iterationTrainExamples += self.executeEpisode()
+                    episode_result = self.executeEpisode()
+                    if episode_result is not None:
+                        iterationTrainExamples += episode_result
 
                 # save the iteration examples to the history 
                 self.trainExamplesHistory.append(iterationTrainExamples)
