@@ -100,7 +100,7 @@ class Node(object):
                 action = numpy.random.choice(len(normalized_valid_action_probabilities), p=normalized_valid_action_probabilities)
                 new_state = self.ref_mcts.fn_find_next_state(state, action)
 
-                val, action_probs, is_terminal_state = rollout_impl.fn_get_rollout_value(
+                opponent_val, action_probs, is_terminal_state = rollout_impl.fn_get_rollout_value(
                     self.ref_mcts.fn_terminal_state_status, new_state
                 )
 
