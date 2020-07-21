@@ -86,6 +86,8 @@ class Node(object):
 
         rollout_impl = Rollout(self.ref_mcts.fn_predict_action_probablities)
 
+        # is_terminal_state = False
+
         opponent_val, action_probs, is_terminal_state =  rollout_impl.fn_get_rollout_value(
             self.ref_mcts.fn_terminal_state_status, state
         )
@@ -99,12 +101,14 @@ class Node(object):
             else:
                 action = numpy.random.choice(len(normalized_valid_action_probabilities), p=normalized_valid_action_probabilities)
                 new_state = self.ref_mcts.fn_find_next_state(state, action)
+                if new_state is None:
+                    is_terminal_state = True
+                else:
+                    opponent_val, action_probs, is_terminal_state = rollout_impl.fn_get_rollout_value(
+                        self.ref_mcts.fn_terminal_state_status, new_state
+                    )
 
-                opponent_val, action_probs, is_terminal_state = rollout_impl.fn_get_rollout_value(
-                    self.ref_mcts.fn_terminal_state_status, new_state
-                )
-
-                state = new_state
+                    state = new_state
 
         val =  -opponent_val
         return val, is_terminal_state

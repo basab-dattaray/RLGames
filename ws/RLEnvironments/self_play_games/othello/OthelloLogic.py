@@ -109,9 +109,12 @@ class Board():
         flips = [flip for direction in self.__directions
                       for flip in self._get_flips(move, direction, color)]
         #! assert len(list(flips))>0
+        if len(list(flips))==0:
+            return False
         for x, y in flips:
             #print(self[x][y],color)
             self[x][y] = color
+        return True
 
     def _discover_move(self, origin, direction):
         """ Returns the endpoint for a legal move, starting at the given origin,

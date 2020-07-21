@@ -40,7 +40,8 @@ class OthelloGame(Game):
         b = Board(self.n)
         b.pieces = np.copy(board)
         move = (int(action/self.n), action%self.n)
-        b.execute_move(move, player)
+        if not b.execute_move(move, player):
+            return (b.pieces, None)
         return (b.pieces, -player)
 
     def getValidMoves(self, board, player):

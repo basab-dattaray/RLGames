@@ -68,7 +68,7 @@ class Mcts():
 
         score, terminal_state = selected_node.fn_rollout()
         # if terminal_state: print(f'*** score={score}')
-        selected_node.fn_back_propagate( score)
+        selected_node.fn_back_propagate(score)
         pass
 
     def __fn_reset_mcts(self):
