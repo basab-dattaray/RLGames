@@ -26,7 +26,7 @@ class Node(object):
         self.visits = 0
         self.val = val
         self.children_nodes = {}
-        self.id = uuid.uuid1()
+        self.id = uuid.uuid4()
         self.parent_action = parent_action
 
         if state is not None:
