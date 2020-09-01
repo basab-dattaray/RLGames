@@ -40,7 +40,7 @@ class NeuralNetWrapper(NeuralNet):
         """
         examples: list of examples, each example is of form (board, pi, v)
         """
-        optimizer =q optim.Adam(self.nnet.parameters())
+        optimizer = optim.Adam(self.nnet.parameters())
         log.info('Run train')
         for epoch in range(self.args.epochs):
             log.info('  EPOCH ::: ' + str(epoch + 1))
