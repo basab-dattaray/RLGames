@@ -1,3 +1,4 @@
+import logging
 import os
 import sys
 import time
@@ -13,6 +14,8 @@ import torch
 import torch.optim as optim
 
 from ws.RLAgents.self_play.alpha_zero._game.othello._ml_lib.pytorch.OthelloNNet import OthelloNNet
+
+log = logging.getLogger(__name__)
 
 nnet_params = dotdict({
     'lr': 0.001,
@@ -37,10 +40,10 @@ class NeuralNetWrapper(NeuralNet):
         """
         examples: list of examples, each example is of form (board, pi, v)
         """
-        optimizer = optim.Adam(self.nnet.parameters())
-
+        optimizer =q optim.Adam(self.nnet.parameters())
+        log.info('Run train')
         for epoch in range(self.args.epochs):
-            print('EPOCH ::: ' + str(epoch + 1))
+            log.info('  EPOCH ::: ' + str(epoch + 1))
             self.nnet.train()
             pi_losses = AverageMeter()
             v_losses = AverageMeter()

@@ -95,13 +95,13 @@ class Coach():
 
         for i in range(1, self.args.numIters + 1):
             # bookkeeping
-            log.info(f'Starting Iter #{i} ...')
+            log.info(f' Starting Iter #{i} ...')
             # examples of the iteration
             if not self.skipFirstSelfPlay or i > 1:
                 iterationTrainExamples = deque([], maxlen=self.args.maxlenOfQueue)
 
-                for i in range(self.args.numEps):
-                    #! print(f'episode num={i}')
+                for i in range(1, self.args.numEps + 1):
+                    log.info(f'     Episode {i}')
 
                     self.mcts = MctsSelector(self.game, self.nnet, self.args)  # reset search tree
                     episode_result = self.executeEpisode()
@@ -138,7 +138,7 @@ class Coach():
                           lambda x: np.argmax(nmcts.getActionProb(x, temp=0)), self.game)
             pwins, nwins, draws = arena.playGames(self.args.arenaCompare)
 
-            log.info('NEW/PREV WINS : %d / %d ; DRAWS : %d' % (nwins, pwins, draws))
+            log.info('NEW/PREV WINS: {}/{} ; DRAWS: {} --- Update Threshold: {}'.format(nwins, pwins, draws, self.args.updateThreshold))
             if pwins + nwins == 0 or float(nwins) / (pwins + nwins) < self.args.updateThreshold:
                 log.info('REJECTING NEW MODEL')
                 self.nnet.load_checkpoint(rel_folder=self.args.checkpoint, filename='temp.pth.tar')
