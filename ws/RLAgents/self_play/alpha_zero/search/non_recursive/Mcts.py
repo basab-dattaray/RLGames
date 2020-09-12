@@ -57,9 +57,6 @@ class Mcts():
 
         selected_node = self.root_node.fn_select_from_available_leaf_nodes()
 
-        # if selected_node is None:
-        #     return None
-
         if selected_node.fn_is_already_visited():
             selected_node = selected_node.fn_expand_node()
             if selected_node is None:
@@ -85,9 +82,6 @@ class Mcts():
 
         counts = self.__fn_get_counts()
 
-        # stochastic = True
-        #
-        # if stochastic:
         sum_counts = numpy.sum(counts)
         if sum_counts == 0:
             return None
@@ -96,12 +90,6 @@ class Mcts():
         probs = [0] * len(counts)
         probs[best_action] = 1
         return probs
-        # else:
-        #     best_actions = numpy.array(numpy.argwhere(counts == numpy.max(counts))).flatten()
-        #     the_best_action = numpy.random.choice(best_actions)
-        #     probs = [0] * len(counts)
-        #     probs[the_best_action] = 1
-        #     return probs
 
     def fn_get_action_probabilities(self, state, temp=1):
         self.state_cache = StateCache(self, state)

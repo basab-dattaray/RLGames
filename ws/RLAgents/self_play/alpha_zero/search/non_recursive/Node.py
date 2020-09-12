@@ -3,6 +3,7 @@ import uuid
 import numpy
 
 from ws.RLAgents.self_play.alpha_zero.search.non_recursive.Rollout import Rollout
+from ws.RLUtils.debugging_aids.OthelloBoardValuator import OthelloBoardValuator
 
 
 class Node(object):
@@ -87,6 +88,10 @@ class Node(object):
     def fn_rollout(self,multirun= True):
         state = self.state
 
+        debug_board_evaluator = None
+        if Node.DEBUG_FLAG:
+            debug_board_evaluator = OthelloBoardValuator()
+
         rollout_impl = Rollout(self.ref_mcts.fn_predict_action_probablities)
 
         # is_terminal_state = False
@@ -112,11 +117,11 @@ class Node(object):
                     )
 
                     if Node.DEBUG_FLAG:
-                        new_state_id = id(new_state)
-                        if new_state_id not in self.__states:
-                            self.__states.add(new_state_id)
+                        new_state_val = debug_board_evaluator.fn_get_value(new_state) # id(new_state)
+                        if new_state_val not in self.__states:
+                            self.__states.add(new_state_val)
                         else:
-                            print(new_state_id)
+                            print(new_state_val)
                             print(new_state)
 
 
