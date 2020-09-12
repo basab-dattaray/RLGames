@@ -100,7 +100,7 @@ class Mcts():
             self.__fn_execute_monte_carlo_tree_search(state)
 
         counts = self.__fn_get_counts()
-        if temp == 0:
+        if temp == 0 or True:
             bestAs = numpy.array(numpy.argwhere(counts == numpy.max(counts))).flatten()
             bestA = numpy.random.choice(bestAs)
             probs = [0] * len(counts)

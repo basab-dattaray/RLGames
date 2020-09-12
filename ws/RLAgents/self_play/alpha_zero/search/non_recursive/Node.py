@@ -7,7 +7,7 @@ from ws.RLUtils.debugging_aids.OthelloBoardValuator import OthelloBoardValuator
 
 
 class Node(object):
-    DEBUG_FLAG = True
+    DEBUG_FLAG = False
 
     def __init__(self,
         ref_mcts,
@@ -85,7 +85,7 @@ class Node(object):
     def __fn_get_parent_node(self):
         return self.parent
 
-    def fn_rollout(self,multirun= True):
+    def fn_rollout(self, multirun= False):
         state = self.state
 
         debug_board_evaluator = None

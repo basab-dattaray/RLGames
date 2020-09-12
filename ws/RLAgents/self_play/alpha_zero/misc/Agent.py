@@ -62,7 +62,7 @@ class Agent():
             self.log.info("Loading 'trainExamples' from file...")
             c.loadTrainExamples()
 
-        self.log.info('Starting the learning process 🎉')
+        self.log.info('Starting the learning process ')
         c.learn()
         return self
 

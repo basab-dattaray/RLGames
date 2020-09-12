@@ -21,7 +21,7 @@ class Coach():
     in Game and NeuralNet. args are specified in demo_train.py.
     """
 
-    DEBUG_FLAG = True
+    DEBUG_FLAG = False
 
     def __init__(self, game, nnet, args):
         self.game = game
@@ -68,8 +68,6 @@ class Coach():
 
             action = np.random.choice(len(pi), p=pi)
             board_next, player_next = self.game.getNextState(board_this, self.curPlayer, action)
-
-
 
             if Coach.DEBUG_FLAG:
                 print()
