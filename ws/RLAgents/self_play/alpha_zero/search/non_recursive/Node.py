@@ -6,6 +6,8 @@ from ws.RLAgents.self_play.alpha_zero.search.non_recursive.Rollout import Rollou
 
 
 class Node(object):
+    DEBUG_FLAG = True
+
     def __init__(self,
         ref_mcts,
         num_edges,
@@ -14,9 +16,10 @@ class Node(object):
         val=0.0,
         parent_node=None,
         parent_action=-1,
-        state= None
+        state= None,
 
      ):
+        self.__states = set()
         self.opponent_factor = -1
         self.ref_mcts = ref_mcts
         self.num_edges = num_edges
@@ -107,6 +110,15 @@ class Node(object):
                     opponent_val, action_probs, is_terminal_state = rollout_impl.fn_get_rollout_value(
                         self.ref_mcts.fn_terminal_state_status, new_state
                     )
+
+                    if Node.DEBUG_FLAG:
+                        new_state_id = id(new_state)
+                        if new_state_id not in self.__states:
+                            self.__states.add(new_state_id)
+                        else:
+                            print(new_state_id)
+                            print(new_state)
+
 
                     state = new_state
 
