@@ -60,11 +60,14 @@ class Arena():
                 # log.debug(f'valids = {valids}')
                 # assert valids[action] > 0
             board, curPlayer = self.game.getNextState(board, curPlayer, action)
+
+        game_status = self.game.getGameEnded(board, curPlayer)
         if verbose:
             assert self.display
-            print("Game over: Turn ", str(it), "Result ", str(self.game.getGameEnded(board, 1)))
+            print("Game over: Turn ", str(it), "Result ", str(game_status))
             self.display(board)
-        result = curPlayer * self.game.getGameEnded(board, curPlayer)
+
+        result = curPlayer * game_status
         #! print(f'Game number={self.game_num}; curPlayer={curPlayer}; result={result}')
         self.game_num += 1
         return result

@@ -80,7 +80,7 @@ class Coach():
 
             r = self.game.getGameEnded(board_this, self.curPlayer)
 
-            if r != 0:
+            if r != 0 or player_next is None:
                 # return [(x[0], x[2], r * ((-1) ** (x[1] != self.curPlayer))) for x in trainExamples]
                 return self.fn_form_sample_data(self.curPlayer, r, trainExamples)
 
