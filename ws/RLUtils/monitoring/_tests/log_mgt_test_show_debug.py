@@ -1,6 +1,6 @@
 import os
 
-from colorama import Fore, Back
+from pip._vendor.colorama import Fore, Back
 
 from ws.RLUtils.monitoring.tracing.log_mgt import log_mgr
 

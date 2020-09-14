@@ -1,6 +1,6 @@
 import os
 
-from ws.RLUtils.monitoring.recording.log_mgt import log_mgr
+from ws.RLUtils.monitoring.tracing.log_mgt import log_mgr
 
 if __name__ == '__main__':
     cwd = os.path.curdir

@@ -15,6 +15,8 @@ from ws.RLEnvironments.self_play_games.othello.OthelloGame import OthelloGame as
 from ws.RLAgents.self_play.alpha_zero.train.NeuralNetWrapper import NeuralNetWrapper
 from ws.RLUtils.common.AppInfo import AppInfo
 from ws.RLUtils.decorators.breadcrumbs import encapsulate
+from ws.RLUtils.monitoring.tracing.log_mgt import log_mgr
+
 
 class Agent():
     @classmethod
@@ -27,7 +29,9 @@ class Agent():
         self.args.demo_folder, self.args.demo_name = AppInfo.fn_get_path_and_app_name(file_path)
         self.args.mcts_recursive = AppInfo.fn_arg_as_bool(self.args, 'mcts_recursive')
         self.game = OthelloGame(self.args.board_size)
-        # self.mcts_frame =
+        current_dir = file_path.rsplit('/', 1)[0]
+        archive_dir = current_dir.replace('/Demos/', '/Archive/')
+        self.args.fn_record = log_mgr(log_dir=archive_dir)
 
     def exit_gracefully(self, signum, frame):
         #
