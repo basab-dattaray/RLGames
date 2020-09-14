@@ -3,20 +3,18 @@ import signal
 
 import numpy
 
-from ws.Demos.Demo010_self_play__alpha_zero.othello.demo_5.mini_with_recursive_mcts.ARGS import args
 from ws.RLAgents.self_play.alpha_zero.play.Arena import Arena
 from ws.RLAgents.self_play.alpha_zero.play.GreedyPlayer import GreedyPlayer
 from ws.RLAgents.self_play.alpha_zero.play.HumanPlayer import HumanPlayer
 from ws.RLAgents.self_play.alpha_zero.play.RandomPlayer import RandomPlayer
 from ws.RLAgents.self_play.alpha_zero.search.MctsSelector import MctsSelector
-from ws.RLAgents.self_play.alpha_zero.search.recursive.MCTS import MCTS
+
 from ws.RLAgents.self_play.alpha_zero.train.Coach import Coach
 from ws.RLEnvironments.self_play_games.othello.OthelloGame import OthelloGame as Game, OthelloGame
 from ws.RLAgents.self_play.alpha_zero.train.NeuralNetWrapper import NeuralNetWrapper
 from ws.RLUtils.common.AppInfo import AppInfo
 from ws.RLUtils.decorators.breadcrumbs import encapsulate
 from ws.RLUtils.monitoring.tracing.log_mgt import log_mgr
-
 
 class Agent():
     @classmethod
@@ -31,7 +29,7 @@ class Agent():
         self.game = OthelloGame(self.args.board_size)
         current_dir = file_path.rsplit('/', 1)[0]
         archive_dir = current_dir.replace('/Demos/', '/Archive/')
-        self.args.fn_record = log_mgr(log_dir=archive_dir)
+        self.args.fn_record = log_mgr(log_dir=archive_dir, fixed_log_file=False)
 
     def exit_gracefully(self, signum, frame):
         #
@@ -48,25 +46,25 @@ class Agent():
     @encapsulate
     def fn_train(self):
         signal.signal(signal.SIGINT, self.exit_gracefully)
-        self.log.info('Loading %s...', Game.__name__)
+        self.args.fn_record('Loading %s...', Game.__name__)
 
-        self.log.info('Loading %s...', NeuralNetWrapper.__name__)
+        self.args.fn_record('Loading %s...', NeuralNetWrapper.__name__)
         nnet = NeuralNetWrapper(self.args, self.game)
 
         if self.args.load_model:
-            self.log.info('Loading checkpoint "%s/%s"...', self.args.load_folder_file)
+            self.args.fn_record('Loading checkpoint "%s/%s"...', self.args.load_folder_file)
             nnet.load_checkpoint(self.args.load_folder_file[0], self.args.load_folder_file[1])
         else:
             self.log.warning('Not loading a checkpoint!')
 
-        self.log.info('Loading the Coach...')
+        self.args.fn_record('Loading the Coach...')
         c = Coach(self.game, nnet, self.args)
 
         if self.args.load_model:
-            self.log.info("Loading 'trainExamples' from file...")
+            self.args.fn_record("Loading 'trainExamples' from file...")
             c.loadTrainExamples()
 
-        self.log.info('Starting the learning process ')
+        self.args.fn_record('Starting the learning process ')
         c.learn()
         return self
 
@@ -97,19 +95,23 @@ class Agent():
         fn_system_policy = lambda x: numpy.argmax(system_mcts.getActionProb(x, temp=0))
         fn_contender_policy = fn_player_policy(self.game)
         arena = Arena(fn_system_policy, fn_contender_policy, self.game, display=OthelloGame.display)
-        print(arena.playGames(num_of_test_games, verbose=verbose))
+        self.args.fn_record(arena.playGames(num_of_test_games, verbose=verbose))
 
     @encapsulate
     def fn_change_args(self, args):
+        self.args.fn_record()
+        self.args.fn_record('fn_change_args')
         if args is not None:
             for k,v in args.items():
                 self.args[k] = v
-                print(f'args[{k}] = {v}')
+                self.args.fn_record(f'  args[{k}] = {v}')
         return self
 
     @encapsulate
     def fn_show_args(self):
+        self.args.fn_record()
+        self.args.fn_record('fn_show_args')
         for k,v in self.args.items():
-            print(f'args[{k}] = {v}')
+            self.args.fn_record(f'  args[{k}] = {v}')
 
         return self
