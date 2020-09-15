@@ -1,3 +1,4 @@
+import inspect
 import logging
 import signal
 # import timeit
@@ -20,19 +21,28 @@ from ws.RLUtils.monitoring.tracing.log_mgt import log_mgr
 
 class Agent():
     @classmethod
-    def fn_init(cls, args, file_path):
-        return Agent(args, file_path)
 
-    def __init__(self, args, file_path):
+    def fn_init(cls, args, file_path):
+        current_dir = file_path.rsplit('/', 1)[0]
+        archive_dir = current_dir.replace('/Demos/', '/Archive/')
+        my_logger = log_mgr(log_dir=archive_dir, fixed_log_file=False)
+
+        return Agent(args, file_path, my_logger)
+
+    def __init__(self, args, file_path, my_logger):
         self.log = logging.getLogger(__name__)
         self.args = args
         self.args.demo_folder, self.args.demo_name = AppInfo.fn_get_path_and_app_name(file_path)
         self.args.mcts_recursive = AppInfo.fn_arg_as_bool(self.args, 'mcts_recursive')
         self.game = OthelloGame(self.args.board_size)
-        current_dir = file_path.rsplit('/', 1)[0]
-        archive_dir = current_dir.replace('/Demos/', '/Archive/')
-        self.args.fn_record = log_mgr(log_dir=archive_dir, fixed_log_file=False)
+
+        self.args.fn_record = my_logger
         self.start_time = time()
+
+    def fn_record_func_title(self):
+        fn_name = inspect.stack()[1][3]
+        self.args.fn_record()
+        self.args.fn_record(f'<<<<<< {fn_name} >>>>>>')
 
     def exit_gracefully(self, signum, frame):
         #
@@ -46,8 +56,9 @@ class Agent():
         # self.services.fn_record(f'Total Time Taken = {time() - self.start_time} seconds')
         exit()
 
-    @encapsulate
     def fn_train(self):
+        self.fn_record_func_title()
+
         signal.signal(signal.SIGINT, self.exit_gracefully)
         self.args.fn_record('Loading %s...', Game.__name__)
 
@@ -71,20 +82,24 @@ class Agent():
         c.learn()
         return self
 
-    @encapsulate
     def fn_test_against_human(self):
+        self.fn_record_func_title()
+
         fn_human_player_policy = lambda g: HumanPlayer(g).play
         self.fn_test(fn_human_player_policy, verbose= True)
         return self
 
-    @encapsulate
+
     def fn_test_againt_random(self):
+        self.fn_record_func_title()
+
         fn_random_player_policy = lambda g: RandomPlayer(g).play
         self.fn_test(fn_random_player_policy, num_of_test_games= self.args.num_of_test_games)
         return self
 
-    @encapsulate
     def fn_test_against_greedy(self):
+        self.fn_record_func_title()
+
         fn_random_player_policy = lambda g: GreedyPlayer(g).play
         self.fn_test(fn_random_player_policy, num_of_test_games= self.args.num_of_test_games)
         return self
@@ -101,8 +116,9 @@ class Agent():
         pwins, nwins, draws = arena.playGames(self.args.arenaCompare, verbose=verbose)
         self.args.fn_record(f'pwins:{pwins} nwins:{nwins} draws:{draws}')
 
-    @encapsulate
     def fn_change_args(self, args):
+        self.fn_record_func_title()
+
         self.args.fn_record()
         self.args.fn_record('fn_change_args')
         if args is not None:
@@ -111,8 +127,9 @@ class Agent():
                 self.args.fn_record(f'  args[{k}] = {v}')
         return self
 
-    @encapsulate
     def fn_show_args(self):
+        self.fn_record_func_title()
+
         self.args.fn_record()
         self.args.fn_record('fn_show_args')
         for k,v in self.args.items():
@@ -120,8 +137,9 @@ class Agent():
 
         return self
 
-    @encapsulate
     def fn_measure_time_elapsed(self):
+        self.fn_record_func_title()
+
         self.args.fn_record()
         end_time = time()
         time_diff = int(end_time - self.start_time)
