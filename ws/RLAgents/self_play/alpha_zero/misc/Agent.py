@@ -1,5 +1,7 @@
 import logging
 import signal
+# import timeit
+from time import time
 
 import numpy
 
@@ -30,6 +32,7 @@ class Agent():
         current_dir = file_path.rsplit('/', 1)[0]
         archive_dir = current_dir.replace('/Demos/', '/Archive/')
         self.args.fn_record = log_mgr(log_dir=archive_dir, fixed_log_file=False)
+        self.start_time = time()
 
     def exit_gracefully(self, signum, frame):
         #
@@ -95,7 +98,8 @@ class Agent():
         fn_system_policy = lambda x: numpy.argmax(system_mcts.getActionProb(x, temp=0))
         fn_contender_policy = fn_player_policy(self.game)
         arena = Arena(fn_system_policy, fn_contender_policy, self.game, display=OthelloGame.display)
-        self.args.fn_record(arena.playGames(num_of_test_games, verbose=verbose))
+        pwins, nwins, draws = arena.playGames(self.args.arenaCompare, verbose=verbose)
+        self.args.fn_record(f'pwins:{pwins} nwins:{nwins} draws:{draws}')
 
     @encapsulate
     def fn_change_args(self, args):
@@ -114,4 +118,12 @@ class Agent():
         for k,v in self.args.items():
             self.args.fn_record(f'  args[{k}] = {v}')
 
+        return self
+
+    @encapsulate
+    def fn_measure_time_elapsed(self):
+        self.args.fn_record()
+        end_time = time()
+        time_diff = int(end_time - self.start_time)
+        self.args.fn_record(f'Time elapsed: {time_diff} seconds')
         return self
