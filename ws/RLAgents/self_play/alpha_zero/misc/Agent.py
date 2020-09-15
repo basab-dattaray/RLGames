@@ -17,6 +17,7 @@ from ws.RLEnvironments.self_play_games.othello.OthelloGame import OthelloGame as
 from ws.RLAgents.self_play.alpha_zero.train.NeuralNetWrapper import NeuralNetWrapper
 from ws.RLUtils.common.AppInfo import AppInfo
 from ws.RLUtils.decorators.breadcrumbs import encapsulate
+from ws.RLUtils.monitoring.inspections.Recorder import Recorder
 from ws.RLUtils.monitoring.tracing.log_mgt import log_mgr
 
 class Agent():
@@ -38,11 +39,12 @@ class Agent():
 
         self.args.fn_record = my_logger
         self.start_time = time()
+        self.recorder = Recorder(self.args.fn_record)
 
-    def fn_record_func_title(self):
-        fn_name = inspect.stack()[1][3]
-        self.args.fn_record()
-        self.args.fn_record(f'<<<<<< {fn_name} >>>>>>')
+    # def fn_record_func_title(self):
+    #     fn_name = inspect.stack()[1][3]
+    #     self.args.fn_record()
+    #     self.args.fn_record(f'<<<<<< {fn_name} >>>>>>')
 
     def exit_gracefully(self, signum, frame):
         #
@@ -57,7 +59,7 @@ class Agent():
         exit()
 
     def fn_train(self):
-        self.fn_record_func_title()
+        self.recorder.fn_record_func_title(inspect.stack()[0][3])
 
         signal.signal(signal.SIGINT, self.exit_gracefully)
         self.args.fn_record('Loading %s...', Game.__name__)
@@ -83,7 +85,7 @@ class Agent():
         return self
 
     def fn_test_against_human(self):
-        self.fn_record_func_title()
+        self.recorder.fn_record_func_title(inspect.stack()[0][3])
 
         fn_human_player_policy = lambda g: HumanPlayer(g).play
         self.fn_test(fn_human_player_policy, verbose= True)
@@ -91,14 +93,14 @@ class Agent():
 
 
     def fn_test_againt_random(self):
-        self.fn_record_func_title()
+        self.recorder.fn_record_func_title(inspect.stack()[0][3])
 
         fn_random_player_policy = lambda g: RandomPlayer(g).play
         self.fn_test(fn_random_player_policy, num_of_test_games= self.args.num_of_test_games)
         return self
 
     def fn_test_against_greedy(self):
-        self.fn_record_func_title()
+        self.recorder.fn_record_func_title(inspect.stack()[0][3])
 
         fn_random_player_policy = lambda g: GreedyPlayer(g).play
         self.fn_test(fn_random_player_policy, num_of_test_games= self.args.num_of_test_games)
@@ -117,7 +119,7 @@ class Agent():
         self.args.fn_record(f'pwins:{pwins} nwins:{nwins} draws:{draws}')
 
     def fn_change_args(self, args):
-        self.fn_record_func_title()
+        self.recorder.fn_record_func_title(inspect.stack()[0][3])
 
         self.args.fn_record()
         self.args.fn_record('fn_change_args')
@@ -128,7 +130,7 @@ class Agent():
         return self
 
     def fn_show_args(self):
-        self.fn_record_func_title()
+        self.recorder.fn_record_func_title(inspect.stack()[0][3])
 
         self.args.fn_record()
         self.args.fn_record('fn_show_args')
@@ -138,7 +140,7 @@ class Agent():
         return self
 
     def fn_measure_time_elapsed(self):
-        self.fn_record_func_title()
+        self.recorder.fn_record_func_title(inspect.stack()[0][3])
 
         self.args.fn_record()
         end_time = time()
