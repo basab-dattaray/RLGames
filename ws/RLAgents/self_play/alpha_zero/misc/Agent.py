@@ -41,11 +41,6 @@ class Agent():
         self.start_time = time()
         self.recorder = Recorder(self.args.fn_record)
 
-    # def fn_record_func_title(self):
-    #     fn_name = inspect.stack()[1][3]
-    #     self.args.fn_record()
-    #     self.args.fn_record(f'<<<<<< {fn_name} >>>>>>')
-
     def exit_gracefully(self, signum, frame):
         #
         # if self.services.chart is not None:
@@ -121,8 +116,6 @@ class Agent():
     def fn_change_args(self, args):
         self.recorder.fn_record_func_title(inspect.stack()[0][3])
 
-        self.args.fn_record()
-        self.args.fn_record('fn_change_args')
         if args is not None:
             for k,v in args.items():
                 self.args[k] = v
@@ -132,8 +125,6 @@ class Agent():
     def fn_show_args(self):
         self.recorder.fn_record_func_title(inspect.stack()[0][3])
 
-        self.args.fn_record()
-        self.args.fn_record('fn_show_args')
         for k,v in self.args.items():
             self.args.fn_record(f'  args[{k}] = {v}')
 
@@ -141,8 +132,6 @@ class Agent():
 
     def fn_measure_time_elapsed(self):
         self.recorder.fn_record_func_title(inspect.stack()[0][3])
-
-        self.args.fn_record()
         end_time = time()
         time_diff = int(end_time - self.start_time)
         self.args.fn_record(f'Time elapsed: {time_diff} seconds')
