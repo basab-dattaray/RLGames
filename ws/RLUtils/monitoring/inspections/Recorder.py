@@ -13,3 +13,8 @@ class Recorder():
     def fn_record_func_title_end(self):
         self.fn_record()
         self.indent -= 2
+
+    def fn_record_message(self, message):
+        self.fn_record()
+        prefix = (self.indent + 2) * ' '
+        self.fn_record(f'{prefix}{message}')
