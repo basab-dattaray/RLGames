@@ -118,9 +118,9 @@ class Agent():
         fn_system_policy = lambda x: numpy.argmax(system_mcts.getActionProb(x, temp=0))
         fn_contender_policy = fn_player_policy(self.game)
         arena = Arena(fn_system_policy, fn_contender_policy, self.game, display=OthelloGame.display)
-        pwins, nwins, draws = arena.playGames(self.args.num_of_test_games, verbose=verbose)
+        system_wins, system_losses, draws = arena.playGames(self.args.num_of_test_games, verbose=verbose)
         # self.args.fn_record(f'pwins:{pwins} nwins:{nwins} draws:{draws}')
-        self.args.recorder.fn_record_message(f'pwins:{pwins} nwins:{nwins} draws:{draws}', indent=1)
+        self.args.recorder.fn_record_message(f'wins:{system_wins} losses:{system_losses} draws:{draws}', indent=1)
 
     def fn_change_args(self, args):
         self.args.recorder.fn_record_func_title_begin(inspect.stack()[0][3])

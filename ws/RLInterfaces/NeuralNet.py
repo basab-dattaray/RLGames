@@ -11,7 +11,7 @@ class NeuralNet():
     def __init__(self, game):
         pass
 
-    def F(self, examples):
+    def fn_adjust_model_from_examples(self, examples):
         """
         This function trains the neural network with examples obtained from
         self-play.

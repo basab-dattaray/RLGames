@@ -15,6 +15,6 @@ class Recorder():
     def fn_record_func_title_end(self):
         self.indent_count -= Recorder.indent_size
 
-    def fn_record_message(self, message, indent=1):
+    def fn_record_message(self, message='', indent=1):
         prefix = (self.indent_count + indent * self.indent_size) * ' '
         self.fn_record(f'{prefix}{message}')

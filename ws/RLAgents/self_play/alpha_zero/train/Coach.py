@@ -103,66 +103,84 @@ class Coach():
         only if it wins >= updateThreshold fraction of games.
         """
 
-        for i in range(1, self.args.numIters + 1):
-            # bookkeeping
-            # self.args.fn_record(f'    Generate Samples: Iter {i} of {self.args.numIters} ')
-            self.args.recorder.fn_record_message(f'Generate Samples: Iter {i} of {self.args.numIters}', indent=3)
-
-            # examples of the iteration
-            if not self.skipFirstSelfPlay or i > 1:
-                iterationTrainExamples = deque([], maxlen=self.args.maxlenOfQueue)
-
-                for episode_num in range(1, self.args.numEps + 1):
-                    # self.args.fn_record(f'     Episode {i} of {self.args.numEps}')
-                    self.args.recorder.fn_record_message(f'Episode {episode_num} of {self.args.numEps}',
-                                                         indent=4)
-
-                    self.mcts = MctsSelector(self.game, self.nnet, self.args)  # reset search tree
-                    episode_result = self.executeEpisode()
-                    if episode_result is not None:
-                        iterationTrainExamples += episode_result
-
-                # save the iteration examples to the history
-                self.trainExamplesHistory.append(iterationTrainExamples)
-
-            if len(self.trainExamplesHistory) > self.args.numItersForTrainExamplesHistory:
-                log.warning(
-                    f"Removing the oldest entry in trainExamples. len(trainExamplesHistory) = {len(self.trainExamplesHistory)}")
-                self.trainExamplesHistory.pop(0)
-            # backup history to a file
-            # NB! the examples were collected using the model from the previous iteration, so (i-1)
-            self.saveTrainExamples(i - 1)
-
-            # shuffle examples before training
-            trainExamples = []
-            for e in self.trainExamplesHistory:
-                trainExamples.extend(e)
-            shuffle(trainExamples)
-
-            # training new network, keeping a copy of the old one
-            self.nnet.save_checkpoint(rel_folder=self.args.checkpoint, filename='temp.pth.tar')
-            self.pnet.load_checkpoint(rel_folder=self.args.checkpoint, filename='temp.pth.tar')
-            pmcts = MctsSelector(self.game, self.pnet, self.args)
-
-            self.nnet.fn_model_from_examples(trainExamples)
-
-            nmcts = MctsSelector(self.game, self.nnet, self.args)
-
-            self.args.fn_record('PITTING AGAINST PREVIOUS VERSION')
-            arena = Arena(lambda x: np.argmax(pmcts.getActionProb(x, temp=0)),
-                          lambda x: np.argmax(nmcts.getActionProb(x, temp=0)), self.game)
-            pwins, nwins, draws = arena.playGames(self.args.arenaCompare)
-
-            self.args.fn_record('NEW/PREV WINS: {}/{} ; DRAWS: {} --- Update Threshold: {}'.format(nwins, pwins, draws, self.args.updateThreshold))
-            if pwins + nwins == 0 or float(nwins) / (pwins + nwins) < self.args.updateThreshold:
-                self.args.fn_record('REJECTING NEW MODEL')
-                self.nnet.load_checkpoint(rel_folder=self.args.checkpoint, filename='temp.pth.tar')
-            else:
-                self.args.fn_record('ACCEPTING NEW MODEL')
-                self.nnet.save_checkpoint(rel_folder=self.args.checkpoint, filename=self.getCheckpointFile(i))
-                self.nnet.save_checkpoint(rel_folder=self.args.checkpoint, filename='best.pth.tar')
+        for iteration in range(1, self.args.numIters + 1):
+            self.fn_run_iteration(iteration)
 
         self.args.recorder.fn_record_func_title_end()
+
+    def fn_run_iteration(self, iteration):
+        self.args.recorder.fn_record_func_title_begin(inspect.stack()[0][3])
+
+        self.args.recorder.fn_record_message(f'-- Iter {iteration} of {self.args.numIters}',
+                                             indent=0)
+        # bookkeeping
+        trainExamples = self.fn_generate_samples(iteration)
+        # training new network, keeping a copy of the old one
+        self.nnet.save_checkpoint(rel_folder=self.args.checkpoint, filename='temp.pth.tar')
+        self.pnet.load_checkpoint(rel_folder=self.args.checkpoint, filename='temp.pth.tar')
+        pmcts = MctsSelector(self.game, self.pnet, self.args)
+
+        self.nnet.fn_adjust_model_from_examples(trainExamples)
+
+        nmcts = MctsSelector(self.game, self.nnet, self.args)
+
+        self.args.recorder.fn_record_message()
+        self.args.recorder.fn_record_message(f'* Comptete with Previous Version', indent=0)
+
+        arena = Arena(lambda x: np.argmax(pmcts.getActionProb(x, temp=0)),
+                      lambda x: np.argmax(nmcts.getActionProb(x, temp=0)), self.game)
+        pwins, nwins, draws = arena.playGames(self.args.arenaCompare)
+        # self.args.recorder.fn_record_message(f'pwins:{pwins} nwins:{nwins} draws:{draws}          Update Threshold: {self.args.updateThreshold}')
+        update_threshold = 'update threshold: {}'.format(self.args.updateThreshold)
+        self.args.recorder.fn_record_message(update_threshold)
+
+        score = f'nwins:{nwins} pwins:{pwins} draws:{draws}'
+        self.args.recorder.fn_record_message(score)
+
+        if pwins + nwins == 0 or float(nwins) / (pwins + nwins) < self.args.updateThreshold:
+            # self.args.fn_record('REJECTING NEW MODEL')
+            self.args.recorder.fn_record_message('REJECTED New Model')
+            self.nnet.load_checkpoint(rel_folder=self.args.checkpoint, filename='temp.pth.tar')
+        else:
+            # self.args.fn_record('ACCEPTING NEW MODEL')
+            self.args.recorder.fn_record_message('ACCEPTED New Model')
+            self.nnet.save_checkpoint(rel_folder=self.args.checkpoint, filename=self.getCheckpointFile(iteration))
+            self.nnet.save_checkpoint(rel_folder=self.args.checkpoint, filename='best.pth.tar')
+
+        self.args.recorder.fn_record_func_title_end()
+
+    def fn_generate_samples(self, iteration):
+        self.args.recorder.fn_record_func_title_begin(inspect.stack()[0][3])
+
+        # examples of the iteration
+        if not self.skipFirstSelfPlay or iteration > 1:
+            iterationTrainExamples = deque([], maxlen=self.args.maxlenOfQueue)
+
+            for episode_num in range(1, self.args.numEps + 1):
+                self.args.recorder.fn_record_message(f'Episode {episode_num} of {self.args.numEps}')
+
+                self.mcts = MctsSelector(self.game, self.nnet, self.args)  # reset search tree
+                episode_result = self.executeEpisode()
+                if episode_result is not None:
+                    iterationTrainExamples += episode_result
+
+            # save the iteration examples to the history
+            self.trainExamplesHistory.append(iterationTrainExamples)
+        if len(self.trainExamplesHistory) > self.args.numItersForTrainExamplesHistory:
+            log.warning(
+                f"Removing the oldest entry in trainExamples. len(trainExamplesHistory) = {len(self.trainExamplesHistory)}")
+            self.trainExamplesHistory.pop(0)
+        # backup history to a file
+        # NB! the examples were collected using the model from the previous iteration, so (iteration-1)
+        self.saveTrainExamples(iteration - 1)
+        # shuffle examples before training
+        trainExamples = []
+        for e in self.trainExamplesHistory:
+            trainExamples.extend(e)
+        shuffle(trainExamples)
+
+        self.args.recorder.fn_record_func_title_end()
+        return trainExamples
 
     def getCheckpointFile(self, iteration):
         return 'checkpoint_' + str(iteration) + '.pth.tar'

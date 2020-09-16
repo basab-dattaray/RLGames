@@ -37,15 +37,15 @@ class NeuralNetWrapper(NeuralNet):
         if nnet_params.cuda:
             self.nnet.cuda()
 
-    def fn_model_from_examples(self, examples):
+    def fn_adjust_model_from_examples(self, examples):
         self.args.recorder.fn_record_func_title_begin(inspect.stack()[0][3])
         """
         examples: list of examples, each example is of form (board, pi, v)
         """
         optimizer = optim.Adam(self.nnet.parameters())
-        self.args.fn_record('    Start Training')
         for epoch in range(self.args.epochs):
-            self.args.fn_record(f'     Epoch {epoch + 1} of {self.args.epochs}')
+            self.args.recorder.fn_record_message(f'Epoch {epoch + 1} of {self.args.epochs}')
+
             self.nnet.train()
             pi_losses = AverageMeter()
             v_losses = AverageMeter()
