@@ -16,8 +16,7 @@ from ws.RLAgents.self_play.alpha_zero.train.Coach import Coach
 from ws.RLEnvironments.self_play_games.othello.OthelloGame import OthelloGame as Game, OthelloGame
 from ws.RLAgents.self_play.alpha_zero.train.NeuralNetWrapper import NeuralNetWrapper
 from ws.RLUtils.common.AppInfo import AppInfo
-from ws.RLUtils.decorators.breadcrumbs import encapsulate
-from ws.RLUtils.monitoring.inspections.Recorder import Recorder
+from ws.RLUtils.monitoring.tracing.Recorder import Recorder
 from ws.RLUtils.monitoring.tracing.log_mgt import log_mgr
 
 class Agent():
@@ -58,9 +57,9 @@ class Agent():
         self.args.recorder.fn_record_func_title_begin(inspect.stack()[0][3])
 
         signal.signal(signal.SIGINT, self.exit_gracefully)
-        self.args.fn_record('Loading %s...', Game.__name__)
+        # self.args.fn_record('Loading %s...', Game.__name__)
 
-        self.args.fn_record('Loading %s...', NeuralNetWrapper.__name__)
+        # self.args.fn_record('Loading %s...', NeuralNetWrapper.__name__)
         nnet = NeuralNetWrapper(self.args, self.game)
 
         if self.args.load_model:
@@ -69,15 +68,15 @@ class Agent():
         else:
             self.log.warning('Not loading a checkpoint!')
 
-        self.args.fn_record('  Loading the Coach...')
+        # self.args.fn_record('  Loading the Coach...')
         c = Coach(self.game, nnet, self.args)
 
         if self.args.load_model:
-            self.args.fn_record("  Loading 'trainExamples' from file...")
+            # self.args.fn_record("  Loading 'trainExamples' from file...")
             c.loadTrainExamples()
 
         # self.args.fn_record('  Starting the learning process ')
-        c.learn()
+        c.fn_learn()
 
         self.args.recorder.fn_record_func_title_end()
         return self
@@ -120,7 +119,8 @@ class Agent():
         fn_contender_policy = fn_player_policy(self.game)
         arena = Arena(fn_system_policy, fn_contender_policy, self.game, display=OthelloGame.display)
         pwins, nwins, draws = arena.playGames(self.args.num_of_test_games, verbose=verbose)
-        self.args.fn_record(f'pwins:{pwins} nwins:{nwins} draws:{draws}')
+        # self.args.fn_record(f'pwins:{pwins} nwins:{nwins} draws:{draws}')
+        self.args.recorder.fn_record_message(f'pwins:{pwins} nwins:{nwins} draws:{draws}', indent=1)
 
     def fn_change_args(self, args):
         self.args.recorder.fn_record_func_title_begin(inspect.stack()[0][3])
@@ -128,7 +128,8 @@ class Agent():
         if args is not None:
             for k,v in args.items():
                 self.args[k] = v
-                self.args.fn_record(f'  args[{k}] = {v}')
+                # self.args.fn_record(f'  args[{k}] = {v}')
+                self.args.recorder.fn_record_message(f'  args[{k}] = {v}', indent=1)
 
         self.args.recorder.fn_record_func_title_end()
         return self
@@ -137,7 +138,8 @@ class Agent():
         self.args.recorder.fn_record_func_title_begin(inspect.stack()[0][3])
 
         for k,v in self.args.items():
-            self.args.fn_record(f'  args[{k}] = {v}')
+            # self.args.fn_record(f'  args[{k}] = {v}')
+            self.args.recorder.fn_record_message(f'  args[{k}] = {v}', indent=1)
 
         self.args.recorder.fn_record_func_title_end()
         return self
@@ -147,7 +149,7 @@ class Agent():
 
         end_time = time()
         time_diff = int(end_time - self.start_time)
-        self.args.fn_record(f'Time elapsed: {time_diff} seconds')
+        self.args.recorder.fn_record_message(f'Time elapsed: {time_diff} seconds', indent=1)
 
         self.args.recorder.fn_record_func_title_end()
         return self
