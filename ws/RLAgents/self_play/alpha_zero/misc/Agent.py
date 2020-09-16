@@ -54,7 +54,7 @@ class Agent():
         exit()
 
     def fn_train(self):
-        self.recorder.fn_record_func_title(inspect.stack()[0][3])
+        self.recorder.fn_record_func_title_begin(inspect.stack()[0][3])
 
         signal.signal(signal.SIGINT, self.exit_gracefully)
         self.args.fn_record('Loading %s...', Game.__name__)
@@ -68,19 +68,21 @@ class Agent():
         else:
             self.log.warning('Not loading a checkpoint!')
 
-        self.args.fn_record('Loading the Coach...')
+        self.args.fn_record('  Loading the Coach...')
         c = Coach(self.game, nnet, self.args)
 
         if self.args.load_model:
-            self.args.fn_record("Loading 'trainExamples' from file...")
+            self.args.fn_record("  Loading 'trainExamples' from file...")
             c.loadTrainExamples()
 
-        self.args.fn_record('Starting the learning process ')
+        # self.args.fn_record('  Starting the learning process ')
         c.learn()
+
+        self.recorder.fn_record_func_title_end()
         return self
 
     def fn_test_against_human(self):
-        self.recorder.fn_record_func_title(inspect.stack()[0][3])
+        self.recorder.fn_record_func_title_begin(inspect.stack()[0][3])
 
         fn_human_player_policy = lambda g: HumanPlayer(g).play
         self.fn_test(fn_human_player_policy, verbose= True)
@@ -88,14 +90,14 @@ class Agent():
 
 
     def fn_test_againt_random(self):
-        self.recorder.fn_record_func_title(inspect.stack()[0][3])
+        self.recorder.fn_record_func_title_begin(inspect.stack()[0][3])
 
         fn_random_player_policy = lambda g: RandomPlayer(g).play
         self.fn_test(fn_random_player_policy, num_of_test_games= self.args.num_of_test_games)
         return self
 
     def fn_test_against_greedy(self):
-        self.recorder.fn_record_func_title(inspect.stack()[0][3])
+        self.recorder.fn_record_func_title_begin(inspect.stack()[0][3])
 
         fn_random_player_policy = lambda g: GreedyPlayer(g).play
         self.fn_test(fn_random_player_policy, num_of_test_games= self.args.num_of_test_games)
@@ -114,7 +116,7 @@ class Agent():
         self.args.fn_record(f'pwins:{pwins} nwins:{nwins} draws:{draws}')
 
     def fn_change_args(self, args):
-        self.recorder.fn_record_func_title(inspect.stack()[0][3])
+        self.recorder.fn_record_func_title_begin(inspect.stack()[0][3])
 
         if args is not None:
             for k,v in args.items():
@@ -123,7 +125,7 @@ class Agent():
         return self
 
     def fn_show_args(self):
-        self.recorder.fn_record_func_title(inspect.stack()[0][3])
+        self.recorder.fn_record_func_title_begin(inspect.stack()[0][3])
 
         for k,v in self.args.items():
             self.args.fn_record(f'  args[{k}] = {v}')
@@ -131,7 +133,7 @@ class Agent():
         return self
 
     def fn_measure_time_elapsed(self):
-        self.recorder.fn_record_func_title(inspect.stack()[0][3])
+        self.recorder.fn_record_func_title_begin(inspect.stack()[0][3])
         end_time = time()
         time_diff = int(end_time - self.start_time)
         self.args.fn_record(f'Time elapsed: {time_diff} seconds')

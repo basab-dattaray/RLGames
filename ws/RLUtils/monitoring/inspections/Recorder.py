@@ -1,7 +1,15 @@
 class Recorder():
     def __init__(self, fn_record):
         self.fn_record = fn_record
+        self.indent = 0
 
-    def fn_record_func_title(self, fn_name):
+    def fn_record_func_title_begin(self, fn_name):
         self.fn_record()
-        self.fn_record(f'<<<<<< {fn_name} >>>>>>')
+        prefix = self.indent * ' '
+        self.fn_record(f'{prefix}<<<<<< {fn_name} >>>>>>')
+        self.indent += 2
+
+
+    def fn_record_func_title_end(self):
+        self.fn_record()
+        self.indent -= 2

@@ -103,13 +103,13 @@ class Coach():
 
         for i in range(1, self.args.numIters + 1):
             # bookkeeping
-            self.args.fn_record(f' Starting Iter #{i} ...')
+            self.args.fn_record(f'    Generate Samples: Iter {i} of {self.args.numIters} ')
             # examples of the iteration
             if not self.skipFirstSelfPlay or i > 1:
                 iterationTrainExamples = deque([], maxlen=self.args.maxlenOfQueue)
 
                 for i in range(1, self.args.numEps + 1):
-                    self.args.fn_record(f'     Episode {i}')
+                    self.args.fn_record(f'     Episode {i} of {self.args.numEps}')
 
                     self.mcts = MctsSelector(self.game, self.nnet, self.args)  # reset search tree
                     episode_result = self.executeEpisode()

@@ -41,9 +41,9 @@ class NeuralNetWrapper(NeuralNet):
         examples: list of examples, each example is of form (board, pi, v)
         """
         optimizer = optim.Adam(self.nnet.parameters())
-        self.args.fn_record('Starting Training')
+        self.args.fn_record('    Start Training')
         for epoch in range(self.args.epochs):
-            self.args.fn_record('     Epoch ' + str(epoch + 1))
+            self.args.fn_record(f'     Epoch {epoch + 1} of {self.args.epochs}')
             self.nnet.train()
             pi_losses = AverageMeter()
             v_losses = AverageMeter()
