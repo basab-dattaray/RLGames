@@ -1,5 +1,6 @@
 import inspect
 import logging
+import math
 import signal
 # import timeit
 from time import time
@@ -120,7 +121,7 @@ class Agent():
         arena = Arena(fn_system_policy, fn_contender_policy, self.game, display=OthelloGame.display)
         system_wins, system_losses, draws = arena.playGames(self.args.num_of_test_games, verbose=verbose)
         # self.args.fn_record(f'pwins:{pwins} nwins:{nwins} draws:{draws}')
-        self.args.recorder.fn_record_message(f'wins:{system_wins} losses:{system_losses} draws:{draws}', indent=1)
+        self.args.recorder.fn_record_message(f'wins:{system_wins} losses:{system_losses} draws:{draws}')
 
     def fn_change_args(self, args):
         self.args.recorder.fn_record_func_title_begin(inspect.stack()[0][3])
@@ -129,7 +130,7 @@ class Agent():
             for k,v in args.items():
                 self.args[k] = v
                 # self.args.fn_record(f'  args[{k}] = {v}')
-                self.args.recorder.fn_record_message(f'  args[{k}] = {v}', indent=1)
+                self.args.recorder.fn_record_message(f'  args[{k}] = {v}')
 
         self.args.recorder.fn_record_func_title_end()
         return self
@@ -139,7 +140,7 @@ class Agent():
 
         for k,v in self.args.items():
             # self.args.fn_record(f'  args[{k}] = {v}')
-            self.args.recorder.fn_record_message(f'  args[{k}] = {v}', indent=1)
+            self.args.recorder.fn_record_message(f'  args[{k}] = {v}')
 
         self.args.recorder.fn_record_func_title_end()
         return self
@@ -149,7 +150,9 @@ class Agent():
 
         end_time = time()
         time_diff = int(end_time - self.start_time)
-        self.args.recorder.fn_record_message(f'Time elapsed: {time_diff} seconds', indent=1)
+        mins = math.floor(time_diff / 60)
+        secs = time_diff % 60
+        self.args.recorder.fn_record_message(f'Time elapsed:    minutes: {mins}    seconds: {secs}')
 
         self.args.recorder.fn_record_func_title_end()
         return self
