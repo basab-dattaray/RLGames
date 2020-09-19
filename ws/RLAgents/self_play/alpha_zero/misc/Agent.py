@@ -1,9 +1,11 @@
 import inspect
 import logging
 import math
+import os
 import signal
 # import timeit
 from time import time
+from datetime import datetime as dt
 
 import numpy
 
@@ -24,20 +26,19 @@ class Agent():
     @classmethod
 
     def fn_init(cls, args, file_path):
-        current_dir = file_path.rsplit('/', 1)[0]
-        archive_dir = current_dir.replace('/Demos/', '/Archive/')
-        my_logger = log_mgr(log_dir=archive_dir, fixed_log_file=False)
+        return Agent(args, file_path)
 
-        return Agent(args, file_path, my_logger)
-
-    def __init__(self, args, file_path, my_logger):
+    def __init__(self, args, file_path):
         self.log = logging.getLogger(__name__)
         self.args = args
         self.args.demo_folder, self.args.demo_name = AppInfo.fn_get_path_and_app_name(file_path)
         self.args.mcts_recursive = AppInfo.fn_arg_as_bool(self.args, 'mcts_recursive')
         self.game = OthelloGame(self.args.board_size)
 
-        self.args.fn_record = my_logger
+        current_dir = file_path.rsplit('/', 1)[0]
+        archive_dir = current_dir.replace('/Demos/', '/Archive/')
+        self.args.archive_dir = archive_dir
+        self.args.fn_record = log_mgr(log_dir=archive_dir, fixed_log_file=True)
         self.start_time = time()
         self.args.recorder = Recorder(self.args.fn_record)
 
@@ -155,4 +156,11 @@ class Agent():
         self.args.recorder.fn_record_message(f'Time elapsed:    minutes: {mins}    seconds: {secs}')
 
         self.args.recorder.fn_record_func_title_end()
+        return self
+
+    def fn_archive_log_file(self):
+        log_file_name = dt.now().strftime("%Y_%m_%d_%H_%M_%S")
+        dst_file_path = os.path.join(self.args.archive_dir, log_file_name)
+        src_file_name = os.path.join(self.args.archive_dir, 'log.txt')
+        os.rename(src_file_name, dst_file_path)
         return self
