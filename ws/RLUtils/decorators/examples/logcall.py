@@ -10,4 +10,4 @@ def logformat(fmt):
         return wrapper
     return logged
 
-logged_ = logformat('You logged {funct.__name__}')
+logged_ = logformat('Youall logged {funct.__name__}')

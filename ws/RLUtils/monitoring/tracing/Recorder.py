@@ -5,6 +5,7 @@ class Recorder():
         self.fn_record = fn_record
         self.indent_count = 0
 
+
     def fn_record_func_title_begin(self, fn_name):
         self.fn_record()
         prefix = self.indent_count * ' '
