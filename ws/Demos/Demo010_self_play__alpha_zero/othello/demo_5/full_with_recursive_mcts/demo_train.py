@@ -7,7 +7,7 @@ from ws.RLAgents.self_play.alpha_zero.misc.Agent import Agent
 coloredlogs.install(level='INFO')  # Change this to DEBUG to see more info.
 
 if __name__ == "__main__":
-    Agent.fn_init(args, __file__). \
+    Agent(args, __file__). \
         fn_change_args({
             'mcts_recursive': 1,
         }). \

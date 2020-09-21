@@ -23,10 +23,6 @@ from ws.RLUtils.monitoring.tracing.Recorder import Recorder
 from ws.RLUtils.monitoring.tracing.log_mgt import log_mgr
 
 class Agent():
-    @classmethod
-
-    def fn_init(cls, args, file_path):
-        return Agent(args, file_path)
 
     def __init__(self, args, file_path):
         self.log = logging.getLogger(__name__)

@@ -13,7 +13,8 @@ coloredlogs.install(level='INFO')  # Change this to DEBUG to see more info.
 
 if __name__ == "__main__":
     try:
-        Agent.fn_init(args, __file__). \
+
+        Agent(args, __file__). \
             fn_change_args({
                 'mcts_recursive': 1,
             }). \
