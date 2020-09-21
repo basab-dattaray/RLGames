@@ -2,12 +2,12 @@
 import coloredlogs
 
 from ws.Demos.Demo010_self_play__alpha_zero.othello.demo_5.full.ARGS import args
-from ws.RLAgents.self_play.alpha_zero.misc.Agent import Agent
+from ws.RLAgents.self_play.alpha_zero.misc.agent_mgt import agent_mgr
 
 coloredlogs.install(level='INFO')  # Change this to DEBUG to see more info.
 
 if __name__ == "__main__":
-    Agent(args, __file__). \
+    agent_mgr(args, __file__). \
         fn_change_args({
             'mcts_recursive': 1,
         }). \

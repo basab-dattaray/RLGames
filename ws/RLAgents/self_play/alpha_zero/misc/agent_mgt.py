@@ -131,15 +131,14 @@ def agent_mgr(args, file_path):
         # args.fn_record(f'pwins:{pwins} nwins:{nwins} draws:{draws}')
         args.recorder.fn_record_message(f'wins:{system_wins} losses:{system_losses} draws:{draws}')
 
-    def fn_change_args(args):
-        # args.recorder.fn_record_func_title_begin(inspect.stack()[0][3])
+    def fn_change_args(change_args):
         args.recorder.fn_record_func_title_begin(inspect.stack()[0][3])
 
-        if args is not None:
-            for k,v in args.items():
-                args[k] = v
+        if change_args is not None:
+            for k,v in change_args.items():
+                change_args[k] = v
                 # args.fn_record(f'  args[{k}] = {v}')
-                args.recorder.fn_record_message(f'  args[{k}] = {v}')
+                args.recorder.fn_record_message(f'  x[{k}] = {v}')
 
         args.recorder.fn_record_func_title_end()
         return agent_mgr_ref
