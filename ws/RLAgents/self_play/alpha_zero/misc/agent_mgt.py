@@ -38,7 +38,16 @@ def agent_mgr(args, file_path):
     start_time = time()
     args.recorder = Recorder(args.fn_record)
 
+    agent_mgr_ref = namedtuple('_', 'fn_train')
+    agent_mgr_ref = namedtuple('_', 'fn_test_against_human')
+    agent_mgr_ref = namedtuple('_', 'fn_test_againt_random')
+    agent_mgr_ref = namedtuple('_', 'fn_test_against_greedy')
+    agent_mgr_ref = namedtuple('_', 'fn_change_args')
     agent_mgr_ref = namedtuple('_', 'fn_show_args')
+    agent_mgr_ref = namedtuple('_', 'fn_measure_time_elapsed')
+    agent_mgr_ref = namedtuple('_', 'fn_archive_log_file')
+
+
 
     def exit_gracefully(signum, frame):
         #
@@ -91,7 +100,7 @@ def agent_mgr(args, file_path):
         return agent_mgr_ref
 
 
-    def fn_test_againt_random(self):
+    def fn_test_againt_random():
         args.recorder.fn_record_func_title_begin(inspect.stack()[0][3])
 
         fn_random_player_policy = lambda g: RandomPlayer(g).play
@@ -100,7 +109,7 @@ def agent_mgr(args, file_path):
         args.recorder.fn_record_func_title_end()
         return agent_mgr_ref
 
-    def fn_test_against_greedy(self):
+    def fn_test_against_greedy():
         args.recorder.fn_record_func_title_begin(inspect.stack()[0][3])
 
         fn_random_player_policy = lambda g: GreedyPlayer(g).play
@@ -109,7 +118,7 @@ def agent_mgr(args, file_path):
         args.recorder.fn_record_func_title_end()
         return agent_mgr_ref
 
-    def fn_test(self, fn_player_policy, verbose= False, num_of_test_games=2):
+    def fn_test(fn_player_policy, verbose= False, num_of_test_games=2):
         signal.signal(signal.SIGINT, exit_gracefully)
         system_nn = NeuralNetWrapper(args, game)
         system_nn.load_checkpoint('tmp/', 'best.pth.tar')
@@ -122,7 +131,8 @@ def agent_mgr(args, file_path):
         # args.fn_record(f'pwins:{pwins} nwins:{nwins} draws:{draws}')
         args.recorder.fn_record_message(f'wins:{system_wins} losses:{system_losses} draws:{draws}')
 
-    def fn_change_args(self, args):
+    def fn_change_args(args):
+        # args.recorder.fn_record_func_title_begin(inspect.stack()[0][3])
         args.recorder.fn_record_func_title_begin(inspect.stack()[0][3])
 
         if args is not None:
@@ -135,8 +145,7 @@ def agent_mgr(args, file_path):
         return agent_mgr_ref
 
     def fn_show_args():
-        x = inspect.stack()[0][3]
-        args.recorder.fn_record_func_title_begin(x)
+        args.recorder.fn_record_func_title_begin(inspect.stack()[0][3])
 
         for k,v in args.items():
             # args.fn_record(f'  args[{k}] = {v}')
@@ -145,7 +154,7 @@ def agent_mgr(args, file_path):
         args.recorder.fn_record_func_title_end()
         return agent_mgr_ref
 
-    def fn_measure_time_elapsed(self):
+    def fn_measure_time_elapsed():
         args.recorder.fn_record_func_title_begin(inspect.stack()[0][3])
 
         end_time = time()
@@ -157,13 +166,29 @@ def agent_mgr(args, file_path):
         args.recorder.fn_record_func_title_end()
         return agent_mgr_ref
 
-    def fn_archive_log_file(self):
+    def fn_archive_log_file():
         log_file_name = dt.now().strftime("%Y_%m_%d_%H_%M_%S")
         dst_file_path = os.path.join(args.archive_dir, log_file_name)
         src_file_name = os.path.join(args.archive_dir, 'log.txt')
         os.rename(src_file_name, dst_file_path)
         return agent_mgr_ref
 
+    # agent_mgr_ref = namedtuple('_', 'fn_train')
+    # agent_mgr_ref = namedtuple('_', 'fn_test_against_human')
+    # agent_mgr_ref = namedtuple('_', 'fn_test_againt_random')
+    # agent_mgr_ref = namedtuple('_', 'fn_test_against_greedy')
+    # agent_mgr_ref = namedtuple('_', 'fn_change_args')
+    # agent_mgr_ref = namedtuple('_', 'fn_show_args')
+    # agent_mgr_ref = namedtuple('_', 'fn_measure_time_elapsed')
+    # agent_mgr_ref = namedtuple('_', 'fn_archive_log_file')
+
+    agent_mgr_ref.fn_train = fn_train
+    agent_mgr_ref.fn_test_against_human = fn_test_against_human
+    agent_mgr_ref.fn_test_againt_random = fn_test_againt_random
+    agent_mgr_ref.fn_test_against_greedy = fn_test_against_greedy
+    agent_mgr_ref.fn_change_args = fn_change_args
     agent_mgr_ref.fn_show_args = fn_show_args
+    agent_mgr_ref.fn_measure_time_elapsed = fn_measure_time_elapsed
+    agent_mgr_ref.fn_archive_log_file = fn_archive_log_file
 
     return agent_mgr_ref
