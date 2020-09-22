@@ -161,14 +161,7 @@ def agent_mgr(args, file_path):
         os.rename(src_file_name, dst_file_path)
         return agent_mgr_ref
 
-    agent_mgr_ref = namedtuple('_', 'fn_train')
-    agent_mgr_ref = namedtuple('_', 'fn_test_against_human')
-    agent_mgr_ref = namedtuple('_', 'fn_test_againt_random')
-    agent_mgr_ref = namedtuple('_', 'fn_test_against_greedy')
-    agent_mgr_ref = namedtuple('_', 'fn_change_args')
-    agent_mgr_ref = namedtuple('_', 'fn_show_args')
-    agent_mgr_ref = namedtuple('_', 'fn_measure_time_elapsed')
-    agent_mgr_ref = namedtuple('_', 'fn_archive_log_file')
+    agent_mgr_ref = namedtuple('_', ['fn_train','fn_test_against_human' ,'fn_test_againt_random' ,'fn_test_against_greedy' ,'fn_change_args' ,'fn_show_args' ,'fn_measure_time_elapsed' ,'fn_archive_log_file'])
 
     agent_mgr_ref.fn_train = fn_train
     agent_mgr_ref.fn_test_against_human = fn_test_against_human
