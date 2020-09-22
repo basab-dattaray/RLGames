@@ -38,17 +38,6 @@ def agent_mgr(args, file_path):
     start_time = time()
     args.recorder = Recorder(args.fn_record)
 
-    agent_mgr_ref = namedtuple('_', 'fn_train')
-    agent_mgr_ref = namedtuple('_', 'fn_test_against_human')
-    agent_mgr_ref = namedtuple('_', 'fn_test_againt_random')
-    agent_mgr_ref = namedtuple('_', 'fn_test_against_greedy')
-    agent_mgr_ref = namedtuple('_', 'fn_change_args')
-    agent_mgr_ref = namedtuple('_', 'fn_show_args')
-    agent_mgr_ref = namedtuple('_', 'fn_measure_time_elapsed')
-    agent_mgr_ref = namedtuple('_', 'fn_archive_log_file')
-
-
-
     def exit_gracefully(signum, frame):
         #
         # if services.chart is not None:
@@ -172,14 +161,14 @@ def agent_mgr(args, file_path):
         os.rename(src_file_name, dst_file_path)
         return agent_mgr_ref
 
-    # agent_mgr_ref = namedtuple('_', 'fn_train')
-    # agent_mgr_ref = namedtuple('_', 'fn_test_against_human')
-    # agent_mgr_ref = namedtuple('_', 'fn_test_againt_random')
-    # agent_mgr_ref = namedtuple('_', 'fn_test_against_greedy')
-    # agent_mgr_ref = namedtuple('_', 'fn_change_args')
-    # agent_mgr_ref = namedtuple('_', 'fn_show_args')
-    # agent_mgr_ref = namedtuple('_', 'fn_measure_time_elapsed')
-    # agent_mgr_ref = namedtuple('_', 'fn_archive_log_file')
+    agent_mgr_ref = namedtuple('_', 'fn_train')
+    agent_mgr_ref = namedtuple('_', 'fn_test_against_human')
+    agent_mgr_ref = namedtuple('_', 'fn_test_againt_random')
+    agent_mgr_ref = namedtuple('_', 'fn_test_against_greedy')
+    agent_mgr_ref = namedtuple('_', 'fn_change_args')
+    agent_mgr_ref = namedtuple('_', 'fn_show_args')
+    agent_mgr_ref = namedtuple('_', 'fn_measure_time_elapsed')
+    agent_mgr_ref = namedtuple('_', 'fn_archive_log_file')
 
     agent_mgr_ref.fn_train = fn_train
     agent_mgr_ref.fn_test_against_human = fn_test_against_human
