@@ -1,4 +1,4 @@
-from ws.RLUtils.monitoring.tracing.ex2.agent_container import agent_container
+from ws.RLUtils.monitoring.tracing.trace_example.agent_container import agent_container
 
 def record_mgr():
     count = 0

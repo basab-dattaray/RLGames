@@ -1,6 +1,6 @@
 import functools
 
-def trace(recoreder):
+def trace(recorder):
     def wrapper_maker(fn):
         @functools.wraps(fn)
         def fn_wrapper(*args, **kwargs):
