@@ -4,7 +4,8 @@ def decAny(tag):
     def dec(f0):
         @functools.wraps(f0)
         def wrapper(*args, **kwargs):
-            return "<%s> %s </%s>" % (tag, f0(*args, **kwargs), tag)
+            ret_value = f0(*args, **kwargs)
+            return "%s: %s " % (tag, ret_value )
         return wrapper
     return dec
 
