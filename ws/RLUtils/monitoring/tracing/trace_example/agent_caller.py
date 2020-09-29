@@ -10,6 +10,9 @@ def record_mgr():
 
 fn_recorder = record_mgr()
 
-agent_container(fn_recorder).fn_test1().fn_test2()
+args = {}
+args['rec_mgr'] = fn_recorder
+
+agent_container(args).fn_test1().fn_test2()
 
 
