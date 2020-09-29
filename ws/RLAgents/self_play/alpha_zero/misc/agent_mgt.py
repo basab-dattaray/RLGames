@@ -52,9 +52,8 @@ def agent_mgr(args, file_path):
         # services.fn_record(f'Total Time Taken = {time() - start_time} seconds')
         exit()
 
+    @tracer(args)
     def fn_train():
-        args.recorder.fn_record_func_title_begin(inspect.stack()[0][3])
-
         signal.signal(signal.SIGINT, exit_gracefully)
         # args.fn_record('Loading %s...', Game.__name__)
 
@@ -77,36 +76,25 @@ def agent_mgr(args, file_path):
         # args.fn_record('  Starting the learning process ')
         c.fn_learn()
 
-        args.recorder.fn_record_func_title_end()
-        return agent_mgr_ref
+        return ret_refs
 
+    @tracer(args)
     def fn_test_against_human():
-        args.recorder.fn_record_func_title_begin(inspect.stack()[0][3])
-
         fn_human_player_policy = lambda g: HumanPlayer(g).play
         fn_test(fn_human_player_policy, verbose= True)
+        return ret_refs
 
-        args.recorder.fn_record_func_title_end()
-        return agent_mgr_ref
-
-
+    @tracer(args)
     def fn_test_againt_random():
-        args.recorder.fn_record_func_title_begin(inspect.stack()[0][3])
-
         fn_random_player_policy = lambda g: RandomPlayer(g).play
         fn_test(fn_random_player_policy, num_of_test_games= args.num_of_test_games)
+        return ret_refs
 
-        args.recorder.fn_record_func_title_end()
-        return agent_mgr_ref
-
+    @tracer(args)
     def fn_test_against_greedy():
-        args.recorder.fn_record_func_title_begin(inspect.stack()[0][3])
-
         fn_random_player_policy = lambda g: GreedyPlayer(g).play
         fn_test(fn_random_player_policy, num_of_test_games= args.num_of_test_games)
-
-        args.recorder.fn_record_func_title_end()
-        return agent_mgr_ref
+        return ret_refs
 
     def fn_test(fn_player_policy, verbose= False, num_of_test_games=2):
         signal.signal(signal.SIGINT, exit_gracefully)
@@ -121,58 +109,52 @@ def agent_mgr(args, file_path):
         # args.fn_record(f'pwins:{pwins} nwins:{nwins} draws:{draws}')
         args.recorder.fn_record_message(f'wins:{system_wins} losses:{system_losses} draws:{draws}')
 
+    @tracer(args)
     def fn_change_args(change_args):
-        args.recorder.fn_record_func_title_begin(inspect.stack()[0][3])
-
         if change_args is not None:
             for k,v in change_args.items():
                 change_args[k] = v
                 # args.fn_record(f'  args[{k}] = {v}')
                 args.recorder.fn_record_message(f'  x[{k}] = {v}')
 
-        args.recorder.fn_record_func_title_end()
-        return agent_mgr_ref
+        return ret_refs
 
     @tracer(args)
     def fn_show_args():
-        # fn_name =  inspect.stack()[0][3]
-        # args.recorder.fn_record_func_title_begin(fn_name)
 
         for k,v in args.items():
             # args.fn_record(f'  args[{k}] = {v}')
             args.recorder.fn_record_message(f'  args[{k}] = {v}')
 
-        # args.recorder.fn_record_func_title_end()
-        return agent_mgr_ref
+        return ret_refs
 
+    @tracer(args)
     def fn_measure_time_elapsed():
-        args.recorder.fn_record_func_title_begin(inspect.stack()[0][3])
-
         end_time = time()
         time_diff = int(end_time - start_time)
         mins = math.floor(time_diff / 60)
         secs = time_diff % 60
         args.recorder.fn_record_message(f'Time elapsed:    minutes: {mins}    seconds: {secs}')
 
-        args.recorder.fn_record_func_title_end()
-        return agent_mgr_ref
+        return ret_refs
 
+    @tracer(args)
     def fn_archive_log_file():
         log_file_name = dt.now().strftime("%Y_%m_%d_%H_%M_%S")
         dst_file_path = os.path.join(args.archive_dir, log_file_name)
         src_file_name = os.path.join(args.archive_dir, 'log.txt')
         os.rename(src_file_name, dst_file_path)
-        return agent_mgr_ref
+        return ret_refs
 
-    agent_mgr_ref = namedtuple('_', ['fn_train','fn_test_against_human' ,'fn_test_againt_random' ,'fn_test_against_greedy' ,'fn_change_args' ,'fn_show_args' ,'fn_measure_time_elapsed' ,'fn_archive_log_file'])
+    ret_refs = namedtuple('_', ['fn_train','fn_test_against_human' ,'fn_test_againt_random' ,'fn_test_against_greedy' ,'fn_change_args' ,'fn_show_args' ,'fn_measure_time_elapsed' ,'fn_archive_log_file'])
 
-    agent_mgr_ref.fn_train = fn_train
-    agent_mgr_ref.fn_test_against_human = fn_test_against_human
-    agent_mgr_ref.fn_test_againt_random = fn_test_againt_random
-    agent_mgr_ref.fn_test_against_greedy = fn_test_against_greedy
-    agent_mgr_ref.fn_change_args = fn_change_args
-    agent_mgr_ref.fn_show_args = fn_show_args
-    agent_mgr_ref.fn_measure_time_elapsed = fn_measure_time_elapsed
-    agent_mgr_ref.fn_archive_log_file = fn_archive_log_file
+    ret_refs.fn_train = fn_train
+    ret_refs.fn_test_against_human = fn_test_against_human
+    ret_refs.fn_test_againt_random = fn_test_againt_random
+    ret_refs.fn_test_against_greedy = fn_test_against_greedy
+    ret_refs.fn_change_args = fn_change_args
+    ret_refs.fn_show_args = fn_show_args
+    ret_refs.fn_measure_time_elapsed = fn_measure_time_elapsed
+    ret_refs.fn_archive_log_file = fn_archive_log_file
 
-    return agent_mgr_ref
+    return ret_refs

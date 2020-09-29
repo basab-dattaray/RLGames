@@ -9,7 +9,7 @@ def tracer(args):
     def function_wrapper_maker(fn):
         @functools.wraps(fn)
         def fn_wrapper(*args, **kwargs):
-            recorder.fn_record_func_title_begin(fn.__name__)
+            recorder.fn_record_func_title_begin(fn.__qualname__)
 
             ret_value = fn(*args, **kwargs)
             recorder.fn_record_func_title_end()
