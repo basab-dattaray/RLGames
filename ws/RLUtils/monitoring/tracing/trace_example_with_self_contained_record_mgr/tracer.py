@@ -8,6 +8,7 @@ def tracer(args):
             print('START: ' + str(recorder()))
             ret_value = fn(*args, **kwargs)
             print('END: ' + str(recorder()))
+            print()
             return ret_value
         return fn_wrapper
     return function_wrapper_maker

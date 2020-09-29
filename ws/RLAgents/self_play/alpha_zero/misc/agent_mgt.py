@@ -22,6 +22,8 @@ from ws.RLAgents.self_play.alpha_zero.train.NeuralNetWrapper import NeuralNetWra
 from ws.RLUtils.common.AppInfo import AppInfo
 from ws.RLUtils.monitoring.tracing.Recorder import Recorder
 from ws.RLUtils.monitoring.tracing.log_mgt import log_mgr
+from ws.RLUtils.monitoring.tracing.tracer import tracer
+
 
 def agent_mgr(args, file_path):
 
@@ -49,7 +51,6 @@ def agent_mgr(args, file_path):
         # services.fn_record('TERMINATED EARLY AFTER SAVING MODEL WEIGHTS')
         # services.fn_record(f'Total Time Taken = {time() - start_time} seconds')
         exit()
-
 
     def fn_train():
         args.recorder.fn_record_func_title_begin(inspect.stack()[0][3])
@@ -132,6 +133,7 @@ def agent_mgr(args, file_path):
         args.recorder.fn_record_func_title_end()
         return agent_mgr_ref
 
+    # @tracer(args)
     def fn_show_args():
         args.recorder.fn_record_func_title_begin(inspect.stack()[0][3])
 
