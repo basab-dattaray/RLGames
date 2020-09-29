@@ -2,7 +2,7 @@ from collections import namedtuple
 
 # from ws.RLUtils.monitoring.tracing.tracer import tracer
 # from ws.RLUtils.monitoring.tracing.trace_example_without_params.agent_caller import record_mgr
-from ws.RLUtils.monitoring.tracing.tracer import tracer
+from ws.RLUtils.monitoring.tracing.trace_example_without_params.tracer import tracer
 
 def record_mgr():
     count = 0
