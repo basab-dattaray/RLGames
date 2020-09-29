@@ -1,7 +1,6 @@
 import functools
 
-def tracer(args):
-    recorder = args['fn_recorder']
+def tracer(recorder):
     def function_wrapper_maker(fn):
         @functools.wraps(fn)
         def fn_wrapper(*args, **kwargs):
