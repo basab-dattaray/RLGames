@@ -14,8 +14,7 @@ def agent_container():
         print('RUNNING fn_test1')
         return agent_container_ref
 
-    fn_function_wrapper_maker = tracer(args)
-    fn_test1 = fn_function_wrapper_maker(fn_test1)
+    fn_test1 = tracer(args)(fn_test1)
 
     # _fn_wrapper()
 
