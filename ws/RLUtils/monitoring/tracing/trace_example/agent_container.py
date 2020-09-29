@@ -1,6 +1,7 @@
 from collections import namedtuple
 
-from ws.RLUtils.monitoring.tracing.tracer import tracer
+# from ws.RLUtils.monitoring.tracing.trace_example.tracer import tracer
+from ws.RLUtils.monitoring.tracing.trace_example.tracer import tracer
 
 
 def agent_container(fn_recorder):
