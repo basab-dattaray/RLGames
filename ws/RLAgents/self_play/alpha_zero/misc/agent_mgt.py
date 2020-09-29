@@ -133,15 +133,16 @@ def agent_mgr(args, file_path):
         args.recorder.fn_record_func_title_end()
         return agent_mgr_ref
 
-    # @tracer(args)
+    @tracer(args)
     def fn_show_args():
-        args.recorder.fn_record_func_title_begin(inspect.stack()[0][3])
+        # fn_name =  inspect.stack()[0][3]
+        # args.recorder.fn_record_func_title_begin(fn_name)
 
         for k,v in args.items():
             # args.fn_record(f'  args[{k}] = {v}')
             args.recorder.fn_record_message(f'  args[{k}] = {v}')
 
-        args.recorder.fn_record_func_title_end()
+        # args.recorder.fn_record_func_title_end()
         return agent_mgr_ref
 
     def fn_measure_time_elapsed():
