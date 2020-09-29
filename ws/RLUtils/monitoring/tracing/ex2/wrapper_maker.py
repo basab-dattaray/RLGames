@@ -6,9 +6,9 @@ def trace(recoreder):
         def fn_wrapper(*args, **kwargs):
             print('START')
             ret_value = fn(*args, **kwargs)
-            print(ret_value)
+            # print(ret_value)
             print('END')
-            return 'self'
+            return ret_value
         return fn_wrapper
     return wrapper_maker
 

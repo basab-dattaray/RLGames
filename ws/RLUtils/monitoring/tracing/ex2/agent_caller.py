@@ -10,6 +10,6 @@ def record_mgr():
 
 fn_recorder = record_mgr()
 
-x = agent_container(fn_recorder)
+agent_container(fn_recorder).fn_test1().fn_test2()
 
-print(x())
+
