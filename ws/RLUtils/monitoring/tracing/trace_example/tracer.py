@@ -1,7 +1,7 @@
 import functools
 
 def tracer(recorder):
-    def wrapper_maker(fn):
+    def function_wrapper_maker(fn):
         @functools.wraps(fn)
         def fn_wrapper(*args, **kwargs):
             print('START: ' + str(recorder()))
@@ -9,5 +9,5 @@ def tracer(recorder):
             print('END: ' + str(recorder()))
             return ret_value
         return fn_wrapper
-    return wrapper_maker
+    return function_wrapper_maker
 
