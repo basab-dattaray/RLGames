@@ -12,6 +12,7 @@ import numpy as np
 from ws.RLAgents.self_play.alpha_zero.play.Arena import Arena
 from ws.RLAgents.self_play.alpha_zero.search.MctsSelector import MctsSelector
 # from ws.RLAgents.self_play.alpha_zero.search.recursive.MCTS import MCTS
+from ws.RLUtils.monitoring.tracing.tracer import tracer
 
 log = logging.getLogger(__name__)
 
@@ -93,8 +94,8 @@ def coach(game, nnet, args):
             sample_data.append([state, action_prob, result])
         return sample_data
 
+    @tracer(args)
     def fn_learn():
-        args.recorder.fn_record_func_title_begin(inspect.stack()[0][3])
         """
         Performs numIters iterations with numEps episodes of self-play in each
         iteration. After every iteration, it retrains neural network with
@@ -106,10 +107,9 @@ def coach(game, nnet, args):
         for iteration in range(1, args.numIters + 1):
             fn_run_iteration(iteration)
 
-        args.recorder.fn_record_func_title_end()
 
+    @tracer(args)
     def fn_run_iteration(iteration):
-        args.recorder.fn_record_func_title_begin(inspect.stack()[0][3])
 
         args.recorder.fn_record_message(f'-- Iter {iteration} of {args.numIters}',
                                              indent=0)
@@ -147,11 +147,8 @@ def coach(game, nnet, args):
             nnet.save_checkpoint(rel_folder=args.checkpoint, filename=getCheckpointFile(iteration))
             nnet.save_checkpoint(rel_folder=args.checkpoint, filename='best.pth.tar')
 
-        args.recorder.fn_record_func_title_end()
-
+    @tracer(args)
     def fn_generate_samples(iteration):
-        args.recorder.fn_record_func_title_begin(inspect.stack()[0][3])
-
         # examples of the iteration
         if not skipFirstSelfPlay or iteration > 1:
             iterationTrainExamples = deque([], maxlen=args.maxlenOfQueue)
@@ -179,7 +176,6 @@ def coach(game, nnet, args):
             trainExamples.extend(e)
         shuffle(trainExamples)
 
-        args.recorder.fn_record_func_title_end()
         return trainExamples
 
     def getCheckpointFile(iteration):
