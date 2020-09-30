@@ -99,7 +99,7 @@ def agent_mgr(args, file_path):
     def fn_test(fn_player_policy, verbose= False, num_of_test_games=2):
         signal.signal(signal.SIGINT, exit_gracefully)
         system_nn = NeuralNetWrapper(args, game)
-        system_nn.load_checkpoint('tmp.1/', 'best.pth.tar')
+        system_nn.load_checkpoint('tmp/', 'best.pth.tar')
         # args1 = dotdict({'numMCTSSims': 50, 'cpuct':1.0})
         system_mcts = MctsSelector(game, system_nn, args)
         fn_system_policy = lambda x: numpy.argmax(system_mcts.getActionProb(x, temp=0))

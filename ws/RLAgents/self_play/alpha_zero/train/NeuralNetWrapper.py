@@ -7,6 +7,7 @@ from collections import namedtuple
 
 import numpy as np
 
+from ws.RLUtils.monitoring.tracing.tracer import tracer
 
 sys.path.append('../../')
 from ws.RLAgents.self_play.alpha_zero.misc.utils import *
@@ -38,8 +39,8 @@ def NeuralNetWrapper(args, game):
     if nnet_params.cuda:
         nnet.cuda()
 
+    @tracer(args)
     def fn_adjust_model_from_examples(examples):
-        args.recorder.fn_record_func_title_begin(inspect.stack()[0][3])
         """
         examples: list of examples, each example is of form (board, pi, v)
         """
@@ -80,7 +81,6 @@ def NeuralNetWrapper(args, game):
                 optimizer.zero_grad()
                 total_loss.backward()
                 optimizer.step()
-        args.recorder.fn_record_func_title_end()
 
     def predict(board):
         """
