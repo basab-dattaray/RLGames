@@ -27,7 +27,7 @@ nnet_params = dotdict({
     'num_channels': 512,
 })
 
-class NeuralNetWrapper(NeuralNet):
+class NeuralNetWrapper():
     def __init__(self, args, game):
         self.args = args
         self.nnet = OthelloNNet(game, nnet_params)
