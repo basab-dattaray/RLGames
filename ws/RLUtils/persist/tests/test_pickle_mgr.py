@@ -11,7 +11,7 @@ from ws.RLUtils.persist.pickle_mgt import pickle_mgr
 def fixture_ws_mgt():
     obj = {'d1': 3, 'd2': [1, 2], 'd3': {'d31': 'D31', 'd32': 'D32'}}
     dump_folder_path = os.path.join(os.getcwd(), 'tmp_dump_dir')
-    dump_file_name = 'tmp.obj'
+    dump_file_name = 'tmp.1.obj'
     yield dump_folder_path, dump_file_name, obj
     # dump_folder_path = os.path.join(os.getcwd(), '__tmp_dump_dir')
     if os.path.exists(dump_folder_path):

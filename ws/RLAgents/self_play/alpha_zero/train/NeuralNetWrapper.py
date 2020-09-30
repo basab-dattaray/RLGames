@@ -3,6 +3,7 @@ import logging
 import os
 import sys
 import time
+from collections import namedtuple
 
 import numpy as np
 
@@ -27,26 +28,26 @@ nnet_params = dotdict({
     'num_channels': 512,
 })
 
-class NeuralNetWrapper():
-    def __init__(self, args, game):
-        self.args = args
-        self.nnet = OthelloNNet(game, nnet_params)
-        self.board_x, self.board_y = game.getBoardSize()
-        self.action_size = game.getActionSize()
+def NeuralNetWrapper(args, game):
 
-        if nnet_params.cuda:
-            self.nnet.cuda()
+    # args = args
+    nnet = OthelloNNet(game, nnet_params)
+    board_x, board_y = game.getBoardSize()
+    action_size = game.getActionSize()
 
-    def fn_adjust_model_from_examples(self, examples):
-        self.args.recorder.fn_record_func_title_begin(inspect.stack()[0][3])
+    if nnet_params.cuda:
+        nnet.cuda()
+
+    def fn_adjust_model_from_examples(examples):
+        args.recorder.fn_record_func_title_begin(inspect.stack()[0][3])
         """
         examples: list of examples, each example is of form (board, pi, v)
         """
-        optimizer = optim.Adam(self.nnet.parameters())
-        for epoch in range(self.args.epochs):
-            self.args.recorder.fn_record_message(f'Epoch {epoch + 1} of {self.args.epochs}')
+        optimizer = optim.Adam(nnet.parameters())
+        for epoch in range(args.epochs):
+            args.recorder.fn_record_message(f'Epoch {epoch + 1} of {args.epochs}')
 
-            self.nnet.train()
+            nnet.train()
             pi_losses = AverageMeter()
             v_losses = AverageMeter()
 
@@ -65,9 +66,9 @@ class NeuralNetWrapper():
                     boards, target_pis, target_vs = boards.contiguous().cuda(), target_pis.contiguous().cuda(), target_vs.contiguous().cuda()
 
                 # compute output
-                out_pi, out_v = self.nnet(boards)
-                l_pi = self.loss_pi(target_pis, out_pi)
-                l_v = self.loss_v(target_vs, out_v)
+                out_pi, out_v = nnet(boards)
+                l_pi = loss_pi(target_pis, out_pi)
+                l_v = loss_v(target_vs, out_v)
                 total_loss = l_pi + l_v
 
                 # record loss
@@ -79,9 +80,9 @@ class NeuralNetWrapper():
                 optimizer.zero_grad()
                 total_loss.backward()
                 optimizer.step()
-        self.args.recorder.fn_record_func_title_end()
+        args.recorder.fn_record_func_title_end()
 
-    def predict(self, board):
+    def predict(board):
         """
         board: np array with board
         """
@@ -91,21 +92,21 @@ class NeuralNetWrapper():
         # preparing input
         board = torch.FloatTensor(board.astype(np.float64))
         if nnet_params.cuda: board = board.contiguous().cuda()
-        board = board.view(1, self.board_x, self.board_y)
-        self.nnet.eval()
+        board = board.view(1, board_x, board_y)
+        nnet.eval()
         with torch.no_grad():
-            pi, v = self.nnet(board)
+            pi, v = nnet(board)
 
         return torch.exp(pi).data.cpu().numpy()[0], v.data.cpu().numpy()[0]
 
-    def loss_pi(self, targets, outputs):
+    def loss_pi(targets, outputs):
         return -torch.sum(targets * outputs) / targets.size()[0]
 
-    def loss_v(self, targets, outputs):
+    def loss_v(targets, outputs):
         return torch.sum((targets - outputs.view(-1)) ** 2) / targets.size()[0]
 
-    def save_checkpoint(self, rel_folder='checkpoint', filename='checkpoint.pth.tar'):
-        folder = os.path.join(self.args.demo_folder, rel_folder)
+    def save_checkpoint(rel_folder='checkpoint', filename='checkpoint.pth.tar'):
+        folder = os.path.join(args.demo_folder, rel_folder)
         filepath = os.path.join(folder, filename)
         filepath_abs = os.path.abspath(filepath)
         if not os.path.exists(folder):
@@ -114,14 +115,23 @@ class NeuralNetWrapper():
         # else:
         #     print("Checkpoint Directory exists! ")
         torch.save({
-            'state_dict': self.nnet.state_dict(),
+            'state_dict': nnet.state_dict(),
         }, filepath)
 
-    def load_checkpoint(self, rel_folder='checkpoint', filename='checkpoint.pth.tar'):
-        folder = os.path.join(self.args.demo_folder, rel_folder)
+    def load_checkpoint(rel_folder='checkpoint', filename='checkpoint.pth.tar'):
+        folder = os.path.join(args.demo_folder, rel_folder)
         filepath = os.path.join(folder, filename)
         if not os.path.exists(filepath):
             raise ("No model in path {}".format(filepath))
         map_location = None if nnet_params.cuda else 'cpu'
         checkpoint = torch.load(filepath, map_location=map_location)
-        self.nnet.load_state_dict(checkpoint['state_dict'])
+        nnet.load_state_dict(checkpoint['state_dict'])
+
+    ret_refs = namedtuple('_', ['fn_adjust_model_from_examples','load_checkpoint' ,'save_checkpoint', 'predict'])
+
+    ret_refs.fn_adjust_model_from_examples = fn_adjust_model_from_examples
+    ret_refs.load_checkpoint = load_checkpoint
+    ret_refs.save_checkpoint = save_checkpoint
+    ret_refs.predict = predict
+
+    return ret_refs

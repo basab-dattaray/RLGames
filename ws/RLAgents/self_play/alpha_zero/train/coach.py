@@ -1,3 +1,4 @@
+import copy
 import inspect
 import logging
 import os
@@ -25,11 +26,9 @@ def coach(game, nnet, args):
 
     DEBUG_FLAG = False
 
+    # pnet = nnet.__class__(args, game)  # the competitor network
+    pnet = copy.deepcopy(nnet)
 
-    # game = game
-    # nnet = nnet
-    pnet = nnet.__class__(args, game)  # the competitor network
-    # args = args
     mcts = MctsSelector(game, nnet, args)
     trainExamplesHistory = []  # history of examples from args.numItersForTrainExamplesHistory latest iterations
     skipFirstSelfPlay = False  # can be overriden in loadTrainExamples()
