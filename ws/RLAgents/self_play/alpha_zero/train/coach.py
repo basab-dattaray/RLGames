@@ -115,8 +115,8 @@ def coach(game, nnet, args):
         # bookkeeping
         trainExamples = fn_generate_samples(iteration)
         # training new network, keeping a copy of the old one
-        nnet.save_checkpoint(rel_folder=args.checkpoint, filename='temp.pth.tar')
-        pnet.load_checkpoint(rel_folder=args.checkpoint, filename='temp.pth.tar')
+        nnet.save_checkpoint(rel_folder=args.checkpoint, filename='temp.tar')
+        pnet.load_checkpoint(rel_folder=args.checkpoint, filename='temp.tar')
         pmcts = MctsSelector(game, pnet, args)
 
         nnet.fn_adjust_model_from_examples(trainExamples)
@@ -139,12 +139,12 @@ def coach(game, nnet, args):
         if pwins + nwins == 0 or float(nwins) / (pwins + nwins) < args.updateThreshold:
             # args.fn_record('REJECTING NEW MODEL')
             args.recorder.fn_record_message('REJECTED New Model')
-            nnet.load_checkpoint(rel_folder=args.checkpoint, filename='temp.pth.tar')
+            nnet.load_checkpoint(rel_folder=args.checkpoint, filename='temp.tar')
         else:
             # args.fn_record('ACCEPTING NEW MODEL')
             args.recorder.fn_record_message('ACCEPTED New Model')
             nnet.save_checkpoint(rel_folder=args.checkpoint, filename=getCheckpointFile(iteration))
-            nnet.save_checkpoint(rel_folder=args.checkpoint, filename='best.pth.tar')
+            nnet.save_checkpoint(rel_folder=args.checkpoint, filename='model.tar')
 
     @tracer(args)
     def fn_generate_samples(iteration):
@@ -178,7 +178,7 @@ def coach(game, nnet, args):
         return trainExamples
 
     def getCheckpointFile(iteration):
-        return 'checkpoint_' + str(iteration) + '.pth.tar'
+        return 'model_' + str(iteration) + '.tar'
 
     def saveTrainExamples(iteration):
         folder = args.checkpoint

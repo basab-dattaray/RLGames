@@ -105,7 +105,7 @@ def neuralNetMgr(args, game):
     def loss_v(targets, outputs):
         return torch.sum((targets - outputs.view(-1)) ** 2) / targets.size()[0]
 
-    def save_checkpoint(rel_folder='checkpoint', filename='checkpoint.pth.tar'):
+    def save_checkpoint(rel_folder, filename):
         folder = os.path.join(args.demo_folder, rel_folder)
         filepath = os.path.join(folder, filename)
         filepath_abs = os.path.abspath(filepath)
@@ -118,7 +118,7 @@ def neuralNetMgr(args, game):
             'state_dict': nnet.state_dict(),
         }, filepath)
 
-    def load_checkpoint(rel_folder='checkpoint', filename='checkpoint.pth.tar'):
+    def load_checkpoint(rel_folder, filename):
         folder = os.path.join(args.demo_folder, rel_folder)
         filepath = os.path.join(folder, filename)
         if not os.path.exists(filepath):
