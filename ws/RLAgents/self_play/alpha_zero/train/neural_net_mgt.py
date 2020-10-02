@@ -121,8 +121,9 @@ def neuralNetMgr(args, game):
     def load_checkpoint(rel_folder, filename):
         folder = os.path.join(args.demo_folder, rel_folder)
         filepath = os.path.join(folder, filename)
-        if not os.path.exists(filepath):
-            raise ("No model in path {}".format(filepath))
+        if filename is not 'temp.tar':
+            if not os.path.exists(filepath):
+                raise ("No model in path {}".format(filepath))
         map_location = None if nnet_params.cuda else 'cpu'
         checkpoint = torch.load(filepath, map_location=map_location)
         nnet.load_state_dict(checkpoint['state_dict'])
