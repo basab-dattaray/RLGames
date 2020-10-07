@@ -34,6 +34,7 @@ class MCTS():
             probs: a policy vector where the probability of the ith action is
                    proportional to Nsa[(s,a)]**(1./temp)
         """
+        temp = 0
 
         for i in range(self.args.numMCTSSims):
             self.search(canonicalBoard)
