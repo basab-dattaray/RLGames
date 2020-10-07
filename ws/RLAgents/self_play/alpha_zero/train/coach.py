@@ -33,7 +33,7 @@ def coach(game, nnet, args):
     trainExamplesHistory = []  # history of examples from args.numItersForTrainExamplesHistory latest iterations
     skipFirstSelfPlay = False  # can be overriden in loadTrainExamples()
 
-    def executeEpisode():
+    def execute_episode_for_training():
         """
         This function executes one episode of self-play, starting with player 1.
         As the game is played, each turn is added as a training example to
@@ -156,7 +156,7 @@ def coach(game, nnet, args):
                 args.recorder.fn_record_message(f'Episode {episode_num} of {args.numEps}')
 
                 mcts = MctsSelector(game, nnet, args)  # reset search tree
-                episode_result = executeEpisode()
+                episode_result = execute_episode_for_training()
                 if episode_result is not None:
                     iterationTrainExamples += episode_result
 
