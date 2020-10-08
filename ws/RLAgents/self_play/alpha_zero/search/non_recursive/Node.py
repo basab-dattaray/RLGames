@@ -141,7 +141,8 @@ class Node(object):
             current_node.__fn_add_val_to_node(val)
             # print(current_node.val)
             parent_node = current_node.__fn_get_parent_node()
-        pass
+
+        return self.val
 
     def __fn_add_children_nodes(self, normalized_valid_action_probabilities):
 

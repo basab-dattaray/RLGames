@@ -9,6 +9,7 @@ import numpy
 
 from .Node import Node
 from .StateCache import StateCache
+from ..mcts_probability_mgt import mcts_adapter_mgt
 
 MTCS_RESULTS_FILE_NAME = 'mtcs_results.pkl'
 CACHE_RESULTS = False
@@ -33,6 +34,8 @@ class Mcts():
 
         self.state_cache = None
 
+        self.fn_get_action_probabilities_ = mcts_adapter_mgt(self.fn_execute_monte_carlo_tree_search, self.fn_get_mcts_counts, num_mcts_simulations)
+
     def __fn_get_counts(self):
         childrenNodes = self.root_node.children_nodes
         counts = [0] * self.max_num_actions
@@ -41,7 +44,7 @@ class Mcts():
             counts[index] = val.visits
         return counts
 
-    def __fn_execute_monte_carlo_tree_search(self, state):
+    def fn_execute_monte_carlo_tree_search(self, state):
         if self.root_node is None:
 
             self.root_node = Node(
@@ -65,32 +68,15 @@ class Mcts():
 
         score, terminal_state = selected_node.fn_rollout()
         # if terminal_state: print(f'*** score={score}')
-        selected_node.fn_back_propagate(score)
-        pass
+        value = selected_node.fn_back_propagate(score)
+        return value
 
     def __fn_reset_mcts(self):
         self.root_node = None
 
-    # def fn_get_action_probabilities2(self, state, temp= 1):
-    #
-    #     self.state_cache = StateCache(self, state)
-    #
-    #     self.__fn_reset_mcts()
-    #
-    #     counts = self.fn_get_mcts_counts(state)
-    #
-    #     sum_counts = numpy.sum(counts)
-    #     if sum_counts == 0:
-    #         return None
-    #     mixed_probs = counts/sum_counts
-    #     best_action = numpy.random.choice(len(mixed_probs), p=mixed_probs)
-    #     probs = [0] * len(counts)
-    #     probs[best_action] = 1
-    #     return probs
-
     def fn_get_mcts_counts(self, state):
         for i in range(self.num_mcts_simulations):
-            self.__fn_execute_monte_carlo_tree_search(state)
+            self.fn_execute_monte_carlo_tree_search(state)
         counts = self.__fn_get_counts()
         return counts
 
@@ -100,7 +86,7 @@ class Mcts():
         self.__fn_reset_mcts()
 
         # for i in range(self.num_mcts_simulations):
-        #     self.__fn_execute_monte_carlo_tree_search(state)
+        #     self.fn_execute_monte_carlo_tree_search(state)
         #
         # counts = self.__fn_get_counts()
         counts = self.fn_get_mcts_counts(state)

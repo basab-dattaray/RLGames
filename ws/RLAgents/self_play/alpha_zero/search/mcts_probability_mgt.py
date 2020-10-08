@@ -1,13 +1,12 @@
 import numpy as np
 
 
-def mcts_adapter_mgt(fn_search, fn_get_counts, num_simulations):
+def mcts_adapter_mgt(fn_run_simulations, fn_get_counts, num_simulations):
 
     def fn_getActionProb(canonicalBoard, temp=1):
         temp = 0
 
-        for i in range(num_simulations):
-            fn_search(canonicalBoard)
+        fn_run_simulations(canonicalBoard, num_simulations)
 
         counts = fn_get_counts(canonicalBoard)
 
