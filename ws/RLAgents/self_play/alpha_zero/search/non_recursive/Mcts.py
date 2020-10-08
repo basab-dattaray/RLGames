@@ -34,7 +34,8 @@ class Mcts():
 
         self.state_cache = None
 
-        self.fn_get_action_probabilities_ = mcts_adapter_mgt(self.fn_execute_monte_carlo_tree_search, self.fn_get_mcts_counts, num_mcts_simulations)
+        # self.fn_get_action_probabilities_ = mcts_adapter_mgt(self.fn_execute_monte_carlo_tree_search, self.fn_get_mcts_counts, num_mcts_simulations)
+        self.fn_get_action_probabilities = mcts_adapter_mgt(self.fn_init_mcts, self.fn_get_mcts_counts, num_mcts_simulations)
 
     def __fn_get_counts(self):
         childrenNodes = self.root_node.children_nodes
@@ -80,15 +81,9 @@ class Mcts():
         counts = self.__fn_get_counts()
         return counts
 
-    def fn_get_action_probabilities(self, state, temp=1):
-        self.state_cache = StateCache(self, state)
+    def fn_get_action_probabilities2(self, state, temp=1):
+        self.fn_init_mcts(state)
 
-        self.__fn_reset_mcts()
-
-        # for i in range(self.num_mcts_simulations):
-        #     self.fn_execute_monte_carlo_tree_search(state)
-        #
-        # counts = self.__fn_get_counts()
         counts = self.fn_get_mcts_counts(state)
 
         if temp == 0 or True:
@@ -102,3 +97,8 @@ class Mcts():
         counts_sum = float(sum(counts))
         probs = [x / counts_sum for x in counts]
         return probs
+
+    def fn_init_mcts(self, state):
+        self.state_cache = StateCache(self, state)
+        self.__fn_reset_mcts()
+        return True

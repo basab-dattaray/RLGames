@@ -27,16 +27,18 @@ class MCTS():
         self.Es = {}  # stores game.getGameEnded ended for board s
         self.Vs = {}  # stores game.getValidMoves for board s
 
-        self.getActionProb = mcts_adapter_mgt(self.fn_run_simulations, self.fn_get_mcts_count, args.numMCTSSims)
+        self.getActionProb = mcts_adapter_mgt(self.fn_init_mcts, self.fn_get_mcts_count, args.numMCTSSims)
 
-    def fn_get_mcts_count(self, canonicalBoard):
-        s = self.game.stringRepresentation(canonicalBoard)
+    def fn_get_mcts_count(self, canonical_board):
+        for i in range(self.args.numMCTSSims):
+            self.search(canonical_board)
+
+        s = self.game.stringRepresentation(canonical_board)
         counts = [self.Nsa[(s, a)] if (s, a) in self.Nsa else 0 for a in range(self.game.getActionSize())]
         return counts
 
-    def fn_run_simulations(self, canonical_board, num_simulations):
-        for i in range(num_simulations):
-            self.search(canonical_board)
+    def fn_init_mcts(self, canonical_board):
+        return None
 
     def search(self, canonicalBoard):
         """
