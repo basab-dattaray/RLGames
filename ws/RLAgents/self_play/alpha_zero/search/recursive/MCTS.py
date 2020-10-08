@@ -3,7 +3,7 @@ import math
 
 import numpy as np
 
-from ws.RLAgents.self_play.alpha_zero.search.mcts_adapter_mgt import mcts_adapter_mgt
+from ws.RLAgents.self_play.alpha_zero.search.mcts_probability_mgt import mcts_adapter_mgt
 
 EPS = 1e-8
 
