@@ -71,35 +71,40 @@ class Mcts():
     def __fn_reset_mcts(self):
         self.root_node = None
 
-    def fn_get_action_probabilities2(self, state, temp= 1):
+    # def fn_get_action_probabilities2(self, state, temp= 1):
+    #
+    #     self.state_cache = StateCache(self, state)
+    #
+    #     self.__fn_reset_mcts()
+    #
+    #     counts = self.fn_get_mcts_counts(state)
+    #
+    #     sum_counts = numpy.sum(counts)
+    #     if sum_counts == 0:
+    #         return None
+    #     mixed_probs = counts/sum_counts
+    #     best_action = numpy.random.choice(len(mixed_probs), p=mixed_probs)
+    #     probs = [0] * len(counts)
+    #     probs[best_action] = 1
+    #     return probs
 
-        self.state_cache = StateCache(self, state)
-
-        self.__fn_reset_mcts()
-
+    def fn_get_mcts_counts(self, state):
         for i in range(self.num_mcts_simulations):
             self.__fn_execute_monte_carlo_tree_search(state)
-
         counts = self.__fn_get_counts()
-
-        sum_counts = numpy.sum(counts)
-        if sum_counts == 0:
-            return None
-        mixed_probs = counts/sum_counts
-        best_action = numpy.random.choice(len(mixed_probs), p=mixed_probs)
-        probs = [0] * len(counts)
-        probs[best_action] = 1
-        return probs
+        return counts
 
     def fn_get_action_probabilities(self, state, temp=1):
         self.state_cache = StateCache(self, state)
 
         self.__fn_reset_mcts()
 
-        for i in range(self.num_mcts_simulations):
-            self.__fn_execute_monte_carlo_tree_search(state)
+        # for i in range(self.num_mcts_simulations):
+        #     self.__fn_execute_monte_carlo_tree_search(state)
+        #
+        # counts = self.__fn_get_counts()
+        counts = self.fn_get_mcts_counts(state)
 
-        counts = self.__fn_get_counts()
         if temp == 0 or True:
             bestAs = numpy.array(numpy.argwhere(counts == numpy.max(counts))).flatten()
             bestA = numpy.random.choice(bestAs)
