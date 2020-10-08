@@ -3,6 +3,8 @@ import math
 
 import numpy as np
 
+from ws.RLAgents.self_play.alpha_zero.search.mcts_adapter_mgt import mcts_adapter_mgt
+
 EPS = 1e-8
 
 log = logging.getLogger(__name__)
@@ -25,7 +27,9 @@ class MCTS():
         self.Es = {}  # stores game.getGameEnded ended for board s
         self.Vs = {}  # stores game.getValidMoves for board s
 
-    def getActionProb(self, canonicalBoard, temp=1):
+        self.getActionProb = mcts_adapter_mgt(self.search, self.fn_get_mcts_count, args.numMCTSSims)
+
+    def getActionProb2(self, canonicalBoard, temp=1):
         """
         This function performs numMCTSSims simulations of MCTS starting from
         canonicalBoard.
@@ -39,8 +43,7 @@ class MCTS():
         for i in range(self.args.numMCTSSims):
             self.search(canonicalBoard)
 
-        s = self.game.stringRepresentation(canonicalBoard)
-        counts = [self.Nsa[(s, a)] if (s, a) in self.Nsa else 0 for a in range(self.game.getActionSize())]
+        counts = self.fn_get_mcts_count(canonicalBoard)
 
         if temp == 0:
             bestAs = np.array(np.argwhere(counts == np.max(counts))).flatten()
@@ -53,6 +56,11 @@ class MCTS():
         counts_sum = float(sum(counts))
         probs = [x / counts_sum for x in counts]
         return probs
+
+    def fn_get_mcts_count(self, canonicalBoard):
+        s = self.game.stringRepresentation(canonicalBoard)
+        counts = [self.Nsa[(s, a)] if (s, a) in self.Nsa else 0 for a in range(self.game.getActionSize())]
+        return counts
 
     def search(self, canonicalBoard):
         """
