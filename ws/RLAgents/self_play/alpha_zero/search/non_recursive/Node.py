@@ -70,7 +70,7 @@ class Node(object):
             return False
 
     def fn_expand_node(self):
-        normalized_valid_action_probabilities = self.ref_mcts.state_cache.fn_get_valid_normalized_action_probabilities(action_probabilities= None, distribute_if_none=True)
+        normalized_valid_action_probabilities = self.ref_mcts.state_cache.fn_get_valid_normalized_action_probabilities(action_probabilities= None)
         if normalized_valid_action_probabilities is None:
             return None
         first_child_node = self.__fn_add_children_nodes(normalized_valid_action_probabilities)
@@ -175,7 +175,7 @@ class Node(object):
         best_child = None
         best_ucb = 0
 
-        normalized_valid_action_probabilities = self.ref_mcts.state_cache.fn_get_valid_normalized_action_probabilities(action_probabilities= None, distribute_if_none=True)
+        normalized_valid_action_probabilities = self.ref_mcts.state_cache.fn_get_valid_normalized_action_probabilities(action_probabilities= None)
 
         for key, child in self.children_nodes.items():
             action_num = int(key)
@@ -193,7 +193,7 @@ class Node(object):
             else:
                 explore_val = action_prob * math.sqrt(numpy.log(parent_visits) / child_visits)
 
-            ucb = exploit_val + self.explore_exploit_ratio * explore_val
+            ucb = exploit_val + self.explore_exploit_ratio * explore_val # Upper Confidence Bound
 
             if best_child is None:
                 best_child = child
