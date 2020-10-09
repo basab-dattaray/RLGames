@@ -102,7 +102,7 @@ def agent_mgr(args, file_path):
         system_nn.load_checkpoint('tmp/', 'model.tar')
         # args1 = dotdict({'numMCTSSims': 50, 'cpuct':1.0})
         system_mcts = MctsSelector(game, system_nn, args)
-        fn_system_policy = lambda x: numpy.argmax(system_mcts.getActionProb(x, temp=0))
+        fn_system_policy = lambda x: numpy.argmax(system_mcts.getActionProb(x, spread_probabilities=0))
         fn_contender_policy = fn_player_policy(game)
         arena = Arena(fn_system_policy, fn_contender_policy, game, display=OthelloGame.display)
         system_wins, system_losses, draws = arena.playGames(args.num_of_test_games, verbose=verbose)

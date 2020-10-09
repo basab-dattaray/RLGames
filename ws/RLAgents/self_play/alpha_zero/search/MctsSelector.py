@@ -19,10 +19,10 @@ class MctsSelector():
                 explore_exploit_ratio=args.cpuct,
                 max_num_actions=max_num_actions
             )
-            self.getActionProb = lambda board, temp: mcts.fn_get_action_probabilities(board, temp)
+            self.getActionProb = lambda board, spread_probabilities: mcts.fn_get_action_probabilities(board, spread_probabilities)
         else:
             mcts = MCTS(game, nnet, args)
-            self.getActionProb = lambda canonicalBoard, temp: mcts.getActionProb(canonicalBoard, temp)
+            self.getActionProb = lambda canonicalBoard, spread_probabilities: mcts.getActionProb(canonicalBoard, spread_probabilities)
         pass
 
 
