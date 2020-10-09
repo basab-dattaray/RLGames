@@ -170,7 +170,7 @@ class Node(object):
 
 
 
-    def __fn_find_best_ucb_child(self, use_formula_used_in_recursive= False):
+    def __fn_find_best_ucb_child(self):
          # neuralnet update was based on previous player
         best_child = None
         best_ucb = 0
@@ -185,14 +185,10 @@ class Node(object):
             child_value = child.__fn_get_value() * self.opponent_factor
             if child_visits == 0:
                 return child
+
             exploit_val = child_value / child_visits
-
-            explore_val = None
-            if use_formula_used_in_recursive:
-                explore_val = action_prob * math.sqrt(parent_visits) / (child_visits + 1)
-            else:
-                explore_val = action_prob * math.sqrt(numpy.log(parent_visits) / child_visits)
-
+            explore_val = action_prob * math.sqrt(parent_visits) / (child_visits + 1)
+            # explore_val = action_prob * math.sqrt(numpy.log(parent_visits) / child_visits)
             ucb = exploit_val + self.explore_exploit_ratio * explore_val # Upper Confidence Bound
 
             if best_child is None:
