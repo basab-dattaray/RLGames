@@ -29,7 +29,7 @@ nnet_params = dotdict({
     'num_channels': 512,
 })
 
-def neuralNetMgr(args, game):
+def neural_net_mgt(args, game):
 
     # args = args
     nnet = OthelloNNet(game, nnet_params)

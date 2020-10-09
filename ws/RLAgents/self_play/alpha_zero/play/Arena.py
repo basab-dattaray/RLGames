@@ -74,38 +74,23 @@ class Arena():
 
 
     def playGames(self, num, verbose=False):
-        """
-        Plays num games in which player1 starts num/2 games and player2 starts
-        num/2 games.
-
-        Returns:
-            oneWon: games won by player1
-            twoWon: games won by player2
-            draws:  games won by nobody
-        """
 
         num = int(num / 2)
+        oneWon_1, twoWon_1, draws_1 = self.fn_get_gameset_results(num, 1, verbose)
+        self.player1, self.player2 = self.player2, self.player1
+        oneWon_2, twoWon_2, draws_2 = self.fn_get_gameset_results(num, -1, verbose)
+        return oneWon_1 + oneWon_2, twoWon_1 + twoWon_2, draws_1 + draws_2
+
+    def fn_get_gameset_results(self, num, result_factor, verbose):
         oneWon = 0
         twoWon = 0
         draws = 0
         for _ in range(num):
             gameResult = self.playGame(verbose=verbose)
-            if gameResult == 1:
+            if gameResult == 1 * result_factor:
                 oneWon += 1
-            elif gameResult == -1:
+            elif gameResult == -1 * result_factor:
                 twoWon += 1
             else:
                 draws += 1
-
-        self.player1, self.player2 = self.player2, self.player1
-
-        for _ in range(num):
-            gameResult = self.playGame(verbose=verbose)
-            if gameResult == -1:
-                oneWon += 1
-            elif gameResult == 1:
-                twoWon += 1
-            else:
-                draws += 1
-
         return oneWon, twoWon, draws

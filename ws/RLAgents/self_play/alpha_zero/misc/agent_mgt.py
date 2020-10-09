@@ -18,7 +18,7 @@ from ws.RLAgents.self_play.alpha_zero.search.MctsSelector import MctsSelector
 
 from ws.RLAgents.self_play.alpha_zero.train.coach import coach
 from ws.RLEnvironments.self_play_games.othello.OthelloGame import OthelloGame as Game, OthelloGame
-from ws.RLAgents.self_play.alpha_zero.train.neural_net_mgt import neuralNetMgr
+from ws.RLAgents.self_play.alpha_zero.train.neural_net_mgt import neural_net_mgt
 from ws.RLUtils.common.AppInfo import AppInfo
 from ws.RLUtils.monitoring.tracing.Recorder import Recorder
 from ws.RLUtils.monitoring.tracing.log_mgt import log_mgr
@@ -57,8 +57,8 @@ def agent_mgr(args, file_path):
         signal.signal(signal.SIGINT, exit_gracefully)
         # args.fn_record('Loading %s...', Game.__name__)
 
-        # args.fn_record('Loading %s...', neuralNetMgr.__name__)
-        nnet = neuralNetMgr(args, game)
+        # args.fn_record('Loading %s...', neural_net_mgt.__name__)
+        nnet = neural_net_mgt(args, game)
 
         if args.load_model:
             args.fn_record('Loading checkpoint "%s/%s"...', args.load_folder_file)
@@ -98,7 +98,7 @@ def agent_mgr(args, file_path):
 
     def fn_test(fn_player_policy, verbose= False, num_of_test_games=2):
         signal.signal(signal.SIGINT, exit_gracefully)
-        system_nn = neuralNetMgr(args, game)
+        system_nn = neural_net_mgt(args, game)
         system_nn.load_checkpoint('tmp/', 'model.tar')
         # args1 = dotdict({'numMCTSSims': 50, 'cpuct':1.0})
         system_mcts = MctsSelector(game, system_nn, args)
