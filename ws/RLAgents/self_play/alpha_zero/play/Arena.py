@@ -1,6 +1,5 @@
 import logging
-
-
+from random import random
 
 log = logging.getLogger(__name__)
 
@@ -76,9 +75,17 @@ class Arena():
     def playGames(self, num, verbose=False):
 
         num = int(num / 2)
-        oneWon_1, twoWon_1, draws_1 = self.fn_get_gameset_results(num, 1, verbose)
+        extra_for_1 = 0
+        extra_for_2 = 0
+        if num % 2 == 1:
+            if random() > .5:
+                extra_for_1 = 1
+            else:
+                extra_for_2 = 1
+
+        oneWon_1, twoWon_1, draws_1 = self.fn_get_gameset_results(num + extra_for_1, 1, verbose)
         self.player1, self.player2 = self.player2, self.player1
-        oneWon_2, twoWon_2, draws_2 = self.fn_get_gameset_results(num, -1, verbose)
+        oneWon_2, twoWon_2, draws_2 = self.fn_get_gameset_results(num + extra_for_2, -1, verbose)
         return oneWon_1 + oneWon_2, twoWon_1 + twoWon_2, draws_1 + draws_2
 
     def fn_get_gameset_results(self, num, result_factor, verbose):
