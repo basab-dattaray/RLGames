@@ -136,10 +136,18 @@ def coach(game, nnet, args):
         score = f'nwins:{nwins} pwins:{pwins} draws:{draws}'
         args.recorder.fn_record_message(score)
 
-        update_score = float(nwins) / (pwins + nwins)
+        reject = False
+        update_score = 0
+        if pwins + nwins == 0:
+            reject = True
+        else:
+            update_score = float(nwins) / (pwins + nwins)
+            if  update_score < args.updateThreshold:
+                reject = True
+
         model_already_exists = nnet.fn_is_model_available(rel_folder=args.checkpoint)
 
-        if (pwins + nwins == 0 or update_score  < args.updateThreshold) and not model_already_exists:
+        if reject and model_already_exists:
             # args.fn_record('REJECTING NEW MODEL')
             args.recorder.fn_record_message('REJECTED New Model: update_threshold: {}, update_score: {}'.format(args.updateThreshold, update_score))
             nnet.load_checkpoint(rel_folder=args.checkpoint, filename='temp.tar')
