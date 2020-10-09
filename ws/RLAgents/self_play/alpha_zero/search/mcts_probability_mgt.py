@@ -6,7 +6,8 @@ def mcts_adapter_mgt(fn_init_mcts=None, fn_get_counts=None, num_simulations=20):
     def fn_getActionProb(canonicalBoard, spread_probabilities=1):
         fn_init_mcts(canonicalBoard)
         counts = fn_get_counts(canonicalBoard)
-        if spread_probabilities == 0:
+        counts_sum = float(sum(counts))
+        if spread_probabilities == 0 or counts_sum == 0:
             return fn_mcts_probability_select_one_win(counts)
         else:
             return fn_mcts_probability_spread_out(counts)
