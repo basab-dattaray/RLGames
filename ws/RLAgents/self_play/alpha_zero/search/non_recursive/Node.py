@@ -21,7 +21,7 @@ class Node(object):
 
      ):
         self.__states = set()
-        self.opponent_factor = -1
+        self.opponent_factor = 1
         self.ref_mcts = ref_mcts
         self.num_edges = num_edges
         self.explore_exploit_ratio = explore_exploit_ratio
@@ -123,10 +123,7 @@ class Node(object):
                         else:
                             print(new_state_val)
                             print(new_state)
-
-
                     state = new_state
-
         val =  -opponent_val
         return val, is_terminal_state
 
@@ -167,8 +164,6 @@ class Node(object):
             return None
 
         return list(children.values())[0]
-
-
 
     def __fn_find_best_ucb_child(self):
          # neuralnet update was based on previous player
