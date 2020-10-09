@@ -3,7 +3,7 @@ import math
 
 import numpy as np
 
-from ws.RLAgents.self_play.alpha_zero.search.mcts_probability_mgt import mcts_adapter_mgt
+from ws.RLAgents.self_play.alpha_zero.search.mcts_probability_mgt import mcts_probability_mgt
 
 EPS = 1e-8
 
@@ -27,7 +27,7 @@ class MCTS():
         self.Es = {}  # stores game.getGameEnded ended for board s
         self.Vs = {}  # stores game.getValidMoves for board s
 
-        self.getActionProb = mcts_adapter_mgt(self.fn_init_mcts, self.fn_get_mcts_count, args.numMCTSSims)
+        self.getActionProb = mcts_probability_mgt(self.fn_init_mcts, self.fn_get_mcts_count)
 
     def fn_get_mcts_count(self, canonical_board):
         for i in range(self.args.numMCTSSims):

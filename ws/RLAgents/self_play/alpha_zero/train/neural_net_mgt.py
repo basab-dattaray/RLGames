@@ -128,11 +128,21 @@ def neural_net_mgt(args, game):
         checkpoint = torch.load(filepath, map_location=map_location)
         nnet.load_state_dict(checkpoint['state_dict'])
 
-    ret_refs = namedtuple('_', ['fn_adjust_model_from_examples','load_checkpoint' ,'save_checkpoint', 'predict'])
+    def fn_is_model_available(rel_folder):
+        folder = os.path.join(args.demo_folder, rel_folder)
+        filepath = os.path.join(folder, 'model.tar')
+        if  os.path.exists(filepath):
+            return True
+        else:
+            return False
+
+
+    ret_refs = namedtuple('_', ['fn_adjust_model_from_examples','load_checkpoint' ,'save_checkpoint', 'predict', 'fn_is_model_available'])
 
     ret_refs.fn_adjust_model_from_examples = fn_adjust_model_from_examples
     ret_refs.load_checkpoint = load_checkpoint
     ret_refs.save_checkpoint = save_checkpoint
     ret_refs.predict = predict
+    ret_refs.fn_is_model_available = fn_is_model_available
 
     return ret_refs

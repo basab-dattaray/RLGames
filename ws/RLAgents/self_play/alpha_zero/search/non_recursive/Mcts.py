@@ -9,7 +9,7 @@ import numpy
 
 from .Node import Node
 from .StateCache import StateCache
-from ..mcts_probability_mgt import mcts_adapter_mgt
+from ..mcts_probability_mgt import mcts_probability_mgt
 
 MTCS_RESULTS_FILE_NAME = 'mtcs_results.pkl'
 CACHE_RESULTS = False
@@ -34,8 +34,8 @@ class Mcts():
 
         self.state_cache = None
 
-        # self.fn_get_action_probabilities_ = mcts_adapter_mgt(self.fn_execute_monte_carlo_tree_search, self.fn_get_mcts_counts, num_mcts_simulations)
-        self.fn_get_action_probabilities = mcts_adapter_mgt(self.fn_init_mcts, self.fn_get_mcts_counts, num_mcts_simulations)
+        # self.fn_get_action_probabilities_ = mcts_probability_mgt(self.fn_execute_monte_carlo_tree_search, self.fn_get_mcts_counts, num_mcts_simulations)
+        self.fn_get_action_probabilities = mcts_probability_mgt(self.fn_init_mcts, self.fn_get_mcts_counts)
 
 
 
