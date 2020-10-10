@@ -134,7 +134,6 @@ def coach(game, nnet, args):
 
         args.fn_record()
 
-        # args.recorder.fn_record_message(f'pwins:{pwins} nwins:{nwins} draws:{draws}          Update Threshold: {args.updateThreshold}')
         update_threshold = 'update threshold: {}'.format(args.updateThreshold)
         args.recorder.fn_record_message(update_threshold)
 
@@ -153,11 +152,9 @@ def coach(game, nnet, args):
         model_already_exists = nnet.fn_is_model_available(rel_folder=args.checkpoint)
 
         if reject and model_already_exists:
-            # args.fn_record('REJECTING NEW MODEL')
             args.recorder.fn_record_message('REJECTED New Model: update_threshold: {}, update_score: {}'.format(args.updateThreshold, update_score))
             nnet.load_checkpoint(rel_folder=args.checkpoint, filename='temp.tar')
         else:
-            # args.fn_record('ACCEPTING NEW MODEL')
             args.recorder.fn_record_message('ACCEPTED New Model: update_threshold: {}, update_score: {}'.format(args.updateThreshold, update_score))
             nnet.save_checkpoint(rel_folder=args.checkpoint, filename=getCheckpointFile(iteration))
             nnet.save_checkpoint(rel_folder=args.checkpoint, filename='model.tar')
@@ -169,7 +166,6 @@ def coach(game, nnet, args):
             iterationTrainExamples = deque([], maxlen=args.maxlenOfQueue)
             fn_count_episode, fn_end_couunting = progress_count_mgt('Episodes', args.numEps)
             for episode_num in range(1, args.numEps + 1):
-                # args.recorder.fn_record_message(f'Episode {episode_num} of {args.numEps}')
                 fn_count_episode()
 
                 mcts = MctsSelector(game, nnet, args)  # reset search tree

@@ -2,6 +2,7 @@ import numpy as np
 
 
 def mcts_probability_mgt(fn_init_mcts, fn_get_counts):
+    force_single_high_probability = True
 
     def fn_getActionProb(canonicalBoard, spread_probabilities=1, _test_data = None):
         if fn_init_mcts is not None:
@@ -12,7 +13,7 @@ def mcts_probability_mgt(fn_init_mcts, fn_get_counts):
         else:
             counts = _test_data
 
-        if spread_probabilities == 0:
+        if spread_probabilities == 0 or force_single_high_probability:
             return fn_mcts_probability_select_one_win(counts)
         else:
             return fn_mcts_probability_spread_out(counts)
