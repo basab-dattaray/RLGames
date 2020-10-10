@@ -3,7 +3,7 @@ import coloredlogs
 
 from ws.Demos.Demo010_self_play__alpha_zero.othello.demo_5.mini.ARGS import args
 
-from ws.RLAgents.self_play.alpha_zero.misc.agent_mgt import agent_mgr
+from ws.RLAgents.self_play.alpha_zero.misc.agent_mgt import agent_mgt
 
 coloredlogs.install(level='INFO')  # Change this to DEBUG to see more info.
 
@@ -13,7 +13,7 @@ coloredlogs.install(level='INFO')  # Change this to DEBUG to see more info.
 #     agent.fn_train()
 
 if __name__ == "__main__":
-    agent_mgr(args, __file__). \
+    agent_mgt(args, __file__). \
         fn_change_args({
             'mcts_recursive': 1,
         }). \

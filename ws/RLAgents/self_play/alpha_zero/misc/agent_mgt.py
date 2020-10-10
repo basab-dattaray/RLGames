@@ -25,7 +25,7 @@ from ws.RLUtils.monitoring.tracing.log_mgt import log_mgr
 from ws.RLUtils.monitoring.tracing.tracer import tracer
 
 
-def agent_mgr(args, file_path):
+def agent_mgt(args, file_path):
 
     log = logging.getLogger(__name__)
     args = args

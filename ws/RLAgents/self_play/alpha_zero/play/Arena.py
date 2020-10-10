@@ -1,8 +1,28 @@
 import logging
+import sys
+from collections import namedtuple
 from random import random
+
+from pip._vendor.colorama import Fore
 
 log = logging.getLogger(__name__)
 
+
+def game_progress_mgt(size):
+    count = 1
+
+    def count_episode():
+        nonlocal count
+        msg = 'Game Count::: {} of {}'.format(count, size)
+        count += 1
+        sys.stdout.write("\r" +Fore.BLUE + msg)
+        sys.stdout.flush()
+
+    def end_couunt():
+        print(Fore.BLACK)
+
+
+    return count_episode, end_couunt
 
 class Arena():
     """
@@ -10,17 +30,6 @@ class Arena():
     """
 
     def __init__(self, player1, player2, game, display=None):
-        """
-        Input:
-            player 1,2: two functions that takes board as input, return action
-            game: Game object
-            display: a function that takes board as input and prints it (e.g.
-                     display in othello/OthelloGame). Is necessary for verbose
-                     mode.
-
-        see othello/RandomPlayer.py for an example. See demo_test_system_vs_human.py for pitting
-        human players/other baselines with each other.
-        """
         self.player1 = player1
         self.player2 = player2
         self.game = game
@@ -28,15 +37,6 @@ class Arena():
         self.game_num = 0
 
     def playGame(self, verbose=False):
-        """
-        Executes one episode of a game.
-
-        Returns:
-            either
-                winner: player who won the game (1 if player1, -1 if player2)
-            or
-                draw result returned from the game that is neither 1, -1, nor 0.
-        """
 
         players = [self.player2, None, self.player1]
         curPlayer = 1
@@ -54,8 +54,10 @@ class Arena():
 
 
             if valids[action] == 0:
+                log.error(f'Action {action} is not valid!')
+                log.debug(f'valids = {valids}')
                 break
-                # log.error(f'Action {action} is not valid!')
+
                 # log.debug(f'valids = {valids}')
                 # assert valids[action] > 0
             board, curPlayer = self.game.getNextState(board, curPlayer, action)
@@ -73,8 +75,8 @@ class Arena():
 
 
     def playGames(self, num, verbose=False):
-
-        num = int(num / 2)
+        self.count_episode, self.end_couunting = game_progress_mgt(num)
+        num_div_2 = int(num / 2)
         extra_for_1 = 0
         extra_for_2 = 0
         if num % 2 == 1:
@@ -83,21 +85,35 @@ class Arena():
             else:
                 extra_for_2 = 1
 
-        oneWon_1, twoWon_1, draws_1 = self.fn_get_gameset_results(num + extra_for_1, 1, verbose)
+        oneWon_1, twoWon_1, draws_1 = self.fn_get_gameset_results(num_div_2 + extra_for_1, 1, verbose)
         self.player1, self.player2 = self.player2, self.player1
-        oneWon_2, twoWon_2, draws_2 = self.fn_get_gameset_results(num + extra_for_2, -1, verbose)
+        oneWon_2, twoWon_2, draws_2 = self.fn_get_gameset_results(num_div_2 + extra_for_2, -1, verbose)
+
+        self.end_couunting()
         return oneWon_1 + oneWon_2, twoWon_1 + twoWon_2, draws_1 + draws_2
 
     def fn_get_gameset_results(self, num, result_factor, verbose):
         oneWon = 0
         twoWon = 0
         draws = 0
-        for _ in range(num):
+        for i in range(num):
+            self.count_episode()
             gameResult = self.playGame(verbose=verbose)
+
             if gameResult == 1 * result_factor:
                 oneWon += 1
             elif gameResult == -1 * result_factor:
                 twoWon += 1
             else:
                 draws += 1
+
         return oneWon, twoWon, draws
+
+
+
+
+
+
+
+
+

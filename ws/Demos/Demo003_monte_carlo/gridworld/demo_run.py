@@ -6,6 +6,6 @@ if __name__ == "__main__":
     app_info, env = preparation_mgr(__file__)
 
     subpackage_name = 'ws.RLAgents.{}'.format(app_info[STRATEGY])
-    agent_mgr = load_function(function_name="agent_mgr", module_tag="agent_mgt", subpackage_tag=subpackage_name)
+    agent_mgr = load_function(function_name="agent_mgt", module_tag="agent_mgt", subpackage_tag=subpackage_name)
     fnInit = agent_mgr(app_info, env)
     fnInit()
