@@ -13,6 +13,7 @@ import numpy as np
 from ws.RLAgents.self_play.alpha_zero.play.Arena import Arena
 from ws.RLAgents.self_play.alpha_zero.search.MctsSelector import MctsSelector
 # from ws.RLAgents.self_play.alpha_zero.search.recursive.MCTS import MCTS
+from ws.RLUtils.monitoring.tracing.progress_count_mgt import progress_count_mgt
 from ws.RLUtils.monitoring.tracing.tracer import tracer
 
 log = logging.getLogger(__name__)
@@ -129,6 +130,10 @@ def coach(game, nnet, args):
         arena = Arena(lambda x: np.argmax(pmcts.getActionProb(x, spread_probabilities=0)),
                       lambda x: np.argmax(nmcts.getActionProb(x, spread_probabilities=0)), game)
         pwins, nwins, draws = arena.playGames(args.arenaCompare)
+
+
+        args.fn_record()
+
         # args.recorder.fn_record_message(f'pwins:{pwins} nwins:{nwins} draws:{draws}          Update Threshold: {args.updateThreshold}')
         update_threshold = 'update threshold: {}'.format(args.updateThreshold)
         args.recorder.fn_record_message(update_threshold)
@@ -162,14 +167,17 @@ def coach(game, nnet, args):
         # examples of the iteration
         if not skipFirstSelfPlay or iteration > 1:
             iterationTrainExamples = deque([], maxlen=args.maxlenOfQueue)
-
+            fn_count_episode, fn_end_couunting = progress_count_mgt('Episodes', args.numEps)
             for episode_num in range(1, args.numEps + 1):
-                args.recorder.fn_record_message(f'Episode {episode_num} of {args.numEps}')
+                # args.recorder.fn_record_message(f'Episode {episode_num} of {args.numEps}')
+                fn_count_episode()
 
                 mcts = MctsSelector(game, nnet, args)  # reset search tree
                 episode_result = execute_episode_for_training()
                 if episode_result is not None:
                     iterationTrainExamples += episode_result
+            fn_end_couunting()
+            args.recorder.fn_record_message(f'Episodes: {args.numEps}')
 
             # save the iteration examples to the history
             trainExamplesHistory.append(iterationTrainExamples)

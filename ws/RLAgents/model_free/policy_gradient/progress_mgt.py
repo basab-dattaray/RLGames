@@ -29,6 +29,7 @@ def progress_mgr(app_info):
 
             progress_info['episode_num'], progress_info['max_episode_num']
         )
+
         return msg
 
     _chart = Chart(

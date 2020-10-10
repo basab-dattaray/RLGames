@@ -7,6 +7,7 @@ from collections import namedtuple
 
 import numpy as np
 
+from ws.RLUtils.monitoring.tracing.progress_count_mgt import progress_count_mgt
 from ws.RLUtils.monitoring.tracing.tracer import tracer
 
 sys.path.append('../../')
@@ -45,8 +46,10 @@ def neural_net_mgt(args, game):
         examples: list of examples, each example is of form (board, pi, v)
         """
         optimizer = optim.Adam(nnet.parameters())
+        fn_count_episode, fn_end_couunting = progress_count_mgt('Epochs', args.epochs)
         for epoch in range(args.epochs):
-            args.recorder.fn_record_message(f'Epoch {epoch + 1} of {args.epochs}')
+            # args.recorder.fn_record_message(f'Epoch {epoch + 1} of {args.epochs}')
+            fn_count_episode()
 
             nnet.train()
             pi_losses = AverageMeter()
@@ -81,6 +84,8 @@ def neural_net_mgt(args, game):
                 optimizer.zero_grad()
                 total_loss.backward()
                 optimizer.step()
+        fn_end_couunting()
+        args.recorder.fn_record_message(f'Epochs: {args.epochs}')
 
     def predict(board):
         """
