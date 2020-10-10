@@ -10,8 +10,10 @@ def progress_count_mgt(title, size):
         nonlocal count
         msg = '{}::: {} of {}'.format(title, count, size)
         count += 1
-        sys.stdout.write("\r" +Fore.BLUE + msg)
-        sys.stdout.flush()
+        # sys.stdout.write(Fore.BLUE + msg)
+        # sys.stdout.flush()
+        print(Fore.BLUE + msg, end='\r', flush= True)
+        print(flush=True)
 
     def end_couunt():
         print(Fore.BLACK)

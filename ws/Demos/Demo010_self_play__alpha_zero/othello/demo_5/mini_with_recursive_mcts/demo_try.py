@@ -8,7 +8,8 @@ if __name__ == "__main__":
         fn_change_args({
             'mcts_recursive': 1,
         }). \
-        fn_show_args()
+        fn_show_args(). \
+        fn_archive_log_file()
 
     except Exception as x:
         print(f'*** DEMO ---{x}')
