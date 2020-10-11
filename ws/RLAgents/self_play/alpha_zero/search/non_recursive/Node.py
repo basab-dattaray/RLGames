@@ -2,8 +2,10 @@ import math
 import uuid
 import numpy
 
+
+
 class Node(object):
-    DEBUG_FLAG = False
+    # DEBUG_FLAG = False
 
     def __init__(self,
         fn_get_valid_normalized_action_probabilities,
@@ -17,29 +19,26 @@ class Node(object):
 
      ):
         self.fn_get_valid_normalized_action_probabilities = fn_get_valid_normalized_action_probabilities
-        self.__states = set()
-        self.opponent_factor = 1
-        # self.ref_mcts = ref_mcts
         self.num_edges = num_edges
         self.explore_exploit_ratio = explore_exploit_ratio
-
-        self.parent = parent_node
-        self.visits = 0
         self.val = val
+        self.parent_node = parent_node
+        self.parent_action = parent_action
+        self.state = state
+
+        self.visits = 0
+        self.__states = set()
+        self.opponent_factor = 1
         self.children_nodes = {}
         self.id = uuid.uuid4()
-        self.parent_action = parent_action
 
-        if state is not None:
-            self.state = state
-        else:
+        if self.state is None:
             # parent_state = parent_node.state if parent_node is not None else None
             parent_state = numpy.copy(parent_node.state)
             current_state = self.__fn_compute_state(num_edges, parent_state, parent_action)
             self.state = current_state
 
-    @staticmethod
-    def __fn_compute_state(num_edges, parent_state, parent_action):
+    def __fn_compute_state(self, num_edges, parent_state, parent_action):
         if parent_action >= num_edges:
             return None
         state_dims = numpy.shape(parent_state)
@@ -50,51 +49,9 @@ class Node(object):
 
         return parent_state
 
-    def __fn_inspect_node_info(self):
-        return self.id, self.parent, self.visits, self.val, self.children_nodes, self.parent_action
-
-    def fn_select_from_available_leaf_nodes(self):
-        if len(self.children_nodes) == 0:  # leaf_node
-            return self
-
-        best_child = self.__fn_find_best_ucb_child()
-        return best_child.fn_select_from_available_leaf_nodes()
-
-    def fn_is_already_visited(self):
-        if self.visits > 0:
-            return True
-        else:
-            return False
-
-    def fn_expand_node(self):
-        normalized_valid_action_probabilities = self.fn_get_valid_normalized_action_probabilities(action_probabilities= None)
-        if normalized_valid_action_probabilities is None:
-            return None
-        first_child_node = self.__fn_add_children_nodes(normalized_valid_action_probabilities)
-
-        return first_child_node
-
     def __fn_add_val_to_node(self, val):
-
         self.val += val
         self.visits += 1
-
-    def __fn_get_parent_node(self):
-        return self.parent
-
-    def fn_back_propagate(self, val):
-        current_node = self
-        self.__fn_add_val_to_node(val)
-
-        parent_node = self.__fn_get_parent_node()
-
-        while parent_node is not None:
-            current_node = parent_node
-            current_node.__fn_add_val_to_node(val)
-            # print(current_node.val)
-            parent_node = current_node.__fn_get_parent_node()
-
-        return self.val
 
     def __fn_add_children_nodes(self, normalized_valid_action_probabilities):
 
@@ -130,9 +87,9 @@ class Node(object):
         for key, child in self.children_nodes.items():
             action_num = int(key)
             action_prob = normalized_valid_action_probabilities[action_num]
-            parent_visits = self.__fn_get_visits()
-            child_visits = child.__fn_get_visits()
-            child_value = child.__fn_get_value() * self.opponent_factor
+            parent_visits = self.visits
+            child_visits = child.visits
+            child_value = child.val * self.opponent_factor
             if child_visits == 0:
                 return child
 
@@ -151,12 +108,45 @@ class Node(object):
 
         return best_child
 
-    def __fn_get_visits(self):
-        return self.visits
+    def __fn_get_parent_node(self):
+        return self.parent_node
 
-    def __fn_get_value(self):
+    def fn_select_from_available_leaf_nodes(self):
+        if len(self.children_nodes) == 0:  # leaf_node
+            return self
+
+        best_child = self.__fn_find_best_ucb_child()
+        return best_child.fn_select_from_available_leaf_nodes()
+
+    def fn_is_already_visited(self):
+        if self.visits > 0:
+            return True
+        else:
+            return False
+
+    def fn_expand_node(self):
+        normalized_valid_action_probabilities = self.fn_get_valid_normalized_action_probabilities(action_probabilities= None)
+        if normalized_valid_action_probabilities is None:
+            return None
+        first_child_node = self.__fn_add_children_nodes(normalized_valid_action_probabilities)
+
+        return first_child_node
+
+    def fn_back_propagate(self, val):
+        current_node = self
+        self.__fn_add_val_to_node(val)
+
+        parent_node = self.__fn_get_parent_node()
+
+        while parent_node is not None:
+            current_node = parent_node
+            current_node.__fn_add_val_to_node(val)
+            # print(current_node.val)
+            parent_node = current_node.__fn_get_parent_node()
+
         return self.val
 
-    # def __fn_get_children_nodes(self):
-    #     return self.children_nodes
+
+
+
 

@@ -56,7 +56,6 @@ class Mcts():
                 parent_node=None,
                 state= state
             )
-            #! self.root_node.fn_expand_node()
 
         selected_node = self.root_node.fn_select_from_available_leaf_nodes()
 
