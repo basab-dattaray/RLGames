@@ -35,8 +35,8 @@ class Node(object):
         if self.state is None:
             # parent_state = parent_node.state if parent_node is not None else None
             parent_state = numpy.copy(parent_node.state)
-            current_state = self.__fn_compute_state(num_edges, parent_state, parent_action)
-            self.state = current_state
+            self.state = self.__fn_compute_state(num_edges, parent_state, parent_action)
+            # self.state = current_state
 
     def __fn_compute_state(self, num_edges, parent_state, parent_action):
         if parent_action >= num_edges:
@@ -70,7 +70,7 @@ class Node(object):
                 )
                 children[str(action_num)] = child_node
 
-        self.children_nodes = {**children}
+        self.children_nodes = children # {**children} #???
 
         if len(children.values()) == 0:
             return None
