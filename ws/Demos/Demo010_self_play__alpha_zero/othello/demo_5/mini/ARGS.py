@@ -3,7 +3,7 @@ from ws.RLAgents.self_play.alpha_zero.misc.utils import dotdict
 args = dotdict({
     'numIters': 3,
     'numEps': 3,              # Number of complete self-play games to simulate during a new iteration.
-    'tempThreshold': 15,        #
+    'tempThreshold': 0, # 15,        #
     'updateThreshold': 0.5,     # During arena playoff, new neural net will be accepted if threshold or more of games are won.
     'maxlenOfQueue': 200000,    # Number of game examples to train the neural networks.
     'numMCTSSims': 5,          # Number of games moves for MCTS to simulate.

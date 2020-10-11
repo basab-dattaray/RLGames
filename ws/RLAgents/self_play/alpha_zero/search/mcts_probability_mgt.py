@@ -13,7 +13,7 @@ def mcts_probability_mgt(fn_init_mcts, fn_get_counts):
         else:
             counts = _test_data
 
-        if spread_probabilities == 0 or force_single_high_probability:
+        if spread_probabilities == 0:
             return fn_mcts_probability_select_one_win(counts)
         else:
             return fn_mcts_probability_spread_out(counts)
