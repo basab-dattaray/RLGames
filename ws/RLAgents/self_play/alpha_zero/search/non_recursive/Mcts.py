@@ -86,6 +86,6 @@ class Mcts():
 
 
     def fn_init_mcts(self, state):
-        self.state_cache = StateCache(self, state)
+        self.state_cache = StateCache(self.fn_get_valid_actions, self.fn_predict_action_probablities, state)
         self.__fn_reset_mcts()
         return True

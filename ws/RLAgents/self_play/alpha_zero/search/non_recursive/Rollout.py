@@ -13,8 +13,8 @@ class Rollout():
     # def fn_set_result(self, result):
     #     self.result = result
 
-    def fn_get_result(self):
-        return self.result
+    # def fn_get_result(self):
+    #     return self.result
 
     def fn_get_value(self,
                         state):

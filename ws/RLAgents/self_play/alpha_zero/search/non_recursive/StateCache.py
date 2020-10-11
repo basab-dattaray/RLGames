@@ -1,16 +1,18 @@
 import numpy
 
 class StateCache():
-    def __init__(self, ref_mcts,  state):
+    def __init__(self, fn_get_valid_actions, fn_predict_action_probablities, state):
         self.state = state
-        self.ref_mcts = ref_mcts
+        # self.ref_mcts = ref_mcts
+        self.fn_get_valid_actions = fn_get_valid_actions
+        self.fn_predict_action_probablities = fn_predict_action_probablities
+
         self.valid_norm_action_probabilities = None
         self.action_probabilities = None
         self.value = None
 
-
     def fn_get_valid_normalized_action_probabilities_(self, action_probabilities):
-        valid_moves = self.ref_mcts.fn_get_valid_actions(self.state)
+        valid_moves = self.fn_get_valid_actions(self.state)
         if valid_moves is None:
             return None
         valid_action_probabilities = action_probabilities * valid_moves
@@ -31,5 +33,5 @@ class StateCache():
 
     def fn_get_predictions(self):
         if self.action_probabilities is None or self.value is None:
-            self.action_probabilities, self.value = self.ref_mcts.fn_predict_action_probablities(self.state)
+            self.action_probabilities, self.value = self.fn_predict_action_probablities(self.state)
         return self.action_probabilities, self.value
