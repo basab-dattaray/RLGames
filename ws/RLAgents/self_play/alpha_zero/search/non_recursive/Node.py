@@ -15,7 +15,7 @@ class Node(object):
         val=0.0,
         parent_node=None,
         parent_action=-1,
-        state= None,
+        state= None
 
      ):
         self.fn_get_valid_normalized_action_probabilities = fn_get_valid_normalized_action_probabilities
@@ -33,10 +33,8 @@ class Node(object):
         self.id = uuid.uuid4()
 
         if self.state is None:
-            # parent_state = parent_node.state if parent_node is not None else None
-            # parent_state = numpy.copy(parent_node.state)
             self.state = self.__fn_compute_state(num_edges, parent_node.state, parent_action)
-            # self.state = current_state
+
 
     def __fn_compute_state(self, num_edges, parent_state, parent_action):
         if parent_action >= num_edges:
