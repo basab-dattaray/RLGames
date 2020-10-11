@@ -34,8 +34,8 @@ class Node(object):
 
         if self.state is None:
             # parent_state = parent_node.state if parent_node is not None else None
-            parent_state = numpy.copy(parent_node.state)
-            self.state = self.__fn_compute_state(num_edges, parent_state, parent_action)
+            # parent_state = numpy.copy(parent_node.state)
+            self.state = self.__fn_compute_state(num_edges, parent_node.state, parent_action)
             # self.state = current_state
 
     def __fn_compute_state(self, num_edges, parent_state, parent_action):
