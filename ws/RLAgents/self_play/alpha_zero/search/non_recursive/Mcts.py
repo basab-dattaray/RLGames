@@ -8,7 +8,7 @@ import os
 import numpy
 
 from .Node import Node
-from .StateCache import StateCache
+from .state_cache_mgt import state_cache_mgt
 from .rollout_mgt import rollout_mgt
 from ..mcts_probability_mgt import mcts_probability_mgt
 
@@ -96,6 +96,6 @@ class Mcts():
 
 
     def fn_init_mcts(self, state):
-        self.state_cache = StateCache(self.fn_get_valid_actions, self.fn_predict_action_probablities, state)
+        self.state_cache = state_cache_mgt(self.fn_get_valid_actions, self.fn_predict_action_probablities, state)
         self.__fn_reset_mcts()
         return True
