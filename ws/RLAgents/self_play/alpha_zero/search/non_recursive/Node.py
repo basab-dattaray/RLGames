@@ -88,13 +88,7 @@ class Node(object):
     def fn_rollout(self, multirun= False):
         state = self.state
 
-        debug_board_evaluator = None
-        if Node.DEBUG_FLAG:
-            debug_board_evaluator = OthelloBoardValuator()
-
         rollout_impl = Rollout(self.ref_mcts.fn_predict_action_probablities)
-
-        # is_terminal_state = False
 
         opponent_val, action_probs, is_terminal_state =  rollout_impl.fn_get_rollout_value(
             self.ref_mcts.fn_terminal_state_status, state
@@ -116,13 +110,6 @@ class Node(object):
                         self.ref_mcts.fn_terminal_state_status, new_state
                     )
 
-                    if Node.DEBUG_FLAG:
-                        new_state_val = debug_board_evaluator.fn_get_value(new_state) # id(new_state)
-                        if new_state_val not in self.__states:
-                            self.__states.add(new_state_val)
-                        else:
-                            print(new_state_val)
-                            print(new_state)
                     state = new_state
         val =  -opponent_val
         return val, is_terminal_state
