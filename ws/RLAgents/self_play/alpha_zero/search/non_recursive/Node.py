@@ -85,34 +85,34 @@ class Node(object):
     def __fn_get_parent_node(self):
         return self.parent
 
-    def fn_rollout(self, multirun= False):
-        state = self.state
-
-        rollout_impl = Rollout(self.ref_mcts.fn_predict_action_probablities)
-
-        opponent_val, action_probs, is_terminal_state =  rollout_impl.fn_get_rollout_value(
-            self.ref_mcts.fn_terminal_state_status, state
-        )
-
-        while not is_terminal_state and multirun:
-            normalized_valid_action_probabilities = self.ref_mcts.state_cache.fn_get_valid_normalized_action_probabilities(
-                action_probabilities = action_probs
-            )
-            if normalized_valid_action_probabilities is None:
-                is_terminal_state = True
-            else:
-                action = numpy.random.choice(len(normalized_valid_action_probabilities), p=normalized_valid_action_probabilities)
-                new_state = self.ref_mcts.fn_find_next_state(state, action)
-                if new_state is None:
-                    is_terminal_state = True
-                else:
-                    opponent_val, action_probs, is_terminal_state = rollout_impl.fn_get_rollout_value(
-                        self.ref_mcts.fn_terminal_state_status, new_state
-                    )
-
-                    state = new_state
-        val =  -opponent_val
-        return val, is_terminal_state
+    # def fn_rollout(self, multirun= False):
+    #     state = self.state
+    #
+    #     rollout_impl = Rollout(self.ref_mcts.fn_predict_action_probablities)
+    #
+    #     opponent_val, action_probs, is_terminal_state =  rollout_impl.fn_get_rollout_value(
+    #         self.ref_mcts.fn_terminal_state_status, state
+    #     )
+    #
+    #     while not is_terminal_state and multirun:
+    #         normalized_valid_action_probabilities = self.ref_mcts.state_cache.fn_get_valid_normalized_action_probabilities(
+    #             action_probabilities = action_probs
+    #         )
+    #         if normalized_valid_action_probabilities is None:
+    #             is_terminal_state = True
+    #         else:
+    #             action = numpy.random.choice(len(normalized_valid_action_probabilities), p=normalized_valid_action_probabilities)
+    #             new_state = self.ref_mcts.fn_find_next_state(state, action)
+    #             if new_state is None:
+    #                 is_terminal_state = True
+    #             else:
+    #                 opponent_val, action_probs, is_terminal_state = rollout_impl.fn_get_rollout_value(
+    #                     self.ref_mcts.fn_terminal_state_status, new_state
+    #                 )
+    #
+    #                 state = new_state
+    #     val =  -opponent_val
+    #     return val, is_terminal_state
 
     def fn_back_propagate(self, val):
         current_node = self

@@ -9,6 +9,7 @@ import numpy
 
 from .Node import Node
 from .StateCache import StateCache
+from .rollout_mgt import rollout_mgt
 from ..mcts_probability_mgt import mcts_probability_mgt
 
 MTCS_RESULTS_FILE_NAME = 'mtcs_results.pkl'
@@ -36,6 +37,10 @@ class Mcts():
 
         # self.fn_get_action_probabilities_ = mcts_probability_mgt(self.fn_execute_monte_carlo_tree_search, self.fn_get_mcts_counts, num_mcts_simulations)
         self.fn_get_action_probabilities = mcts_probability_mgt(self.fn_init_mcts, self.fn_get_mcts_counts)
+        self.fn_rollout = rollout_mgt(self.state_cache, self.fn_predict_action_probablities, self.fn_terminal_state_status, self.fn_find_next_state,
+                    multirun=False)
+
+
 
 
 
@@ -61,7 +66,12 @@ class Mcts():
                 return None
             pass
 
-        score, terminal_state = selected_node.fn_rollout()
+
+
+        score, terminal_state = self.fn_rollout(selected_node.state)
+
+        # score, terminal_state = selected_node.fn_rollout()
+
         # if terminal_state: print(f'*** score={score}')
         value = selected_node.fn_back_propagate(score)
         return value

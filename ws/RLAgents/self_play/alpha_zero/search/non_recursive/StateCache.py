@@ -11,7 +11,7 @@ class StateCache():
         self.action_probabilities = None
         self.value = None
 
-    def fn_get_valid_normalized_action_probabilities_(self, action_probabilities):
+    def __fn_get_valid_normalized_action_probabilities_impl(self, action_probabilities):
         valid_moves = self.fn_get_valid_actions(self.state)
         if valid_moves is None:
             return None
@@ -28,7 +28,7 @@ class StateCache():
         if self.valid_norm_action_probabilities is None:
             if action_probabilities is None:
                 action_probabilities, _ = self.fn_get_predictions()
-            self.valid_norm_action_probabilities = self.fn_get_valid_normalized_action_probabilities_(action_probabilities)
+            self.valid_norm_action_probabilities = self.__fn_get_valid_normalized_action_probabilities_impl(action_probabilities)
         return self.valid_norm_action_probabilities
 
     def fn_get_predictions(self):
