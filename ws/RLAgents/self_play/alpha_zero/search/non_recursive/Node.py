@@ -2,10 +2,6 @@ import math
 import uuid
 import numpy
 
-from ws.RLAgents.self_play.alpha_zero.search.non_recursive.Rollout import Rollout
-from ws.RLUtils.debugging_aids.OthelloBoardValuator import OthelloBoardValuator
-
-
 class Node(object):
     DEBUG_FLAG = False
 
