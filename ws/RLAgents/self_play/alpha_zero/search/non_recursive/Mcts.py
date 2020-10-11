@@ -48,7 +48,7 @@ class Mcts():
         if self.root_node is None:
 
             self.root_node = Node(
-                self,
+                self.state_cache.fn_get_valid_normalized_action_probabilities,
                 self.max_num_actions,
                 self.explore_exploit_ratio,
 

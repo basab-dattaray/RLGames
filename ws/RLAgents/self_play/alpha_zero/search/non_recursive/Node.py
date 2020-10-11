@@ -6,7 +6,7 @@ class Node(object):
     DEBUG_FLAG = False
 
     def __init__(self,
-        ref_mcts,
+        fn_get_valid_normalized_action_probabilities,
         num_edges,
         explore_exploit_ratio,
 
@@ -16,9 +16,10 @@ class Node(object):
         state= None,
 
      ):
+        self.fn_get_valid_normalized_action_probabilities = fn_get_valid_normalized_action_probabilities
         self.__states = set()
         self.opponent_factor = 1
-        self.ref_mcts = ref_mcts
+        # self.ref_mcts = ref_mcts
         self.num_edges = num_edges
         self.explore_exploit_ratio = explore_exploit_ratio
 
@@ -66,7 +67,7 @@ class Node(object):
             return False
 
     def fn_expand_node(self):
-        normalized_valid_action_probabilities = self.ref_mcts.state_cache.fn_get_valid_normalized_action_probabilities(action_probabilities= None)
+        normalized_valid_action_probabilities = self.fn_get_valid_normalized_action_probabilities(action_probabilities= None)
         if normalized_valid_action_probabilities is None:
             return None
         first_child_node = self.__fn_add_children_nodes(normalized_valid_action_probabilities)
@@ -80,35 +81,6 @@ class Node(object):
 
     def __fn_get_parent_node(self):
         return self.parent
-
-    # def fn_rollout(self, multirun= False):
-    #     state = self.state
-    #
-    #     rollout_impl = Rollout(self.ref_mcts.fn_predict_action_probablities)
-    #
-    #     opponent_val, action_probs, is_terminal_state =  rollout_impl.fn_get_rollout_value(
-    #         self.ref_mcts.fn_terminal_state_status, state
-    #     )
-    #
-    #     while not is_terminal_state and multirun:
-    #         normalized_valid_action_probabilities = self.ref_mcts.state_cache.fn_get_valid_normalized_action_probabilities(
-    #             action_probabilities = action_probs
-    #         )
-    #         if normalized_valid_action_probabilities is None:
-    #             is_terminal_state = True
-    #         else:
-    #             action = numpy.random.choice(len(normalized_valid_action_probabilities), p=normalized_valid_action_probabilities)
-    #             new_state = self.ref_mcts.fn_find_next_state(state, action)
-    #             if new_state is None:
-    #                 is_terminal_state = True
-    #             else:
-    #                 opponent_val, action_probs, is_terminal_state = rollout_impl.fn_get_rollout_value(
-    #                     self.ref_mcts.fn_terminal_state_status, new_state
-    #                 )
-    #
-    #                 state = new_state
-    #     val =  -opponent_val
-    #     return val, is_terminal_state
 
     def fn_back_propagate(self, val):
         current_node = self
@@ -131,7 +103,7 @@ class Node(object):
             if action_probability > 0:
 
                 child_node = Node(
-                    self.ref_mcts,
+                    self.fn_get_valid_normalized_action_probabilities,
                     self.num_edges,
                     self.explore_exploit_ratio,
 
@@ -153,7 +125,7 @@ class Node(object):
         best_child = None
         best_ucb = 0
 
-        normalized_valid_action_probabilities = self.ref_mcts.state_cache.fn_get_valid_normalized_action_probabilities(action_probabilities= None)
+        normalized_valid_action_probabilities = self.fn_get_valid_normalized_action_probabilities(action_probabilities= None)
 
         for key, child in self.children_nodes.items():
             action_num = int(key)
@@ -185,6 +157,6 @@ class Node(object):
     def __fn_get_value(self):
         return self.val
 
-    def __fn_get_children_nodes(self):
-        return self.children_nodes
+    # def __fn_get_children_nodes(self):
+    #     return self.children_nodes
 
