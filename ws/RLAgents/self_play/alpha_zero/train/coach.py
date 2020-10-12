@@ -128,7 +128,10 @@ def coach(game, nnet, args):
         args.recorder.fn_record_message(f'* Comptete with Previous Version', indent=0)
 
         arena = Arena(lambda x: np.argmax(pmcts.getActionProb(x, spread_probabilities=0)),
-                      lambda x: np.argmax(nmcts.getActionProb(x, spread_probabilities=0)), game)
+                      lambda x: np.argmax(nmcts.getActionProb(x, spread_probabilities=0)),
+                      game,
+                      msg_recorder= args.recorder.fn_record_message)
+
         pwins, nwins, draws = arena.playGames(args.arenaCompare)
 
 

@@ -59,7 +59,7 @@ class OthelloGame(Game):
 
     def getGameEnded(self, board, player):
         if player is None:
-            return self._fn_game_status(board)
+            return self.fn_game_status(board)
 
         b = Board(self.n)
         b.pieces = np.copy(board)
@@ -71,7 +71,7 @@ class OthelloGame(Game):
             return 1
         return -1
 
-    def _fn_game_status(self, board):
+    def fn_game_status(self, board):
         val = sum(board.flatten())
         status = 0 if val == 0 else -1 if val < 0 else 1
         return status
