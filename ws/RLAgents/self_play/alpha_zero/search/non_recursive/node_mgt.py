@@ -141,5 +141,16 @@ def Node(
     ref_obj.fn_expand_node = fn_expand_node
     ref_obj.fn_back_propagate = fn_back_propagate
 
+    ref_obj.fn_get_valid_normalized_action_probabilities=fn_get_valid_normalized_action_probabilities
+    ref_obj.num_edges = num_edges
+    ref_obj.explore_exploit_ratio = explore_exploit_ratio
+    ref_obj.val = val
+
+    ref_obj.parent_node=parent_node
+    ref_obj.parent_action = parent_action
+    ref_obj.state = state
+    ref_obj.__fn_add_val_to_node = __fn_add_val_to_node
+    ref_obj.children_nodes = children_nodes
+
     return ref_obj
 

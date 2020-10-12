@@ -5,7 +5,6 @@
 # The more evolved board states (nodes) will have fewer allowable actions (edges)
 import os
 
-import numpy
 
 from .Node import Node
 from .state_cache_mgt import state_cache_mgt
@@ -39,10 +38,6 @@ class Mcts():
         self.fn_get_action_probabilities = mcts_probability_mgt(self.fn_init_mcts, self.fn_get_mcts_counts)
         self.fn_rollout = rollout_mgt(self.state_cache, self.fn_predict_action_probablities, self.fn_terminal_state_status, self.fn_find_next_state,
                     multirun=False)
-
-
-
-
 
     def fn_execute_monte_carlo_tree_search(self, state):
         if self.root_node is None:
