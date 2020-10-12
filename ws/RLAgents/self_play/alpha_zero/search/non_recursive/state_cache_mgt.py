@@ -20,8 +20,8 @@ def state_cache_mgt(fn_get_valid_actions, fn_predict_action_probablities, state)
             distributed_action_probabilities = [1/len(action_probabilities)] * len(action_probabilities)
             return distributed_action_probabilities
 
-
-    def fn_get_valid_normalized_action_probabilities(action_probabilities):
+    def fn_get_valid_normalized_action_probabilities():
+        action_probabilities = None
         nonlocal valid_norm_action_probabilities
         if valid_norm_action_probabilities is None:
             if action_probabilities is None:

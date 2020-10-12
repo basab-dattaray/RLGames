@@ -80,7 +80,7 @@ class Node(object):
         best_child = None
         best_ucb = 0
 
-        normalized_valid_action_probabilities = self.fn_get_valid_normalized_action_probabilities(action_probabilities= None)
+        normalized_valid_action_probabilities = self.fn_get_valid_normalized_action_probabilities()
 
         for key, child in self.children_nodes.items():
             action_num = int(key)
@@ -106,9 +106,6 @@ class Node(object):
 
         return best_child
 
-    def __fn_get_parent_node(self):
-        return self.parent_node
-
     def fn_select_from_available_leaf_nodes(self):
         if len(self.children_nodes) == 0:  # leaf_node
             return self
@@ -123,7 +120,7 @@ class Node(object):
             return False
 
     def fn_expand_node(self):
-        normalized_valid_action_probabilities = self.fn_get_valid_normalized_action_probabilities(action_probabilities= None)
+        normalized_valid_action_probabilities = self.fn_get_valid_normalized_action_probabilities()
         if normalized_valid_action_probabilities is None:
             return None
         first_child_node = self.__fn_add_children_nodes(normalized_valid_action_probabilities)
@@ -134,13 +131,13 @@ class Node(object):
         current_node = self
         self.__fn_add_val_to_node(val)
 
-        parent_node = self.__fn_get_parent_node()
+        parent_node = self.parent_node
 
         while parent_node is not None:
             current_node = parent_node
             current_node.__fn_add_val_to_node(val)
             # print(current_node.val)
-            parent_node = current_node.__fn_get_parent_node()
+            parent_node = current_node.parent_node
 
         return self.val
 
