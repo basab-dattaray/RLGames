@@ -12,9 +12,9 @@ class Node(object):
         num_edges,
         explore_exploit_ratio,
 
+        parent_action=-1,
         val=0.0,
         parent_node=None,
-        parent_action=-1,
         state= None
 
      ):
