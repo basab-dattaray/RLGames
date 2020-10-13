@@ -4,7 +4,7 @@ args = dotdict({
     'numIters': 5,
     'numEps': 50,              # Number of complete self-play games to simulate during a new iteration.
     'tempThreshold': 0,        #
-    'updateThreshold': 0.5,     # During arena playoff, new neural net will be accepted if threshold or more of games are won.
+    'updateThreshold': 0.6,     # During arena playoff, new neural net will be accepted if threshold or more of games are won.
     'maxlenOfQueue': 200000,    # Number of game examples to train the neural networks.
     'numMCTSSims': 35,          # Number of games moves for MCTS to simulate.
     'arenaCompare': 41,         # Number of games to play during arena play to determine if new net will be accepted.
