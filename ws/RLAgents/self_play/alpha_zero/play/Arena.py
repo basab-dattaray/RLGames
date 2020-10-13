@@ -24,7 +24,7 @@ class Arena():
 
     def playGame(self, verbose=False):
 
-        DEBUG = True
+        DEBUG = False
 
         players = [self.player2, None, self.player1]
         curPlayer = 1
