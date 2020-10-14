@@ -41,6 +41,12 @@ def agent_mgt(args, file_path):
     start_time = time()
     args.recorder = Recorder(args.fn_record)
 
+    src_model_folder = os.path.join(args.demo_folder, 'tmp')
+    src_model_file_path = os.path.join(src_model_folder, 'model.tar')
+    old_model_file_path = os.path.join(src_model_folder, 'old_model.tar')
+    if os.path.exists(src_model_file_path):
+        copy(src_model_file_path, old_model_file_path)
+
     def exit_gracefully(signum, frame):
         #
         # if services.chart is not None:
@@ -56,9 +62,7 @@ def agent_mgt(args, file_path):
     @tracer(args)
     def fn_train():
         signal.signal(signal.SIGINT, exit_gracefully)
-        # args.fn_record('Loading %s...', Game.__name__)
 
-        # args.fn_record('Loading %s...', neural_net_mgt.__name__)
         nnet = neural_net_mgt(args, game)
 
         if args.load_model:
@@ -140,6 +144,7 @@ def agent_mgt(args, file_path):
 
         return ret_refs
 
+
     @tracer(args)
     def fn_archive_log_file():
         dst_subfolder_rel_path = dt.now().strftime("%Y_%m_%d_%H_%M_%S")
@@ -151,12 +156,17 @@ def agent_mgt(args, file_path):
         if os.path.exists(src_log_file_name):
             move(src_log_file_name, dst_full_path)
 
+        # move old_model.tar
+        if os.path.exists(old_model_file_path):
+            copy(old_model_file_path, dst_full_path)
+
         # copy model.tar
-        src_model_folder = os.path.join(args.demo_folder, 'tmp')
-        src_model_file_name = os.path.join(src_model_folder, 'model.tar')
-        if os.path.exists(src_model_file_name):
-            copy(src_model_file_name, dst_full_path)
+        if os.path.exists(src_model_file_path):
+            copy(src_model_file_path, dst_full_path)
+
         return ret_refs
+
+        # move old model
 
     ret_refs = namedtuple('_', ['fn_train','fn_test_against_human' ,'fn_test_againt_random' ,'fn_test_against_greedy' ,'fn_change_args' ,'fn_show_args' ,'fn_measure_time_elapsed' ,'fn_archive_log_file'])
 
