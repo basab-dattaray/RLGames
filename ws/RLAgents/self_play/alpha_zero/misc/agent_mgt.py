@@ -5,6 +5,7 @@ import os
 import signal
 # import timeit
 from collections import namedtuple
+from shutil import copy, move
 from time import time
 from datetime import datetime as dt
 
@@ -141,10 +142,18 @@ def agent_mgt(args, file_path):
 
     @tracer(args)
     def fn_archive_log_file():
-        log_file_name = dt.now().strftime("%Y_%m_%d_%H_%M_%S")
-        dst_file_path = os.path.join(args.archive_dir, log_file_name)
-        src_file_name = os.path.join(args.archive_dir, 'log.txt')
-        os.rename(src_file_name, dst_file_path)
+        dst_subfolder_rel_path = dt.now().strftime("%Y_%m_%d_%H_%M_%S")
+        dst_full_path = os.path.join(args.archive_dir, dst_subfolder_rel_path)
+        os.mkdir(dst_full_path)
+
+        # dst_log_file_path = os.path.join(dst_full_path, 'log.txt')
+
+        src_log_file_name = os.path.join(args.archive_dir, 'log.txt')
+        move(src_log_file_name, dst_full_path)
+
+        src_model_folder = os.path.join(args.demo_folder, 'tmp')
+        src_model_file_name = os.path.join(src_model_folder, 'model.tar')
+        copy(src_model_file_name, dst_full_path)
         return ret_refs
 
     ret_refs = namedtuple('_', ['fn_train','fn_test_against_human' ,'fn_test_againt_random' ,'fn_test_against_greedy' ,'fn_change_args' ,'fn_show_args' ,'fn_measure_time_elapsed' ,'fn_archive_log_file'])

@@ -159,7 +159,7 @@ def coach(game, nnet, args):
             args.recorder.fn_record_message(color + 'REJECTED New Model: update_threshold: {}, update_score: {}'.format(args.updateThreshold, update_score))
             nnet.load_checkpoint(rel_folder=args.checkpoint, filename='temp.tar')
         else:
-            color = Fore.RED
+            color = Fore.GREEN
             args.recorder.fn_record_message(color + 'ACCEPTED New Model: update_threshold: {}, update_score: {}'.format(args.updateThreshold, update_score))
             nnet.save_checkpoint(rel_folder=args.checkpoint, filename=getCheckpointFile(iteration))
             nnet.save_checkpoint(rel_folder=args.checkpoint, filename='model.tar')
