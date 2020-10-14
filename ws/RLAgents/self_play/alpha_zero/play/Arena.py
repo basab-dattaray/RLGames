@@ -75,10 +75,11 @@ class Arena():
         #     print("Game over: Turn ", str(it), "Result ", str(game_status))
         #     self.display(board)
 
-        result1 = curPlayer * game_status1
+
         result = game_status
         if DEBUG:
             color = Fore.RED
+            result1 = curPlayer * game_status1
             if result == result1:
                 color = Fore.GREEN
 

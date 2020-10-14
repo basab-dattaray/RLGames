@@ -8,7 +8,7 @@ from pickle import Pickler, Unpickler
 from random import shuffle
 
 import numpy as np
-
+from pip._vendor.colorama import Fore
 
 from ws.RLAgents.self_play.alpha_zero.play.Arena import Arena
 from ws.RLAgents.self_play.alpha_zero.search.MctsSelector import MctsSelector
@@ -155,12 +155,15 @@ def coach(game, nnet, args):
         model_already_exists = nnet.fn_is_model_available(rel_folder=args.checkpoint)
 
         if reject and model_already_exists:
-            args.recorder.fn_record_message('REJECTED New Model: update_threshold: {}, update_score: {}'.format(args.updateThreshold, update_score))
+            color = Fore.RED
+            args.recorder.fn_record_message(color + 'REJECTED New Model: update_threshold: {}, update_score: {}'.format(args.updateThreshold, update_score))
             nnet.load_checkpoint(rel_folder=args.checkpoint, filename='temp.tar')
         else:
-            args.recorder.fn_record_message('ACCEPTED New Model: update_threshold: {}, update_score: {}'.format(args.updateThreshold, update_score))
+            color = Fore.RED
+            args.recorder.fn_record_message(color + 'ACCEPTED New Model: update_threshold: {}, update_score: {}'.format(args.updateThreshold, update_score))
             nnet.save_checkpoint(rel_folder=args.checkpoint, filename=getCheckpointFile(iteration))
             nnet.save_checkpoint(rel_folder=args.checkpoint, filename='model.tar')
+        args.recorder.fn_record_message(Fore.BLACK)
 
     @tracer(args)
     def fn_generate_samples(iteration):
