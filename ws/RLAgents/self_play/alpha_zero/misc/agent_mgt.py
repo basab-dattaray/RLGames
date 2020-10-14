@@ -146,14 +146,16 @@ def agent_mgt(args, file_path):
         dst_full_path = os.path.join(args.archive_dir, dst_subfolder_rel_path)
         os.mkdir(dst_full_path)
 
-        # dst_log_file_path = os.path.join(dst_full_path, 'log.txt')
-
+        # move log.txt
         src_log_file_name = os.path.join(args.archive_dir, 'log.txt')
-        move(src_log_file_name, dst_full_path)
+        if os.path.exists(src_log_file_name):
+            move(src_log_file_name, dst_full_path)
 
+        # copy model.tar
         src_model_folder = os.path.join(args.demo_folder, 'tmp')
         src_model_file_name = os.path.join(src_model_folder, 'model.tar')
-        copy(src_model_file_name, dst_full_path)
+        if os.path.exists(src_model_file_name):
+            copy(src_model_file_name, dst_full_path)
         return ret_refs
 
     ret_refs = namedtuple('_', ['fn_train','fn_test_against_human' ,'fn_test_againt_random' ,'fn_test_against_greedy' ,'fn_change_args' ,'fn_show_args' ,'fn_measure_time_elapsed' ,'fn_archive_log_file'])
