@@ -2,7 +2,7 @@ from collections import deque
 import random
 
 
-def fn_replay_mgr(mem_size=1000000, mini_batch_size=64):
+def fn_replay_mgt(mem_size=1000000, mini_batch_size=64):
     _memory = deque(maxlen=mem_size)
 
     _mini_batch_size = mini_batch_size

@@ -1,4 +1,4 @@
-from ws.RLUtils.monitoring.graphing.plot_mgt import plot_mgr
+from ws.RLUtils.monitoring.graphing.plot_mgt import plot_mgt
 
 
 class Graph():
@@ -11,7 +11,7 @@ class Graph():
         self.artificial_index = -1
         self.fn_title_update_callback = fn_title_update_callback
 
-        self.fn_plot, self.fn_save_as_pdf, self.fn_set_the_title = plot_mgr(
+        self.fn_plot, self.fn_save_as_pdf, self.fn_set_the_title = plot_mgt(
             title_prefix, x_config_item['axis_label'], y_config_list)
 
     def fn_supress_graphing(self):

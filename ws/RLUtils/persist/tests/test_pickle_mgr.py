@@ -3,7 +3,7 @@ import shutil
 
 import pytest
 
-from ws.RLUtils.persist.pickle_mgt import pickle_mgr
+from ws.RLUtils.persist.pickle_mgt import pickle_mgt
 
 
 
@@ -20,7 +20,7 @@ def fixture_ws_mgt():
 def test_pickler_save_and_load(fixture_ws_mgt):
     dump_folder_path, dump_file_name, obj = fixture_ws_mgt
 
-    fn_save, fn_load = pickle_mgr(dump_folder_path, dump_file_name)
+    fn_save, fn_load = pickle_mgt(dump_folder_path, dump_file_name)
 
     ret_val = fn_save(obj)
     assert ret_val == True

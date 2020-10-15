@@ -4,7 +4,7 @@ import numpy as np
 from ws.RLUtils.common.misc_functions import arg_max
 
 
-def qtable_mgr():
+def qtable_mgt():
     _q_table = defaultdict(lambda: [0.0, 0.0, 0.0, 0.0])
 
     def fn_get_qval(state, action):

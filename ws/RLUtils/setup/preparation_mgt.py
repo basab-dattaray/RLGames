@@ -6,16 +6,16 @@ from ws.RLInterfaces.PARAM_KEY_NAMES import AGENT_FOLDER_PATH, ENV_NAME, ENV_REP
     RESULTS_BASE_PATH, \
     STRATEGY, RESULTS_CURRENT_PATH, RESULTS_ARCHIVE_PATH, GPU_DEVICE, ARCHIVE_SUB_FOLDER, FN_RECORD, \
     DEBUG_MODE, APP_INFO_SOURCE, ARCHIVES
-from ws.RLUtils.common.config_mgt import config_mgr
+from ws.RLUtils.common.config_mgt import config_mgt
 from ws.RLUtils.common.fileops import get_json_data
-from ws.RLUtils.common.loader_mgt import loader_mgr
+from ws.RLUtils.common.loader_mgt import loader_mgt
 from ws.RLUtils.common.module_loader import load_function
-from ws.RLUtils.monitoring.tracing.log_mgt import log_mgr
+from ws.RLUtils.monitoring.tracing.log_mgt import log_mgt
 
 from ws.RLUtils.platform_libs.pytorch.device_selection import get_device
 
 
-def preparation_mgr(calling_filepath, verbose=False):
+def preparation_mgt(calling_filepath, verbose=False):
     filepathname_parts = calling_filepath.rsplit('/', 1)
     cwd = filepathname_parts[0]
     filename = filepathname_parts[1]
@@ -45,10 +45,10 @@ def preparation_mgr(calling_filepath, verbose=False):
         try:
             # establish archiving paths
             _app_info[AGENT_FOLDER_PATH] = 'ws.RLAgents.{}'.format(_app_info[STRATEGY])
-            fn_load_top_object = loader_mgr()
-            # plugin_mgr = fn_load_top_object(_app_info[AGENT_FOLDER_PATH], 'plugin_mgt', 'plugin_mgr')
+            fn_load_top_object = loader_mgt()
+            # plugin_mgt = fn_load_top_object(_app_info[AGENT_FOLDER_PATH], 'plugin_mgt', 'plugin_mgt')
             #
-            # fn_get_archive_name, fn_get_subfolder_name = plugin_mgr(_app_info)
+            # fn_get_archive_name, fn_get_subfolder_name = plugin_mgt(_app_info)
             _app_info[ARCHIVE_SUB_FOLDER] = demo_name # fn_get_archive_name()
 
             base_path = _app_info[RESULTS_BASE_PATH]
@@ -68,10 +68,10 @@ def preparation_mgr(calling_filepath, verbose=False):
             exit()
 
     def _fn_setup_logging():
-        fn_get_key_as_bool, fn_get_key_as_int, fn_get_key_as_str = config_mgr(_app_info)
+        fn_get_key_as_bool, fn_get_key_as_int, fn_get_key_as_str = config_mgt(_app_info)
         debug_mode = fn_get_key_as_bool(DEBUG_MODE)
         session_repo = _app_info[RESULTS_CURRENT_PATH]
-        fn_record = log_mgr(log_dir= session_repo, show_debug=debug_mode)
+        fn_record = log_mgt(log_dir= session_repo, show_debug=debug_mode)
         _app_info[FN_RECORD] = fn_record
         pass
 

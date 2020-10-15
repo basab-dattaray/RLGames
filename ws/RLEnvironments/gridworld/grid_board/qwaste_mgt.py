@@ -1,4 +1,4 @@
-def qwaste_mgr():
+def qwaste_mgt():
     _dict_waste = {}
 
     def fnDestructiveGet(key):

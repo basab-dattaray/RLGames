@@ -1,10 +1,10 @@
 from collections import namedtuple
 
 # from ws.RLUtils.monitoring.tracing.tracer import tracer
-# from ws.RLUtils.monitoring.tracing.trace_example_without_params.agent_caller import record_mgr
+# from ws.RLUtils.monitoring.tracing.trace_example_without_params.agent_caller import record_mgt
 from ws.RLUtils.monitoring.tracing.trace_example_without_params.tracer import tracer
 
-def record_mgr():
+def record_mgt():
     count = 0
     def fn_recorder():
         nonlocal count
@@ -15,7 +15,7 @@ def record_mgr():
 def agent_container():
     agent_container_ref = namedtuple('_', ['fn_test1','fn_test2'])
 
-    fn_recorder = record_mgr()
+    fn_recorder = record_mgt()
 
     @tracer()
     def fn_test1():

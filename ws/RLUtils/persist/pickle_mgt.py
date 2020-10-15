@@ -2,7 +2,7 @@ import os
 import pickle
 
 
-def pickle_mgr(folder, name):
+def pickle_mgt(folder, name):
     _full_filepath = os.path.join(folder, name)
 
     def fn_save(obj):

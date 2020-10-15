@@ -1,13 +1,13 @@
 from ws.RLInterfaces.PARAM_KEY_NAMES import OBJ_EPISODE, EPSILON, DISCOUNT_FACTOR, LEARNING_RATE
 from ws.RLEnvironments.gridworld.grid_board.Display import Display
-from ws.RLEnvironments.gridworld.logic.qtable_mgt import qtable_mgr
+from ws.RLEnvironments.gridworld.logic.qtable_mgt import qtable_mgt
 
 
-def impl_mgr(env, app_info):
+def impl_mgt(env, app_info):
     _env = env
     _display_controller = Display(app_info)
 
-    fn_get_qval, fn_set_qval, fn_get_q_actions, fn_get_max_q_actions = qtable_mgr()
+    fn_get_qval, fn_set_qval, fn_get_q_actions, fn_get_max_q_actions = qtable_mgt()
 
     def fnUpdateKnowledge(state, action, reward, next_state):
         current_q = fn_get_qval(state, action)

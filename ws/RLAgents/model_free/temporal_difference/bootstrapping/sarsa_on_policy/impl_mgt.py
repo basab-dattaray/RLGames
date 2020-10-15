@@ -1,11 +1,11 @@
 from ws.RLInterfaces.PARAM_KEY_NAMES import OBJ_EPISODE, LEARNING_RATE, DISCOUNT_FACTOR
 from ws.RLEnvironments.gridworld.grid_board.Display import Display
-from ws.RLEnvironments.gridworld.logic.qtable_mgt import qtable_mgr
+from ws.RLEnvironments.gridworld.logic.qtable_mgt import qtable_mgt
 
 
-# from .details_mgt import details_mgr
+# from .details_mgt import details_mgt
 
-def impl_mgr(env, app_info):
+def impl_mgt(env, app_info):
     _env = env
 
     _display_controller = Display(app_info)
@@ -19,9 +19,9 @@ def impl_mgr(env, app_info):
     _height = app_display_info["HEIGHT"]
     _board_blockers = app_display_info["BOARD_BLOCKERS"]
     _board_goal = app_display_info["BOARD_GOAL"]
-    # fn_get_q_actions, fnUpdateKnowledge, fn_get_max_q_actions = details_mgr(app_info)
+    # fn_get_q_actions, fnUpdateKnowledge, fn_get_max_q_actions = details_mgt(app_info)
 
-    fn_get_qval, fn_set_qval, fn_get_q_actions, fn_get_max_q_actions = qtable_mgr()
+    fn_get_qval, fn_set_qval, fn_get_q_actions, fn_get_max_q_actions = qtable_mgt()
 
     def fnUpdateKnowledge(state, action, reward, next_state, next_action):
         current_q = fn_get_qval(state, action)

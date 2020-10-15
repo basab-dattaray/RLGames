@@ -1,6 +1,6 @@
 from ws.RLEnvironments.gridworld.logic.SETUP_INFO import INITIAL_ACTION_PROBABILITIES
 
-def policy_table_mgr(app_info):
+def policy_table_mgt(app_info):
     LOW_NUMBER = -999999
     _policy_table = [[INITIAL_ACTION_PROBABILITIES] * app_info['display']["WIDTH"] for _ in range(app_info['display']["HEIGHT"])]
 

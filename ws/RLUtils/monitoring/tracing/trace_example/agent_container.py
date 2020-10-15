@@ -5,7 +5,7 @@ from ws.RLUtils.monitoring.tracing.trace_example.tracer import tracer
 
 
 def agent_container(args):
-    fn_recorder = args['rec_mgr']
+    fn_recorder = args['rec_mgt']
     agent_container_ref = namedtuple('_', ['fn_test1','fn_test2'])
 
     @tracer(fn_recorder)

@@ -5,7 +5,7 @@ from torch.distributions import Categorical
 import torch.nn.functional as F
 
 
-def detail_mgr(app_info):
+def detail_mgt(app_info):
     def fn_actor_loss_eval(logprobs, rewards, state_values):
         advantage = rewards.view(-1, 1) - torch.stack(state_values)
         actor_loss = -(torch.stack(logprobs).view(-1, 1) * advantage)

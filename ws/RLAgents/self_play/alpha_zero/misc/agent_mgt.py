@@ -22,7 +22,7 @@ from ws.RLEnvironments.self_play_games.othello.OthelloGame import OthelloGame as
 from ws.RLAgents.self_play.alpha_zero.train.neural_net_mgt import neural_net_mgt
 from ws.RLUtils.common.AppInfo import AppInfo
 from ws.RLUtils.monitoring.tracing.Recorder import Recorder
-from ws.RLUtils.monitoring.tracing.log_mgt import log_mgr
+from ws.RLUtils.monitoring.tracing.log_mgt import log_mgt
 from ws.RLUtils.monitoring.tracing.tracer import tracer
 
 
@@ -37,7 +37,7 @@ def agent_mgt(args, file_path):
     current_dir = file_path.rsplit('/', 1)[0]
     archive_dir = current_dir.replace('/Demos/', '/Archive/')
     args.archive_dir = archive_dir
-    args.fn_record = log_mgr(log_dir=archive_dir, fixed_log_file=True)
+    args.fn_record = log_mgt(log_dir=archive_dir, fixed_log_file=True)
     start_time = time()
     args.recorder = Recorder(args.fn_record)
 

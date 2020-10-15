@@ -1,6 +1,6 @@
 from ws.RLUtils.monitoring.charting.Compactor import Compactor
 from ws.RLUtils.monitoring.graphing.Graph import Graph
-from ws.RLUtils.monitoring.graphing.data_compaction.datastream_mgt import datastream_mgr
+from ws.RLUtils.monitoring.graphing.data_compaction.datastream_mgt import datastream_mgt
 
 
 class Chart():
@@ -17,7 +17,7 @@ class Chart():
 
         self.average_interval = average_interval
         self.skip_interval = skip_interval
-        self.fn_compress_datastream = datastream_mgr(self.graph.fn_graph_event,
+        self.fn_compress_datastream = datastream_mgt(self.graph.fn_graph_event,
                                                      average_interval=self.average_interval,
                                                      skip_interval=self.skip_interval)
 

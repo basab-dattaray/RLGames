@@ -4,13 +4,13 @@ from ws.RLInterfaces.PARAM_KEY_NAMES import NUM_EPISODES, LOG_MEAN_INTERVAL, LOG
     REWARD_GOAL, STRATEGY, ENV_NAME, CONSECUTIVE_GOAL_HITS, FN_RECORD
 from ws.RLUtils.monitoring.charting.Chart import Chart
 from ws.RLUtils.monitoring.graphing.Graph import Graph
-from ws.RLUtils.monitoring.graphing.data_compaction.datastream_mgt import datastream_mgr
-from ws.RLUtils.common.config_mgt import config_mgr
+from ws.RLUtils.monitoring.graphing.data_compaction.datastream_mgt import datastream_mgt
+from ws.RLUtils.common.config_mgt import config_mgt
 
 
 
-def progress_mgr(app_info):
-    _, fn_get_key_as_int, _ = config_mgr(app_info)
+def progress_mgt(app_info):
+    _, fn_get_key_as_int, _ = config_mgt(app_info)
     _consecutive_goal_hits_needed_for_success = fn_get_key_as_int(CONSECUTIVE_GOAL_HITS, default = 1)
     _consecutive_goal_hit_count = 0
     _plot_file_path = os.path.join(app_info[RESULTS_CURRENT_PATH], 'rewards_plot.pdf')

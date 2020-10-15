@@ -12,7 +12,7 @@ from ws.RLInterfaces.PARAM_KEY_NAMES import GAMMA, NUM_EPOCHS, LEARNING_RATE, AG
 from ws.RLUtils.common.module_loader import load_function
 
 
-def impl_mgr(app_info):
+def impl_mgt(app_info):
     MODEL_ACTOR_NAME = 'Model_Actor.pth'
     MODEL_CRITIC_NAME = 'Model_Critic.pth'
     # CURRENT_MODEL_FOLDER = 'Current'
@@ -21,8 +21,8 @@ def impl_mgr(app_info):
 
     target_pkgpath = app_info[AGENT_FOLDER_PATH]
 
-    detail_mgr = load_function('detail_mgr', 'detail_mgt', target_pkgpath)
-    fn_actor_loss_eval, fn_pick_action, fn_evaluate = detail_mgr(app_info)
+    detail_mgt = load_function('detail_mgt', 'detail_mgt', target_pkgpath)
+    fn_actor_loss_eval, fn_pick_action, fn_evaluate = detail_mgt(app_info)
 
     device = app_info[GPU_DEVICE]
 

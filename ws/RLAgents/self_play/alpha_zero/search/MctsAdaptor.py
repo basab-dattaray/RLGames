@@ -7,7 +7,7 @@ class MctsAdapter():
 
         self.fn_predict_action_probablities = nnet.predict
         self.fn_get_valid_actions = lambda board: game.getValidMoves(board, 1)
-        self.fn_find_next_state = self.__next_state_mgr(game.getNextState, game.getCanonicalForm)
+        self.fn_find_next_state = self.__next_state_mgt(game.getNextState, game.getCanonicalForm)
 
         self.fn_get_action_size =  game.getActionSize #! game.fn_get_game_action_size
 
@@ -17,7 +17,7 @@ class MctsAdapter():
         pass
 
     @staticmethod
-    def __next_state_mgr(fn_get_game_next_state_for_player, fn_get_current_state_for_player):
+    def __next_state_mgt(fn_get_game_next_state_for_player, fn_get_current_state_for_player):
         def fn_find_next_state(state, action):
             next_state, next_player  = fn_get_game_next_state_for_player(state, 1, action)
             if next_player is None:

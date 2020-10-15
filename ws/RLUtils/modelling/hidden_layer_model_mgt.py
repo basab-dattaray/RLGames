@@ -6,7 +6,7 @@ from ws.RLInterfaces.PARAM_KEY_NAMES import NUM_NODES, ACTIVATION_FN, LAYER_TYPE
     STRIDE, PADDING, NUM_FEATURES
 
 
-def hidden_layer_model_mgr(model_instance, verbose=True):
+def hidden_layer_model_mgt(model_instance, verbose=True):
     # default_activation_function_name = "tanh"
     activation_module = importlib.import_module("torch")
 

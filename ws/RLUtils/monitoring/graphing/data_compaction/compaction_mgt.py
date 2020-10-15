@@ -1,4 +1,4 @@
-def compaction_mgr(fn_compute_xindex, fn_compute_yval):
+def compaction_mgt(fn_compute_xindex, fn_compute_yval):
     def fn_compress_stream_data(x_index_list_for_pipe, y_vals_list_for_pipe):
         number_of_entries = len(y_vals_list_for_pipe)
         number_of_strands = len(y_vals_list_for_pipe[0])

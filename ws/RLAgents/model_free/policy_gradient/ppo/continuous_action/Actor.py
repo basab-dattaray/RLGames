@@ -3,7 +3,7 @@ from torch import nn
 
 from ws.RLInterfaces.PARAM_KEY_NAMES import STATE_DIMENSIONS, ACTION_DIMENSIONS, \
     SD_FOR_MULTIVARIATE_NORMAL_ACTION_DISTRIBUTION, ACTOR_HIDDEN_LAYER_NODES, GPU_DEVICE
-from ws.RLUtils.modelling.hidden_layer_model_mgt import hidden_layer_model_mgr
+from ws.RLUtils.modelling.hidden_layer_model_mgt import hidden_layer_model_mgt
 
 class Actor(nn.Module):
     def __init__(self, app_info):
@@ -11,7 +11,7 @@ class Actor(nn.Module):
         super(Actor, self).__init__()
 
         self._hidden_layer_dims = app_info[ACTOR_HIDDEN_LAYER_NODES]
-        fnHiddenLayersInputProc, self.fn_hidden_layers_forward_proc = hidden_layer_model_mgr(self)
+        fnHiddenLayersInputProc, self.fn_hidden_layers_forward_proc = hidden_layer_model_mgt(self)
 
         self.action_size = app_info[ACTION_DIMENSIONS]
         state_size = app_info[STATE_DIMENSIONS]
@@ -40,7 +40,7 @@ class Actor(nn.Module):
 #         super(Actor, self).__init__()
 #
 #         self._hidden_layer_dims = app_info[ACTOR_HIDDEN_LAYER_NODES]
-#         fn_hidden_layers_input_proc, self.fn_hidden_layers_forward_proc = hidden_layer_model_mgr(self)
+#         fn_hidden_layers_input_proc, self.fn_hidden_layers_forward_proc = hidden_layer_model_mgt(self)
 #
 #         self.max_num_actions = app_info[ACTION_DIMENSIONS][0]
 #         state_size = app_info[STATE_DIMENSIONS][0]

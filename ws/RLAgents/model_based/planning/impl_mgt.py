@@ -1,14 +1,14 @@
 import random
 
-from ws.RLAgents.model_based.planning.planning_mgt import planning_mgr
+from ws.RLAgents.model_based.planning.planning_mgt import planning_mgt
 
 
 # from ws.RLEnvironments.gridworld.logic.SETUP_INFO import ACTION_MOVE_STATE_RULES
 
-def impl_mgr(env, app_info):
+def impl_mgt(env, app_info):
     _env = env
 
-    _display_controller, fnPolicyIterater, fnValueIterater, fnGetValueFromPolicy = planning_mgr(env, app_info)
+    _display_controller, fnPolicyIterater, fnValueIterater, fnGetValueFromPolicy = planning_mgt(env, app_info)
 
     def fn_bind_display_actions(acton_dictionary):
 

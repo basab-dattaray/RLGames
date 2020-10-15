@@ -7,7 +7,7 @@ from tensorflow.python.keras.optimizer_v2.adagrad import Adagrad
 from tensorflow.python.keras.optimizer_v2.adam import Adam
 
 from ws.RLInterfaces.PARAM_KEY_NAMES import *
-from .replay_mgt import fn_replay_mgr
+from .replay_mgt import fn_replay_mgt
 
 import random
 # from keras import Sequential
@@ -19,7 +19,7 @@ import numpy as np
 import os
 
 
-def impl_mgr(app_info, state_size, action_size):
+def impl_mgt(app_info, state_size, action_size):
     _epsilon = app_info[EPSILON]
     _gamma = app_info[GAMMA]
     _batch_size = app_info[BATCH_SIZE]
@@ -35,7 +35,7 @@ def impl_mgr(app_info, state_size, action_size):
     def fnReset():
         nonlocal _model, fn_remember_for_replay, fn_get_mini_batch
 
-        fn_remember_for_replay, fn_get_mini_batch = fn_replay_mgr()
+        fn_remember_for_replay, fn_get_mini_batch = fn_replay_mgt()
         _model = fn_build_model()
 
     def fn_build_model():

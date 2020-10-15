@@ -2,14 +2,14 @@ from ws.RLInterfaces.PARAM_KEY_NAMES import NUM_EPISODES, MAX_STEPS_PER_EPISODE
 
 import numpy as np
 
-from ws.RLAgents.model_free.function_approximation.dqn.impl_mgt import impl_mgr
+from ws.RLAgents.model_free.function_approximation.dqn.impl_mgt import impl_mgt
 
 
-def agent_mgr(app_info, env):
+def agent_mgt(app_info, env):
     _action_size = env.fnGetActionDimensions()
     _state_size = env.fnGetStateDimensions()
 
-    fnReset, fn_remember, fnAct, fnReplay, fnSaveWeights, fnLoadWeights = impl_mgr(app_info, _state_size, _action_size)
+    fnReset, fn_remember, fnAct, fnReplay, fnSaveWeights, fnLoadWeights = impl_mgt(app_info, _state_size, _action_size)
 
     def fnTrain():
         # nonlocal fn_remember

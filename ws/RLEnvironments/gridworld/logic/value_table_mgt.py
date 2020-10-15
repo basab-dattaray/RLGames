@@ -1,7 +1,7 @@
 import copy
 from ws.RLEnvironments.gridworld.logic.SETUP_INFO import ACTION_MOVE_STATE_RULES
 
-def value_table_mgr(app_info):
+def value_table_mgt(app_info):
     LOW_NUMBER = -999999
     _goal_coordinates = None
     app_info_display = app_info['display']

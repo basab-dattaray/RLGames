@@ -4,7 +4,7 @@ from ws.RLInterfaces.PARAM_KEY_NAMES import CLIPPING_LOSS_RATIO, GPU_DEVICE
 from torch.distributions import Categorical
 
 
-def detail_mgr(app_info):
+def detail_mgt(app_info):
     def fn_actor_loss_eval(app_info, logprobs, old_logprobs, rewards, state_values):
         clipping_loss_ratio = app_info[CLIPPING_LOSS_RATIO]
         # same as (pi_theta / pi_theta__old):

@@ -3,22 +3,22 @@ import signal
 from time import sleep
 
 from ws.RLInterfaces.PARAM_KEY_NAMES import *
-from ws.RLAgents.model_free.policy_gradient.progress_mgt import progress_mgr
-from ws.RLUtils.common.config_mgt import config_mgr
+from ws.RLAgents.model_free.policy_gradient.progress_mgt import progress_mgt
+from ws.RLUtils.common.config_mgt import config_mgt
 
 from ws.RLUtils.common.module_loader import load_function
-from ws.RLUtils.modelling.archive_mgt import archive_mgr
+from ws.RLUtils.modelling.archive_mgt import archive_mgt
 
 
-def agent_mgr(app_info, env, arg_dict=None):
-    fn_get_key_as_bool, fn_get_key_as_int, _ = config_mgr(app_info)
+def agent_mgt(app_info, env, arg_dict=None):
+    fn_get_key_as_bool, fn_get_key_as_int, _ = config_mgt(app_info)
     is_single_episode_result = fn_get_key_as_bool(REWARD_CALCULATED_FROM_SINGLE_EPISODES)
     app_info['ENV'] = env
-    impl_mgr = load_function('impl_mgr', 'impl_mgt', app_info[AGENT_FOLDER_PATH])
+    impl_mgt = load_function('impl_mgt', 'impl_mgt', app_info[AGENT_FOLDER_PATH])
 
-    fn_act, fn_add_transition, fn_save_to_neural_net, fn_load_from_neural_net, fn_should_update_network = impl_mgr(app_info)
+    fn_act, fn_add_transition, fn_save_to_neural_net, fn_load_from_neural_net, fn_should_update_network = impl_mgt(app_info)
 
-    refobj_archive_mgr = archive_mgr(
+    refobj_archive_mgt = archive_mgt(
         fn_save_to_neural_net,
         fn_load_from_neural_net,
         app_info[RESULTS_ARCHIVE_PATH],
@@ -26,7 +26,7 @@ def agent_mgr(app_info, env, arg_dict=None):
         app_info[MAX_RESULT_COUNT]
     )
 
-    chart, fn_show_training_progress, fn_has_reached_goal = progress_mgr(app_info)
+    chart, fn_show_training_progress, fn_has_reached_goal = progress_mgt(app_info)
 
     _episode_num = 0
 
@@ -34,7 +34,7 @@ def agent_mgr(app_info, env, arg_dict=None):
 
     def exit_gracefully(signum, frame):
         fn_record('!!! TERMINATING EARLY!!!')
-        msg = refobj_archive_mgr.fn_archive_all(app_info, fn_save_model=refobj_archive_mgr.fn_save_model)
+        msg = refobj_archive_mgt.fn_archive_all(app_info, fn_save_model=refobj_archive_mgt.fn_save_model)
 
         chart.fn_close()
         fn_record(msg)
@@ -92,23 +92,23 @@ def agent_mgr(app_info, env, arg_dict=None):
         return val, step
 
     def fn_run_train():
-        if refobj_archive_mgr.fn_load_model is not None:
-            if refobj_archive_mgr.fn_load_model():
+        if refobj_archive_mgt.fn_load_model is not None:
+            if refobj_archive_mgt.fn_load_model():
                 fn_record('SUCCESS in loading model')
             else:
                 fn_record('FAILED in loading model')
 
         fn_run(fn_show_training_progress, fn_should_update_network=fn_should_update_network)
 
-        fn_record(refobj_archive_mgr.fn_archive_all(app_info, refobj_archive_mgr.fn_save_model))
+        fn_record(refobj_archive_mgt.fn_archive_all(app_info, refobj_archive_mgt.fn_save_model))
 
 
     def fn_run_test():
-        if refobj_archive_mgr.fn_load_model is None:
+        if refobj_archive_mgt.fn_load_model is None:
             fn_record("ERROR:: Loading Model: model function missing")
             return
 
-        if not refobj_archive_mgr.fn_load_model():
+        if not refobj_archive_mgt.fn_load_model():
             fn_record("ERROR:: Loading Model: model data missing")
             return
 

@@ -4,7 +4,7 @@ from ws.RLInterfaces.PARAM_KEY_NAMES import CLIPPING_LOSS_RATIO, ACTION_DIMENSIO
 from torch.distributions import MultivariateNormal
 
 
-def detail_mgr(app_info):
+def detail_mgt(app_info):
     device = app_info[GPU_DEVICE]
 
     def fn_actor_loss_eval(app_info, logprobs, old_logprobs, rewards, state_values):

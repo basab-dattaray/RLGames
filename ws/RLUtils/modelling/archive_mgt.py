@@ -5,9 +5,9 @@ from datetime import datetime as dt
 
 from ws.RLInterfaces.PARAM_KEY_NAMES import APP_INFO_SOURCE, RESULTS_CURRENT_PATH
 
-def archive_mgr(fn_save_to_neural_net, fn_load_from_neural_net, archive_folder_path, current_folder_path,
+def archive_mgt(fn_save_to_neural_net, fn_load_from_neural_net, archive_folder_path, current_folder_path,
                 max_result_count):
-    obj_archive_mgr = namedtuple('_', 'fn_save_model, fn_load_model, fn_archive_all')
+    obj_archive_mgt = namedtuple('_', 'fn_save_model, fn_load_model, fn_archive_all')
     def fn_sort_names_in_folder_by_newest(folder_path, name_exclusions=None):
         if name_exclusions is None:
             name_exclusions = []
@@ -89,9 +89,9 @@ def archive_mgr(fn_save_to_neural_net, fn_load_from_neural_net, archive_folder_p
             raise Exception('Exception: fn_archive_all')
 
 
-    obj_archive_mgr.fn_save_model = fn_save_model
-    obj_archive_mgr.fn_load_model = fn_load_model
-    obj_archive_mgr.fn_archive_all = fn_archive_all
+    obj_archive_mgt.fn_save_model = fn_save_model
+    obj_archive_mgt.fn_load_model = fn_load_model
+    obj_archive_mgt.fn_archive_all = fn_archive_all
 
 
-    return obj_archive_mgr
+    return obj_archive_mgt

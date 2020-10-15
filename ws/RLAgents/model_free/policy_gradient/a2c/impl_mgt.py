@@ -5,16 +5,16 @@ import torch
 from ..misc import _fn_calculate_montecarlo_normalized_rewards
 from ..Buffer import Buffer
 from .ActorCritic import ActorCritic
-from .detail_mgt import detail_mgr
+from .detail_mgt import detail_mgt
 
 from ws.RLInterfaces.PARAM_KEY_NAMES import GAMMA, NUM_EPOCHS, LEARNING_RATE, UPDATE_STEP_INTERVAL, GPU_DEVICE
 
 
-def impl_mgr(app_info):
+def impl_mgt(app_info):
     MODEL_NAME = 'Model_ActorCritic.pth'
 
     _gamma = app_info[GAMMA]
-    fn_actor_loss_eval, fn_pick_action, fn_evaluate = detail_mgr(app_info)
+    fn_actor_loss_eval, fn_pick_action, fn_evaluate = detail_mgt(app_info)
 
     _model_actor_critic = ActorCritic(app_info).to(app_info[GPU_DEVICE])
 

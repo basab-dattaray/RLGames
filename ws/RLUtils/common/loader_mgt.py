@@ -1,7 +1,7 @@
 from ws.RLUtils.common.module_loader import get_module
 
 
-def loader_mgr():
+def loader_mgt():
     def fn_load_top_object(init_search_dir, module_name, function_name, iterations=10):
         search_dir = init_search_dir
         module_path = '{}.{}'.format(search_dir, module_name)

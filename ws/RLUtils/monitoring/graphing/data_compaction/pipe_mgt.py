@@ -1,4 +1,4 @@
-def pipe_mgr(num_items, fn_pipe_compute, fn_next_in_chain):
+def pipe_mgt(num_items, fn_pipe_compute, fn_next_in_chain):
     _y_vals_list = []
     _x_index_list = []
     _count = 0

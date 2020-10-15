@@ -1,12 +1,12 @@
 
 
 from ws.RLEnvironments.gridworld.grid_board.Display import Display
-from ws.RLEnvironments.gridworld.logic.policy_table_mgt import policy_table_mgr
-from ws.RLEnvironments.gridworld.logic.value_table_mgt import value_table_mgr
+from ws.RLEnvironments.gridworld.logic.policy_table_mgt import policy_table_mgt
+from ws.RLEnvironments.gridworld.logic.value_table_mgt import value_table_mgt
 from ws.RLEnvironments.gridworld.logic.SETUP_INFO import INITIAL_ACTION_VALUES
 
 
-def planning_mgr(env, app_info):
+def planning_mgt(env, app_info):
     LOW_NUMBER = -9999999999
     _env = env
 
@@ -16,9 +16,9 @@ def planning_mgr(env, app_info):
 
     fn_set_value_table_item, fn_get_value_table_item, fn_set_value_table, fn_get_value_table, \
     _ ,fn_value_table_reached_target, fn_has_table_changed = \
-                                            value_table_mgr(app_info)
+                                            value_table_mgt(app_info)
 
-    fn_get_policy_state_value, fn_set_policy_state_value, fn_fetch_policy_table = policy_table_mgr(app_info)
+    fn_get_policy_state_value, fn_set_policy_state_value, fn_fetch_policy_table = policy_table_mgt(app_info)
 
     def fnGetValueFromPolicy(state):
         if fn_value_table_reached_target(state):

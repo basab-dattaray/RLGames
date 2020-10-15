@@ -3,15 +3,15 @@ import numpy as np
 
 from ws.RLInterfaces.PARAM_KEY_NAMES import EPSILON, DISCOUNT_FACTOR, LEARNING_RATE
 from ws.RLEnvironments.gridworld.logic.SETUP_INFO import ACTION_MOVE_STATE_RULES
-from ws.RLEnvironments.gridworld.logic.value_table_mgt import value_table_mgr
+from ws.RLEnvironments.gridworld.logic.value_table_mgt import value_table_mgt
 from ws.RLUtils.common.misc_functions import arg_max
 
 
-def details_mgr(env, app_info):
+def details_mgt(env, app_info):
     _env = env
 
     fn_set_value_table_item, fn_get_value_table_item, fn_set_value_table, fn_get_value_table, fn_value_table_possible_actions, _, _  \
-        = value_table_mgr(app_info)
+        = value_table_mgt(app_info)
 
     _interaction_trace = []
 

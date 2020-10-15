@@ -1,7 +1,7 @@
 
 from collections import deque
 
-def subplot_mgr(plt, axis,  graph_color):
+def subplot_mgt(plt, axis,  graph_color):
 
     _y_vals = deque([])
     _x_indices = deque([])
