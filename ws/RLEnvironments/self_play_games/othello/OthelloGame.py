@@ -80,20 +80,20 @@ class OthelloGame(Game):
         # return state if player==1, else return -state if player==-1
         return player*board
 
-    def fn_get_oriented_replicas_for_board(self, board, pi):
+    def fn_get_oriented_replicas_for_board(self, board, action_probs):
         # mirror, rotational
-        assert(len(pi) == self.n**2+1)  # 1 for pass
-        pi_board = np.reshape(pi[:-1], (self.n, self.n))
+        assert(len(action_probs) == self.n ** 2 + 1)  # 1 for pass
+        pi_board = np.reshape(action_probs[:-1], (self.n, self.n))
         list_of_symetries = []
 
         for i in range(1, 5):
                 rotated_board = np.rot90(board, i)
                 rotated_actions_rel_to_board = np.rot90(pi_board, i)
-                list_of_symetries += [(rotated_board, list(rotated_actions_rel_to_board.ravel()) + [pi[-1]])]
+                list_of_symetries += [(rotated_board, list(rotated_actions_rel_to_board.ravel()) + [action_probs[-1]])]
 
-                rotated_board = np.fliplr(rotated_board)
-                rotated_actions_rel_to_board = np.fliplr(rotated_actions_rel_to_board)
-                list_of_symetries += [(rotated_board, list(rotated_actions_rel_to_board.ravel()) + [pi[-1]])]
+                rotated_board_flipped = np.fliplr(rotated_board)
+                rotated_actions_rel_to_board_flipped = np.fliplr(rotated_actions_rel_to_board)
+                list_of_symetries += [(rotated_board_flipped, list(rotated_actions_rel_to_board_flipped.ravel()) + [action_probs[-1]])]
         return list_of_symetries
 
     def stringRepresentation(self, board):

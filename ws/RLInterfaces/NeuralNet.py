@@ -18,7 +18,7 @@ class NeuralNet():
 
         Input:
             examples: a list of training examples, where each example is of form
-                      (board, pi, v). pi is the MCTS informed policy vector for
+                      (board, action_probs, v). action_probs is the MCTS informed policy vector for
                       the given board, and v is its value. The examples has
                       board in its canonical form.
         """
@@ -30,7 +30,7 @@ class NeuralNet():
             board: current board in its canonical form.
 
         Returns:
-            pi: a policy vector for the current board- a numpy array of length
+            action_probs: a policy vector for the current board- a numpy array of length
                 game.getActionSize
             v: a float in [-1,1] that gives the value of the current board
         """
