@@ -84,17 +84,17 @@ class OthelloGame(Game):
         # mirror, rotational
         assert(len(pi) == self.n**2+1)  # 1 for pass
         pi_board = np.reshape(pi[:-1], (self.n, self.n))
-        l = []
+        list_of_symetries = []
 
         for i in range(1, 5):
-            for j in [True, False]:
-                newB = np.rot90(board, i)
-                newPi = np.rot90(pi_board, i)
-                if j:
-                    newB = np.fliplr(newB)
-                    newPi = np.fliplr(newPi)
-                l += [(newB, list(newPi.ravel()) + [pi[-1]])]
-        return l
+                rotated_board = np.rot90(board, i)
+                rotated_actions_rel_to_board = np.rot90(pi_board, i)
+                list_of_symetries += [(rotated_board, list(rotated_actions_rel_to_board.ravel()) + [pi[-1]])]
+
+                rotated_board = np.fliplr(rotated_board)
+                rotated_actions_rel_to_board = np.fliplr(rotated_actions_rel_to_board)
+                list_of_symetries += [(rotated_board, list(rotated_actions_rel_to_board.ravel()) + [pi[-1]])]
+        return list_of_symetries
 
     def stringRepresentation(self, board):
         return board.tostring()
