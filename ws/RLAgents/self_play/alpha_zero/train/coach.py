@@ -64,7 +64,7 @@ def coach(game, nnet, args):
             if pi is None:
                 return None
 
-            sym = game.getSymmetries(canonicalBoard, pi)
+            sym = game.fn_get_oriented_replicas_for_board(canonicalBoard, pi)
             for b, p in sym:
                 trainExamples.append([b, curPlayer, p, None])
 
