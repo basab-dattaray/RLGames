@@ -60,15 +60,16 @@ def coach(game, nnet, args):
             canonicalBoard = game.getCanonicalForm(board_this, curPlayer)
             spread_probabilities = int(episodeStep < args.tempThreshold)
 
-            pi = mcts.getActionProb(canonicalBoard, spread_probabilities=spread_probabilities)
-            if pi is None:
+            action_probs = mcts.getActionProb(canonicalBoard, spread_probabilities=spread_probabilities)
+            if action_probs is None:
                 return None
 
-            sym = game.fn_get_oriented_replicas_for_board(canonicalBoard, pi)
-            for b, p in sym:
-                trainExamples.append([b, curPlayer, p, None])
+            symetric_samples = game.fn_get_symetric_samples(canonicalBoard, action_probs)
+            # trainExamples = map(lambda b, p: trainExamples.append([b, curPlayer, p, None]), sym)
+            for b, p in symetric_samples:
+                trainExamples.append([b, curPlayer, p])
 
-            action = np.random.choice(len(pi), p=pi)
+            action = np.random.choice(len(action_probs), p=action_probs)
             board_next, player_next = game.getNextState(board_this, curPlayer, action)
 
             if DEBUG_FLAG:
@@ -86,7 +87,7 @@ def coach(game, nnet, args):
                 # return [(x[0], x[2], r * ((-1) ** (x[1] != curPlayer))) for x in trainExamples]
                 return fn_form_sample_data(curPlayer, r, trainExamples)
 
-    def fn_form_sample_data(current_player, run_result, training_samples, early_termination=False):
+    def fn_form_sample_data(current_player, run_result, training_samples):
         sample_data = []
         for x in training_samples:
             state, player, action_prob = x[0], x[1], x[2]

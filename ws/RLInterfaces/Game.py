@@ -88,7 +88,7 @@ class Game():
         """
         pass
 
-    def fn_get_oriented_replicas_for_board(self, board, pi):
+    def fn_get_symetric_samples(self, board, pi):
         """
         Input:
             board: current board

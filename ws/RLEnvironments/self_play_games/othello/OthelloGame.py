@@ -80,7 +80,7 @@ class OthelloGame(Game):
         # return state if player==1, else return -state if player==-1
         return player*board
 
-    def fn_get_oriented_replicas_for_board(self, board, action_probs):
+    def fn_get_symetric_samples(self, board, action_probs):
         # mirror, rotational
         assert(len(action_probs) == self.n ** 2 + 1)  # 1 for pass
         pi_board = np.reshape(action_probs[:-1], (self.n, self.n))
