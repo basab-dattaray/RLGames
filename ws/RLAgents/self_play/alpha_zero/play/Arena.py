@@ -34,10 +34,10 @@ class Arena():
         break_from_while = False
         while self.game.getGameEnded(board, cur_player_index) == 0:
             it += 1
-            # if DEBUG and self.display is not None:
-            #     assert self.display
-            #     print("Turn ", str(it), "Player ", str(curPlayer))
-            #     self.display(board)
+            if verbose:
+                assert self.display
+                print("Turn ", str(it), "Player ", str(cur_player_index))
+                self.display(board)
 
             cur_player = self.player1 if cur_player_index == 1 else self.player2
 
@@ -74,10 +74,10 @@ class Arena():
         game_status1 = self.game.getGameEnded(board, cur_player_index)
         game_status = self.game.fn_game_status(board)
 
-        # if valids[action] == 0 and DEBUG and self.display is not None:
-        #     assert self.display
-        #     print("Game over: Turn ", str(it), "Result ", str(game_status))
-        #     self.display(board)
+        if verbose:
+            assert self.display
+            print("Game over: Turn ", str(it), "Result ", str(game_status))
+            self.display(board)
 
 
         result = game_status

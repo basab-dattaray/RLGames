@@ -5,15 +5,15 @@ from ws.RLInterfaces.Game import Game
 from .OthelloLogic import Board
 import numpy as np
 
-class OthelloGame(Game):
+class OthelloGame():
     square_content = {
         -1: "X",
         +0: "-",
         +1: "O"
     }
 
-    @staticmethod
-    def getSquarePiece(piece):
+    # @staticmethod
+    def getSquarePiece(self, piece):
         return OthelloGame.square_content[piece]
 
     def __init__(self, n):
@@ -108,8 +108,8 @@ class OthelloGame(Game):
         b.pieces = np.copy(board)
         return b.countDiff(player)
 
-    @staticmethod
-    def display(board):
+    # @staticmethod
+    def display(self, board):
         n = board.shape[0]
         print("   ", end="")
         for y in range(n):

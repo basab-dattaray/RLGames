@@ -84,13 +84,11 @@ def coach(game, nnet, args):
             result = game.getGameEnded(board_this, curPlayer)
 
             if result != 0 or player_next is None:
-                # return [(x[0], x[2], r * ((-1) ** (x[1] != curPlayer))) for x in trainExamples]
                 return fn_form_sample_data(curPlayer, result, trainExamples)
 
     def fn_form_sample_data(current_player, run_result, training_samples):
         sample_data = []
         for canon_board, player, canon_action_probs in training_samples:
-            # state, player, action_prob = x[0], x[1], x[2]
             result = run_result * (1 if (player == current_player) else -1)
             sample_data.append([canon_board, canon_action_probs, result])
         return sample_data
