@@ -66,8 +66,8 @@ def coach(game, nnet, args):
 
             symetric_samples = game.fn_get_symetric_samples(canonicalBoard, action_probs)
             # trainExamples = map(lambda b, p: trainExamples.append([b, curPlayer, p, None]), sym)
-            for b, p in symetric_samples:
-                trainExamples.append([b, curPlayer, p])
+            for sym_canon_board, canon_action_probs in symetric_samples:
+                trainExamples.append((sym_canon_board, curPlayer, canon_action_probs))
 
             action = np.random.choice(len(action_probs), p=action_probs)
             board_next, player_next = game.getNextState(board_this, curPlayer, action)
@@ -81,18 +81,18 @@ def coach(game, nnet, args):
             curPlayer = player_next
             board_this = board_next
 
-            r = game.getGameEnded(board_this, curPlayer)
+            result = game.getGameEnded(board_this, curPlayer)
 
-            if r != 0 or player_next is None:
+            if result != 0 or player_next is None:
                 # return [(x[0], x[2], r * ((-1) ** (x[1] != curPlayer))) for x in trainExamples]
-                return fn_form_sample_data(curPlayer, r, trainExamples)
+                return fn_form_sample_data(curPlayer, result, trainExamples)
 
     def fn_form_sample_data(current_player, run_result, training_samples):
         sample_data = []
-        for x in training_samples:
-            state, player, action_prob = x[0], x[1], x[2]
+        for canon_board, player, canon_action_probs in training_samples:
+            # state, player, action_prob = x[0], x[1], x[2]
             result = run_result * (1 if (player == current_player) else -1)
-            sample_data.append([state, action_prob, result])
+            sample_data.append([canon_board, canon_action_probs, result])
         return sample_data
 
     @tracer(args)
