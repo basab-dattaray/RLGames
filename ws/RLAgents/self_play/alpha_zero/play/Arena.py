@@ -27,20 +27,24 @@ class Arena():
         DEBUG = False
 
         players = [self.player2, None, self.player1]
-        curPlayer = 1
+        cur_player_index = 1
         board = self.game.getInitBoard()
         it = 0
 
         break_from_while = False
-        while self.game.getGameEnded(board, curPlayer) == 0:
+        while self.game.getGameEnded(board, cur_player_index) == 0:
             it += 1
             # if DEBUG and self.display is not None:
             #     assert self.display
             #     print("Turn ", str(it), "Player ", str(curPlayer))
             #     self.display(board)
-            action = players[curPlayer + 1](self.game.getCanonicalForm(board, curPlayer))
 
-            valids = self.game.getValidMoves(self.game.getCanonicalForm(board, curPlayer), 1)
+            cur_player = self.player1 if cur_player_index == 1 else self.player2
+
+            # cur_player = players[cur_player_index + 1]
+            action = cur_player(self.game.getCanonicalForm(board, cur_player_index))
+
+            valids = self.game.getValidMoves(self.game.getCanonicalForm(board, cur_player_index), 1)
 
             if valids[action] == 0:
                 if DEBUG:
@@ -48,7 +52,7 @@ class Arena():
                     y = action % len(board)
                     self.msg_recorder(f'Action {action} is not valid!   [{x} {y}]')
 
-                    self.msg_recorder(f'Current Player: {curPlayer} ')
+                    self.msg_recorder(f'Current Player: {cur_player_index} ')
 
 
                     self.msg_recorder(f'valids = {valids}')
@@ -65,9 +69,9 @@ class Arena():
 
                 # log.debug(f'valids = {valids}')
                 # assert valids[action] > 0
-            board, curPlayer = self.game.getNextState(board, curPlayer, action)
+            board, cur_player_index = self.game.getNextState(board, cur_player_index, action)
 
-        game_status1 = self.game.getGameEnded(board, curPlayer)
+        game_status1 = self.game.getGameEnded(board, cur_player_index)
         game_status = self.game.fn_game_status(board)
 
         # if valids[action] == 0 and DEBUG and self.display is not None:
@@ -79,11 +83,11 @@ class Arena():
         result = game_status
         if DEBUG:
             color = Fore.RED
-            result1 = curPlayer * game_status1
+            result1 = cur_player_index * game_status1
             if result == result1:
                 color = Fore.GREEN
 
-            self.msg_recorder(color + f'curPlayer= {curPlayer}')
+            self.msg_recorder(color + f'curPlayer= {cur_player_index}')
             self.msg_recorder(f'RESULT:: {result}')
             self.msg_recorder(f'RESULT1:: {result1}  --> old')
 
