@@ -123,7 +123,7 @@ class Board():
         color = self[x][y]
         flips = []
 
-        for x, y in Board._increment_move(origin, direction, self.n):
+        for x, y in self._increment_move(origin, direction, self.n):
             if self[x][y] == 0:
                 if flips:
                     # print("Found", x,y)
@@ -142,7 +142,7 @@ class Board():
         #initialize variables
         flips = [origin]
 
-        for x, y in Board._increment_move(origin, direction, self.n):
+        for x, y in self._increment_move(origin, direction, self.n):
             #print(x,y)
             if self[x][y] == 0:
                 return []
@@ -154,8 +154,7 @@ class Board():
 
         return []
 
-    @staticmethod
-    def _increment_move(move, direction, n):
+    def _increment_move(self, move, direction, n):
         # print(move)
         """ Generator expression for incrementing moves """
         move = list(map(sum, zip(move, direction)))
