@@ -6,12 +6,12 @@ class MctsAdapter():
                  ):
 
         self.fn_predict_action_probablities = nnet.predict
-        self.fn_get_valid_actions = lambda board: game.getValidMoves(board, 1)
-        self.fn_find_next_state = self.__next_state_mgt(game.getNextState, game.getCanonicalForm)
+        self.fn_get_valid_actions = lambda board: game.fn_get_valid_moves(board, 1)
+        self.fn_find_next_state = self.__next_state_mgt(game.fn_get_next_state, game.fn_get_canonical_form)
 
-        self.fn_get_action_size =  game.getActionSize #! game.fn_get_game_action_size
+        self.fn_get_action_size =  game.fn_get_action_size #! game.fn_get_game_action_size
 
-        self.fn_terminal_state_status =  lambda board: game.getGameEnded(board, 1)
+        self.fn_terminal_state_status =  lambda board: game.fn_get_game_progress_status(board, 1)
 
         # self.fn_notify_game_result = game.fn_notify_game_result
         pass

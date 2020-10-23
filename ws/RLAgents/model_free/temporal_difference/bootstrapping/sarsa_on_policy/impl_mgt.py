@@ -8,17 +8,17 @@ from ws.RLEnvironments.gridworld.logic.qtable_mgt import qtable_mgt
 def impl_mgt(env, app_info):
     _env = env
 
-    _display_controller = Display(app_info)
+    _fn_display_controller = Display(app_info)
 
     _epsilon = app_info["EPSILON"]
     _discount_factor = app_info["DISCOUNT_FACTOR"]
     _learning_rate = app_info["LEARNING_RATE"]
 
-    app_display_info = app_info["display"]
-    _width = app_display_info["WIDTH"]
-    _height = app_display_info["HEIGHT"]
-    _board_blockers = app_display_info["BOARD_BLOCKERS"]
-    _board_goal = app_display_info["BOARD_GOAL"]
+    app_fn_display_info = app_info["fn_display"]
+    _width = app_fn_display_info["WIDTH"]
+    _height = app_fn_display_info["HEIGHT"]
+    _board_blockers = app_fn_display_info["BOARD_BLOCKERS"]
+    _board_goal = app_fn_display_info["BOARD_GOAL"]
     # fn_get_q_actions, fnUpdateKnowledge, fn_get_max_q_actions = details_mgt(app_info)
 
     fn_get_qval, fn_set_qval, fn_get_q_actions, fn_get_max_q_actions = qtable_mgt()
@@ -30,14 +30,14 @@ def impl_mgt(env, app_info):
                  (reward + app_info[DISCOUNT_FACTOR] * next_state_q - current_q))
         fn_set_qval(state, action, new_q)
 
-    def fn_bind_display_actions(acton_dictionary):
-        _display_controller.fnInit(acton_dictionary)
+    def fn_bind_fn_display_actions(acton_dictionary):
+        _fn_display_controller.fnInit(acton_dictionary)
 
     def fnRunSarsa():
         episode_num = 0
         while True:
             episode_num += 1
-            episode_status = runEpisode(_display_controller.fnMoveCursor, _display_controller.fnShowQValue)
+            episode_status = runEpisode(_fn_display_controller.fnMoveCursor, _fn_display_controller.fnShowQValue)
             print('episode number: {}   status = {}'.format(episode_num, episode_status))
 
     def runEpisode(fnMoveCursor, fnShowQValue):
@@ -68,4 +68,4 @@ def impl_mgt(env, app_info):
 
         return episode.fn_get_episode_status()
 
-    return fn_bind_display_actions, fnRunSarsa
+    return fn_bind_fn_display_actions, fnRunSarsa

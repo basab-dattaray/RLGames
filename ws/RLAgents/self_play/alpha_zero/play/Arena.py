@@ -14,11 +14,11 @@ class Arena():
     An Arena class where any 2 agents can be pit against each other.
     """
 
-    def __init__(self, player1, player2, game, display=None, msg_recorder = None):
+    def __init__(self, player1, player2, game, fn_display=None, msg_recorder = None):
         self.player1 = player1
         self.player2 = player2
         self.game = game
-        self.display = display
+        self.fn_display = fn_display
         self.game_num = 0
         self.msg_recorder = msg_recorder
 
@@ -28,23 +28,23 @@ class Arena():
 
         players = [self.player2, None, self.player1]
         cur_player_index = 1
-        board = self.game.getInitBoard()
+        board = self.game.fn_get_init_board()
         it = 0
 
         break_from_while = False
-        while self.game.getGameEnded(board, cur_player_index) == 0:
+        while self.game.fn_get_game_progress_status(board, cur_player_index) == 0:
             it += 1
             if verbose:
-                assert self.display
+                assert self.fn_display
                 print("Turn ", str(it), "Player ", str(cur_player_index))
-                self.display(board)
+                self.fn_display(board)
 
             cur_player = self.player1 if cur_player_index == 1 else self.player2
 
             # cur_player = players[cur_player_index + 1]
-            action = cur_player(self.game.getCanonicalForm(board, cur_player_index))
+            action = cur_player(self.game.fn_get_canonical_form(board, cur_player_index))
 
-            valids = self.game.getValidMoves(self.game.getCanonicalForm(board, cur_player_index), 1)
+            valids = self.game.fn_get_valid_moves(self.game.fn_get_canonical_form(board, cur_player_index), 1)
 
             if valids[action] == 0:
                 if DEBUG:
@@ -69,15 +69,15 @@ class Arena():
 
                 # log.debug(f'valids = {valids}')
                 # assert valids[action] > 0
-            board, cur_player_index = self.game.getNextState(board, cur_player_index, action)
+            board, cur_player_index = self.game.fn_get_next_state(board, cur_player_index, action)
 
-        game_status1 = self.game.getGameEnded(board, cur_player_index)
+        game_status1 = self.game.fn_get_game_progress_status(board, cur_player_index)
         game_status = self.game.fn_game_status(board)
 
         if verbose:
-            assert self.display
+            assert self.fn_display
             print("Game over: Turn ", str(it), "Result ", str(game_status))
-            self.display(board)
+            self.fn_display(board)
 
 
         result = game_status

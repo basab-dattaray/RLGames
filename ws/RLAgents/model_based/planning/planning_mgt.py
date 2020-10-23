@@ -10,7 +10,7 @@ def planning_mgt(env, app_info):
     LOW_NUMBER = -9999999999
     _env = env
 
-    _display_controller = Display(app_info)
+    _fn_display_controller = Display(app_info)
 
     _discount_factor = app_info["DISCOUNT_FACTOR"]
 
@@ -115,4 +115,4 @@ def planning_mgt(env, app_info):
         return repeatEvalAndImprove(applyValueIteration)
 
 
-    return _display_controller, fnPolicyIterater, fnValueIterater, fnGetValueFromPolicy
+    return _fn_display_controller, fnPolicyIterater, fnValueIterater, fnGetValueFromPolicy

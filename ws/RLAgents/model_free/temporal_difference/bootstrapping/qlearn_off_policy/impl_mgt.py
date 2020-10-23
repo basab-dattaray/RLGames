@@ -5,7 +5,7 @@ from ws.RLEnvironments.gridworld.logic.qtable_mgt import qtable_mgt
 
 def impl_mgt(env, app_info):
     _env = env
-    _display_controller = Display(app_info)
+    _fn_display_controller = Display(app_info)
 
     fn_get_qval, fn_set_qval, fn_get_q_actions, fn_get_max_q_actions = qtable_mgt()
 
@@ -16,8 +16,8 @@ def impl_mgt(env, app_info):
         new_val = current_q + app_info[LEARNING_RATE] * (new_q - current_q)
         fn_set_qval(state, action, new_val)
 
-    def fn_bind_display_actions(acton_dictionary):
-        _display_controller.fnInit(acton_dictionary)
+    def fn_bind_fn_display_actions(acton_dictionary):
+        _fn_display_controller.fnInit(acton_dictionary)
 
     def fnQLearn():
         episode_num = 0
@@ -28,7 +28,7 @@ def impl_mgt(env, app_info):
 
     def runEpisode():
         state = _env.fnReset()
-        update_ui(_display_controller.fnShowQValue, state)
+        update_ui(_fn_display_controller.fnShowQValue, state)
 
         episode = app_info[OBJ_EPISODE]
         while episode.fn_should_episode_continue():
@@ -39,15 +39,15 @@ def impl_mgt(env, app_info):
 
             fnUpdateKnowledge(state, action, reward, new_state)
 
-            update_ui(_display_controller.fnShowQValue, state)
+            update_ui(_fn_display_controller.fnShowQValue, state)
 
-            if _display_controller.fnMoveCursor is not None:
-                _display_controller.fnMoveCursor(state, new_state)
+            if _fn_display_controller.fnMoveCursor is not None:
+                _fn_display_controller.fnMoveCursor(state, new_state)
 
             state = new_state
 
-        if _display_controller.fnMoveCursor is not None:
-            _display_controller.fnMoveCursor(state)
+        if _fn_display_controller.fnMoveCursor is not None:
+            _fn_display_controller.fnMoveCursor(state)
 
         return episode.fn_get_episode_status()
 
@@ -56,4 +56,4 @@ def impl_mgt(env, app_info):
             q_actions = fn_get_q_actions(state)
             fnShowQValue(state, q_actions)
 
-    return fn_bind_display_actions, fnQLearn
+    return fn_bind_fn_display_actions, fnQLearn

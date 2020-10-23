@@ -4,7 +4,7 @@ from collections import namedtuple
 
 sys.path.append('..')
 
-from .OthelloLogic import Board
+from .Board import Board
 import numpy as np
 
 def game_mgt(n):
@@ -101,7 +101,7 @@ def game_mgt(n):
     def fn_get_string_representation(board):
         return board.tostring()
 
-    def stringRepresentationReadable(board):
+    def fn_get_string_representationReadable(board):
         board_s = "".join(square_content[square] for row in board for square in row)
         return board_s
 
@@ -111,7 +111,7 @@ def game_mgt(n):
         return b.countDiff(player)
 
     # @staticmethod
-    def fn_display(board):
+    def fn_fn_display(board):
         n = board.shape[0]
         print("   ", end="")
         for y in range(n):
@@ -129,35 +129,35 @@ def game_mgt(n):
 
     ret_refs = namedtuple('_', [
         'fn_get_init_board',
-        'getBoardSize',
-        'getActionSize',
-        'getNextState',
+        'fn_get_board_size',
+        'fn_get_action_size',
+        'fn_get_next_state',
 
-        'getValidMoves',
-        'getGameEnded',
+        'fn_get_valid_moves',
+        'fn_get_game_progress_status',
         'fn_game_status',
-        'getCanonicalForm',
+        'fn_get_canonical_form',
 
         'fn_get_symetric_samples',
-        'stringRepresentation',
-        'getScore' ,
-        'display'
+        'fn_get_string_representation',
+        'fn_get_score' ,
+        'fn_display'
         ]
     )
 
-    ret_refs.getInitBoard = fn_get_init_board
-    ret_refs.getBoardSize = fn_get_board_size
-    ret_refs.getActionSize = fn_get_action_size
-    ret_refs.getNextState = fn_get_next_state
+    ret_refs.fn_get_init_board = fn_get_init_board
+    ret_refs.fn_get_board_size = fn_get_board_size
+    ret_refs.fn_get_action_size = fn_get_action_size
+    ret_refs.fn_get_next_state = fn_get_next_state
 
-    ret_refs.getValidMoves = fn_get_valid_moves
-    ret_refs.getGameEnded = fn_get_game_progress_status
+    ret_refs.fn_get_valid_moves = fn_get_valid_moves
+    ret_refs.fn_get_game_progress_status = fn_get_game_progress_status
     ret_refs.fn_game_status = fn_game_status
-    ret_refs.getCanonicalForm = fn_get_canonical_form
+    ret_refs.fn_get_canonical_form = fn_get_canonical_form
 
     ret_refs.fn_get_symetric_samples = fn_get_symetric_samples
-    ret_refs.stringRepresentation = fn_get_string_representation
-    ret_refs.getScore = fn_get_score
-    ret_refs.display = fn_display
+    ret_refs.fn_get_string_representation = fn_get_string_representation
+    ret_refs.fn_get_score = fn_get_score
+    ret_refs.fn_display = fn_fn_display
 
     return ret_refs

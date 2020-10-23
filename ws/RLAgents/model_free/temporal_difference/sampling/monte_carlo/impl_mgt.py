@@ -7,19 +7,19 @@ from .details_mgt import details_mgt
 def impl_mgt(env, app_info):
     _env = env
 
-    _display_controller = Display(app_info)
+    _fn_display_controller = Display(app_info)
     fnClearTrace, fnGetEpsilonGreedyAction, fnTraceInteraction, fnUpdateValueTableFromTrace = details_mgt(_env,
                                                                                                           app_info)
 
-    def fn_bind_display_actions(acton_dictionary):
-        _display_controller.fnInit(acton_dictionary)
+    def fn_bind_fn_display_actions(acton_dictionary):
+        _fn_display_controller.fnInit(acton_dictionary)
 
     def fnRunMonteCarlo():
         fnClearTrace()
         for episode in range(app_info[NUM_EPISODES]):
-            value_table, episode_status = runEpisode(_display_controller.fnMoveCursor)
-            if _display_controller.fnShowStateValues is not None:
-                _display_controller.fnShowStateValues(value_table)
+            value_table, episode_status = runEpisode(_fn_display_controller.fnMoveCursor)
+            if _fn_display_controller.fnShowStateValues is not None:
+                _fn_display_controller.fnShowStateValues(value_table)
 
     def runEpisode(fnMoveCursor):
         new_state = None
@@ -43,4 +43,4 @@ def impl_mgt(env, app_info):
 
         return value_table, episode.fn_get_episode_status()
 
-    return fn_bind_display_actions, fnRunMonteCarlo
+    return fn_bind_fn_display_actions, fnRunMonteCarlo

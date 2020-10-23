@@ -15,16 +15,16 @@ class Display:
     def __init__(self, app_info):
         self._tk = tk.Tk()
         self._cursor = None
-        app_display_info = app_info['display']
-        self._unit = app_display_info["UNIT"]
-        self._width = app_display_info["WIDTH"]
-        self._height = app_display_info["HEIGHT"]
-        self._board_blockers = app_display_info["BOARD_BLOCKERS"]
-        self._board_goal = app_display_info["BOARD_GOAL"]
+        app_fn_display_info = app_info['fn_display']
+        self._unit = app_fn_display_info["UNIT"]
+        self._width = app_fn_display_info["WIDTH"]
+        self._height = app_fn_display_info["HEIGHT"]
+        self._board_blockers = app_fn_display_info["BOARD_BLOCKERS"]
+        self._board_goal = app_fn_display_info["BOARD_GOAL"]
         self._fnQWasteDestructiveGet, self._fnQWastePushIfEmpty = qwaste_mgt()
         self._right_margin = 5
         self._bottom_margin = 80
-        self._tk.title(app_info["display"]["APP_NAME"])
+        self._tk.title(app_info["fn_display"]["APP_NAME"])
 
     def fnInit(self, acton_dictionary):
         self._tk.geometry('{0}x{1}'.format(self._width * self._unit + self._right_margin,

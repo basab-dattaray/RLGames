@@ -9,8 +9,8 @@ import torch.nn.functional as F
 class OthelloNNet(nn.Module):
     def __init__(self, game, args):
         # game params
-        self.board_x, self.board_y = game.getBoardSize(), game.getBoardSize()
-        self.action_size = game.getActionSize()
+        self.board_x, self.board_y = game.fn_get_board_size(), game.fn_get_board_size()
+        self.action_size = game.fn_get_action_size()
         self.args = args
 
         super(OthelloNNet, self).__init__()

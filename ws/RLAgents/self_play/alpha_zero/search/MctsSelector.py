@@ -8,7 +8,7 @@ class MctsSelector():
     def __init__(self, game, nnet, args):
         if not args.mcts_recursive:
             self.mcts_adapter = MctsAdapter(game, nnet, args)
-            max_num_actions = game.getActionSize()
+            max_num_actions = game.fn_get_action_size()
 
             mcts = Mcts(
                 fn_find_next_state = self.mcts_adapter.fn_find_next_state,

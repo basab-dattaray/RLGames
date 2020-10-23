@@ -8,11 +8,11 @@ from ws.RLAgents.model_based.planning.planning_mgt import planning_mgt
 def impl_mgt(env, app_info):
     _env = env
 
-    _display_controller, fnPolicyIterater, fnValueIterater, fnGetValueFromPolicy = planning_mgt(env, app_info)
+    _fn_display_controller, fnPolicyIterater, fnValueIterater, fnGetValueFromPolicy = planning_mgt(env, app_info)
 
-    def fn_bind_display_actions(acton_dictionary):
+    def fn_bind_fn_display_actions(acton_dictionary):
 
-        _display_controller.fnInit(acton_dictionary)
+        _fn_display_controller.fnInit(acton_dictionary)
 
     def fnNextGetAction(state):
         random_pick = random.randrange(100) / 100
@@ -30,25 +30,25 @@ def impl_mgt(env, app_info):
         return -1
 
     def fn_move_per_policy():
-        start_state = _display_controller.fnGetStartState()
-        state = _display_controller.fnExecNextMove(start_state, fnNextGetAction)
+        start_state = _fn_display_controller.fnGetStartState()
+        state = _fn_display_controller.fnExecNextMove(start_state, fnNextGetAction)
 
         while state is not None:
-            _display_controller.fnMoveCursor(start_state, state)
-            if _display_controller.fnIsTargetStateReached(state):
+            _fn_display_controller.fnMoveCursor(start_state, state)
+            if _fn_display_controller.fnIsTargetStateReached(state):
                 break
             start_state = state
-            state = _display_controller.fnExecNextMove(start_state, fnNextGetAction)
-        _display_controller.fnMoveCursor(state)
+            state = _fn_display_controller.fnExecNextMove(start_state, fnNextGetAction)
+        _fn_display_controller.fnMoveCursor(state)
 
     def fn_apply_policy_iteration():
         value_table, policy_table = fnValueIterater()
-        _display_controller.fnShowStateValues(value_table)
-        _display_controller.fnShowPolicyArrows(policy_table)
+        _fn_display_controller.fnShowStateValues(value_table)
+        _fn_display_controller.fnShowPolicyArrows(policy_table)
 
     def fn_apply_value_iteration():
         value_table, _policy_table = fnValueIterater()
-        _display_controller.fnShowStateValues(value_table)
-        _display_controller.fnShowPolicyArrows(_policy_table)
+        _fn_display_controller.fnShowStateValues(value_table)
+        _fn_display_controller.fnShowPolicyArrows(_policy_table)
 
-    return fn_bind_display_actions, fn_move_per_policy, fn_apply_policy_iteration, fn_apply_value_iteration
+    return fn_bind_fn_display_actions, fn_move_per_policy, fn_apply_policy_iteration, fn_apply_value_iteration
