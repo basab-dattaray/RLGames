@@ -34,7 +34,7 @@ def neural_net_mgt(args, game):
 
     # args = args
     nnet = OthelloNNet(game, nnet_params)
-    board_x, board_y = game.getBoardSize()
+    board_x, board_y = game.getBoardSize(), game.getBoardSize()
     action_size = game.getActionSize()
 
     if nnet_params.cuda:

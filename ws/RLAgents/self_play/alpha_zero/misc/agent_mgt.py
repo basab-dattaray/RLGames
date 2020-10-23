@@ -18,7 +18,7 @@ from ws.RLAgents.self_play.alpha_zero.play.RandomPlayer import RandomPlayer
 from ws.RLAgents.self_play.alpha_zero.search.MctsSelector import MctsSelector
 
 from ws.RLAgents.self_play.alpha_zero.train.coach import coach
-from ws.RLEnvironments.self_play_games.othello.OthelloGame import OthelloGame as Game, OthelloGame
+from ws.RLEnvironments.self_play_games.othello.game_mgt import OthelloGame as Game, OthelloGame
 from ws.RLAgents.self_play.alpha_zero.train.neural_net_mgt import neural_net_mgt
 from ws.RLUtils.common.AppInfo import AppInfo
 from ws.RLUtils.monitoring.tracing.Recorder import Recorder
