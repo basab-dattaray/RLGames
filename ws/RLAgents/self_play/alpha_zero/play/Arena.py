@@ -28,28 +28,28 @@ class Arena():
 
         players = [self.player2, None, self.player1]
         cur_player_index = 1
-        board = self.game.fn_get_init_board()
+        pieces = self.game.fn_get_init_board()
         it = 0
 
         break_from_while = False
-        while self.game.fn_get_game_progress_status(board, cur_player_index) == 0:
+        while self.game.fn_get_game_progress_status(pieces, cur_player_index) == 0:
             it += 1
             if verbose:
                 assert self.fn_display
                 print("Turn ", str(it), "Player ", str(cur_player_index))
-                self.fn_display(board)
+                self.fn_display(pieces)
 
             cur_player = self.player1 if cur_player_index == 1 else self.player2
 
             # cur_player = players[cur_player_index + 1]
-            action = cur_player(self.game.fn_get_canonical_form(board, cur_player_index))
+            action = cur_player(self.game.fn_get_canonical_form(pieces, cur_player_index))
 
-            valids = self.game.fn_get_valid_moves(self.game.fn_get_canonical_form(board, cur_player_index), 1)
+            valids = self.game.fn_get_valid_moves(self.game.fn_get_canonical_form(pieces, cur_player_index), 1)
 
             if valids[action] == 0:
                 if DEBUG:
-                    x = (int) (action / len(board))
-                    y = action % len(board)
+                    x = (int) (action / len(pieces))
+                    y = action % len(pieces)
                     self.msg_recorder(f'Action {action} is not valid!   [{x} {y}]')
 
                     self.msg_recorder(f'Current Player: {cur_player_index} ')
@@ -58,10 +58,10 @@ class Arena():
                     self.msg_recorder(f'valids = {valids}')
                     self.msg_recorder('')
 
-                    for i in range(len(board)):
-                        # arr_of_strs = map(lambda n: '{0:03d}'.format(n), board[i])
+                    for i in range(len(pieces)):
+                        # arr_of_strs = map(lambda n: '{0:03d}'.format(n), pieces[i])
                         # line = list(arr_of_strs)
-                        lst = list(map(lambda n: '0' if n == 0 else '+' if n > 0 else '-', board[i]))
+                        lst = list(map(lambda n: '0' if n == 0 else '+' if n > 0 else '-', pieces[i]))
                         line = functools.reduce(lambda a,b : a + ' ' + b,lst)
                         self.msg_recorder(line)
                 break_from_while = True
@@ -69,15 +69,15 @@ class Arena():
 
                 # log.debug(f'valids = {valids}')
                 # assert valids[action] > 0
-            board, cur_player_index = self.game.fn_get_next_state(board, cur_player_index, action)
+            pieces, cur_player_index = self.game.fn_get_next_state(pieces, cur_player_index, action)
 
-        game_status1 = self.game.fn_get_game_progress_status(board, cur_player_index)
-        game_status = self.game.fn_game_status(board)
+        game_status1 = self.game.fn_get_game_progress_status(pieces, cur_player_index)
+        game_status = self.game.fn_game_status(pieces)
 
         if verbose:
             assert self.fn_display
             print("Game over: Turn ", str(it), "Result ", str(game_status))
-            self.fn_display(board)
+            self.fn_display(pieces)
 
 
         result = game_status

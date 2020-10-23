@@ -21,26 +21,26 @@ class MCTS():
         self.args = args
         self.Qsa = {}  # stores Q values for s,a (as defined in the paper)
         self.Nsa = {}  # stores #times edge s,a was visited
-        self.Ns = {}  # stores #times board s was visited
+        self.Ns = {}  # stores #times pieces s was visited
         self.Ps = {}  # stores initial policy (returned by neural net)
 
-        self.Es = {}  # stores game.fn_get_game_progress_status ended for board s
-        self.Vs = {}  # stores game.fn_get_valid_moves for board s
+        self.Es = {}  # stores game.fn_get_game_progress_status ended for pieces s
+        self.Vs = {}  # stores game.fn_get_valid_moves for pieces s
 
         self.getActionProb = mcts_probability_mgt(self.fn_init_mcts, self.fn_get_mcts_count)
 
-    def fn_get_mcts_count(self, canonical_board):
+    def fn_get_mcts_count(self, canonical_board_state):
         for i in range(self.args.numMCTSSims):
-            self.search(canonical_board)
+            self.search(canonical_board_state)
 
-        s = self.game.fn_get_string_representation(canonical_board)
+        s = self.game.fn_get_string_representation(canonical_board_state)
         counts = [self.Nsa[(s, a)] if (s, a) in self.Nsa else 0 for a in range(self.game.fn_get_action_size())]
         return counts
 
     def fn_init_mcts(self, canonical_board):
         return None
 
-    def search(self, canonicalBoard):
+    def search(self, canonical_board_state):
         """
         This function performs one iteration of MCTS. It is recursively called
         till a leaf node is found. The action chosen at each node is one that
@@ -57,14 +57,14 @@ class MCTS():
         state for the current player, then its value is -v for the other player.
 
         Returns:
-            v: the negative of the value of the current canonicalBoard
+            v: the negative of the value of the current canonical_board_state
         """
 
-        s = self.game.fn_get_string_representation(canonicalBoard)
+        s = self.game.fn_get_string_representation(canonical_board_state)
 
         # ROLLOUT 1 - actual result
         if s not in self.Es:
-            self.Es[s] = self.game.fn_get_game_progress_status(canonicalBoard, 1)
+            self.Es[s] = self.game.fn_get_game_progress_status(canonical_board_state, 1)
         if self.Es[s] != 0:
             # terminal node
             return -self.Es[s]
@@ -72,8 +72,8 @@ class MCTS():
         # ROLLOUT 2 - uses prediction
         if s not in self.Ps:
             # leaf node
-            self.Ps[s], v = self.nnet.predict(canonicalBoard)
-            valids = self.game.fn_get_valid_moves(canonicalBoard, 1)
+            self.Ps[s], v = self.nnet.predict(canonical_board_state)
+            valids = self.game.fn_get_valid_moves(canonical_board_state, 1)
             self.Ps[s] = self.Ps[s] * valids  # masking invalid moves
             sum_Ps_s = np.sum(self.Ps[s])
             if sum_Ps_s > 0:
@@ -111,11 +111,11 @@ class MCTS():
                     best_act = a
 
         a = best_act
-        next_s, next_player = self.game.fn_get_next_state(canonicalBoard, 1, a)
-        next_s = self.game.fn_get_canonical_form(next_s, next_player)
+        next_state, next_player = self.game.fn_get_next_state(canonical_board_state, 1, a)
+        next_state = self.game.fn_get_canonical_form(next_state, next_player)
 
         # EXPANSION
-        v = self.search(next_s)
+        v = self.search(next_state)
 
         # BACKPROP
         if (s, a) in self.Qsa: # UPDATE EXISTING

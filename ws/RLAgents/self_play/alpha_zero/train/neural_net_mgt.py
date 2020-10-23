@@ -43,7 +43,7 @@ def neural_net_mgt(args, game):
     @tracer(args)
     def fn_adjust_model_from_examples(examples):
         """
-        examples: list of examples, each example is of form (board, action_probs, v)
+        examples: list of examples, each example is of form (pieces, action_probs, v)
         """
         optimizer = optim.Adam(nnet.parameters())
         fn_count_episode, fn_end_couunting = progress_count_mgt('Epochs', args.epochs)
@@ -57,27 +57,26 @@ def neural_net_mgt(args, game):
 
             batch_count = int(len(examples) / nnet_params.batch_size)
 
-            t = range(batch_count)
-            for _ in t:
+            for _ in range(batch_count):
                 sample_ids = np.random.randint(len(examples), size=nnet_params.batch_size)
-                boards, pis, vs = list(zip(*[examples[i] for i in sample_ids]))
-                boards = torch.FloatTensor(np.array(boards).astype(np.float64))
-                target_pis = torch.FloatTensor(np.array(pis))
-                target_vs = torch.FloatTensor(np.array(vs).astype(np.float64))
+                batch_of_states, batch_of_action_probablities, batch_of_results = list(zip(*[examples[i] for i in sample_ids]))
+                batch_of_states = torch.FloatTensor(np.array(batch_of_states).astype(np.float64))
+                batch_of_action_probablities_as_nparray = torch.FloatTensor(np.array(batch_of_action_probablities))
+                batch_of_results_as_array = torch.FloatTensor(np.array(batch_of_results).astype(np.float64))
 
                 # predict
                 if nnet_params.cuda:
-                    boards, target_pis, target_vs = boards.contiguous().cuda(), target_pis.contiguous().cuda(), target_vs.contiguous().cuda()
+                    batch_of_states, batch_of_action_probablities_as_nparray, batch_of_results_as_array = batch_of_states.contiguous().cuda(), batch_of_action_probablities_as_nparray.contiguous().cuda(), batch_of_results_as_array.contiguous().cuda()
 
                 # compute output
-                out_pi, out_v = nnet(boards)
-                l_pi = loss_pi(target_pis, out_pi)
-                l_v = loss_v(target_vs, out_v)
-                total_loss = l_pi + l_v
+                batch_of_predicted_action_probs, batch_of_predicted_values = nnet(batch_of_states)
+                loss_action_probablities = fn_loss_for_action_probs(batch_of_action_probablities_as_nparray, batch_of_predicted_action_probs)
+                loss_values = fn_loss_for_values(batch_of_results_as_array, batch_of_predicted_values)
+                total_loss = loss_action_probablities + loss_values
 
                 # record loss
-                pi_losses.update(l_pi.item(), boards.size(0))
-                v_losses.update(l_v.item(), boards.size(0))
+                pi_losses.update(loss_action_probablities.item(), batch_of_states.size(0))
+                v_losses.update(loss_values.item(), batch_of_states.size(0))
                 # t.set_postfix(Loss_pi=pi_losses, Loss_v=v_losses)
 
                 # compute gradient and do SGD step
@@ -89,7 +88,7 @@ def neural_net_mgt(args, game):
 
     def predict(board):
         """
-        board: np array with board
+        pieces: np array with pieces
         """
         # timing
         start = time.time()
@@ -104,10 +103,10 @@ def neural_net_mgt(args, game):
 
         return torch.exp(pi).data.cpu().numpy()[0], v.data.cpu().numpy()[0]
 
-    def loss_pi(targets, outputs):
+    def fn_loss_for_action_probs(targets, outputs):
         return -torch.sum(targets * outputs) / targets.size()[0]
 
-    def loss_v(targets, outputs):
+    def fn_loss_for_values(targets, outputs):
         return torch.sum((targets - outputs.view(-1)) ** 2) / targets.size()[0]
 
     def save_checkpoint(rel_folder, filename):
@@ -126,7 +125,7 @@ def neural_net_mgt(args, game):
     def load_checkpoint(rel_folder, filename):
         folder = os.path.join(args.demo_folder, rel_folder)
         filepath = os.path.join(folder, filename)
-        if filename is not 'temp.tar':
+        if filename != 'temp.tar':
             if not os.path.exists(filepath):
                 raise ("No model in path {}".format(filepath))
         map_location = None if nnet_params.cuda else 'cpu'

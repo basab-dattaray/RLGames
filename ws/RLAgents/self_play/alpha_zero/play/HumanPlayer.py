@@ -4,7 +4,7 @@ class HumanPlayer():
         self.game = game
 
     def play(self, board):
-        # fn_display(board)
+        # fn_display(pieces)
         valid = self.game.fn_get_valid_moves(board, 1)
         for i in range(len(valid)):
             if valid[i]:

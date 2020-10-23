@@ -104,8 +104,8 @@ def game_mgt(n):
     def fn_get_string_representation(board):
         return board.tostring()
 
-    # def fn_get_string_representationReadable(board):
-    #     board_s = "".join(square_content[square] for row in board for square in row)
+    # def fn_get_string_representationReadable(pieces):
+    #     board_s = "".join(square_content[square] for row in pieces for square in row)
     #     return board_s
 
     def fn_get_score(pieces, player):

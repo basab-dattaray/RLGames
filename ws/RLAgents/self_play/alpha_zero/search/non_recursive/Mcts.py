@@ -2,7 +2,7 @@
 # The number of num_mcts_simulations determines how thorough a search you want.
 # Remember that the higher the num_mcts_simulations, the better estimate because there will be more monte carlo rollouts for better estimation.
 # A explore_exploit_ratio tells the search to put higher emphasis on exploration relative to exploitation.
-# The more evolved board states (nodes) will have fewer allowable actions (edges)
+# The more evolved pieces states (nodes) will have fewer allowable actions (edges)
 import os
 
 
