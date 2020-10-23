@@ -7,7 +7,7 @@ sys.path.append('..')
 from .OthelloLogic import Board
 import numpy as np
 
-def OthelloGame(n):
+def game_mgt(n):
     square_content = {
         -1: "X",
         +0: "-",
@@ -16,7 +16,7 @@ def OthelloGame(n):
 
     # @staticmethod
     # def getSquarePiece(self, piece):
-    #     return OthelloGame.square_content[piece]
+    #     return game_mgt.square_content[piece]
 
     # def __init__(self, n):
     #     self.n = n
@@ -26,15 +26,15 @@ def OthelloGame(n):
         b = Board(n)
         return np.array(b.pieces)
 
-    def get_board_size():
+    def fn_get_board_size():
         # (a,b) tuple
         return n
 
-    def get_action_size():
+    def fn_get_action_size():
         # return number of actions
         return n*n + 1
 
-    def get_next_state(board, player, action):
+    def fn_get_next_state(board, player, action):
         # if player takes action on board, return next (board,player)
         # action must be a valid move
         if action == n*n:
@@ -46,9 +46,9 @@ def OthelloGame(n):
             return (b.pieces, None)
         return (b.pieces, -player)
 
-    def get_valid_moves(board, player):
+    def fn_get_valid_moves(board, player):
         # return a fixed size binary vector
-        valids = [0]*get_action_size()
+        valids = [0]*fn_get_action_size()
         b = Board(n)
         b.pieces = np.copy(board)
         legalMoves =  b.get_legal_moves(player)
@@ -59,7 +59,7 @@ def OthelloGame(n):
             valids[n*x+y]=1
         return np.array(valids)
 
-    def get_game_ended(board, player):
+    def fn_get_game_progress_status(board, player):
         if player is None:
             return fn_game_status(board)
 
@@ -78,7 +78,7 @@ def OthelloGame(n):
         status = 0 if val == 0 else -1 if val < 0 else 1
         return status
 
-    def get_canonical_form(board, player):
+    def fn_get_canonical_form(board, player):
         # return state if player==1, else return -state if player==-1
         return player*board
 
@@ -98,20 +98,20 @@ def OthelloGame(n):
                 list_of_symetries += [(rotated_board_flipped, list(rotated_actions_rel_to_board_flipped.ravel()) + [action_probs[-1]])]
         return list_of_symetries
 
-    def string_representation(board):
+    def fn_get_string_representation(board):
         return board.tostring()
 
     def stringRepresentationReadable(board):
         board_s = "".join(square_content[square] for row in board for square in row)
         return board_s
 
-    def get_score(board, player):
+    def fn_get_score(board, player):
         b = Board(n)
         b.pieces = np.copy(board)
         return b.countDiff(player)
 
     # @staticmethod
-    def display(board):
+    def fn_display(board):
         n = board.shape[0]
         print("   ", end="")
         for y in range(n):
@@ -146,18 +146,18 @@ def OthelloGame(n):
     )
 
     ret_refs.getInitBoard = fn_get_init_board
-    ret_refs.getBoardSize = get_board_size
-    ret_refs.getActionSize = get_action_size
-    ret_refs.getNextState = get_next_state
+    ret_refs.getBoardSize = fn_get_board_size
+    ret_refs.getActionSize = fn_get_action_size
+    ret_refs.getNextState = fn_get_next_state
 
-    ret_refs.getValidMoves = get_valid_moves
-    ret_refs.getGameEnded = get_game_ended
+    ret_refs.getValidMoves = fn_get_valid_moves
+    ret_refs.getGameEnded = fn_get_game_progress_status
     ret_refs.fn_game_status = fn_game_status
-    ret_refs.getCanonicalForm = get_canonical_form
+    ret_refs.getCanonicalForm = fn_get_canonical_form
 
     ret_refs.fn_get_symetric_samples = fn_get_symetric_samples
-    ret_refs.stringRepresentation = string_representation
-    ret_refs.getScore = get_score
-    ret_refs.display = display
+    ret_refs.stringRepresentation = fn_get_string_representation
+    ret_refs.getScore = fn_get_score
+    ret_refs.display = fn_display
 
     return ret_refs

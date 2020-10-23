@@ -18,7 +18,7 @@ from ws.RLAgents.self_play.alpha_zero.play.RandomPlayer import RandomPlayer
 from ws.RLAgents.self_play.alpha_zero.search.MctsSelector import MctsSelector
 
 from ws.RLAgents.self_play.alpha_zero.train.coach import coach
-from ws.RLEnvironments.self_play_games.othello.game_mgt import OthelloGame as Game, OthelloGame
+from ws.RLEnvironments.self_play_games.othello.game_mgt import game_mgt as Game, game_mgt
 from ws.RLAgents.self_play.alpha_zero.train.neural_net_mgt import neural_net_mgt
 from ws.RLUtils.common.AppInfo import AppInfo
 from ws.RLUtils.monitoring.tracing.Recorder import Recorder
@@ -32,7 +32,7 @@ def agent_mgt(args, file_path):
     args = args
     args.demo_folder, args.demo_name = AppInfo.fn_get_path_and_app_name(file_path)
     args.mcts_recursive = AppInfo.fn_arg_as_bool(args, 'mcts_recursive')
-    game = OthelloGame(args.board_size)
+    game = game_mgt(args.board_size)
 
     current_dir = file_path.rsplit('/', 1)[0]
     archive_dir = current_dir.replace('/Demos/', '/Archive/')
@@ -109,7 +109,7 @@ def agent_mgt(args, file_path):
         system_mcts = MctsSelector(game, system_nn, args)
         fn_system_policy = lambda x: numpy.argmax(system_mcts.getActionProb(x, spread_probabilities=0))
         fn_contender_policy = fn_player_policy(game)
-        arena = Arena(fn_system_policy, fn_contender_policy, game, display=OthelloGame(args['board_size']).display,
+        arena = Arena(fn_system_policy, fn_contender_policy, game, display=game_mgt(args['board_size']).display,
                       msg_recorder=args.recorder.fn_record_message)
         system_wins, system_losses, draws = arena.playGames(args.num_of_test_games, verbose=verbose)
         # args.fn_record(f'pwins:{pwins} nwins:{nwins} draws:{draws}')
