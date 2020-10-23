@@ -4,12 +4,12 @@ import numpy as np
 def mcts_probability_mgt(fn_init_mcts, fn_get_counts):
     force_single_high_probability = True
 
-    def fn_getActionProb(canonicalBoard, spread_probabilities=1, _test_data = None):
+    def fn_getActionProb(state, spread_probabilities=1, _test_data = None):
         if fn_init_mcts is not None:
-            fn_init_mcts(canonicalBoard)
+            fn_init_mcts(state)
 
         if fn_get_counts is not None:
-            counts = fn_get_counts(canonicalBoard)
+            counts = fn_get_counts(state)
         else:
             counts = _test_data
 

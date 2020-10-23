@@ -46,7 +46,7 @@ def coach(game, nnet, args):
         uses temp=0.
 
         Returns:
-            trainExamples: a list of examples of the form (canonical_board_state, currPlayer, action_probs,v)
+            trainExamples: a list of examples of the form (state, currPlayer, action_probs,v)
                            action_probs is the MCTS informed policy vector, v is +1 if
                            the player eventually won the game, else -1.
         """

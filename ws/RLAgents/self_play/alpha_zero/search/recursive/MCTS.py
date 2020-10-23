@@ -29,18 +29,18 @@ class MCTS():
 
         self.getActionProb = mcts_probability_mgt(self.fn_init_mcts, self.fn_get_mcts_count)
 
-    def fn_get_mcts_count(self, canonical_board_state):
+    def fn_get_mcts_count(self, state):
         for i in range(self.args.numMCTSSims):
-            self.search(canonical_board_state)
+            self.search(state)
 
-        s = self.game.fn_get_string_representation(canonical_board_state)
+        s = self.game.fn_get_string_representation(state)
         counts = [self.Nsa[(s, a)] if (s, a) in self.Nsa else 0 for a in range(self.game.fn_get_action_size())]
         return counts
 
     def fn_init_mcts(self, canonical_board):
         return None
 
-    def search(self, canonical_board_state):
+    def search(self, state):
         """
         This function performs one iteration of MCTS. It is recursively called
         till a leaf node is found. The action chosen at each node is one that
@@ -57,14 +57,14 @@ class MCTS():
         state for the current player, then its value is -v for the other player.
 
         Returns:
-            v: the negative of the value of the current canonical_board_state
+            v: the negative of the value of the current state
         """
 
-        s = self.game.fn_get_string_representation(canonical_board_state)
+        s = self.game.fn_get_string_representation(state)
 
         # ROLLOUT 1 - actual result
         if s not in self.Es:
-            self.Es[s] = self.game.fn_get_game_progress_status(canonical_board_state, 1)
+            self.Es[s] = self.game.fn_get_game_progress_status(state, 1)
         if self.Es[s] != 0:
             # terminal node
             return -self.Es[s]
@@ -72,8 +72,8 @@ class MCTS():
         # ROLLOUT 2 - uses prediction
         if s not in self.Ps:
             # leaf node
-            self.Ps[s], v = self.nnet.predict(canonical_board_state)
-            valids = self.game.fn_get_valid_moves(canonical_board_state, 1)
+            self.Ps[s], v = self.nnet.predict(state)
+            valids = self.game.fn_get_valid_moves(state, 1)
             self.Ps[s] = self.Ps[s] * valids  # masking invalid moves
             sum_Ps_s = np.sum(self.Ps[s])
             if sum_Ps_s > 0:
@@ -111,7 +111,7 @@ class MCTS():
                     best_act = a
 
         a = best_act
-        next_state, next_player = self.game.fn_get_next_state(canonical_board_state, 1, a)
+        next_state, next_player = self.game.fn_get_next_state(state, 1, a)
         next_state = self.game.fn_get_canonical_form(next_state, next_player)
 
         # EXPANSION
