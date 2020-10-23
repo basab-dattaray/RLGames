@@ -31,8 +31,8 @@ class Board():
         self.pieces[int(self.n/2)][int(self.n/2)] = -1;
 
     # add [][] indexer syntax to the Board
-    def __getitem__(self, index): 
-        return self.pieces[index]
+    # def __getitem__(self, index):
+    #     return self.pieces[index]
 
     def countDiff(self, color):
         """Counts the # pieces of the given color
@@ -40,11 +40,23 @@ class Board():
         count = 0
         for y in range(self.n):
             for x in range(self.n):
-                if self[x][y]==color:
+                if self.pieces[x][y]==color:
                     count += 1
-                if self[x][y]==-color:
+                if self.pieces[x][y]==-color:
                     count -= 1
         return count
+
+    # def countDiff(self, color):
+    #     """Counts the # pieces of the given color
+    #     (1 for white, -1 for black, 0 for empty spaces)"""
+    #     count = 0
+    #     for y in range(self.n):
+    #         for x in range(self.n):
+    #             if self[x][y]==color:
+    #                 count += 1
+    #             if self[x][y]==-color:
+    #                 count -= 1
+    #     return count
 
     def get_legal_moves(self, color):
         """Returns all the legal moves for the given color.
@@ -55,7 +67,7 @@ class Board():
         # Get all the squares with pieces of the given color.
         for y in range(self.n):
             for x in range(self.n):
-                if self[x][y]==color:
+                if self.pieces[x][y]==color:
                     newmoves = self.get_moves_for_square((x,y))
                     moves.update(newmoves)
         return list(moves)
@@ -63,7 +75,7 @@ class Board():
     def has_legal_moves(self, color):
         for y in range(self.n):
             for x in range(self.n):
-                if self[x][y]==color:
+                if self.pieces[x][y]==color:
                     newmoves = self.get_moves_for_square((x,y))
                     if len(newmoves)>0:
                         return True
@@ -79,7 +91,7 @@ class Board():
         (x,y) = square
 
         # determine the color of the piece.
-        color = self[x][y]
+        color = self.pieces[x][y]
 
         # skip empty source squares.
         if color==0:
@@ -113,26 +125,26 @@ class Board():
             return False
         for x, y in flips:
             #print(self[x][y],color)
-            self[x][y] = color
+            self.pieces[x][y] = color
         return True
 
     def _discover_move(self, origin, direction):
         """ Returns the endpoint for a legal move, starting at the given origin,
         moving by the given increment."""
         x, y = origin
-        color = self[x][y]
+        color = self.pieces[x][y]
         flips = []
 
         for x, y in self._increment_move(origin, direction, self.n):
-            if self[x][y] == 0:
+            if self.pieces[x][y] == 0:
                 if flips:
                     # print("Found", x,y)
                     return (x, y)
                 else:
                     return None
-            elif self[x][y] == color:
+            elif self.pieces[x][y] == color:
                 return None
-            elif self[x][y] == -color:
+            elif self.pieces[x][y] == -color:
                 # print("Flip",x,y)
                 flips.append((x, y))
 
@@ -144,11 +156,11 @@ class Board():
 
         for x, y in self._increment_move(origin, direction, self.n):
             #print(x,y)
-            if self[x][y] == 0:
+            if self.pieces[x][y] == 0:
                 return []
-            if self[x][y] == -color:
+            if self.pieces[x][y] == -color:
                 flips.append((x, y))
-            elif self[x][y] == color and len(flips) > 0:
+            elif self.pieces[x][y] == color and len(flips) > 0:
                 #print(flips)
                 return flips
 
