@@ -1,3 +1,5 @@
+import numpy
+
 
 class Board():
 
@@ -17,6 +19,12 @@ class Board():
         self.pieces[int(self.n/2)][int(self.n/2)-1] = 1
         self.pieces[int(self.n/2)-1][int(self.n/2)-1] = -1;
         self.pieces[int(self.n/2)][int(self.n/2)] = -1;
+
+    def fn_get_pieces(self):
+        return self.pieces
+
+    def fn_set_pieces(self, pieces):
+        self.pieces = numpy.copy(pieces)
 
     def countDiff(self, color):
         """Counts the # pieces of the given color

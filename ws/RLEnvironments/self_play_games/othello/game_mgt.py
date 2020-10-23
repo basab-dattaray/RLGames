@@ -22,9 +22,9 @@ def game_mgt(n):
     #     self.n = n
 
     def fn_get_init_board():
-        # return initial board (numpy board)
+        # return initial pieces (numpy pieces)
         b = Board(n)
-        return np.array(b.pieces)
+        return np.array(b.fn_get_pieces())
 
     def fn_get_board_size():
         # (a,b) tuple
@@ -34,23 +34,25 @@ def game_mgt(n):
         # return number of actions
         return n*n + 1
 
-    def fn_get_next_state(board, player, action):
-        # if player takes action on board, return next (board,player)
+    def fn_get_next_state(pieces, player, action):
+        # if player takes action on pieces, return next (pieces,player)
         # action must be a valid move
         if action == n*n:
-            return (board, -player)
+            return (pieces, -player)
         b = Board(n)
-        b.pieces = np.copy(board)
+        # b.pieces = np.copy(pieces)
+        b.fn_set_pieces(pieces)
         move = (int(action/n), action%n)
         if not b.execute_move(move, player):
-            return (b.pieces, None)
-        return (b.pieces, -player)
+            return (b.fn_get_pieces(), None)
+        return (b.fn_get_pieces(), -player)
 
-    def fn_get_valid_moves(board, player):
+    def fn_get_valid_moves(pieces, player):
         # return a fixed size binary vector
         valids = [0]*fn_get_action_size()
         b = Board(n)
-        b.pieces = np.copy(board)
+        # b.pieces = np.copy(pieces)
+        b.fn_set_pieces(pieces)
         legalMoves =  b.get_legal_moves(player)
         if len(legalMoves)==0:
             valids[-1]=1
@@ -59,12 +61,13 @@ def game_mgt(n):
             valids[n*x+y]=1
         return np.array(valids)
 
-    def fn_get_game_progress_status(board, player):
+    def fn_get_game_progress_status(pieces, player):
         if player is None:
-            return fn_game_status(board)
+            return fn_game_status(pieces)
 
         b = Board(n)
-        b.pieces = np.copy(board)
+        # b.pieces = np.copy(pieces)
+        b.fn_set_pieces(pieces)
         if b.has_legal_moves(player):
             return 0
         if b.has_legal_moves(-player):
@@ -101,13 +104,14 @@ def game_mgt(n):
     def fn_get_string_representation(board):
         return board.tostring()
 
-    def fn_get_string_representationReadable(board):
-        board_s = "".join(square_content[square] for row in board for square in row)
-        return board_s
+    # def fn_get_string_representationReadable(board):
+    #     board_s = "".join(square_content[square] for row in board for square in row)
+    #     return board_s
 
-    def fn_get_score(board, player):
+    def fn_get_score(pieces, player):
         b = Board(n)
-        b.pieces = np.copy(board)
+        # b.pieces = np.copy(pieces)
+        b.fn_set_pieces(pieces)
         return b.countDiff(player)
 
     # @staticmethod
