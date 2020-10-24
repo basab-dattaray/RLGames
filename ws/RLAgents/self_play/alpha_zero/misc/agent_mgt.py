@@ -105,14 +105,14 @@ def agent_mgt(args, file_path):
         signal.signal(signal.SIGINT, exit_gracefully)
         system_nn = neural_net_mgt(args, game)
         system_nn.load_checkpoint('tmp/', 'model.tar')
-        # args1 = dotdict({'numMCTSSims': 50, 'cpuct':1.0})
+
         system_mcts = MctsSelector(game, system_nn, args)
-        fn_system_policy = lambda x: numpy.argmax(system_mcts.getActionProb(x, spread_probabilities=0))
+        fn_system_policy = lambda x: numpy.argmax(system_mcts.fn_get_action_probabilities(x, spread_probabilities=0))
         fn_contender_policy = fn_player_policy(game)
         arena = Arena(fn_system_policy, fn_contender_policy, game, fn_display=game_mgt(args['board_size']).fn_display,
                       msg_recorder=args.recorder.fn_record_message)
         system_wins, system_losses, draws = arena.playGames(args.num_of_test_games, verbose=verbose)
-        # args.fn_record(f'pwins:{pwins} nwins:{nwins} draws:{draws}')
+
         args.recorder.fn_record_message(f'wins:{system_wins} losses:{system_losses} draws:{draws}')
 
     @tracer(args)

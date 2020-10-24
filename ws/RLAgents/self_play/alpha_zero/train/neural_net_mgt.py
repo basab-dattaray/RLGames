@@ -17,7 +17,7 @@ from ws.RLInterfaces.NeuralNet import NeuralNet
 import torch
 import torch.optim as optim
 
-from ws.RLAgents.self_play.alpha_zero._game.othello._ml_lib.pytorch.OthelloNNet import OthelloNNet
+from ws.RLAgents.self_play.alpha_zero._game.othello._ml_lib.pytorch.NeuralNet import NeuralNet
 
 log = logging.getLogger(__name__)
 
@@ -33,7 +33,7 @@ nnet_params = dotdict({
 def neural_net_mgt(args, game):
 
     # args = args
-    nnet = OthelloNNet(game, nnet_params)
+    nnet = NeuralNet(game, nnet_params)
     board_x, board_y = game.fn_get_board_size(), game.fn_get_board_size()
     action_size = game.fn_get_action_size()
 

@@ -27,7 +27,7 @@ class MCTS():
         self.Es = {}  # stores game.fn_get_game_progress_status ended for pieces s
         self.Vs = {}  # stores game.fn_get_valid_moves for pieces s
 
-        self.getActionProb = mcts_probability_mgt(self.fn_init_mcts, self.fn_get_mcts_count)
+        self.fn_get_action_probabilities = mcts_probability_mgt(self.fn_init_mcts, self.fn_get_mcts_count)
 
     def fn_get_mcts_count(self, state):
         for i in range(self.args.numMCTSSims):

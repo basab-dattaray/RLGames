@@ -60,7 +60,7 @@ def coach(game, nnet, args):
             canonicalBoard = game.fn_get_canonical_form(board_this, curPlayer)
             spread_probabilities = int(episodeStep < args.tempThreshold)
 
-            action_probs = mcts.getActionProb(canonicalBoard, spread_probabilities=spread_probabilities)
+            action_probs = mcts.fn_get_action_probabilities(canonicalBoard, spread_probabilities=spread_probabilities)
             if action_probs is None:
                 return None
 
@@ -126,13 +126,12 @@ def coach(game, nnet, args):
         args.recorder.fn_record_message()
         args.recorder.fn_record_message(f'* Comptete with Previous Version', indent=0)
 
-        arena = Arena(lambda x: np.argmax(pmcts.getActionProb(x, spread_probabilities=0)),
-                      lambda x: np.argmax(nmcts.getActionProb(x, spread_probabilities=0)),
+        arena = Arena(lambda x: np.argmax(pmcts.fn_get_action_probabilities(x, spread_probabilities=0)),
+                      lambda x: np.argmax(nmcts.fn_get_action_probabilities(x, spread_probabilities=0)),
                       game,
                       msg_recorder= args.recorder.fn_record_message)
 
         pwins, nwins, draws = arena.playGames(args.arenaCompare)
-
 
         args.fn_record()
 
