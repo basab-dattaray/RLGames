@@ -2,10 +2,14 @@ from __future__ import print_function
 import sys
 from collections import namedtuple
 
+from .board_mgt import board_mgt
+
 sys.path.append('..')
 
 from .Board import Board
 import numpy as np
+
+EXISTING = True
 
 def game_mgt(n):
     square_content = {
@@ -14,16 +18,12 @@ def game_mgt(n):
         +1: "O"
     }
 
-    # @staticmethod
-    # def getSquarePiece(self, piece):
-    #     return game_mgt.square_content[piece]
-
-    # def __init__(self, n):
-    #     self.n = n
 
     def fn_get_init_board():
-        # return initial pieces (numpy pieces)
+        # return initial board_pieces (numpy board_pieces)
         b = Board(n)
+        if not EXISTING:
+            b = board_mgt(n)
         return np.array(b.fn_get_pieces())
 
     def fn_get_board_size():
@@ -35,12 +35,14 @@ def game_mgt(n):
         return n*n + 1
 
     def fn_get_next_state(pieces, player, action):
-        # if player takes action on pieces, return next (pieces,player)
+        # if player takes action on board_pieces, return next (board_pieces,player)
         # action must be a valid move
         if action == n*n:
             return (pieces, -player)
         b = Board(n)
-        # b.pieces = np.copy(pieces)
+        if not EXISTING:
+            b = board_mgt(n)
+        # b.board_pieces = np.copy(board_pieces)
         b.fn_set_pieces(pieces)
         move = (int(action/n), action%n)
         if not b.execute_move(move, player):
@@ -51,7 +53,9 @@ def game_mgt(n):
         # return a fixed size binary vector
         valids = [0]*fn_get_action_size()
         b = Board(n)
-        # b.pieces = np.copy(pieces)
+        if not EXISTING:
+            b = board_mgt(n)
+        # b.board_pieces = np.copy(board_pieces)
         b.fn_set_pieces(pieces)
         legalMoves =  b.get_legal_moves(player)
         if len(legalMoves)==0:
@@ -66,7 +70,9 @@ def game_mgt(n):
             return fn_game_status(pieces)
 
         b = Board(n)
-        # b.pieces = np.copy(pieces)
+        if not EXISTING:
+            b = board_mgt(n)
+        # b.board_pieces = np.copy(board_pieces)
         b.fn_set_pieces(pieces)
         if b.has_legal_moves(player):
             return 0
@@ -105,18 +111,20 @@ def game_mgt(n):
     def fn_get_string_representation(board):
         return board.tostring()
 
-    # def fn_get_string_representationReadable(pieces):
-    #     board_s = "".join(square_content[square] for row in pieces for square in row)
+    # def fn_get_string_representationReadable(board_pieces):
+    #     board_s = "".join(square_content[square] for row in board_pieces for square in row)
     #     return board_s
 
     def fn_get_score(pieces, player):
         b = Board(n)
-        # b.pieces = np.copy(pieces)
+        if not EXISTING:
+            b = board_mgt(n)
+        # b.board_pieces = np.copy(board_pieces)
         b.fn_set_pieces(pieces)
         return b.countDiff(player)
 
     # @staticmethod
-    def fn_fn_display(board):
+    def fn_display(board):
         n = board.shape[0]
         print("   ", end="")
         for y in range(n):
@@ -163,6 +171,6 @@ def game_mgt(n):
     ret_refs.fn_get_symetric_samples = fn_get_symetric_samples
     ret_refs.fn_get_string_representation = fn_get_string_representation
     ret_refs.fn_get_score = fn_get_score
-    ret_refs.fn_display = fn_fn_display
+    ret_refs.fn_display = fn_display
 
     return ret_refs

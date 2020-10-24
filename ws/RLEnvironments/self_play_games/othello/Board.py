@@ -3,38 +3,38 @@ import numpy
 
 class Board():
 
-    # list of all 8 directions on the pieces, as (x,y) offsets
+    # list of all 8 directions on the board_pieces, as (x,y) offsets
     __directions = [(1,1),(1,0),(1,-1),(0,-1),(-1,-1),(-1,0),(-1,1),(0,1)]
 
     def __init__(self, n):
 
         self.n = n
-        # Create the empty pieces array.
-        self.pieces = [None]*self.n
+        # Create the empty board_pieces array.
+        self.board_pieces = [None] * self.n
         for i in range(self.n):
-            self.pieces[i] = [0]*self.n
+            self.board_pieces[i] = [0] * self.n
 
-        # Set up the initial 4 pieces.
-        self.pieces[int(self.n/2)-1][int(self.n/2)] = 1
-        self.pieces[int(self.n/2)][int(self.n/2)-1] = 1
-        self.pieces[int(self.n/2)-1][int(self.n/2)-1] = -1;
-        self.pieces[int(self.n/2)][int(self.n/2)] = -1;
+        # Set up the initial 4 board_pieces.
+        self.board_pieces[int(self.n / 2) - 1][int(self.n / 2)] = 1
+        self.board_pieces[int(self.n / 2)][int(self.n / 2) - 1] = 1
+        self.board_pieces[int(self.n / 2) - 1][int(self.n / 2) - 1] = -1;
+        self.board_pieces[int(self.n / 2)][int(self.n / 2)] = -1;
 
     def fn_get_pieces(self):
-        return self.pieces
+        return self.board_pieces
 
     def fn_set_pieces(self, pieces):
-        self.pieces = numpy.copy(pieces)
+        self.board_pieces = numpy.copy(pieces)
 
     def countDiff(self, color):
-        """Counts the # pieces of the given color
+        """Counts the # board_pieces of the given color
         (1 for white, -1 for black, 0 for empty spaces)"""
         count = 0
         for y in range(self.n):
             for x in range(self.n):
-                if self.pieces[x][y]==color:
+                if self.board_pieces[x][y]==color:
                     count += 1
-                if self.pieces[x][y]==-color:
+                if self.board_pieces[x][y]==-color:
                     count -= 1
         return count
 
@@ -42,10 +42,10 @@ class Board():
 
         moves = set()  # stores the legal moves.
 
-        # Get all the squares with pieces of the given color.
+        # Get all the squares with board_pieces of the given color.
         for y in range(self.n):
             for x in range(self.n):
-                if self.pieces[x][y]==color:
+                if self.board_pieces[x][y]==color:
                     newmoves = self.get_moves_for_square((x,y))
                     moves.update(newmoves)
         return list(moves)
@@ -53,7 +53,7 @@ class Board():
     def has_legal_moves(self, color):
         for y in range(self.n):
             for x in range(self.n):
-                if self.pieces[x][y]==color:
+                if self.board_pieces[x][y]==color:
                     newmoves = self.get_moves_for_square((x,y))
                     if len(newmoves)>0:
                         return True
@@ -64,7 +64,7 @@ class Board():
         (x,y) = square
 
         # determine the color of the piece.
-        color = self.pieces[x][y]
+        color = self.board_pieces[x][y]
 
         # skip empty source squares.
         if color==0:
@@ -88,24 +88,24 @@ class Board():
         if len(list(flips))==0:
             return False
         for x, y in flips:
-            self.pieces[x][y] = color
+            self.board_pieces[x][y] = color
         return True
 
     def _discover_move(self, origin, direction):
         x, y = origin
-        color = self.pieces[x][y]
+        color = self.board_pieces[x][y]
         flips = []
 
         for x, y in self._increment_move(origin, direction, self.n):
-            if self.pieces[x][y] == 0:
+            if self.board_pieces[x][y] == 0:
                 if flips:
                     # print("Found", x,y)
                     return (x, y)
                 else:
                     return None
-            elif self.pieces[x][y] == color:
+            elif self.board_pieces[x][y] == color:
                 return None
-            elif self.pieces[x][y] == -color:
+            elif self.board_pieces[x][y] == -color:
                 # print("Flip",x,y)
                 flips.append((x, y))
 
@@ -114,11 +114,11 @@ class Board():
 
         for x, y in self._increment_move(origin, direction, self.n):
 
-            if self.pieces[x][y] == 0:
+            if self.board_pieces[x][y] == 0:
                 return []
-            if self.pieces[x][y] == -color:
+            if self.board_pieces[x][y] == -color:
                 flips.append((x, y))
-            elif self.pieces[x][y] == color and len(flips) > 0:
+            elif self.board_pieces[x][y] == color and len(flips) > 0:
                 return flips
 
         return []

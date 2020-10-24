@@ -43,7 +43,7 @@ def neural_net_mgt(args, game):
     @tracer(args)
     def fn_adjust_model_from_examples(examples):
         """
-        examples: list of examples, each example is of form (pieces, action_probs, v)
+        examples: list of examples, each example is of form (board_pieces, action_probs, v)
         """
         optimizer = optim.Adam(nnet.parameters())
         fn_count_episode, fn_end_couunting = progress_count_mgt('Epochs', args.epochs)
@@ -88,7 +88,7 @@ def neural_net_mgt(args, game):
 
     def predict(board):
         """
-        pieces: np array with pieces
+        board_pieces: np array with board_pieces
         """
         # timing
         start = time.time()

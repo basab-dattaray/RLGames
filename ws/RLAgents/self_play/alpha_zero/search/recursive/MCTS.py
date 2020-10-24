@@ -21,11 +21,11 @@ class MCTS():
         self.args = args
         self.Qsa = {}  # stores Q values for s,a (as defined in the paper)
         self.Nsa = {}  # stores #times edge s,a was visited
-        self.Ns = {}  # stores #times pieces s was visited
+        self.Ns = {}  # stores #times board_pieces s was visited
         self.Ps = {}  # stores initial policy (returned by neural net)
 
-        self.Es = {}  # stores game.fn_get_game_progress_status ended for pieces s
-        self.Vs = {}  # stores game.fn_get_valid_moves for pieces s
+        self.Es = {}  # stores game.fn_get_game_progress_status ended for board_pieces s
+        self.Vs = {}  # stores game.fn_get_valid_moves for board_pieces s
 
         self.fn_get_action_probabilities = mcts_probability_mgt(self.fn_init_mcts, self.fn_get_mcts_count)
 
@@ -112,10 +112,10 @@ class MCTS():
 
         a = best_act
         next_state, next_player = self.game.fn_get_next_state(state, 1, a)
-        next_state = self.game.fn_get_canonical_form(next_state, next_player)
+        next_state_canonical = self.game.fn_get_canonical_form(next_state, next_player)
 
         # EXPANSION
-        v = self.search(next_state)
+        v = self.search(next_state_canonical)
 
         # BACKPROP
         if (s, a) in self.Qsa: # UPDATE EXISTING

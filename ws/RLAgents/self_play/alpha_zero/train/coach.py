@@ -57,14 +57,14 @@ def coach(game, nnet, args):
 
         while True:
             episodeStep += 1
-            canonicalBoard = game.fn_get_canonical_form(board_this, curPlayer)
+            canonical_board_pieces = game.fn_get_canonical_form(board_this, curPlayer)
             spread_probabilities = int(episodeStep < args.tempThreshold)
 
-            action_probs = mcts.fn_get_action_probabilities(canonicalBoard, spread_probabilities=spread_probabilities)
+            action_probs = mcts.fn_get_action_probabilities(canonical_board_pieces, spread_probabilities=spread_probabilities)
             if action_probs is None:
                 return None
 
-            symetric_samples = game.fn_get_symetric_samples(canonicalBoard, action_probs)
+            symetric_samples = game.fn_get_symetric_samples(canonical_board_pieces, action_probs)
             # trainExamples = map(lambda b, p: trainExamples.append([b, curPlayer, p, None]), sym)
             for sym_canon_board, canon_action_probs in symetric_samples:
                 trainExamples.append((sym_canon_board, curPlayer, canon_action_probs))
