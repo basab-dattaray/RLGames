@@ -81,9 +81,10 @@ def game_mgt(n):
         status = 0 if val == 0 else -1 if val < 0 else 1
         return status
 
-    def fn_get_canonical_form(board, player):
+    def fn_get_canonical_form(pieces, player):
         # return state if player==1, else return -state if player==-1
-        return player*board
+        canonical_pieces =  player * pieces
+        return canonical_pieces
 
     def fn_get_symetric_samples(board, action_probs):
         # mirror, rotational
