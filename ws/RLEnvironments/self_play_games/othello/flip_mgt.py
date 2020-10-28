@@ -19,8 +19,9 @@ def fn_scaffold_display_board(pieceS, sizE):
     for i in range(0, sizE):
         print(pieceS[i])
 
-def flip_mgt(pieceS, sizE):
+def flip_mgt(pieceS):
     def fn_find_flippables(origin_positioN):
+        sizE = len(pieceS[0])
 
         directionS = [(1, 1), (1, 0), (1, -1), (0, -1), (-1, -1), (-1, 0), (-1, 1), (0, 1)]
         # directionS = [(-1, 0)]
@@ -88,7 +89,7 @@ def flip_mgt(pieceS, sizE):
 if __name__ == '__main__':
     size = 5
     pieces = fn_scaffold_init_pieces(5)
-    fn_find_flippables = flip_mgt(pieces, size)
+    fn_find_flippables = flip_mgt(pieces)
 
     fn_scaffold_display_board(pieces, size)
 
