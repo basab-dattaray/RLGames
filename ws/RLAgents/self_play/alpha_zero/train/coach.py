@@ -213,7 +213,7 @@ def coach(game, nnet, args):
         examplesFile = modelFile + ".examples"
         if not os.path.isfile(examplesFile):
             log.warning(f'File "{examplesFile}" with trainExamples not found!')
-            r = input("Continue? [y|n]")
+            r = input("Continue? [y|size]")
             if r != "y":
                 sys.exit()
         else:

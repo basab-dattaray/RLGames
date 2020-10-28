@@ -59,7 +59,7 @@ class Arena():
                     self.msg_recorder('')
 
                     for i in range(len(pieces)):
-                        # arr_of_strs = map(lambda n: '{0:03d}'.format(n), board_pieces[i])
+                        # arr_of_strs = map(lambda size: '{0:03d}'.format(size), board_pieces[i])
                         # line = list(arr_of_strs)
                         lst = list(map(lambda n: '0' if n == 0 else '+' if n > 0 else '-', pieces[i]))
                         line = functools.reduce(lambda a,b : a + ' ' + b,lst)
