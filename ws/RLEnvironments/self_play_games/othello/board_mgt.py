@@ -49,13 +49,17 @@ def board_mgt(n):
         return list(moves)
 
     def has_legal_moves(color):
-        for y in range(n):
-            for x in range(n):
-                if pieces[x][y]==color:
-                    newmoves = get_moves_for_square((x,y))
-                    if len(newmoves)>0:
-                        return True
-        return False
+        list = get_legal_moves(color)
+        if list is None:
+            return False
+        return True if len(list) > 0 else False
+        # for y in range(n):
+        #     for x in range(n):
+        #         if pieces[x][y]==color:
+        #             newmoves = get_moves_for_square((x,y))
+        #             if len(newmoves)>0:
+        #                 return True
+        # return False
 
     def get_moves_for_square(square):
 
