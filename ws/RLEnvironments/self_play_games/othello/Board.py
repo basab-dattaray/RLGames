@@ -1,5 +1,7 @@
 import numpy
 
+from ws.RLEnvironments.self_play_games.othello.flip_mgt import flip_mgt
+
 
 class Board():
 
@@ -40,6 +42,8 @@ class Board():
 
     def get_legal_moves(self, color):
 
+        lst = flip_mgt(self.board_pieces).fn_get_allowable_moves(color)
+
         moves = set()  # stores the legal moves.
 
         # Get all the squares with board_pieces of the given color.
@@ -48,7 +52,8 @@ class Board():
                 if self.board_pieces[x][y]==color:
                     newmoves = self.get_moves_for_square((x,y))
                     moves.update(newmoves)
-        return list(moves)
+        lst2 = list(moves)
+        return lst
 
     def has_legal_moves(self, color):
         for y in range(self.n):

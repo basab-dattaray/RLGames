@@ -23,9 +23,8 @@ def fn_scaffold_display_board(pieceS, sizE):
         print(pieceS[i])
 
 def flip_mgt(pieceS):
+    size = len(pieceS[0])
     def fn_find_flippables(origin_positioN):
-        size = len(pieceS[0])
-
         directionS = [(1, 1), (1, 0), (1, -1), (0, -1), (-1, -1), (-1, 0), (-1, 1), (0, 1)]
         # directionS = [(-1, 0)]
         origin_color = pieceS[origin_positioN[0]][origin_positioN[1]]
@@ -36,7 +35,7 @@ def flip_mgt(pieceS):
 
                 def fn_get_next_valid_position(pos__):
                     def fn_pos_valid(pos___):
-                        return ((pos___[0] >= 0) and (pos___[0] < size) or (pos___[1] >= 0) and (pos___[1] < size))
+                        return ((pos___[0] >= 0) and (pos___[0] < size) and (pos___[1] >= 0) and (pos___[1] < size))
 
                     def fn_get_next_position(pos___):
                         new_pos = pos___[0] + direction_[0], pos___[1] + direction_[1]
@@ -108,14 +107,17 @@ def flip_mgt(pieceS):
 
         return all_flips
 
+    fn_legal_moves_exist = lambda color: True if len(fn_get_allowable_moves(color)) > 0 else False
     ret_refs = namedtuple('_', [
         'fn_find_flippables',
         'fn_get_allowable_moves',
+        'fn_legal_moves_exist',
         ]
     )
 
     ret_refs.fn_find_flippables = fn_find_flippables
     ret_refs.fn_get_allowable_moves = fn_get_allowable_moves
+    ret_refs.fn_legal_moves_exist = fn_legal_moves_exist
 
     return ret_refs
 
@@ -152,6 +154,10 @@ if __name__ == '__main__':
     assert flippables == [(3, 2), (1, 0), (0, 1), (2, 3)]
 
     print(flippables)
+
+    moves_exist = refs.fn_legal_moves_exist(color= 1)
+    assert moves_exist == True
+    print(moves_exist)
 
 
 
