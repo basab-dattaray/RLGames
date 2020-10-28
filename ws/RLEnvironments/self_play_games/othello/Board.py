@@ -64,27 +64,27 @@ class Board():
         #             if len(newmoves)>0:
         #                 return True
         # return False
-
-    def get_moves_for_square(self, square):
-
-        (x,y) = square
-
-        # determine the color of the piece.
-        color = self.board_pieces[x][y]
-
-        # skip empty source squares.
-        if color==0:
-            return None
-
-        # search all possible directions.
-        moves = []
-        for direction in self.__directions:
-            move = self._discover_move(square, direction)
-            if move:
-                # print(square,move,direction)
-                moves.append(move)
-
-        return moves
+    #
+    # def get_moves_for_square(self, square):
+    #
+    #     (x,y) = square
+    #
+    #     # determine the color of the piece.
+    #     color = self.board_pieces[x][y]
+    #
+    #     # skip empty source squares.
+    #     if color==0:
+    #         return None
+    #
+    #     # search all possible directions.
+    #     moves = []
+    #     for direction in self.__directions:
+    #         move = self._discover_move(square, direction)
+    #         if move:
+    #             # print(square,move,direction)
+    #             moves.append(move)
+    #
+    #     return moves
 
     def execute_move(self, move, color):
 
@@ -96,24 +96,24 @@ class Board():
         for x, y in flips:
             self.board_pieces[x][y] = color
         return True
-
-    def _discover_move(self, origin, direction):
-        x, y = origin
-        color = self.board_pieces[x][y]
-        flips = []
-
-        for x, y in self._increment_move(origin, direction, self.n):
-            if self.board_pieces[x][y] == 0:
-                if flips:
-                    # print("Found", x,y)
-                    return (x, y)
-                else:
-                    return None
-            elif self.board_pieces[x][y] == color:
-                return None
-            elif self.board_pieces[x][y] == -color:
-                # print("Flip",x,y)
-                flips.append((x, y))
+    #
+    # def _discover_move(self, origin, direction):
+    #     x, y = origin
+    #     color = self.board_pieces[x][y]
+    #     flips = []
+    #
+    #     for x, y in self._increment_move(origin, direction, self.n):
+    #         if self.board_pieces[x][y] == 0:
+    #             if flips:
+    #                 # print("Found", x,y)
+    #                 return (x, y)
+    #             else:
+    #                 return None
+    #         elif self.board_pieces[x][y] == color:
+    #             return None
+    #         elif self.board_pieces[x][y] == -color:
+    #             # print("Flip",x,y)
+    #             flips.append((x, y))
 
     def _get_flips(self, origin, direction, color):
         flips = [origin]

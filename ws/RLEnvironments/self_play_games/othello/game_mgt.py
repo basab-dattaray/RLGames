@@ -40,8 +40,8 @@ def game_mgt(n):
         if action == n*n:
             return (pieces, -player)
         b = Board(n)
-        if not EXISTING:
-            b = board_mgt(n)
+        # if not EXISTING:
+        #     b = board_mgt(n)
         # b.board_pieces = np.copy(board_pieces)
         b.fn_set_pieces(pieces)
         move = (int(action/n), action%n)
