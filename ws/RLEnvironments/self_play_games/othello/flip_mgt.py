@@ -1,4 +1,7 @@
+from collections import namedtuple
 from enum import Enum
+
+import numpy as np
 
 
 def fn_scaffold_init_pieces(size):
@@ -21,7 +24,7 @@ def fn_scaffold_display_board(pieceS, sizE):
 
 def flip_mgt(pieceS):
     def fn_find_flippables(origin_positioN):
-        sizE = len(pieceS[0])
+        size = len(pieceS[0])
 
         directionS = [(1, 1), (1, 0), (1, -1), (0, -1), (-1, -1), (-1, 0), (-1, 1), (0, 1)]
         # directionS = [(-1, 0)]
@@ -33,7 +36,7 @@ def flip_mgt(pieceS):
 
                 def fn_get_next_valid_position(pos__):
                     def fn_pos_valid(pos___):
-                        return ((pos___[0] >= 0) and (pos___[0] < sizE) or (pos___[1] >= 0) and (pos___[1] < sizE))
+                        return ((pos___[0] >= 0) and (pos___[0] < size) or (pos___[1] >= 0) and (pos___[1] < size))
 
                     def fn_get_next_position(pos___):
                         new_pos = pos___[0] + direction_[0], pos___[1] + direction_[1]
@@ -83,20 +86,51 @@ def flip_mgt(pieceS):
                 flips.append(flip)
 
         return flips
-    return fn_find_flippables
+
+    def fn_get_allowable_moves(color):
+        def fn_get_list_of_starting_coordinates():
+            coord_list = []
+            for row in range(size):
+                for col in range(size):
+                    if pieceS[row][col] == color:
+                        coord_list.append((row, col))
+
+            return coord_list
+
+        lst_starting_coords = fn_get_list_of_starting_coordinates()
+
+        all_flips = []
+        for coords in lst_starting_coords:
+            flippables = fn_find_flippables(coords)
+            for flip in flippables:
+                if flip not in all_flips:
+                    all_flips.append(flip)
+
+        return all_flips
+
+    ret_refs = namedtuple('_', [
+        'fn_find_flippables',
+        'fn_get_allowable_moves',
+        ]
+    )
+
+    ret_refs.fn_find_flippables = fn_find_flippables
+    ret_refs.fn_get_allowable_moves = fn_get_allowable_moves
+
+    return ret_refs
 
 
 if __name__ == '__main__':
     size = 5
     pieces = fn_scaffold_init_pieces(5)
-    fn_find_flippables = flip_mgt(pieces)
+    refs = flip_mgt(pieces)
 
     fn_scaffold_display_board(pieces, size)
 
     #--------------------1
     origin = (1, 2)
 
-    flips = fn_find_flippables(
+    flips = refs.fn_find_flippables(
         origin
     )
     assert flips == [(3, 2), (1, 0)]
@@ -106,13 +140,20 @@ if __name__ == '__main__':
 
     #--------------------2
     origin = (2, 1)
-    flips = fn_find_flippables(
+    flips = refs.fn_find_flippables(
         origin
     )
     assert flips == [(0, 1), (2, 3)]
 
     print()
     print('origin: {}, flips: {}'.format(origin, flips))
+
+    flippables = refs.fn_get_allowable_moves(color= 1)
+    assert flippables == [(3, 2), (1, 0), (0, 1), (2, 3)]
+
+    print(flippables)
+
+
 
 
 
