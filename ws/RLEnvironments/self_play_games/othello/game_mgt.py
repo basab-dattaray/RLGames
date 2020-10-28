@@ -2,7 +2,7 @@ from __future__ import print_function
 import sys
 from collections import namedtuple
 
-from .board_mgt import board_mgt
+# from .board_mgt import board_mgt
 
 sys.path.append('..')
 
@@ -22,8 +22,8 @@ def game_mgt(n):
     def fn_get_init_board():
         # return initial board_pieces (numpy board_pieces)
         b = Board(n)
-        if not EXISTING:
-            b = board_mgt(n)
+        # if not EXISTING:
+        #     b = board_mgt(n)
         return np.array(b.fn_get_pieces())
 
     def fn_get_board_size():

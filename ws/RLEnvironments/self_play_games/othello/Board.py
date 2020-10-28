@@ -44,25 +44,26 @@ class Board():
 
         lst = flip_mgt(self.board_pieces).fn_get_allowable_moves(color)
 
-        moves = set()  # stores the legal moves.
-
-        # Get all the squares with board_pieces of the given color.
-        for y in range(self.n):
-            for x in range(self.n):
-                if self.board_pieces[x][y]==color:
-                    newmoves = self.get_moves_for_square((x,y))
-                    moves.update(newmoves)
-        lst2 = list(moves)
+        # moves = set()  # stores the legal moves.
+        #
+        # # Get all the squares with board_pieces of the given color.
+        # for y in range(self.n):
+        #     for x in range(self.n):
+        #         if self.board_pieces[x][y]==color:
+        #             newmoves = self.get_moves_for_square((x,y))
+        #             moves.update(newmoves)
+        # lst2 = list(moves)
         return lst
 
     def has_legal_moves(self, color):
-        for y in range(self.n):
-            for x in range(self.n):
-                if self.board_pieces[x][y]==color:
-                    newmoves = self.get_moves_for_square((x,y))
-                    if len(newmoves)>0:
-                        return True
-        return False
+        return flip_mgt(self.board_pieces).fn_legal_moves_exist(color)
+        # for y in range(self.n):
+        #     for x in range(self.n):
+        #         if self.board_pieces[x][y]==color:
+        #             newmoves = self.get_moves_for_square((x,y))
+        #             if len(newmoves)>0:
+        #                 return True
+        # return False
 
     def get_moves_for_square(self, square):
 
