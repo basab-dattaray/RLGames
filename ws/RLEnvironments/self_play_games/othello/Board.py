@@ -1,3 +1,5 @@
+from copy import copy
+
 import numpy
 
 from ws.RLEnvironments.self_play_games.othello.flip_mgt import flip_mgt
@@ -22,6 +24,8 @@ class Board():
         self.board_pieces[int(self.n / 2) - 1][int(self.n / 2) - 1] = -1;
         self.board_pieces[int(self.n / 2)][int(self.n / 2)] = -1;
 
+        self.flip_mgr = flip_mgt(self.n)
+
     def fn_get_pieces(self):
         return self.board_pieces
 
@@ -42,82 +46,116 @@ class Board():
 
     def get_legal_moves(self, color):
 
-        lst = flip_mgt(self.board_pieces).fn_get_allowable_moves(color)
+        lst = self.flip_mgr.fn_get_all_allowable_moves(self.board_pieces, color)
 
-        # moves = set()  # stores the legal moves.
-        #
-        # # Get all the squares with board_pieces of the given color.
-        # for y in range(self.n):
-        #     for x in range(self.n):
-        #         if self.board_pieces[x][y]==color:
-        #             newmoves = self.get_moves_for_square((x,y))
-        #             moves.update(newmoves)
-        # lst2 = list(moves)
-        return lst
+        moves = set()  # stores the legal moves.
+
+        # Get all the squares with board_pieces of the given color.
+        for y in range(self.n):
+            for x in range(self.n):
+                if self.board_pieces[x][y]==color:
+                    newmoves = self.get_moves_for_square((x,y))
+                    moves.update(newmoves)
+
+        lst2 = list(moves)
+
+        # _is_equal = self.___compare(lst, lst2)
+        # assert _is_equal is True
+
+        return lst2
+
+    def ___compare(self, lst1, lst2):
+        if lst1 is None:
+            if lst2 is not None:
+                return False
+
+        if lst2 is None:
+            if lst1 is not None:
+                return False
+
+        return copy(lst1).sort() == copy(lst2).sort()
 
     def has_legal_moves(self, color):
-        return flip_mgt(self.board_pieces).fn_legal_moves_exist(color)
-        # for y in range(self.n):
-        #     for x in range(self.n):
-        #         if self.board_pieces[x][y]==color:
-        #             newmoves = self.get_moves_for_square((x,y))
-        #             if len(newmoves)>0:
-        #                 return True
-        # return False
-    #
-    # def get_moves_for_square(self, square):
-    #
-    #     (x,y) = square
-    #
-    #     # determine the color of the piece.
-    #     color = self.board_pieces[x][y]
-    #
-    #     # skip empty source squares.
-    #     if color==0:
-    #         return None
-    #
-    #     # search all possible directions.
-    #     moves = []
-    #     for direction in self.__directions:
-    #         move = self._discover_move(square, direction)
-    #         if move:
-    #             # print(square,move,direction)
-    #             moves.append(move)
-    #
-    #     return moves
+        old =  self.old_has_legal_moves(color)
+        new = self.flip_mgr.fn_any_legal_moves_exist(self.board_pieces, color)
+        _is_Equal = old == new
+
+
+        return old
+
+    def old_has_legal_moves(self, color):
+        for y in range(self.n):
+            for x in range(self.n):
+                if self.board_pieces[x][y] == color:
+                    newmoves = self.get_moves_for_square((x, y))
+                    if len(newmoves) > 0:
+                        return True
+        return False
+
+    def get_moves_for_square(self, square):
+
+        (x,y) = square
+
+        # determine the color of the piece.
+        color = self.board_pieces[x][y]
+
+        # skip empty source squares.
+        if color==0:
+            return None
+
+        # search all possible directions.
+        moves = []
+        for direction in self.__directions:
+            move = self._discover_move(square, direction)
+            if move:
+                # print(square,move,direction)
+                moves.append(move)
+
+        return moves
 
     def execute_move(self, move, color):
 
         flips = [flip for direction in self.__directions
                       for flip in self._get_flips(move, direction, color)]
 
-        if len(list(flips))==0:
+        flips2 = list(set(flips))
+
+        flip_trails = self.flip_mgr.fn_get_flippables(self.board_pieces, color, move)
+
+        _is_equal = self.___compare(flip_trails, flips2)
+
+        if len(list(flips2))==0:
             return False
-        for x, y in flips:
+
+
+        for x, y in flips2:
             self.board_pieces[x][y] = color
         return True
-    #
-    # def _discover_move(self, origin, direction):
-    #     x, y = origin
-    #     color = self.board_pieces[x][y]
-    #     flips = []
-    #
-    #     for x, y in self._increment_move(origin, direction, self.n):
-    #         if self.board_pieces[x][y] == 0:
-    #             if flips:
-    #                 # print("Found", x,y)
-    #                 return (x, y)
-    #             else:
-    #                 return None
-    #         elif self.board_pieces[x][y] == color:
-    #             return None
-    #         elif self.board_pieces[x][y] == -color:
-    #             # print("Flip",x,y)
-    #             flips.append((x, y))
+
+    def _discover_move(self, origin, direction):
+        x, y = origin
+        color = self.board_pieces[x][y]
+        flips = []
+
+        for x, y in self._increment_move(origin, direction, self.n):
+            if self.board_pieces[x][y] == 0:
+                if flips:
+                    # print("Found", x,y)
+                    return (x, y)
+                else:
+                    return None
+            elif self.board_pieces[x][y] == color:
+                return None
+            elif self.board_pieces[x][y] == -color:
+                # print("Flip",x,y)
+                flips.append((x, y))
 
     def _get_flips(self, origin, direction, color):
-        flips = [origin]
+        old_flips = self.old_get_flips(color, direction, origin)
+        return old_flips
 
+    def old_get_flips(self, color, direction, origin):
+        flips = [origin]
         for x, y in self._increment_move(origin, direction, self.n):
 
             if self.board_pieces[x][y] == 0:
@@ -126,7 +164,6 @@ class Board():
                 flips.append((x, y))
             elif self.board_pieces[x][y] == color and len(flips) > 0:
                 return flips
-
         return []
 
     def _increment_move(self, move, direction, n):

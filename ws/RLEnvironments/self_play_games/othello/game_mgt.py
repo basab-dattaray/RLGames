@@ -53,8 +53,8 @@ def game_mgt(n):
         # return a fixed size binary vector
         valids = [0]*fn_get_action_size()
         b = Board(n)
-        if not EXISTING:
-            b = board_mgt(n)
+        # if not EXISTING:
+        #     b = board_mgt(n)
         # b.board_pieces = np.copy(board_pieces)
         b.fn_set_pieces(pieces)
         legalMoves =  b.get_legal_moves(player)
@@ -70,8 +70,8 @@ def game_mgt(n):
             return fn_game_status(pieces)
 
         b = Board(n)
-        if not EXISTING:
-            b = board_mgt(n)
+        # if not EXISTING:
+        #     b = board_mgt(n)
         # b.board_pieces = np.copy(board_pieces)
         b.fn_set_pieces(pieces)
         if b.has_legal_moves(player):
@@ -117,8 +117,8 @@ def game_mgt(n):
 
     def fn_get_score(pieces, player):
         b = Board(n)
-        if not EXISTING:
-            b = board_mgt(n)
+        # if not EXISTING:
+        #     b = board_mgt(n)
         # b.board_pieces = np.copy(board_pieces)
         b.fn_set_pieces(pieces)
         return b.countDiff(player)
