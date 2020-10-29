@@ -14,7 +14,7 @@ def impl_mgt(env, app_info):
     _discount_factor = app_info["DISCOUNT_FACTOR"]
     _learning_rate = app_info["LEARNING_RATE"]
 
-    app_fn_display_info = app_info["fn_display"]
+    app_fn_display_info = app_info["display"]
     _width = app_fn_display_info["WIDTH"]
     _height = app_fn_display_info["HEIGHT"]
     _board_blockers = app_fn_display_info["BOARD_BLOCKERS"]

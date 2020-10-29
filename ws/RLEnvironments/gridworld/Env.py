@@ -11,10 +11,10 @@ class Env:
         self._app_info = app_info
         self._episode = None
 
-        self._board_blockers = app_info["fn_display"]["BOARD_BLOCKERS"]
-        self._board_goal = app_info["fn_display"]["BOARD_GOAL"]
-        self._width = app_info["fn_display"]["WIDTH"]
-        self._height = app_info["fn_display"]["HEIGHT"]
+        self._board_blockers = app_info["display"]["BOARD_BLOCKERS"]
+        self._board_goal = app_info["display"]["BOARD_GOAL"]
+        self._width = app_info["display"]["WIDTH"]
+        self._height = app_info["display"]["HEIGHT"]
 
         self._reward = None
         self._possible_actions = None

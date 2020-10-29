@@ -4,7 +4,7 @@ from ws.RLEnvironments.gridworld.logic.SETUP_INFO import ACTION_MOVE_STATE_RULES
 def value_table_mgt(app_info):
     LOW_NUMBER = -999999
     _goal_coordinates = None
-    app_info_fn_display = app_info['fn_display']
+    app_info_fn_display = app_info["display"]
     _width = app_info_fn_display["WIDTH"]
     _height = app_info_fn_display['HEIGHT']
     _board_goal = app_info_fn_display["BOARD_GOAL"]
