@@ -16,7 +16,7 @@ class HumanPlayer():
                 try:
                     x,y = [int(i) for i in input_a]
                     if ((0 <= x) and (x < self.game.fn_get_board_size()) and (0 <= y) and (y < self.game.fn_get_board_size())) or \
-                            ((x == self.game.n) and (y == 0)):
+                            ((x == self.game.board_size) and (y == 0)):
                         a = self.game.fn_get_board_size() * x + y if x != -1 else self.game.fn_get_board_size() ** 2
                         if valid[a]:
                             break
