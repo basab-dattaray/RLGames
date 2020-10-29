@@ -32,13 +32,14 @@ class Board():
     def fn_set_pieces(self, pieces):
         self.board_pieces = numpy.copy(pieces)
 
-    def count_diff(self, color):
+    def count_diff(self, pieces, color):
+        board_size = len(pieces[0])
         count = 0
-        for y in range(self.board_size):
-            for x in range(self.board_size):
-                if self.board_pieces[x][y]==color:
+        for y in range(board_size):
+            for x in range(board_size):
+                if pieces[x][y]==color:
                     count += 1
-                if self.board_pieces[x][y]==-color:
+                if pieces[x][y]==-color:
                     count -= 1
         return count
 
@@ -48,8 +49,8 @@ class Board():
 
         return all_allowed_moves
 
-    def has_legal_moves(self, color):
-        atleast_one_legal_move_exists = self.flip_mgr.fn_any_legal_moves_exist(self.board_pieces, color)
+    def has_legal_moves(self, pieces, color):
+        atleast_one_legal_move_exists = self.flip_mgr.fn_any_legal_moves_exist(pieces, color)
         return atleast_one_legal_move_exists
 
 

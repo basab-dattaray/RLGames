@@ -74,11 +74,11 @@ def game_mgt(n):
         #     b = board_mgt(board_size)
         # b.board_pieces = np.copy(board_pieces)
         b.fn_set_pieces(pieces)
-        if b.has_legal_moves(player):
+        if b.has_legal_moves(pieces, player):
             return 0
-        if b.has_legal_moves(-player):
+        if b.has_legal_moves(pieces, -player):
             return 0
-        if b.count_diff(player) > 0:
+        if b.count_diff(pieces, player) > 0:
             return 1
         return -1
 
@@ -121,7 +121,7 @@ def game_mgt(n):
         #     b = board_mgt(board_size)
         # b.board_pieces = np.copy(board_pieces)
         b.fn_set_pieces(pieces)
-        return b.count_diff(player)
+        return b.count_diff(pieces, player)
 
     # @staticmethod
     def fn_display(board):
