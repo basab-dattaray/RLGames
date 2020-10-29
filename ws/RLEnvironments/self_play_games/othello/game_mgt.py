@@ -82,8 +82,8 @@ def game_mgt(n):
             return 1
         return -1
 
-    def fn_game_status(board):
-        val = sum(board.flatten())
+    def fn_game_status(pieces):
+        val = sum(pieces.flatten())
         status = 0 if val == 0 else -1 if val < 0 else 1
         return status
 
@@ -92,14 +92,14 @@ def game_mgt(n):
         canonical_pieces =  player * pieces
         return canonical_pieces
 
-    def fn_get_symetric_samples(board, action_probs):
+    def fn_get_symetric_samples(pieces, action_probs):
         # mirror, rotational
-        assert(len(action_probs) == n ** 2 + 1)  # 1 for pass
+        # assert(len(action_probs) == n ** 2 + 1)  # 1 for pass
         pi_board = np.reshape(action_probs[:-1], (n, n))
         list_of_symetries = []
 
         for i in range(1, 5):
-                rotated_board = np.rot90(board, i)
+                rotated_board = np.rot90(pieces, i)
                 rotated_actions_rel_to_board = np.rot90(pi_board, i)
                 list_of_symetries += [(rotated_board, list(rotated_actions_rel_to_board.ravel()) + [action_probs[-1]])]
 
@@ -108,8 +108,8 @@ def game_mgt(n):
                 list_of_symetries += [(rotated_board_flipped, list(rotated_actions_rel_to_board_flipped.ravel()) + [action_probs[-1]])]
         return list_of_symetries
 
-    def fn_get_string_representation(board):
-        return board.tostring()
+    def fn_get_string_representation(pieces):
+        return pieces.tostring()
 
     # def fn_get_string_representationReadable(board_pieces):
     #     board_s = "".join(square_content[square] for row in board_pieces for square in row)
@@ -124,8 +124,8 @@ def game_mgt(n):
         return b.count_diff(pieces, player)
 
     # @staticmethod
-    def fn_display(board):
-        n = board.shape[0]
+    def fn_display(pieces):
+        n = pieces.shape[0]
         print("   ", end="")
         for y in range(n):
             print(y, end=" ")
@@ -134,7 +134,7 @@ def game_mgt(n):
         for y in range(n):
             print(y, "|", end="")    # print the row #
             for x in range(n):
-                piece = board[y][x]    # get the piece to print
+                piece = pieces[y][x]    # get the piece to print
                 print(square_content[piece], end=" ")
             print("|")
 
