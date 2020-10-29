@@ -43,9 +43,9 @@ class Board():
                     count -= 1
         return count
 
-    def get_legal_moves(self, color):
+    def get_legal_moves(self, pieces, color):
 
-        all_allowed_moves = self.flip_mgr.fn_get_all_allowable_moves(self.board_pieces, color)
+        all_allowed_moves = self.flip_mgr.fn_get_all_allowable_moves(pieces, color)
 
         return all_allowed_moves
 
@@ -54,7 +54,7 @@ class Board():
         return atleast_one_legal_move_exists
 
 
-    def execute_move(self, move, color):
+    def execute_move(self, pieces, move, color):
         flip_trails = self.flip_mgr.fn_get_flippables(self.board_pieces, color, move)
 
         if len(list(flip_trails))==0:

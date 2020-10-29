@@ -45,7 +45,7 @@ def game_mgt(n):
         # b.board_pieces = np.copy(board_pieces)
         b.fn_set_pieces(pieces)
         move = (int(action/n), action%n)
-        if not b.execute_move(move, player):
+        if not b.execute_move(pieces, move, player):
             return (b.fn_get_pieces(), None)
         return (b.fn_get_pieces(), -player)
 
@@ -57,7 +57,7 @@ def game_mgt(n):
         #     b = board_mgt(board_size)
         # b.board_pieces = np.copy(board_pieces)
         b.fn_set_pieces(pieces)
-        legalMoves =  b.get_legal_moves(player)
+        legalMoves =  b.get_legal_moves(pieces, player)
         if len(legalMoves)==0:
             valids[-1]=1
             return np.array(valids)
