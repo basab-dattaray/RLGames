@@ -59,10 +59,10 @@ class Board():
 
         lst2 = list(moves)
 
-        # _is_equal = self.___compare(lst, lst2)
-        # assert _is_equal is True
+        _is_equal = self.___compare(lst, lst2)
+        assert _is_equal is True
 
-        return lst2
+        return lst
 
     def ___compare(self, lst1, lst2):
         if lst1 is None:
@@ -81,7 +81,7 @@ class Board():
         _is_Equal = old == new
 
 
-        return old
+        return new
 
     def old_has_legal_moves(self, color):
         for y in range(self.n):
@@ -124,11 +124,11 @@ class Board():
 
         _is_equal = self.___compare(flip_trails, flips2)
 
-        if len(list(flips2))==0:
+        if len(list(flip_trails))==0:
             return False
 
 
-        for x, y in flips2:
+        for x, y in flip_trails:
             self.board_pieces[x][y] = color
         return True
 
