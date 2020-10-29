@@ -11,17 +11,20 @@ class Board():
 
         self.board_size = board_size
         # Create the empty board_pieces array.
-        self.board_pieces = [None] * self.board_size
-        for i in range(self.board_size):
-            self.board_pieces[i] = [0] * self.board_size
-
-        # Set up the initial 4 board_pieces.
-        self.board_pieces[int(self.board_size / 2) - 1][int(self.board_size / 2)] = 1
-        self.board_pieces[int(self.board_size / 2)][int(self.board_size / 2) - 1] = 1
-        self.board_pieces[int(self.board_size / 2) - 1][int(self.board_size / 2) - 1] = -1;
-        self.board_pieces[int(self.board_size / 2)][int(self.board_size / 2)] = -1;
+        self.board_pieces =  self.fn_init_board()
 
         self.flip_mgr = flip_mgt(self.board_size)
+
+    def fn_init_board(self):
+        pieces = [None] * self.board_size
+        for i in range(self.board_size):
+            pieces[i] = [0] * self.board_size
+        # Set up the initial 4 board_pieces.
+        pieces[int(self.board_size / 2) - 1][int(self.board_size / 2)] = 1
+        pieces[int(self.board_size / 2)][int(self.board_size / 2) - 1] = 1
+        pieces[int(self.board_size / 2) - 1][int(self.board_size / 2) - 1] = -1;
+        pieces[int(self.board_size / 2)][int(self.board_size / 2)] = -1;
+        return pieces
 
     def fn_get_pieces(self):
         return self.board_pieces
