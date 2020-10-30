@@ -84,8 +84,8 @@ def neural_net_mgt(args, game):
                 total_loss.backward()
                 optimizer.step()
         fn_end_couunting()
-        args.recorder.fn_record_message(f'Epochs: {args.epochs}')
-        # args.recorder.fn_record_message(f'Epochs: {args.epochs}')
+        args.recorder.fn_record_message(f'Number of Epochs for training new model: {args.epochs}')
+
 
     def predict(board):
         """

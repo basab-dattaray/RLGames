@@ -10,7 +10,7 @@ import numpy as np
 from pip._vendor.colorama import Fore
 
 from ws.RLAgents.self_play.alpha_zero.play.Arena import Arena
-from ws.RLAgents.self_play.alpha_zero.search.MctsSelector import MctsSelector
+from ws.RLAgents.self_play.alpha_zero.search.mcts_adapter import mcts_adapter
 # from ws.RLAgents.self_play.alpha_zero.search.recursive.MCTS import MCTS
 from ws.RLUtils.monitoring.tracing.progress_count_mgt import progress_count_mgt
 from ws.RLUtils.monitoring.tracing.tracer import tracer
@@ -23,7 +23,7 @@ def training_mgt(game, nnet, args):
 
     pnet = copy.deepcopy(nnet)
 
-    trainExamplesHistory = []  # history of examples from args.numItersForTrainExamplesHistory latest iterations
+    training_samples_buffer = []  # history of examples from args.sample_history_buffer_size latest iterations
     skipFirstSelfPlay = False  # can be overriden in loadTrainExamples()
 
     def fn_form_sample_data(current_player, run_result, training_samples):
@@ -42,7 +42,7 @@ def training_mgt(game, nnet, args):
 
             @tracer(args)
             def fn_generate_samples(iteration):
-                generation_mcts = MctsSelector(game, nnet, args)
+                generation_mcts = mcts_adapter(game, nnet, args)
 
                 def _fn_run_episodes():
                     trainExamples = []
@@ -53,7 +53,7 @@ def training_mgt(game, nnet, args):
                     while True:
                         episode_step += 1
                         canonical_board_pieces = game.fn_get_canonical_form(current_pieces, curPlayer)
-                        spread_probabilities = int(episode_step < args.tempThreshold)
+                        spread_probabilities = int(episode_step < args.probability_spread_threshold)
 
                         action_probs = generation_mcts.fn_get_action_probabilities(canonical_board_pieces,
                                                                                    spread_probabilities=spread_probabilities)
@@ -84,30 +84,30 @@ def training_mgt(game, nnet, args):
 
                 # examples of the iteration
                 if not skipFirstSelfPlay or iteration > 1:
-                    iterationTrainExamples = deque([], maxlen=args.maxlenOfQueue)
+                    iterationTrainExamples = deque([], maxlen=args.sample_buffer_size)
                     fn_count_episode, fn_end_couunting = progress_count_mgt('Episodes', args.num_of_training_episodes)
                     for episode_num in range(1, args.num_of_training_episodes + 1):
                         fn_count_episode()
 
-                        # mcts = MctsSelector(game, nnet, args)  # reset search tree
+                        # mcts = mcts_adapter(game, nnet, args)  # reset search tree
                         episode_result = _fn_run_episodes()
                         if episode_result is not None:
                             iterationTrainExamples += episode_result
                     fn_end_couunting()
-                    args.recorder.fn_record_message(f'Number of Episodes that ran: {args.num_of_training_episodes}')
+                    args.recorder.fn_record_message(f'Number of Episodes for sample generation: {args.num_of_training_episodes}')
 
                     # save the iteration examples to the history
-                    trainExamplesHistory.append(iterationTrainExamples)
-                if len(trainExamplesHistory) > args.numItersForTrainExamplesHistory:
+                    training_samples_buffer.append(iterationTrainExamples)
+                if len(training_samples_buffer) > args.sample_history_buffer_size:
                     log.warning(
-                        f"Removing the oldest entry in trainExamples. len(trainExamplesHistory) = {len(trainExamplesHistory)}")
-                    trainExamplesHistory.pop(0)
+                        f"Removing the oldest entry in trainExamples. len(training_samples_buffer) = {len(training_samples_buffer)}")
+                    training_samples_buffer.pop(0)
                 # backup history to a file
                 # NB! the examples were collected using the model from the previous iteration, so (iteration-1)
                 saveTrainExamples(iteration - 1)
                 # shuffle examples before training
                 trainExamples = []
-                for e in trainExamplesHistory:
+                for e in training_samples_buffer:
                     trainExamples.extend(e)
                 shuffle(trainExamples)
 
@@ -119,9 +119,9 @@ def training_mgt(game, nnet, args):
                 # training new network, keeping a copy of the old one
                 nnet.save_checkpoint(rel_folder=args.checkpoint, filename='temp.tar')
                 pnet.load_checkpoint(rel_folder=args.checkpoint, filename='temp.tar')
-                pmcts = MctsSelector(game, pnet, args)
+                pmcts = mcts_adapter(game, pnet, args)
                 nnet.fn_adjust_model_from_examples(trainExamples)
-                nmcts = MctsSelector(game, nnet, args)
+                nmcts = mcts_adapter(game, nnet, args)
                 # args.recorder.fn_record_message()
                 # args.recorder.fn_record_message(f'* Comptete with Previous Version', indent=0)
                 arena = Arena(lambda x: np.argmax(pmcts.fn_get_action_probabilities(x, spread_probabilities=0)),
@@ -139,7 +139,7 @@ def training_mgt(game, nnet, args):
 
             draws, nwins, pwins = _fn_play_next_vs_previous(trainExamples)
 
-            update_threshold = 'update threshold: {}'.format(args.updateThreshold)
+            update_threshold = 'update threshold: {}'.format(args.score_based_model_update_threshold)
             args.recorder.fn_record_message(update_threshold)
 
             score = f'nwins:{nwins} pwins:{pwins} draws:{draws}'
@@ -151,7 +151,7 @@ def training_mgt(game, nnet, args):
                 reject = True
             else:
                 update_score = float(nwins) / (pwins + nwins)
-                if update_score < args.updateThreshold:
+                if update_score < args.score_based_model_update_threshold:
                     reject = True
 
             model_already_exists = nnet.fn_is_model_available(rel_folder=args.checkpoint)
@@ -159,13 +159,13 @@ def training_mgt(game, nnet, args):
             if reject and model_already_exists:
                 color = Fore.RED
                 args.recorder.fn_record_message(
-                    color + 'REJECTED New Model: update_threshold: {}, update_score: {}'.format(args.updateThreshold,
+                    color + 'REJECTED New Model: update_threshold: {}, update_score: {}'.format(args.score_based_model_update_threshold,
                                                                                                 update_score))
                 nnet.load_checkpoint(rel_folder=args.checkpoint, filename='temp.tar')
             else:
                 color = Fore.GREEN
                 args.recorder.fn_record_message(
-                    color + 'ACCEPTED New Model: update_threshold: {}, update_score: {}'.format(args.updateThreshold,
+                    color + 'ACCEPTED New Model: update_threshold: {}, update_score: {}'.format(args.score_based_model_update_threshold,
                                                                                                 update_score))
                 nnet.save_checkpoint(rel_folder=args.checkpoint, filename=getCheckpointFile(iteration))
                 nnet.save_checkpoint(rel_folder=args.checkpoint, filename='model.tar')
@@ -186,7 +186,7 @@ def training_mgt(game, nnet, args):
             os.makedirs(folder)
         filename = os.path.join(folder, getCheckpointFile(iteration) + ".examples")
         with open(filename, "wb+") as f:
-            Pickler(f).dump(trainExamplesHistory)
+            Pickler(f).dump(training_samples_buffer)
         # f.closed
 
     def loadTrainExamples():
@@ -200,7 +200,7 @@ def training_mgt(game, nnet, args):
         else:
             args.fn_record("File with trainExamples found. Loading it...")
             with open(examplesFile, "rb") as f:
-                trainExamplesHistory = Unpickler(f).load()
+                training_samples_buffer = Unpickler(f).load()
             args.fn_record('Loading done!')
 
             # examples based on the model were already collected (loaded)

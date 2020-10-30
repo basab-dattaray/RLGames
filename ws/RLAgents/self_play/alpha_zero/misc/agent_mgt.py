@@ -15,7 +15,7 @@ from ws.RLAgents.self_play.alpha_zero.play.Arena import Arena
 from ws.RLAgents.self_play.alpha_zero.play.GreedyPlayer import GreedyPlayer
 from ws.RLAgents.self_play.alpha_zero.play.HumanPlayer import HumanPlayer
 from ws.RLAgents.self_play.alpha_zero.play.RandomPlayer import RandomPlayer
-from ws.RLAgents.self_play.alpha_zero.search.MctsSelector import MctsSelector
+from ws.RLAgents.self_play.alpha_zero.search.mcts_adapter import mcts_adapter
 
 from ws.RLAgents.self_play.alpha_zero.train.training_mgt import training_mgt
 from ws.RLEnvironments.self_play_games.othello.game_mgt import game_mgt as Game, game_mgt
@@ -106,7 +106,7 @@ def agent_mgt(args, file_path):
         system_nn = neural_net_mgt(args, game)
         system_nn.load_checkpoint('tmp/', 'model.tar')
 
-        system_mcts = MctsSelector(game, system_nn, args)
+        system_mcts = mcts_adapter(game, system_nn, args)
         fn_system_policy = lambda x: numpy.argmax(system_mcts.fn_get_action_probabilities(x, spread_probabilities=0))
         fn_contender_policy = fn_player_policy(game)
         arena = Arena(fn_system_policy, fn_contender_policy, game, fn_display=game_mgt(args['board_size']).fn_display,

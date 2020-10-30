@@ -30,7 +30,7 @@ class MCTS():
         self.fn_get_action_probabilities = mcts_probability_mgt(self.fn_init_mcts, self.fn_get_mcts_count)
 
     def fn_get_mcts_count(self, state):
-        for i in range(self.args.numMCTSSims):
+        for i in range(self.args.num_of_mc_simulations):
             self.search(state)
 
         s = self.game.fn_get_string_representation(state)
@@ -100,10 +100,10 @@ class MCTS():
         for a in range(self.game.fn_get_action_size()):
             if valids[a]:
                 if (s, a) in self.Qsa:
-                    u = self.Qsa[(s, a)] + self.args.cpuct * self.Ps[s][a] * math.sqrt(self.Ns[s]) / (
+                    u = self.Qsa[(s, a)] + self.args.cpuct_exploration_exploitation_factor * self.Ps[s][a] * math.sqrt(self.Ns[s]) / (
                             1 + self.Nsa[(s, a)])
                 else:
-                    u = self.args.cpuct * self.Ps[s][a] * math.sqrt(self.Ns[s] + EPS)  # Q = 0 ?
+                    u = self.args.cpuct_exploration_exploitation_factor * self.Ps[s][a] * math.sqrt(self.Ns[s] + EPS)  # Q = 0 ?
                     # u = 0
 
                 if u > cur_best:
