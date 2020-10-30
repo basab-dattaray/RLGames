@@ -6,7 +6,7 @@ import numpy
 from ws.RLEnvironments.self_play_games.othello.flip_mgt import flip_mgt
 
 
-def Board(board_size):
+def board_mgt(board_size):
 
 
     board_size = board_size

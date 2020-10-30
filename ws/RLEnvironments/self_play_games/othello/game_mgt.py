@@ -6,7 +6,7 @@ from collections import namedtuple
 
 sys.path.append('..')
 
-from .Board import Board
+from .Board import board_mgt
 import numpy as np
 
 EXISTING = True
@@ -21,10 +21,10 @@ def game_mgt(board_size):
 
     def fn_get_init_board():
         # return initial board_pieces (numpy board_pieces)
-        # b = Board(board_size)
+        # b = board_mgt(board_size)
         # if not EXISTING:
         #     b = board_mgt(board_size)
-        return np.array(Board(board_size).fn_init_board())
+        return np.array(board_mgt(board_size).fn_init_board())
 
     def fn_get_board_size():
         # (a,b) tuple
@@ -36,7 +36,7 @@ def game_mgt(board_size):
     def fn_get_next_state(pieces, player, action):
         if action == board_size*board_size:
             return (pieces, -player)
-        b = Board(board_size)
+        b = board_mgt(board_size)
         move = (int(action / board_size), action % board_size)
         success, pieces = b.fn_execute_flips(pieces, move, player)
         if not success:
@@ -45,7 +45,7 @@ def game_mgt(board_size):
 
     def fn_get_valid_moves(pieces, player):
         valids = [0]*fn_get_action_size()
-        b = Board(board_size)
+        b = board_mgt(board_size)
 
         legalMoves =  b.fn_find_legal_moves(pieces, player)
         if len(legalMoves)==0:
@@ -59,7 +59,7 @@ def game_mgt(board_size):
         if player is None:
             return fn_game_status(pieces)
 
-        b = Board(board_size)
+        b = board_mgt(board_size)
 
         if b.fn_are_any_legal_moves_available(pieces, player):
             return 0
@@ -97,7 +97,7 @@ def game_mgt(board_size):
 
 
     def fn_get_score(pieces, player):
-        b = Board(board_size)
+        b = board_mgt(board_size)
         return b.fn_get_advantage_count(pieces, player)
 
     def fn_display(pieces):
