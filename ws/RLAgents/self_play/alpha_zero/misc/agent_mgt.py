@@ -47,8 +47,11 @@ def agent_mgt(args, file_path):
     if os.path.exists(src_model_file_path):
         copy(src_model_file_path, old_model_file_path)
 
-    if 'num_of_successes_for_model_upgrade' not in args.keys():
-        args['num_of_successes_for_model_upgrade'] = 1
+    _fn_init_arg_with_default_val(args, 'num_of_successes_for_model_upgrade', 1)
+    _fn_init_arg_with_default_val(args, 'rel_model_path', 'model/')
+    _fn_init_arg_with_default_val(args, 'do_load_model', False)
+    _fn_init_arg_with_default_val(args, 'do_load_samples', False)
+    _fn_init_arg_with_default_val(args, 'model_name', 'model')
 
     def exit_gracefully(signum, frame):
         #
@@ -68,11 +71,11 @@ def agent_mgt(args, file_path):
 
         nnet = neural_net_mgt(args, game)
 
-        if args.load_model:
-            args.fn_record('Loading checkpoint "%s/%s"...', args.load_folder_file)
-            nnet.load_checkpoint(args.load_folder_file[0], args.load_folder_file[1])
+        if args.do_load_model:
+            args.fn_record('Loading rel_model_path "%s/%s"...', args.load_folder_file)
+            nnet.fn_load_model(args.load_folder_file[0], args.load_folder_file[1])
         else:
-            log.warning('Not loading a checkpoint!')
+            log.warning('Not loading a rel_model_path!')
 
         fn_execute_training_iterations = training_mgt(game, nnet, args)
         fn_execute_training_iterations()
@@ -100,7 +103,7 @@ def agent_mgt(args, file_path):
     def fn_test(fn_player_policy, verbose= False, num_of_test_games=2):
         signal.signal(signal.SIGINT, exit_gracefully)
         system_nn = neural_net_mgt(args, game)
-        system_nn.load_checkpoint('tmp/', 'model.tar')
+        system_nn.fn_load_model('tmp/', 'model.tar')
 
         system_mcts = mcts_adapter(game, system_nn, args)
         fn_system_policy = lambda x: numpy.argmax(system_mcts.fn_get_action_probabilities(x, spread_probabilities=0))
@@ -176,3 +179,8 @@ def agent_mgt(args, file_path):
     agent_mgr.fn_archive_log_file = fn_archive_log_file
 
     return agent_mgr
+
+
+def _fn_init_arg_with_default_val(args, name, val):
+    if name not in args.keys():
+        args[name] = val

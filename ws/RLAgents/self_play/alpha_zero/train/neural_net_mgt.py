@@ -110,7 +110,7 @@ def neural_net_mgt(args, game):
     def fn_loss_for_values(targets, outputs):
         return torch.sum((targets - outputs.view(-1)) ** 2) / targets.size()[0]
 
-    def save_checkpoint(rel_folder, filename):
+    def fn_save_model(rel_folder, filename):
         folder = os.path.join(args.demo_folder, rel_folder)
         filepath = os.path.join(folder, filename)
         filepath_abs = os.path.abspath(filepath)
@@ -123,15 +123,15 @@ def neural_net_mgt(args, game):
             'state_dict': nnet.state_dict(),
         }, filepath)
 
-    def load_checkpoint(rel_folder, filename):
+    def fn_load_model(rel_folder, filename):
         folder = os.path.join(args.demo_folder, rel_folder)
         filepath = os.path.join(folder, filename)
         if filename != 'temp.tar':
             if not os.path.exists(filepath):
                 raise ("No model in path {}".format(filepath))
         map_location = None if nnet_params.cuda else 'cpu'
-        checkpoint = torch.load(filepath, map_location=map_location)
-        nnet.load_state_dict(checkpoint['state_dict'])
+        rel_model_path = torch.load(filepath, map_location=map_location)
+        nnet.load_state_dict(rel_model_path['state_dict'])
 
     def fn_is_model_available(rel_folder):
         folder = os.path.join(args.demo_folder, rel_folder)
@@ -142,11 +142,11 @@ def neural_net_mgt(args, game):
             return False
 
 
-    neural_net_mgr = namedtuple('_', ['fn_adjust_model_from_examples','load_checkpoint' ,'save_checkpoint', 'predict', 'fn_is_model_available'])
+    neural_net_mgr = namedtuple('_', ['fn_adjust_model_from_examples','fn_load_model' ,'fn_save_model', 'predict', 'fn_is_model_available'])
 
     neural_net_mgr.fn_adjust_model_from_examples = fn_adjust_model_from_examples
-    neural_net_mgr.load_checkpoint = load_checkpoint
-    neural_net_mgr.save_checkpoint = save_checkpoint
+    neural_net_mgr.fn_load_model = fn_load_model
+    neural_net_mgr.fn_save_model = fn_save_model
     neural_net_mgr.predict = predict
     neural_net_mgr.fn_is_model_available = fn_is_model_available
 

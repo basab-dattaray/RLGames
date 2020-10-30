@@ -10,8 +10,8 @@ args = dotdict({
     'number_of_games_for_model_comarison': 40,         # Number of games to play during arena play to determine if new net will be accepted.
     'cpuct_exploration_exploitation_factor': 1,
 
-    'checkpoint': 'tmp/',
-    'load_model': False,
+    'rel_model_path': 'tmp/',
+    'do_load_model': False,
     'load_folder_file': ('tmp/','model.tar'),
     'sample_history_buffer_size': 20,
 

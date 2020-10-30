@@ -27,7 +27,7 @@ def training_mgt(game, nnet, args):
         return 'model_' + str(iteration) + '.tar'
 
     def _fn_save_train_examples(iteration):
-        folder = args.checkpoint
+        folder = args.rel_model_path
         if not os.path.exists(folder):
             os.makedirs(folder)
         filename = os.path.join(folder, _fn_getCheckpointFile(iteration) + ".examples")
@@ -152,8 +152,8 @@ def training_mgt(game, nnet, args):
             @tracer(args)
             def _fn_play_next_vs_previous(trainExamples):
                 # training new network, keeping a copy of the old one
-                nnet.save_checkpoint(rel_folder=args.checkpoint, filename='temp.tar')
-                pnet.load_checkpoint(rel_folder=args.checkpoint, filename='temp.tar')
+                nnet.fn_save_model(rel_folder=args.rel_model_path, filename='temp.tar')
+                pnet.fn_load_model(rel_folder=args.rel_model_path, filename='temp.tar')
                 pmcts = mcts_adapter(game, pnet, args)
                 nnet.fn_adjust_model_from_examples(trainExamples)
                 nmcts = mcts_adapter(game, nnet, args)
@@ -182,26 +182,26 @@ def training_mgt(game, nnet, args):
                 if update_score < args.score_based_model_update_threshold:
                     reject = True
 
-            model_already_exists = nnet.fn_is_model_available(rel_folder=args.checkpoint)
+            model_already_exists = nnet.fn_is_model_available(rel_folder=args.rel_model_path)
 
             if reject and model_already_exists:
                 color = Fore.RED
                 args.recorder.fn_record_message(
                     color + 'REJECTED New Model: update_threshold: {}, update_score: {}'.format(args.score_based_model_update_threshold,
                                                                                                 update_score))
-                nnet.load_checkpoint(rel_folder=args.checkpoint, filename='temp.tar')
+                nnet.fn_load_model(rel_folder=args.rel_model_path, filename='temp.tar')
             else:
                 color = Fore.GREEN
                 args.recorder.fn_record_message(
                     color + 'ACCEPTED New Model: update_threshold: {}, update_score: {}'.format(args.score_based_model_update_threshold,
                                                                                                 update_score))
-                nnet.save_checkpoint(rel_folder=args.checkpoint, filename=_fn_getCheckpointFile(iteration))
-                nnet.save_checkpoint(rel_folder=args.checkpoint, filename='model.tar')
+                nnet.fn_save_model(rel_folder=args.rel_model_path, filename=_fn_getCheckpointFile(iteration))
+                nnet.fn_save_model(rel_folder=args.rel_model_path, filename='model.tar')
             args.recorder.fn_record_message(Fore.BLACK)
 
 
 
-        if args.load_model:
+        if args.do_load_model:
             # args.fn_record("  Loading 'trainExamples' from file...")
             _fn_load_train_examples()
         for iteration in range(1, args.numIters + 1):
