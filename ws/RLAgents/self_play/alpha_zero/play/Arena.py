@@ -98,7 +98,7 @@ class Arena():
         return result
 
 
-    def playGames(self, num_of_games, verbose=False):
+    def play_games(self, num_of_games, verbose=False):
         self.count_episode, self.end_couunting = progress_count_mgt('Game Counts', num_of_games)
         num_div_2 = int(num_of_games / 2)
         extra_for_1 = 0

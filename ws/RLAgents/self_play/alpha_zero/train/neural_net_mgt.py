@@ -40,7 +40,7 @@ def neural_net_mgt(args, game):
     if nnet_params.cuda:
         nnet.cuda()
 
-    @tracer(args)
+    # @tracer(args)
     def fn_adjust_model_from_examples(examples):
         """
         examples: list of examples, each example is of form (board_pieces, action_probs, v)
@@ -85,6 +85,7 @@ def neural_net_mgt(args, game):
                 optimizer.step()
         fn_end_couunting()
         args.recorder.fn_record_message(f'Epochs: {args.epochs}')
+        # args.recorder.fn_record_message(f'Epochs: {args.epochs}')
 
     def predict(board):
         """
@@ -141,12 +142,12 @@ def neural_net_mgt(args, game):
             return False
 
 
-    ret_refs = namedtuple('_', ['fn_adjust_model_from_examples','load_checkpoint' ,'save_checkpoint', 'predict', 'fn_is_model_available'])
+    neural_net_mgr = namedtuple('_', ['fn_adjust_model_from_examples','load_checkpoint' ,'save_checkpoint', 'predict', 'fn_is_model_available'])
 
-    ret_refs.fn_adjust_model_from_examples = fn_adjust_model_from_examples
-    ret_refs.load_checkpoint = load_checkpoint
-    ret_refs.save_checkpoint = save_checkpoint
-    ret_refs.predict = predict
-    ret_refs.fn_is_model_available = fn_is_model_available
+    neural_net_mgr.fn_adjust_model_from_examples = fn_adjust_model_from_examples
+    neural_net_mgr.load_checkpoint = load_checkpoint
+    neural_net_mgr.save_checkpoint = save_checkpoint
+    neural_net_mgr.predict = predict
+    neural_net_mgr.fn_is_model_available = fn_is_model_available
 
-    return ret_refs
+    return neural_net_mgr
