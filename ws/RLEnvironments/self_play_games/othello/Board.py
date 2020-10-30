@@ -1,3 +1,4 @@
+from collections import namedtuple
 from copy import copy
 
 import numpy
@@ -5,28 +6,27 @@ import numpy
 from ws.RLEnvironments.self_play_games.othello.flip_mgt import flip_mgt
 
 
-class Board():
+def Board(board_size):
 
-    def __init__(self, board_size):
 
-        self.board_size = board_size
-        # Create the empty board_pieces array.
-        self.board_pieces =  self.fn_init_board()
+    board_size = board_size
+    # Create the empty board_pieces array.
+    # board_pieces =  fn_init_board()
 
-        self.flip_mgr = flip_mgt(self.board_size)
+    flip_mgr = flip_mgt(board_size)
 
-    def fn_init_board(self):
-        pieces = [None] * self.board_size
-        for i in range(self.board_size):
-            pieces[i] = [0] * self.board_size
+    def fn_init_board():
+        pieces = [None] * board_size
+        for i in range(board_size):
+            pieces[i] = [0] * board_size
         # Set up the initial 4 board_pieces.
-        pieces[int(self.board_size / 2) - 1][int(self.board_size / 2)] = 1
-        pieces[int(self.board_size / 2)][int(self.board_size / 2) - 1] = 1
-        pieces[int(self.board_size / 2) - 1][int(self.board_size / 2) - 1] = -1;
-        pieces[int(self.board_size / 2)][int(self.board_size / 2)] = -1;
+        pieces[int(board_size / 2) - 1][int(board_size / 2)] = 1
+        pieces[int(board_size / 2)][int(board_size / 2) - 1] = 1
+        pieces[int(board_size / 2) - 1][int(board_size / 2) - 1] = -1;
+        pieces[int(board_size / 2)][int(board_size / 2)] = -1;
         return pieces
 
-    def fn_get_advantage_count(self, pieces, color):
+    def fn_get_advantage_count(pieces, color):
         board_size = len(pieces[0])
         count = 0
         for y in range(board_size):
@@ -37,20 +37,20 @@ class Board():
                     count -= 1
         return count
 
-    def fn_find_legal_moves(self, pieces, color):
+    def fn_find_legal_moves(pieces, color):
 
-        all_allowed_moves = self.flip_mgr.fn_get_all_allowable_moves(pieces, color)
+        all_allowed_moves = flip_mgr.fn_get_all_allowable_moves(pieces, color)
 
         return all_allowed_moves
 
-    def fn_are_any_legal_moves_available(self, pieces, color):
-        atleast_one_legal_move_exists = self.flip_mgr.fn_any_legal_moves_exist(pieces, color)
+    def fn_are_any_legal_moves_available(pieces, color):
+        atleast_one_legal_move_exists = flip_mgr.fn_any_legal_moves_exist(pieces, color)
         return atleast_one_legal_move_exists
 
 
-    def fn_execute_flips(self, pieces, move, color):
+    def fn_execute_flips(pieces, move, color):
         copied_pieces = copy(pieces)
-        flip_trails = self.flip_mgr.fn_get_flippables(copied_pieces, color, move)
+        flip_trails = flip_mgr.fn_get_flippables(copied_pieces, color, move)
 
         if len(list(flip_trails))==0:
             return False, pieces
@@ -59,5 +59,20 @@ class Board():
             copied_pieces[x][y] = color
         return True, copied_pieces
 
+    ret_refs = namedtuple('_', [
+        'fn_init_board',
+        'fn_get_advantage_count',
+        'fn_find_legal_moves',
+        'fn_are_any_legal_moves_available',
+        'fn_execute_flips',
+        ]
+    )
 
+    ret_refs.fn_init_board = fn_init_board
+    ret_refs.fn_get_advantage_count = fn_get_advantage_count
+    ret_refs.fn_find_legal_moves = fn_find_legal_moves
+    ret_refs.fn_are_any_legal_moves_available = fn_are_any_legal_moves_available
+    ret_refs.fn_execute_flips = fn_execute_flips
+
+    return ret_refs
 
