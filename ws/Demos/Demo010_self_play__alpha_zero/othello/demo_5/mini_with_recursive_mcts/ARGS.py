@@ -11,10 +11,10 @@ args = dotdict({
     'cpuct_exploration_exploitation_factor': 1,
 
     # 'rel_model_path': 'tmp/',
-    # 'do_load_model': False,
+    # 'do_load_model': True,
     # 'do_load_samples': False,
-    # 'model_name':'model',
-    'load_folder_file': ('tmp/','model.tar'),
+    # 'model_name':'model.tar',
+    # 'load_folder_file': ('tmp/','model.tar'),
     'sample_history_buffer_size': 20,
 
     'epochs': 4,

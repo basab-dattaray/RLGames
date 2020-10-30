@@ -24,7 +24,7 @@ def training_mgt(game, nnet, args):
     pnet = copy.deepcopy(nnet)
 
     def _fn_getCheckpointFile(iteration):
-        return 'model_' + str(iteration) + '.tar'
+        return '_iter_' + str(iteration) + '.tar'
 
     def _fn_save_train_examples(iteration):
         folder = args.rel_model_path
@@ -152,8 +152,8 @@ def training_mgt(game, nnet, args):
             @tracer(args)
             def _fn_play_next_vs_previous(trainExamples):
                 # training new network, keeping a copy of the old one
-                nnet.fn_save_model(rel_folder=args.rel_model_path, filename='temp.tar')
-                pnet.fn_load_model(rel_folder=args.rel_model_path, filename='temp.tar')
+                nnet.fn_save_model(filename=args.temp_model_exchange_name)
+                pnet.fn_load_model(rel_folder=args.rel_model_path, filename=args.temp_model_exchange_name)
                 pmcts = mcts_adapter(game, pnet, args)
                 nnet.fn_adjust_model_from_examples(trainExamples)
                 nmcts = mcts_adapter(game, nnet, args)
@@ -189,14 +189,14 @@ def training_mgt(game, nnet, args):
                 args.recorder.fn_record_message(
                     color + 'REJECTED New Model: update_threshold: {}, update_score: {}'.format(args.score_based_model_update_threshold,
                                                                                                 update_score))
-                nnet.fn_load_model(rel_folder=args.rel_model_path, filename='temp.tar')
+                nnet.fn_load_model(rel_folder=args.rel_model_path, filename=args.temp_model_exchange_name)
             else:
                 color = Fore.GREEN
                 args.recorder.fn_record_message(
                     color + 'ACCEPTED New Model: update_threshold: {}, update_score: {}'.format(args.score_based_model_update_threshold,
                                                                                                 update_score))
-                nnet.fn_save_model(rel_folder=args.rel_model_path, filename=_fn_getCheckpointFile(iteration))
-                nnet.fn_save_model(rel_folder=args.rel_model_path, filename='model.tar')
+                nnet.fn_save_model(filename=_fn_getCheckpointFile(iteration))
+                nnet.fn_save_model()
             args.recorder.fn_record_message(Fore.BLACK)
 
 

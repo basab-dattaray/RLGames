@@ -34,6 +34,13 @@ def agent_mgt(args, file_path):
     args.mcts_recursive = AppInfo.fn_arg_as_bool(args, 'mcts_recursive')
     game = game_mgt(args.board_size)
 
+    _fn_init_arg_with_default_val(args, 'num_of_successes_for_model_upgrade', 1)
+    _fn_init_arg_with_default_val(args, 'rel_model_path', 'model/')
+    _fn_init_arg_with_default_val(args, 'do_load_model', False)
+    _fn_init_arg_with_default_val(args, 'do_load_samples', False)
+    _fn_init_arg_with_default_val(args, 'model_name', 'model.tar')
+    _fn_init_arg_with_default_val(args, 'temp_model_exchange_name', '_tmp.tar')
+
     current_dir = file_path.rsplit('/', 1)[0]
     archive_dir = current_dir.replace('/Demos/', '/Archive/')
     args.archive_dir = archive_dir
@@ -41,17 +48,13 @@ def agent_mgt(args, file_path):
     start_time = time()
     args.recorder = Recorder(args.fn_record)
 
-    src_model_folder = os.path.join(args.demo_folder, 'tmp')
-    src_model_file_path = os.path.join(src_model_folder, 'model.tar')
-    old_model_file_path = os.path.join(src_model_folder, 'old_model.tar')
+    src_model_folder = os.path.join(args.demo_folder, args.rel_model_path)
+    src_model_file_path = os.path.join(src_model_folder, args.model_name)
+    old_model_file_path = os.path.join(src_model_folder, 'old_' + args.model_name)
     if os.path.exists(src_model_file_path):
         copy(src_model_file_path, old_model_file_path)
 
-    _fn_init_arg_with_default_val(args, 'num_of_successes_for_model_upgrade', 1)
-    _fn_init_arg_with_default_val(args, 'rel_model_path', 'model/')
-    _fn_init_arg_with_default_val(args, 'do_load_model', False)
-    _fn_init_arg_with_default_val(args, 'do_load_samples', False)
-    _fn_init_arg_with_default_val(args, 'model_name', 'model')
+
 
     def exit_gracefully(signum, frame):
         #
@@ -72,7 +75,7 @@ def agent_mgt(args, file_path):
         nnet = neural_net_mgt(args, game)
 
         if args.do_load_model:
-            args.fn_record('Loading rel_model_path "%s/%s"...', args.load_folder_file)
+            # args.fn_record('Loading rel_model_path "%s/%s"...', args.load_folder_file)
             nnet.fn_load_model(args.load_folder_file[0], args.load_folder_file[1])
         else:
             log.warning('Not loading a rel_model_path!')
@@ -103,7 +106,8 @@ def agent_mgt(args, file_path):
     def fn_test(fn_player_policy, verbose= False, num_of_test_games=2):
         signal.signal(signal.SIGINT, exit_gracefully)
         system_nn = neural_net_mgt(args, game)
-        system_nn.fn_load_model('tmp/', 'model.tar')
+        if not system_nn.fn_load_model(args.rel_model_path, 'model.tar'):
+            return
 
         system_mcts = mcts_adapter(game, system_nn, args)
         fn_system_policy = lambda x: numpy.argmax(system_mcts.fn_get_action_probabilities(x, spread_probabilities=0))

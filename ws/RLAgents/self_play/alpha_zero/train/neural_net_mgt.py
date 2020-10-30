@@ -110,8 +110,8 @@ def neural_net_mgt(args, game):
     def fn_loss_for_values(targets, outputs):
         return torch.sum((targets - outputs.view(-1)) ** 2) / targets.size()[0]
 
-    def fn_save_model(rel_folder, filename):
-        folder = os.path.join(args.demo_folder, rel_folder)
+    def fn_save_model(filename= args['model_name']):
+        folder = os.path.join(args.demo_folder, args['rel_model_path'])
         filepath = os.path.join(folder, filename)
         filepath_abs = os.path.abspath(filepath)
         if not os.path.exists(folder):
@@ -126,12 +126,14 @@ def neural_net_mgt(args, game):
     def fn_load_model(rel_folder, filename):
         folder = os.path.join(args.demo_folder, rel_folder)
         filepath = os.path.join(folder, filename)
-        if filename != 'temp.tar':
-            if not os.path.exists(filepath):
-                raise ("No model in path {}".format(filepath))
+
+        if not os.path.exists(filepath):
+            return False
+
         map_location = None if nnet_params.cuda else 'cpu'
         rel_model_path = torch.load(filepath, map_location=map_location)
         nnet.load_state_dict(rel_model_path['state_dict'])
+        return True
 
     def fn_is_model_available(rel_folder):
         folder = os.path.join(args.demo_folder, rel_folder)
