@@ -76,7 +76,8 @@ def agent_mgt(args, file_path):
 
         if args.do_load_model:
             # args.fn_record('Loading rel_model_path "%s/%s"...', args.load_folder_file)
-            nnet.fn_load_model(args.load_folder_file[0], args.load_folder_file[1])
+            if not nnet.fn_load_model():
+                args.fn_record('*** unable to load model')
         else:
             log.warning('Not loading a rel_model_path!')
 
@@ -106,7 +107,7 @@ def agent_mgt(args, file_path):
     def fn_test(fn_player_policy, verbose= False, num_of_test_games=2):
         signal.signal(signal.SIGINT, exit_gracefully)
         system_nn = neural_net_mgt(args, game)
-        if not system_nn.fn_load_model(args.rel_model_path, 'model.tar'):
+        if not system_nn.fn_load_model():
             return
 
         system_mcts = mcts_adapter(game, system_nn, args)
