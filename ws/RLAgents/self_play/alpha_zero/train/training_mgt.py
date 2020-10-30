@@ -128,7 +128,7 @@ def training_mgt(game, nnet, args):
                               lambda x: np.argmax(nmcts.fn_get_action_probabilities(x, spread_probabilities=0)),
                               game,
                               msg_recorder=args.recorder.fn_record_message)
-                pwins, nwins, draws = arena.play_games(args.arenaCompare)
+                pwins, nwins, draws = arena.play_games(args.number_of_games_for_model_comarison)
                 args.fn_record()
                 return draws, nwins, pwins
 
