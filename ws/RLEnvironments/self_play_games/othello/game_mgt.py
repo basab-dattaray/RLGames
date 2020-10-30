@@ -21,10 +21,10 @@ def game_mgt(n):
 
     def fn_get_init_board():
         # return initial board_pieces (numpy board_pieces)
-        b = Board(n)
+        # b = Board(n)
         # if not EXISTING:
         #     b = board_mgt(board_size)
-        return np.array(b.fn_get_pieces())
+        return np.array(Board(n).fn_get_pieces())
 
     def fn_get_board_size():
         # (a,b) tuple
@@ -43,7 +43,7 @@ def game_mgt(n):
         # if not EXISTING:
         #     b = board_mgt(board_size)
         # b.board_pieces = np.copy(board_pieces)
-        b.fn_set_pieces(pieces)
+        # b.fn_set_pieces(pieces)
         move = (int(action/n), action%n)
         success, pieces = b.execute_move(pieces, move, player)
         if not success:
@@ -61,7 +61,7 @@ def game_mgt(n):
         # if not EXISTING:
         #     b = board_mgt(board_size)
         # b.board_pieces = np.copy(board_pieces)
-        b.fn_set_pieces(pieces)
+        # b.fn_set_pieces(pieces)
         legalMoves =  b.get_legal_moves(pieces, player)
         if len(legalMoves)==0:
             valids[-1]=1
@@ -78,7 +78,7 @@ def game_mgt(n):
         # if not EXISTING:
         #     b = board_mgt(board_size)
         # b.board_pieces = np.copy(board_pieces)
-        b.fn_set_pieces(pieces)
+        # b.fn_set_pieces(pieces)
         if b.has_legal_moves(pieces, player):
             return 0
         if b.has_legal_moves(pieces, -player):
@@ -125,7 +125,7 @@ def game_mgt(n):
         # if not EXISTING:
         #     b = board_mgt(board_size)
         # b.board_pieces = np.copy(board_pieces)
-        b.fn_set_pieces(pieces)
+        # b.fn_set_pieces(pieces)
         return b.count_diff(pieces, player)
 
     # @staticmethod

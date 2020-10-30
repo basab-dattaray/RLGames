@@ -29,8 +29,8 @@ class Board():
     def fn_get_pieces(self):
         return self.board_pieces
 
-    def fn_set_pieces(self, pieces):
-        self.board_pieces = numpy.copy(pieces)
+    # def fn_set_pieces(self, pieces):
+    #     self.board_pieces = numpy.copy(pieces)
 
     def count_diff(self, pieces, color):
         board_size = len(pieces[0])
