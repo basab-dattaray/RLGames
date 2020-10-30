@@ -2,7 +2,7 @@ from ws.RLAgents.self_play.alpha_zero.misc.utils import dotdict
 
 args = dotdict({
     'numIters': 1,
-    'numEps': 3,              # Number of complete self-play games to simulate during a new iteration.
+    'num_of_training_episodes': 3,              # Number of complete self-play games to simulate during a new iteration.
     'tempThreshold': 15,        #
     'updateThreshold': 0.5,     # During arena playoff, new neural net will be accepted if threshold or more of games are won.
     'maxlenOfQueue': 200000,    # Number of game examples to train the neural networks.

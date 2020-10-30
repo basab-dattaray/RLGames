@@ -17,7 +17,7 @@ from ws.RLAgents.self_play.alpha_zero.play.HumanPlayer import HumanPlayer
 from ws.RLAgents.self_play.alpha_zero.play.RandomPlayer import RandomPlayer
 from ws.RLAgents.self_play.alpha_zero.search.MctsSelector import MctsSelector
 
-from ws.RLAgents.self_play.alpha_zero.train.coach import coach
+from ws.RLAgents.self_play.alpha_zero.train.training_mgt import training_mgt
 from ws.RLEnvironments.self_play_games.othello.game_mgt import game_mgt as Game, game_mgt
 from ws.RLAgents.self_play.alpha_zero.train.neural_net_mgt import neural_net_mgt
 from ws.RLUtils.common.AppInfo import AppInfo
@@ -72,14 +72,14 @@ def agent_mgt(args, file_path):
             log.warning('Not loading a checkpoint!')
 
         # args.fn_record('  Loading the Coach...')
-        c = coach(game, nnet, args)
+        training_mgr = training_mgt(game, nnet, args)
 
         if args.load_model:
             # args.fn_record("  Loading 'trainExamples' from file...")
-            c.loadTrainExamples()
+            training_mgr.loadTrainExamples()
 
         # args.fn_record('  Starting the learning process ')
-        c.fn_learn()
+        training_mgr.fn_learn()
 
         return agent_mgr
 
