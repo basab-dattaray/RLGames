@@ -52,7 +52,7 @@ def board_mgt(board_size):
         copied_pieces = copy(pieces)
         flip_trails = flip_mgr.fn_get_flippables(copied_pieces, color, move)
 
-        if len(list(flip_trails))==0:
+        if flip_trails is None or len(list(flip_trails))==0:
             return False, pieces
 
         for x, y in flip_trails:

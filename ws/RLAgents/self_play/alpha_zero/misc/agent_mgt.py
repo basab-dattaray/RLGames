@@ -81,25 +81,25 @@ def agent_mgt(args, file_path):
         # args.fn_record('  Starting the learning process ')
         c.fn_learn()
 
-        return ret_refs
+        return agent_mgr
 
     @tracer(args)
     def fn_test_against_human():
         fn_human_player_policy = lambda g: HumanPlayer(g).play
         fn_test(fn_human_player_policy, verbose= True)
-        return ret_refs
+        return agent_mgr
 
     @tracer(args)
     def fn_test_againt_random():
         fn_random_player_policy = lambda g: RandomPlayer(g).play
         fn_test(fn_random_player_policy, num_of_test_games= args.num_of_test_games)
-        return ret_refs
+        return agent_mgr
 
     @tracer(args)
     def fn_test_against_greedy():
         fn_random_player_policy = lambda g: GreedyPlayer(g).play
         fn_test(fn_random_player_policy, num_of_test_games= args.num_of_test_games)
-        return ret_refs
+        return agent_mgr
 
     def fn_test(fn_player_policy, verbose= False, num_of_test_games=2):
         signal.signal(signal.SIGINT, exit_gracefully)
@@ -123,7 +123,7 @@ def agent_mgt(args, file_path):
                 # args.fn_record(f'  args[{k}] = {v}')
                 args.recorder.fn_record_message(f'  x[{k}] = {v}')
 
-        return ret_refs
+        return agent_mgr
 
     @tracer(args)
     def fn_show_args():
@@ -132,7 +132,7 @@ def agent_mgt(args, file_path):
             # args.fn_record(f'  args[{k}] = {v}')
             args.recorder.fn_record_message(f'  args[{k}] = {v}')
 
-        return ret_refs
+        return agent_mgr
 
     @tracer(args)
     def fn_measure_time_elapsed():
@@ -142,7 +142,7 @@ def agent_mgt(args, file_path):
         secs = time_diff % 60
         args.recorder.fn_record_message(f'Time elapsed:    minutes: {mins}    seconds: {secs}')
 
-        return ret_refs
+        return agent_mgr
 
 
     @tracer(args)
@@ -164,19 +164,19 @@ def agent_mgt(args, file_path):
         if os.path.exists(src_model_file_path):
             copy(src_model_file_path, dst_full_path)
 
-        return ret_refs
+        return agent_mgr
 
         # move old model
 
-    ret_refs = namedtuple('_', ['fn_train','fn_test_against_human' ,'fn_test_againt_random' ,'fn_test_against_greedy' ,'fn_change_args' ,'fn_show_args' ,'fn_measure_time_elapsed' ,'fn_archive_log_file'])
+    agent_mgr = namedtuple('_', ['fn_train','fn_test_against_human' ,'fn_test_againt_random' ,'fn_test_against_greedy' ,'fn_change_args' ,'fn_show_args' ,'fn_measure_time_elapsed' ,'fn_archive_log_file'])
 
-    ret_refs.fn_train = fn_train
-    ret_refs.fn_test_against_human = fn_test_against_human
-    ret_refs.fn_test_againt_random = fn_test_againt_random
-    ret_refs.fn_test_against_greedy = fn_test_against_greedy
-    ret_refs.fn_change_args = fn_change_args
-    ret_refs.fn_show_args = fn_show_args
-    ret_refs.fn_measure_time_elapsed = fn_measure_time_elapsed
-    ret_refs.fn_archive_log_file = fn_archive_log_file
+    agent_mgr.fn_train = fn_train
+    agent_mgr.fn_test_against_human = fn_test_against_human
+    agent_mgr.fn_test_againt_random = fn_test_againt_random
+    agent_mgr.fn_test_against_greedy = fn_test_against_greedy
+    agent_mgr.fn_change_args = fn_change_args
+    agent_mgr.fn_show_args = fn_show_args
+    agent_mgr.fn_measure_time_elapsed = fn_measure_time_elapsed
+    agent_mgr.fn_archive_log_file = fn_archive_log_file
 
-    return ret_refs
+    return agent_mgr

@@ -71,7 +71,6 @@ class Arena():
                 # assert valids[action] > 0
             pieces, cur_player_index = self.game.fn_get_next_state(pieces, cur_player_index, action)
 
-        game_status1 = self.game.fn_get_game_progress_status(pieces, cur_player_index)
         game_status = self.game.fn_game_status(pieces)
 
         if verbose:
@@ -83,6 +82,8 @@ class Arena():
         result = game_status
         if DEBUG:
             color = Fore.RED
+            game_status1 = self.game.fn_get_game_progress_status(pieces, cur_player_index)
+
             result1 = cur_player_index * game_status1
             if result == result1:
                 color = Fore.GREEN

@@ -51,13 +51,13 @@ def coach(game, nnet, args):
                            the player eventually won the game, else -1.
         """
         trainExamples = []
-        board_this = game.fn_get_init_board()
+        current_pieces = game.fn_get_init_board()
         curPlayer = 1
         episodeStep = 0
 
         while True:
             episodeStep += 1
-            canonical_board_pieces = game.fn_get_canonical_form(board_this, curPlayer)
+            canonical_board_pieces = game.fn_get_canonical_form(current_pieces, curPlayer)
             spread_probabilities = int(episodeStep < args.tempThreshold)
 
             action_probs = mcts.fn_get_action_probabilities(canonical_board_pieces, spread_probabilities=spread_probabilities)
@@ -70,18 +70,18 @@ def coach(game, nnet, args):
                 trainExamples.append((sym_canon_board, curPlayer, canon_action_probs))
 
             action = np.random.choice(len(action_probs), p=action_probs)
-            board_next, player_next = game.fn_get_next_state(board_this, curPlayer, action)
+            next_pieces, player_next = game.fn_get_next_state(current_pieces, curPlayer, action)
 
             if DEBUG_FLAG:
                 print()
                 print('player:{}'.format(curPlayer))
                 print()
-                print(board_next)
+                print(next_pieces)
 
             curPlayer = player_next
-            board_this = board_next
+            current_pieces = next_pieces
 
-            result = game.fn_get_game_progress_status(board_this, curPlayer)
+            result = game.fn_get_game_progress_status(current_pieces, curPlayer)
 
             if result != 0 or player_next is None:
                 return fn_form_sample_data(curPlayer, result, trainExamples)
