@@ -23,6 +23,42 @@ def training_mgt(game, nnet, args):
 
     pnet = copy.deepcopy(nnet)
 
+    def _fn_getCheckpointFile(iteration):
+        return 'model_' + str(iteration) + '.tar'
+
+    def _fn_save_train_examples(iteration):
+        folder = args.checkpoint
+        if not os.path.exists(folder):
+            os.makedirs(folder)
+        filename = os.path.join(folder, _fn_getCheckpointFile(iteration) + ".examples")
+        with open(filename, "wb+") as f:
+            Pickler(f).dump(training_samples_buffer)
+        # f.closed
+
+    def _fn_load_train_examples():
+        modelFile = os.path.join(args.load_folder_file[0], args.load_folder_file[1])
+        examplesFile = modelFile + ".examples"
+        if not os.path.isfile(examplesFile):
+            log.warning(f'File "{examplesFile}" with trainExamples not found!')
+            r = input("Continue? [y|size]")
+            if r != "y":
+                sys.exit()
+        else:
+            args.fn_record("File with trainExamples found. Loading it...")
+            with open(examplesFile, "rb") as f:
+                training_samples_buffer = Unpickler(f).load()
+            args.fn_record('Loading done!')
+
+            # examples based on the model were already collected (loaded)
+            skipFirstSelfPlay = True
+
+    def _fn_record_iter_results(draws, iteration, nwins, pwins):
+        args.recorder.fn_record_message(f'-- Iter {iteration} of {args.numIters}', indent=0)
+        update_threshold = 'update threshold: {}'.format(args.score_based_model_update_threshold)
+        args.recorder.fn_record_message(update_threshold)
+        score = f'nwins:{nwins} pwins:{pwins} draws:{draws}'
+        args.recorder.fn_record_message(score)
+
     training_samples_buffer = []  # history of examples from args.sample_history_buffer_size latest iterations
     skipFirstSelfPlay = False  # can be overriden in loadTrainExamples()
 
@@ -83,7 +119,7 @@ def training_mgt(game, nnet, args):
 
                 # examples of the iteration
                 if not skipFirstSelfPlay or iteration > 1:
-                    iterationTrainExamples = deque([], maxlen=args.sample_buffer_size)
+                    samples_for_iteration = deque([], maxlen=args.sample_buffer_size)
                     fn_count_episode, fn_end_couunting = progress_count_mgt('Episodes', args.num_of_training_episodes)
                     for episode_num in range(1, args.num_of_training_episodes + 1):
                         fn_count_episode()
@@ -91,19 +127,19 @@ def training_mgt(game, nnet, args):
                         # mcts = mcts_adapter(game, nnet, args)  # reset search tree
                         episode_result = _fn_run_episodes()
                         if episode_result is not None:
-                            iterationTrainExamples += episode_result
+                            samples_for_iteration += episode_result
                     fn_end_couunting()
                     args.recorder.fn_record_message(f'Number of Episodes for sample generation: {args.num_of_training_episodes}')
 
                     # save the iteration examples to the history
-                    training_samples_buffer.append(iterationTrainExamples)
+                    training_samples_buffer.append(samples_for_iteration)
                 if len(training_samples_buffer) > args.sample_history_buffer_size:
                     log.warning(
                         f"Removing the oldest entry in trainExamples. len(training_samples_buffer) = {len(training_samples_buffer)}")
                     training_samples_buffer.pop(0)
                 # backup history to a file
                 # NB! the examples were collected using the model from the previous iteration, so (iteration-1)
-                saveTrainExamples(iteration - 1)
+                _fn_save_train_examples(iteration - 1)
                 # shuffle examples before training
                 trainExamples = []
                 for e in training_samples_buffer:
@@ -131,18 +167,11 @@ def training_mgt(game, nnet, args):
                 args.fn_record()
                 return draws, nwins, pwins
 
-            args.recorder.fn_record_message(f'-- Iter {iteration} of {args.numIters}',
-                                            indent=0)
-            # bookkeeping
             trainExamples = fn_generate_samples(iteration)
 
             draws, nwins, pwins = _fn_play_next_vs_previous(trainExamples)
 
-            update_threshold = 'update threshold: {}'.format(args.score_based_model_update_threshold)
-            args.recorder.fn_record_message(update_threshold)
-
-            score = f'nwins:{nwins} pwins:{pwins} draws:{draws}'
-            args.recorder.fn_record_message(score)
+            _fn_record_iter_results(draws, iteration, nwins, pwins)
 
             reject = False
             update_score = 0
@@ -166,44 +195,18 @@ def training_mgt(game, nnet, args):
                 args.recorder.fn_record_message(
                     color + 'ACCEPTED New Model: update_threshold: {}, update_score: {}'.format(args.score_based_model_update_threshold,
                                                                                                 update_score))
-                nnet.save_checkpoint(rel_folder=args.checkpoint, filename=getCheckpointFile(iteration))
+                nnet.save_checkpoint(rel_folder=args.checkpoint, filename=_fn_getCheckpointFile(iteration))
                 nnet.save_checkpoint(rel_folder=args.checkpoint, filename='model.tar')
             args.recorder.fn_record_message(Fore.BLACK)
 
+
+
         if args.load_model:
             # args.fn_record("  Loading 'trainExamples' from file...")
-            loadTrainExamples()
+            _fn_load_train_examples()
         for iteration in range(1, args.numIters + 1):
             fn_run_iteration(iteration)
 
 
-    def getCheckpointFile(iteration):
-        return 'model_' + str(iteration) + '.tar'
-
-    def saveTrainExamples(iteration):
-        folder = args.checkpoint
-        if not os.path.exists(folder):
-            os.makedirs(folder)
-        filename = os.path.join(folder, getCheckpointFile(iteration) + ".examples")
-        with open(filename, "wb+") as f:
-            Pickler(f).dump(training_samples_buffer)
-        # f.closed
-
-    def loadTrainExamples():
-        modelFile = os.path.join(args.load_folder_file[0], args.load_folder_file[1])
-        examplesFile = modelFile + ".examples"
-        if not os.path.isfile(examplesFile):
-            log.warning(f'File "{examplesFile}" with trainExamples not found!')
-            r = input("Continue? [y|size]")
-            if r != "y":
-                sys.exit()
-        else:
-            args.fn_record("File with trainExamples found. Loading it...")
-            with open(examplesFile, "rb") as f:
-                training_samples_buffer = Unpickler(f).load()
-            args.fn_record('Loading done!')
-
-            # examples based on the model were already collected (loaded)
-            skipFirstSelfPlay = True
 
     return fn_execute_training_iterations
