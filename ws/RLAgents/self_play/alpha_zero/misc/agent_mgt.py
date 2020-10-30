@@ -74,15 +74,8 @@ def agent_mgt(args, file_path):
         else:
             log.warning('Not loading a checkpoint!')
 
-        # args.fn_record('  Loading the Coach...')
-        training_mgr = training_mgt(game, nnet, args)
-
-        if args.load_model:
-            # args.fn_record("  Loading 'trainExamples' from file...")
-            training_mgr.loadTrainExamples()
-
-        # args.fn_record('  Starting the learning process ')
-        training_mgr.fn_learn()
+        fn_execute_training_iterations = training_mgt(game, nnet, args)
+        fn_execute_training_iterations()
 
         return agent_mgr
 

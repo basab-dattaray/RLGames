@@ -39,7 +39,6 @@ def training_mgt(game, nnet, args):
         @tracer(args)
         def fn_run_iteration(iteration):
 
-
             @tracer(args)
             def fn_generate_samples(iteration):
                 generation_mcts = mcts_adapter(game, nnet, args)
@@ -171,7 +170,9 @@ def training_mgt(game, nnet, args):
                 nnet.save_checkpoint(rel_folder=args.checkpoint, filename='model.tar')
             args.recorder.fn_record_message(Fore.BLACK)
 
-
+        if args.load_model:
+            # args.fn_record("  Loading 'trainExamples' from file...")
+            loadTrainExamples()
         for iteration in range(1, args.numIters + 1):
             fn_run_iteration(iteration)
 
@@ -206,9 +207,4 @@ def training_mgt(game, nnet, args):
             # examples based on the model were already collected (loaded)
             skipFirstSelfPlay = True
 
-    training_mgr = namedtuple('_', ['fn_learn','loadTrainExamples' ,'fn_test_againt_random'])
-
-    training_mgr.fn_learn = fn_execute_training_iterations
-    training_mgr.loadTrainExamples = loadTrainExamples
-
-    return training_mgr
+    return fn_execute_training_iterations
