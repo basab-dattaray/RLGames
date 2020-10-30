@@ -177,7 +177,6 @@ def training_mgt(game, nnet, args):
             fn_run_iteration(iteration)
 
 
-
     def getCheckpointFile(iteration):
         return 'model_' + str(iteration) + '.tar'
 
