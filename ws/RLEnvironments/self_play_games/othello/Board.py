@@ -55,14 +55,15 @@ class Board():
 
 
     def execute_move(self, pieces, move, color):
-        flip_trails = self.flip_mgr.fn_get_flippables(self.board_pieces, color, move)
+        copied_pieces = copy(pieces)
+        flip_trails = self.flip_mgr.fn_get_flippables(copied_pieces, color, move)
 
         if len(list(flip_trails))==0:
-            return False
+            return False, pieces
 
         for x, y in flip_trails:
-            self.board_pieces[x][y] = color
-        return True
+            copied_pieces[x][y] = color
+        return True, copied_pieces
 
 
 

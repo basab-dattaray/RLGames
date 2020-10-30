@@ -45,9 +45,14 @@ def game_mgt(n):
         # b.board_pieces = np.copy(board_pieces)
         b.fn_set_pieces(pieces)
         move = (int(action/n), action%n)
-        if not b.execute_move(pieces, move, player):
-            return (b.fn_get_pieces(), None)
-        return (b.fn_get_pieces(), -player)
+        success, pieces = b.execute_move(pieces, move, player)
+        if not success:
+            return (pieces, player)
+        return (pieces, -player)
+
+        # if not b.execute_move(pieces, move, player):
+        #     return (b.fn_get_pieces(), None)
+        # return (b.fn_get_pieces(), -player)
 
     def fn_get_valid_moves(pieces, player):
         # return a fixed size binary vector
