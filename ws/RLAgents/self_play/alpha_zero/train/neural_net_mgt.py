@@ -12,7 +12,7 @@ from ws.RLUtils.monitoring.tracing.tracer import tracer
 
 sys.path.append('../../')
 from ws.RLAgents.self_play.alpha_zero.misc.utils import *
-from ws.RLInterfaces.NeuralNet import NeuralNet
+# from ws.RLInterfaces.NeuralNet import NeuralNet
 
 import torch
 import torch.optim as optim
