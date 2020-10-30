@@ -116,7 +116,7 @@ def game_mgt(board_size):
 
         print("-----------------------")
 
-    ret_refs = namedtuple('_', [
+    game_mgr = namedtuple('_', [
         'fn_get_init_board',
         'fn_get_board_size',
         'fn_get_action_size',
@@ -134,19 +134,19 @@ def game_mgt(board_size):
         ]
     )
 
-    ret_refs.fn_get_init_board = fn_get_init_board
-    ret_refs.fn_get_board_size = fn_get_board_size
-    ret_refs.fn_get_action_size = fn_get_action_size
-    ret_refs.fn_get_next_state = fn_get_next_state
+    game_mgr.fn_get_init_board = fn_get_init_board
+    game_mgr.fn_get_board_size = fn_get_board_size
+    game_mgr.fn_get_action_size = fn_get_action_size
+    game_mgr.fn_get_next_state = fn_get_next_state
 
-    ret_refs.fn_get_valid_moves = fn_get_valid_moves
-    ret_refs.fn_get_game_progress_status = fn_get_game_progress_status
-    ret_refs.fn_game_status = fn_game_status
-    ret_refs.fn_get_canonical_form = fn_get_canonical_form
+    game_mgr.fn_get_valid_moves = fn_get_valid_moves
+    game_mgr.fn_get_game_progress_status = fn_get_game_progress_status
+    game_mgr.fn_game_status = fn_game_status
+    game_mgr.fn_get_canonical_form = fn_get_canonical_form
 
-    ret_refs.fn_get_symetric_samples = fn_get_symetric_samples
-    ret_refs.fn_get_string_representation = fn_get_string_representation
-    ret_refs.fn_get_score = fn_get_score
-    ret_refs.fn_display = fn_display
+    game_mgr.fn_get_symetric_samples = fn_get_symetric_samples
+    game_mgr.fn_get_string_representation = fn_get_string_representation
+    game_mgr.fn_get_score = fn_get_score
+    game_mgr.fn_display = fn_display
 
-    return ret_refs
+    return game_mgr

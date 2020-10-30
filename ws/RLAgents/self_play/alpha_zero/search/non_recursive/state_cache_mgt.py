@@ -35,8 +35,8 @@ def state_cache_mgt(fn_get_valid_actions, fn_predict_action_probablities, state)
             action_probabilities, value = fn_predict_action_probablities(state)
         return action_probabilities, value
 
-    ref_obj = namedtuple('_', ['fn_get_valid_normalized_action_probabilities', 'fn_get_predictions'])
-    ref_obj.fn_get_valid_normalized_action_probabilities = fn_get_valid_normalized_action_probabilities
-    ref_obj.fn_get_predictions = fn_get_predictions
+    state_cache_mgr = namedtuple('_', ['fn_get_valid_normalized_action_probabilities', 'fn_get_predictions'])
+    state_cache_mgr.fn_get_valid_normalized_action_probabilities = fn_get_valid_normalized_action_probabilities
+    state_cache_mgr.fn_get_predictions = fn_get_predictions
 
-    return ref_obj
+    return state_cache_mgr

@@ -38,7 +38,7 @@ class MctsSelector():
         else:
             mcts = MCTS(game, nnet, args)
             self.fn_get_action_probabilities = lambda state, spread_probabilities: mcts.fn_get_action_probabilities(state, spread_probabilities)
-        pass
+
 
 
 

@@ -59,7 +59,7 @@ def board_mgt(board_size):
             copied_pieces[x][y] = color
         return True, copied_pieces
 
-    ret_refs = namedtuple('_', [
+    board_mgr = namedtuple('_', [
         'fn_init_board',
         'fn_get_advantage_count',
         'fn_find_legal_moves',
@@ -68,11 +68,11 @@ def board_mgt(board_size):
         ]
     )
 
-    ret_refs.fn_init_board = fn_init_board
-    ret_refs.fn_get_advantage_count = fn_get_advantage_count
-    ret_refs.fn_find_legal_moves = fn_find_legal_moves
-    ret_refs.fn_are_any_legal_moves_available = fn_are_any_legal_moves_available
-    ret_refs.fn_execute_flips = fn_execute_flips
+    board_mgr.fn_init_board = fn_init_board
+    board_mgr.fn_get_advantage_count = fn_get_advantage_count
+    board_mgr.fn_find_legal_moves = fn_find_legal_moves
+    board_mgr.fn_are_any_legal_moves_available = fn_are_any_legal_moves_available
+    board_mgr.fn_execute_flips = fn_execute_flips
 
-    return ret_refs
+    return board_mgr
 

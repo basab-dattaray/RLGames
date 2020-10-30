@@ -52,7 +52,7 @@ def Node(
                     explore_exploit_ratio,
 
                     val=0.0,
-                    parent_node= ref_obj,  # ??? cant be None
+                    parent_node= node_mgr,  # ??? cant be None
                     parent_action= action_num
                 )
                 children[str(action_num)] = child_node
@@ -100,7 +100,7 @@ def Node(
 
     def fn_select_from_available_leaf_nodes():
         if len(children_nodes) == 0:  # leaf_node
-            return ref_obj
+            return node_mgr
 
         best_child = __fn_find_best_ucb_child()
         return best_child.fn_select_from_available_leaf_nodes()
@@ -135,22 +135,22 @@ def Node(
     if state is None:
         state = __fn_compute_state(num_edges, parent_node.state, parent_action)
 
-    ref_obj = namedtuple('x', ['fn_select_from_available_leaf_nodes', 'fn_is_already_visited', 'fn_expand_node', 'fn_back_propagate'])
-    ref_obj.fn_select_from_available_leaf_nodes=fn_select_from_available_leaf_nodes
-    ref_obj.fn_is_already_visited = fn_is_already_visited
-    ref_obj.fn_expand_node = fn_expand_node
-    ref_obj.fn_back_propagate = fn_back_propagate
+    node_mgr = namedtuple('x', ['fn_select_from_available_leaf_nodes', 'fn_is_already_visited', 'fn_expand_node', 'fn_back_propagate'])
+    node_mgr.fn_select_from_available_leaf_nodes=fn_select_from_available_leaf_nodes
+    node_mgr.fn_is_already_visited = fn_is_already_visited
+    node_mgr.fn_expand_node = fn_expand_node
+    node_mgr.fn_back_propagate = fn_back_propagate
 
-    ref_obj.fn_get_valid_normalized_action_probabilities=fn_get_valid_normalized_action_probabilities
-    ref_obj.num_edges = num_edges
-    ref_obj.explore_exploit_ratio = explore_exploit_ratio
-    ref_obj.val = val
+    node_mgr.fn_get_valid_normalized_action_probabilities=fn_get_valid_normalized_action_probabilities
+    node_mgr.num_edges = num_edges
+    node_mgr.explore_exploit_ratio = explore_exploit_ratio
+    node_mgr.val = val
 
-    ref_obj.parent_node=parent_node
-    ref_obj.parent_action = parent_action
-    ref_obj.state = state
-    ref_obj.__fn_add_val_to_node = __fn_add_val_to_node
-    ref_obj.children_nodes = children_nodes
+    node_mgr.parent_node=parent_node
+    node_mgr.parent_action = parent_action
+    node_mgr.state = state
+    node_mgr.__fn_add_val_to_node = __fn_add_val_to_node
+    node_mgr.children_nodes = children_nodes
 
-    return ref_obj
+    return node_mgr
 

@@ -135,18 +135,18 @@ def flip_mgt(board_size):
 
     fn_any_legal_moves_exist = lambda pieces, color: True if len(fn_get_all_allowable_moves(pieces, color)) > 0 else False
 
-    ret_refs = namedtuple('_', [
+    flip_mgr = namedtuple('_', [
         'fn_get_all_allowable_moves',
         'fn_any_legal_moves_exist',
         'fn_get_flippables'
         ]
     )
 
-    ret_refs.fn_get_all_allowable_moves = fn_get_all_allowable_moves
-    ret_refs.fn_any_legal_moves_exist = fn_any_legal_moves_exist
-    ret_refs.fn_get_flippables = fn_get_flippables
+    flip_mgr.fn_get_all_allowable_moves = fn_get_all_allowable_moves
+    flip_mgr.fn_any_legal_moves_exist = fn_any_legal_moves_exist
+    flip_mgr.fn_get_flippables = fn_get_flippables
 
-    return ret_refs
+    return flip_mgr
 
 
 def fn_scaffold_create_flip_trails_testing_pieces_flip_2():
