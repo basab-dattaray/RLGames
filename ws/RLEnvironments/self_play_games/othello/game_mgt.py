@@ -6,7 +6,7 @@ from collections import namedtuple
 
 sys.path.append('..')
 
-from .Board import board_mgt
+from .board_mgt import board_mgt
 import numpy as np
 
 EXISTING = True
