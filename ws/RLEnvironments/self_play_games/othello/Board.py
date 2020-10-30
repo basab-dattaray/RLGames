@@ -26,13 +26,7 @@ class Board():
         pieces[int(self.board_size / 2)][int(self.board_size / 2)] = -1;
         return pieces
 
-    def fn_get_pieces(self):
-        return self.board_pieces
-
-    # def fn_set_pieces(self, pieces):
-    #     self.board_pieces = numpy.copy(pieces)
-
-    def count_diff(self, pieces, color):
+    def fn_get_advantage_count(self, pieces, color):
         board_size = len(pieces[0])
         count = 0
         for y in range(board_size):
@@ -43,18 +37,18 @@ class Board():
                     count -= 1
         return count
 
-    def get_legal_moves(self, pieces, color):
+    def fn_find_legal_moves(self, pieces, color):
 
         all_allowed_moves = self.flip_mgr.fn_get_all_allowable_moves(pieces, color)
 
         return all_allowed_moves
 
-    def has_legal_moves(self, pieces, color):
+    def fn_are_any_legal_moves_available(self, pieces, color):
         atleast_one_legal_move_exists = self.flip_mgr.fn_any_legal_moves_exist(pieces, color)
         return atleast_one_legal_move_exists
 
 
-    def execute_move(self, pieces, move, color):
+    def fn_execute_flips(self, pieces, move, color):
         copied_pieces = copy(pieces)
         flip_trails = self.flip_mgr.fn_get_flippables(copied_pieces, color, move)
 
