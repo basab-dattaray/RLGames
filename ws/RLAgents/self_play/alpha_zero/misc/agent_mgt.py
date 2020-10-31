@@ -78,8 +78,10 @@ def agent_mgt(args, file_path):
             # args.fn_record('Loading rel_model_path "%s/%s"...', args.load_folder_file)
             if not nnet.fn_load_model():
                 args.fn_record('*** unable to load model')
+            else:
+                args.fn_record('!!! loaded model')
         else:
-            log.warning('Not loading a rel_model_path!')
+            log.warning('!!! Not loading a rel_model_path!')
 
         fn_execute_training_iterations = training_mgt(game, nnet, args)
         fn_execute_training_iterations()

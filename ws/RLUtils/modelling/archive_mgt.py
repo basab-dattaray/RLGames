@@ -36,7 +36,8 @@ def archive_mgt(fn_save_to_neural_net, fn_load_from_neural_net, archive_folder_p
         if current_folder_path is False:
             return None
         # _fn_prune_archive_per_depth()
-        return fn_load_from_neural_net(current_folder_path)
+        ret = fn_load_from_neural_net(current_folder_path)
+        return ret
 
 
     def _fn_get_another_archive_path():

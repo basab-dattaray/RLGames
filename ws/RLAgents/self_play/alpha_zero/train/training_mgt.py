@@ -153,7 +153,7 @@ def training_mgt(game, nnet, args):
             def _fn_play_next_vs_previous(trainExamples):
                 # training new network, keeping a copy of the old one
                 nnet.fn_save_model(filename=args.temp_model_exchange_name)
-                pnet.fn_load_model(rel_folder=args.rel_model_path, filename=args.temp_model_exchange_name)
+                pnet.fn_load_model(filename=args.temp_model_exchange_name)
                 pmcts = mcts_adapter(game, pnet, args)
                 nnet.fn_adjust_model_from_examples(trainExamples)
                 nmcts = mcts_adapter(game, nnet, args)
@@ -201,7 +201,7 @@ def training_mgt(game, nnet, args):
 
 
 
-        if args.do_load_model:
+        if args.do_load_samples:
             # args.fn_record("  Loading 'trainExamples' from file...")
             _fn_load_train_examples()
         for iteration in range(1, args.numIters + 1):
