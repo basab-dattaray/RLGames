@@ -71,10 +71,10 @@ def training_mgt(game, nnet, args):
 
     @tracer(args)
     def fn_execute_training_iterations():
-
+        update_count = 0
         @tracer(args)
         def fn_run_iteration(iteration):
-
+            nonlocal update_count
             @tracer(args)
             def fn_generate_samples(iteration):
                 generation_mcts = mcts_adapter(game, nnet, args)
@@ -181,6 +181,8 @@ def training_mgt(game, nnet, args):
                 update_score = float(nwins) / (pwins + nwins)
                 if update_score < args.score_based_model_update_threshold:
                     reject = True
+                else:
+                    update_count += 1
 
             model_already_exists = nnet.fn_is_model_available(rel_folder=args.rel_model_path)
 
@@ -199,13 +201,15 @@ def training_mgt(game, nnet, args):
                 nnet.fn_save_model()
             args.recorder.fn_record_message(Fore.BLACK)
 
-
-
         if args.do_load_samples:
-            # args.fn_record("  Loading 'trainExamples' from file...")
+            args.fn_record("!!!  loading 'samples' from file...")
             _fn_load_train_examples()
         for iteration in range(1, args.numIters + 1):
+
             fn_run_iteration(iteration)
+            if update_count > args.num_of_successes_for_model_upgrade:
+                break
+
 
 
 

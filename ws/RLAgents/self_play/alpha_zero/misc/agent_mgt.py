@@ -54,8 +54,6 @@ def agent_mgt(args, file_path):
     if os.path.exists(src_model_file_path):
         copy(src_model_file_path, old_model_file_path)
 
-
-
     def exit_gracefully(signum, frame):
         #
         # if services.chart is not None:
