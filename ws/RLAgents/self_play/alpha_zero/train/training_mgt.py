@@ -180,17 +180,16 @@ def training_mgt(game, nnet, args):
                 update_score = float(nwins) / (pwins + nwins)
                 if update_score < args.score_based_model_update_threshold:
                     reject = True
-                else:
-                    update_count += 1
+
 
             model_already_exists = nnet.fn_is_model_available(rel_folder=args.rel_model_path)
 
-            if reject and model_already_exists:
+            if reject:
                 color = Fore.RED
                 args.recorder.fn_record_message(
                     color + 'REJECTED New Model: update_threshold: {}, update_score: {}'.format(args.score_based_model_update_threshold,
                                                                                                 update_score))
-                nnet.fn_load_model(rel_folder=args.rel_model_path, filename=args.temp_model_exchange_name)
+                nnet.fn_load_model(filename=args.temp_model_exchange_name)
             else:
                 color = Fore.GREEN
                 args.recorder.fn_record_message(
@@ -198,13 +197,15 @@ def training_mgt(game, nnet, args):
                                                                                                 update_score))
                 nnet.fn_save_model(filename=_fn_getCheckpointFile(iteration))
                 nnet.fn_save_model()
+                update_count += 1
+
             args.recorder.fn_record_message(Fore.BLACK)
 
         if args.do_load_samples:
             args.fn_record("!!!  loading 'samples' from file...")
             _fn_load_train_examples()
-        for iteration in range(1, args.numIters + 1):
 
+        for iteration in range(1, args.numIters + 1):
             fn_run_iteration(iteration)
             if update_count >= args.num_of_successes_for_model_upgrade:
                 break
