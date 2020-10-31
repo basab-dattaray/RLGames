@@ -42,7 +42,7 @@ def agent_mgt(args, file_path):
     _fn_init_arg_with_default_val(args, 'temp_model_exchange_name', '_tmp.tar')
 
     current_dir = file_path.rsplit('/', 1)[0]
-    archive_dir = current_dir.replace('/Demos/', '/Archive/')
+    archive_dir = current_dir.replace('/Demos/', '/Archives/')
     args.archive_dir = archive_dir
     args.fn_record = log_mgt(log_dir=archive_dir, fixed_log_file=True)
     start_time = time()
