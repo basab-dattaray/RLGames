@@ -207,7 +207,7 @@ def training_mgt(game, nnet, args):
         for iteration in range(1, args.numIters + 1):
 
             fn_run_iteration(iteration)
-            if update_count > args.num_of_successes_for_model_upgrade:
+            if update_count >= args.num_of_successes_for_model_upgrade:
                 break
 
 
