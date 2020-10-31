@@ -33,7 +33,6 @@ def training_mgt(game, nnet, args):
         filename = os.path.join(folder, _fn_getCheckpointFile(iteration) + ".examples")
         with open(filename, "wb+") as f:
             Pickler(f).dump(training_samples_buffer)
-        # f.closed
 
     def _fn_load_train_examples():
         modelFile = os.path.join(args.load_folder_file[0], args.load_folder_file[1])

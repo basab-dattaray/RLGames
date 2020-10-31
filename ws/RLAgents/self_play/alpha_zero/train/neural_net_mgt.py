@@ -131,7 +131,7 @@ def neural_net_mgt(args, game):
 
     def fn_is_model_available(rel_folder):
         folder = os.path.join(args.demo_folder, rel_folder)
-        filepath = os.path.join(folder, args.rel_model_path)
+        filepath = os.path.join(folder, args.model_name)
         if  os.path.exists(filepath):
             return True
         else:
