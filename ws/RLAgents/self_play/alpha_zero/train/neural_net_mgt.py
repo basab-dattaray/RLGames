@@ -88,10 +88,6 @@ def neural_net_mgt(args, game):
 
 
     def predict(board):
-        """
-        board_pieces: np array with board_pieces
-        """
-        # timing
         start = time.time()
 
         # preparing input
@@ -115,10 +111,8 @@ def neural_net_mgt(args, game):
         filepath = os.path.join(folder, filename)
         filepath_abs = os.path.abspath(filepath)
         if not os.path.exists(folder):
-            print("Checkpoint Directory does not exist! Making directory {}".format(folder))
             os.mkdir(folder)
-        # else:
-        #     print("Checkpoint Directory exists! ")
+
         torch.save({
             'state_dict': nnet.state_dict(),
         }, filepath)

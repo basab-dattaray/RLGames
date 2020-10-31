@@ -11,7 +11,7 @@ args = dotdict({
     'cpuct_exploration_exploitation_factor': 1,
 
     # 'rel_model_path': 'tmp/',
-    'do_load_model': False,
+    # 'do_load_model': False,
     # 'load_folder_file': ('tmp/','model.tar'),
     'sample_history_buffer_size': 20,
 
