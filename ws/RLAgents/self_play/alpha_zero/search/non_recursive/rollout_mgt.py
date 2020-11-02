@@ -20,7 +20,7 @@ def rollout_mgt(state_cache, fn_predict_action_probablities, fn_terminal_state_s
         ret_value =  state_value[0]
         return  ret_value, action_probabilities
 
-    def __fn_get_rollout_value(fn_terminal_state_status, state):
+    def _fn_get_rollout_value(fn_terminal_state_status, state):
         ret_val = None
 
         terminal_state = False
@@ -36,7 +36,7 @@ def rollout_mgt(state_cache, fn_predict_action_probablities, fn_terminal_state_s
         return ret_val, action_probs, terminal_state
 
     def fn_rollout(state):
-        opponent_val, action_probs, is_terminal_state = __fn_get_rollout_value(
+        opponent_val, action_probs, is_terminal_state = _fn_get_rollout_value(
             fn_terminal_state_status, state
         )
 
@@ -53,7 +53,7 @@ def rollout_mgt(state_cache, fn_predict_action_probablities, fn_terminal_state_s
                 if new_state is None:
                     is_terminal_state = True
                 else:
-                    opponent_val, action_probs, is_terminal_state =__fn_get_rollout_value(
+                    opponent_val, action_probs, is_terminal_state =_fn_get_rollout_value(
                         fn_terminal_state_status, new_state
                     )
 
