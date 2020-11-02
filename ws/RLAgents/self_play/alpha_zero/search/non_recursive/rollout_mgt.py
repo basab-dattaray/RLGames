@@ -15,7 +15,7 @@ def rollout_mgt(state_cache, fn_predict_action_probablities, fn_terminal_state_s
 
     fn_find_next_state = __next_state_mgt(fn_get_next_state, fn_get_canonical_form)
 
-    def __fn_get_value(state):
+    def _fn_get_value(state):
         action_probabilities, state_value = fn_predict_action_probablities(state)
         ret_value =  state_value[0]
         return  ret_value, action_probabilities
@@ -30,7 +30,7 @@ def rollout_mgt(state_cache, fn_predict_action_probablities, fn_terminal_state_s
                 terminal_state = True
                 return ret_val, None, terminal_state
 
-        val, action_probs = __fn_get_value(state)
+        val, action_probs = _fn_get_value(state)
 
         ret_val = val
         return ret_val, action_probs, terminal_state

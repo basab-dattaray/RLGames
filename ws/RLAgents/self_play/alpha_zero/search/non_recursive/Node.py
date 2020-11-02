@@ -35,10 +35,10 @@ class Node(object):
         self.id = uuid.uuid4()
 
         if self.state is None:
-            self.state = self.__fn_compute_state(num_edges, parent_node.state, parent_action)
+            self.state = self._fn_compute_state(num_edges, parent_node.state, parent_action)
 
 
-    def __fn_compute_state(self, num_edges, parent_state, parent_action):
+    def _fn_compute_state(self, num_edges, parent_state, parent_action):
         if parent_action >= num_edges:
             return None
         state_dims = numpy.shape(parent_state)
@@ -49,11 +49,11 @@ class Node(object):
 
         return parent_state
 
-    def __fn_add_val_to_node(self, val):
+    def _fn_add_val_to_node(self, val):
         self.val += val
         self.visits += 1
 
-    def __fn_add_children_nodes(self, normalized_valid_action_probabilities):
+    def _fn_add_children_nodes(self, normalized_valid_action_probabilities):
 
         children = {}
         for action_num, action_probability in enumerate(normalized_valid_action_probabilities[:-1]):
@@ -78,7 +78,7 @@ class Node(object):
 
         return list(children.values())[0]
 
-    def __fn_find_best_ucb_child(self):
+    def _fn_find_best_ucb_child(self):
          # neuralnet update was based on previous player
         best_child = None
         best_ucb = 0
@@ -113,7 +113,7 @@ class Node(object):
         if len(self.children_nodes) == 0:  # leaf_node
             return self
 
-        best_child = self.__fn_find_best_ucb_child()
+        best_child = self._fn_find_best_ucb_child()
         return best_child.fn_select_from_available_leaf_nodes()
 
     def fn_is_already_visited(self):
@@ -126,19 +126,19 @@ class Node(object):
         normalized_valid_action_probabilities = self.fn_get_valid_normalized_action_probabilities()
         if normalized_valid_action_probabilities is None:
             return None
-        first_child_node = self.__fn_add_children_nodes(normalized_valid_action_probabilities)
+        first_child_node = self._fn_add_children_nodes(normalized_valid_action_probabilities)
 
         return first_child_node
 
     def fn_back_propagate(self, val):
         current_node = self
-        self.__fn_add_val_to_node(val)
+        self._fn_add_val_to_node(val)
 
         parent_node = self.parent_node
 
         while parent_node is not None:
             current_node = parent_node
-            current_node.__fn_add_val_to_node(val)
+            current_node._fn_add_val_to_node(val)
             # print(current_node.val)
             parent_node = current_node.parent_node
 

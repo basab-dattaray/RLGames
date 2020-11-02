@@ -8,7 +8,7 @@ def state_cache_mgt(fn_get_valid_actions, fn_predict_action_probablities, state)
     action_probabilities = None
     value = None
 
-    def __fn_get_valid_normalized_action_probabilities_impl(action_probabilities):
+    def _fn_get_valid_normalized_action_probabilities_impl(action_probabilities):
         valid_moves = fn_get_valid_actions(state)
         if valid_moves is None:
             return None
@@ -26,7 +26,7 @@ def state_cache_mgt(fn_get_valid_actions, fn_predict_action_probablities, state)
         if valid_norm_action_probabilities is None:
             if action_probabilities is None:
                 action_probabilities, _ = _fn_get_predictions()
-            valid_norm_action_probabilities = __fn_get_valid_normalized_action_probabilities_impl(action_probabilities)
+            valid_norm_action_probabilities = _fn_get_valid_normalized_action_probabilities_impl(action_probabilities)
         return valid_norm_action_probabilities
 
     def _fn_get_predictions():

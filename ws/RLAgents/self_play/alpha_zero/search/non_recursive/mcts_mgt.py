@@ -39,7 +39,7 @@ def mcts_mgt(
 
     def fn_get_mcts_counts(state):
         nonlocal root_node
-        def __fn_get_counts():
+        def _fn_get_counts():
             if root_node is None:
                 return None
             else:
@@ -53,7 +53,7 @@ def mcts_mgt(
 
         for i in range(num_mcts_simulations):
             fn_execute_monte_carlo_tree_search(state)
-        counts = __fn_get_counts()
+        counts = _fn_get_counts()
         return counts
 
     fn_get_action_probabilities = mcts_probability_mgt(fn_init_mcts, fn_get_mcts_counts)

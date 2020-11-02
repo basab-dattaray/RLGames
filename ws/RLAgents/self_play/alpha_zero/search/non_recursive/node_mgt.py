@@ -21,7 +21,7 @@ def Node(
     children_nodes = {}
     id = uuid.uuid4()
 
-    def __fn_compute_state(num_edges, parent_state, parent_action):
+    def _fn_compute_state(num_edges, parent_state, parent_action):
         if parent_action >= num_edges:
             return None
         state_dims = numpy.shape(parent_state)
@@ -32,12 +32,12 @@ def Node(
 
         return parent_state
 
-    def __fn_add_val_to_node(val):
+    def _fn_add_val_to_node(val):
         nonlocal visits
         val += val
         visits += 1
 
-    def __fn_add_children_nodes(normalized_valid_action_probabilities):
+    def _fn_add_children_nodes(normalized_valid_action_probabilities):
 
         children = {}
         for action_num, action_probability in enumerate(normalized_valid_action_probabilities[:-1]):
@@ -61,7 +61,7 @@ def Node(
 
         return list(children.values())[0]
 
-    def __fn_find_best_ucb_child():
+    def _fn_find_best_ucb_child():
          # neuralnet update was based on previous player
         best_child = None
         best_ucb = 0
@@ -92,14 +92,14 @@ def Node(
 
         return best_child
 
-    def __fn_get_parent_node():
+    def _fn_get_parent_node():
         return parent_node
 
     def fn_select_from_available_leaf_nodes():
         if len(children_nodes) == 0:  # leaf_node
             return node_mgr
 
-        best_child = __fn_find_best_ucb_child()
+        best_child = _fn_find_best_ucb_child()
         return best_child.fn_select_from_available_leaf_nodes()
 
     def fn_is_already_visited():
@@ -112,25 +112,25 @@ def Node(
         normalized_valid_action_probabilities = fn_get_valid_normalized_action_probabilities(action_probabilities= None)
         if normalized_valid_action_probabilities is None:
             return None
-        first_child_node = __fn_add_children_nodes(normalized_valid_action_probabilities)
+        first_child_node = _fn_add_children_nodes(normalized_valid_action_probabilities)
 
         return first_child_node
 
     def fn_back_propagate(val):
 
-        __fn_add_val_to_node(val)
+        _fn_add_val_to_node(val)
 
-        # parent_node = self.__fn_get_parent_node()
+        # parent_node = self._fn_get_parent_node()
         current_node = parent_node
 
         while current_node is not None:
-            current_node.__fn_add_val_to_node(val)
+            current_node._fn_add_val_to_node(val)
             current_node = current_node.parent_node
 
         return val
 
     if state is None:
-        state = __fn_compute_state(num_edges, parent_node.state, parent_action)
+        state = _fn_compute_state(num_edges, parent_node.state, parent_action)
 
     node_mgr = namedtuple('x', ['fn_select_from_available_leaf_nodes', 'fn_is_already_visited', 'fn_expand_node', 'fn_back_propagate'])
     node_mgr.fn_select_from_available_leaf_nodes=fn_select_from_available_leaf_nodes
@@ -146,7 +146,7 @@ def Node(
     node_mgr.parent_node=parent_node
     node_mgr.parent_action = parent_action
     node_mgr.state = state
-    node_mgr.__fn_add_val_to_node = __fn_add_val_to_node
+    node_mgr._fn_add_val_to_node = _fn_add_val_to_node
     node_mgr.children_nodes = children_nodes
 
     return node_mgr
