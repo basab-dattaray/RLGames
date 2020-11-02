@@ -1,24 +1,25 @@
 import numpy
 
-def rollout_mgt(fn_predict_action_probablities, fn_terminal_state_status,
-                fn_get_next_state, fn_get_canonical_form,
-                multirun=False):
-    def __next_state_mgt(fn_get_game_next_state_for_player, fn_get_current_state_for_player):
-        def fn_find_next_state(state, action):
-            next_state, next_player = fn_get_game_next_state_for_player(state, 1, action)
-            if next_player is None:
-                return None
-            new_state = fn_get_current_state_for_player(next_state, next_player)
-            return new_state
+def rollout_mgt(
+        fn_terminal_state_status,
+        fn_get_normalized_predictions,
+        multirun=False):
+    # def __next_state_mgt(fn_get_game_next_state_for_player, fn_get_current_state_for_player):
+    #     def fn_find_next_state(state, action):
+    #         next_state, next_player = fn_get_game_next_state_for_player(state, 1, action)
+    #         if next_player is None:
+    #             return None
+    #         new_state = fn_get_current_state_for_player(next_state, next_player)
+    #         return new_state
+    #
+    #     return fn_find_next_state
+    #
+    # fn_find_next_state = __next_state_mgt(fn_get_next_state, fn_get_canonical_form)
 
-        return fn_find_next_state
-
-    fn_find_next_state = __next_state_mgt(fn_get_next_state, fn_get_canonical_form)
-
-    def _fn_get_value(state):
-        action_probabilities, state_value = fn_predict_action_probablities(state)
-        ret_value =  state_value[0]
-        return  ret_value, action_probabilities
+    # def _fn_get_value(state):
+    #     action_probabilities, state_value = fn_predict_action_probablities(state)
+    #     ret_value =  state_value[0]
+    #     return  ret_value, action_probabilities
 
     def _fn_get_rollout_value(fn_terminal_state_status, state):
         ret_val = None
@@ -30,10 +31,15 @@ def rollout_mgt(fn_predict_action_probablities, fn_terminal_state_status,
                 terminal_state = True
                 return ret_val, None, terminal_state
 
-        val, action_probs = _fn_get_value(state)
+        action_probabilities, state_value = fn_get_normalized_predictions(state)[:-1]
 
-        ret_val = val
-        return ret_val, action_probs, terminal_state
+
+        # action_probabilities, state_value = fn_predict_action_probablities(state)
+
+        # val, action_probs = _fn_get_value(state)
+
+        # ret_val = val
+        return state_value[0], action_probabilities, terminal_state
 
     def fn_rollout(state):
         opponent_val, action_probs, is_terminal_state = _fn_get_rollout_value(

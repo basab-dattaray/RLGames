@@ -14,7 +14,6 @@ def mcts_r_mgr(
     fn_get_state_key,
     fn_get_next_state,
     fn_get_canonical_form,
-    fn_predict_action_probablities,
     fn_get_valid_actions,
     fn_terminal_state_status,
     num_mcts_simulations,
@@ -41,19 +40,7 @@ def mcts_r_mgr(
     def fn_init_mcts(canonical_board):
         return None
 
-    # fn_predict_action_probablities = fn_predict_action_probablities
-    # fn_get_state_key = fn_get_state_key
     fn_get_action_probabilities = mcts_probability_mgt(fn_init_mcts, fn_get_mcts_counts)
-    # fn_get_valid_actions = fn_get_valid_actions
-    # fn_terminal_state_status = fn_terminal_state_status
-    #
-    # fn_get_next_state = fn_get_next_state
-    # fn_get_canonical_form = fn_get_canonical_form
-    # fn_predict_action_probablities = fn_predict_action_probablities
-
-    # num_mcts_simulations = num_mcts_simulations
-    # explore_exploit_ratio = explore_exploit_ratio
-    # max_num_actions = max_num_actions
 
     def search(state):
         """
@@ -114,23 +101,6 @@ def mcts_r_mgr(
         Ns[state_key] += 1
         return -v
 
-    # def fn_get_normalized_predictions(fn_predict_action_probablities, fn_get_valid_actions, state):
-    #     pi, v = fn_predict_action_probablities(state)
-    #     valid_actions = fn_get_valid_actions(state)
-    #     pi = pi * valid_actions  # masking invalid moves
-    #     sum_Ps_s = np.sum(pi)
-    #     if sum_Ps_s > 0:
-    #         pi /= sum_Ps_s  # renormalize
-    #     else:
-    #         # if all valid moves were masked make all valid moves equally probable
-    #
-    #         # NB! All valid moves may be masked if either your NNet architecture is insufficient or you've get overfitting or something else.
-    #         # If you have got dozens or hundreds of these messages you should pay attention to your NNet and/or training process.
-    #         log.error("All valid moves were masked, doing a workaround.")
-    #         pi = pi + valid_actions
-    #         pi /= np.sum(pi)
-    #     return pi, v, valid_actions
-
     def fn_get_best_action(state, valids):
         cur_best = -float('inf')
         best_act = -1
@@ -153,8 +123,6 @@ def mcts_r_mgr(
         return a
 
     mcts_mgr = namedtuple('_', ['fn_get_action_probabilities'])
-    # mcts_mgr.fn_init_mcts=fn_init_mcts
-    # mcts_mgr.fn_get_mcts_counts=fn_get_mcts_counts
     mcts_mgr.fn_get_action_probabilities = fn_get_action_probabilities
 
     return mcts_mgr
