@@ -4,9 +4,6 @@ from collections import namedtuple
 
 import numpy
 
-
-
-
 def Node(
     fn_get_valid_normalized_action_probabilities,
     num_edges,
