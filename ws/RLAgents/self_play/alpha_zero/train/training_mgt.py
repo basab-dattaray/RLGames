@@ -17,11 +17,11 @@ from ws.RLUtils.monitoring.tracing.tracer import tracer
 
 log = logging.getLogger(__name__)
 
-def training_mgt(game, nnet, args):
+def training_mgt(game, nn_mgr_N, args):
 
     DEBUG_FLAG = False
 
-    pnet = copy.deepcopy(nnet)
+    nn_mgr_P = copy.deepcopy(nn_mgr_N)
 
     def _fn_getCheckpointFile(iteration):
         return '_iter_' + str(iteration) + '.tar'
@@ -76,7 +76,7 @@ def training_mgt(game, nnet, args):
             nonlocal update_count
             @tracer(args)
             def fn_generate_samples(iteration):
-                generation_mcts = mcts_adapter(game, nnet, args)
+                generation_mcts = mcts_adapter(game, nn_mgr_N, args)
 
                 def _fn_run_episodes():
                     trainExamples = []
@@ -123,7 +123,7 @@ def training_mgt(game, nnet, args):
                     for episode_num in range(1, args.num_of_training_episodes + 1):
                         fn_count_episode()
 
-                        # mcts = mcts_adapter(game, nnet, args)  # reset search tree
+                        # mcts = mcts_adapter(game, nn_mgr_N, args)  # reset search tree
                         episode_result = _fn_run_episodes()
                         if episode_result is not None:
                             samples_for_iteration += episode_result
@@ -151,11 +151,11 @@ def training_mgt(game, nnet, args):
             @tracer(args)
             def _fn_play_next_vs_previous(trainExamples):
                 # training new network, keeping a copy of the old one
-                nnet.fn_save_model(filename=args.temp_model_exchange_name)
-                pnet.fn_load_model(filename=args.temp_model_exchange_name)
-                pmcts = mcts_adapter(game, pnet, args)
-                nnet.fn_adjust_model_from_examples(trainExamples)
-                nmcts = mcts_adapter(game, nnet, args)
+                nn_mgr_N.fn_save_model(filename=args.temp_model_exchange_name)
+                nn_mgr_P.fn_load_model(filename=args.temp_model_exchange_name)
+                pmcts = mcts_adapter(game, nn_mgr_P, args)
+                nn_mgr_N.fn_adjust_model_from_examples(trainExamples)
+                nmcts = mcts_adapter(game, nn_mgr_N, args)
                 # args.recorder.fn_record_message()
                 # args.recorder.fn_record_message(f'* Comptete with Previous Version', indent=0)
                 arena = Arena(lambda x: np.argmax(pmcts.fn_get_action_probabilities(x, spread_probabilities=0)),
@@ -182,21 +182,21 @@ def training_mgt(game, nnet, args):
                     reject = True
 
 
-            model_already_exists = nnet.fn_is_model_available(rel_folder=args.rel_model_path)
+            model_already_exists = nn_mgr_N.fn_is_model_available(rel_folder=args.rel_model_path)
 
             if reject:
                 color = Fore.RED
                 args.recorder.fn_record_message(
                     color + 'REJECTED New Model: update_threshold: {}, update_score: {}'.format(args.score_based_model_update_threshold,
                                                                                                 update_score))
-                nnet.fn_load_model(filename=args.temp_model_exchange_name)
+                nn_mgr_N.fn_load_model(filename=args.temp_model_exchange_name)
             else:
                 color = Fore.GREEN
                 args.recorder.fn_record_message(
                     color + 'ACCEPTED New Model: update_threshold: {}, update_score: {}'.format(args.score_based_model_update_threshold,
                                                                                                 update_score))
-                nnet.fn_save_model(filename=_fn_getCheckpointFile(iteration))
-                nnet.fn_save_model()
+                nn_mgr_N.fn_save_model(filename=_fn_getCheckpointFile(iteration))
+                nn_mgr_N.fn_save_model()
                 update_count += 1
 
             args.recorder.fn_record_message(Fore.BLACK)

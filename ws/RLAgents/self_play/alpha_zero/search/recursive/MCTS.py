@@ -11,7 +11,7 @@ log = logging.getLogger(__name__)
 
 
 class MCTS():
-    def __init__(self, nnet,
+    def __init__(self,
                  fn_get_state_key,
                  fn_get_next_state,
                  fn_get_canonical_form,
@@ -22,7 +22,7 @@ class MCTS():
                  explore_exploit_ratio,
                  max_num_actions
                  ):
-        self.nnet = nnet
+
         self.Qsa = {}  # stores Q values for state,a (as defined in the paper)
         self.Nsa = {}  # stores #times edge state,a was visited
         self.Ns = {}  # stores #times board_pieces state was visited
@@ -31,6 +31,7 @@ class MCTS():
         self.Es = {}  # stores game.fn_get_game_progress_status ended for board_pieces state
         self.Vs = {}  # stores game.fn_get_valid_moves for board_pieces state
 
+        self.fn_predict_action_probablities = fn_predict_action_probablities
         self.fn_get_state_key = fn_get_state_key
         self.fn_get_action_probabilities = mcts_probability_mgt(self.fn_init_mcts, self.fn_get_mcts_count)
         self.fn_get_valid_actions = fn_get_valid_actions
@@ -88,7 +89,7 @@ class MCTS():
         # ROLLOUT 2 - uses prediction
         if state_key not in self.Ps:
             # leaf node
-            self.Ps[state_key], v = self.nnet.predict(state)
+            self.Ps[state_key], v = self.fn_predict_action_probablities(state)
             valid_actions = self.fn_get_valid_actions(state)
             self.Ps[state_key] = self.Ps[state_key] * valid_actions  # masking invalid moves
             sum_Ps_s = np.sum(self.Ps[state_key])

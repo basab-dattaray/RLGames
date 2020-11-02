@@ -70,18 +70,18 @@ def agent_mgt(args, file_path):
     def fn_train():
         signal.signal(signal.SIGINT, exit_gracefully)
 
-        nnet = neural_net_mgt(args, game)
+        neural_net_mgr = neural_net_mgt(args, game)
 
         if args.do_load_model:
             # args.fn_record('Loading rel_model_path "%state/%state"...', args.load_folder_file)
-            if not nnet.fn_load_model():
+            if not neural_net_mgr.fn_load_model():
                 args.fn_record('*** unable to load model')
             else:
                 args.fn_record('!!! loaded model')
         else:
             log.warning('!!! Not loading a rel_model_path!')
 
-        fn_execute_training_iterations = training_mgt(game, nnet, args)
+        fn_execute_training_iterations = training_mgt(game, neural_net_mgr, args)
         fn_execute_training_iterations()
 
         return agent_mgr
