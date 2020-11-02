@@ -1,7 +1,7 @@
 from collections import namedtuple
 
 from ws.RLAgents.self_play.alpha_zero.search.non_recursive.Mcts import Mcts
-from ws.RLAgents.self_play.alpha_zero.search.recursive.MCTS import mcts_r_mgr
+from ws.RLAgents.self_play.alpha_zero.search.recursive.mcts_r_mgr import mcts_r_mgr
 
 
 def mcts_adapter(game, neural_net_mgr, args):
