@@ -33,8 +33,7 @@ class Mcts():
         self.num_mcts_simulations = num_mcts_simulations
         self.max_num_actions = max_num_actions
         self.explore_exploit_ratio = explore_exploit_ratio
-        
-        # self.node_visits = NodeVisitCounter()
+
         self.root_node = None
 
         self.fn_get_state_key = fn_get_state_key,

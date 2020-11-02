@@ -1,63 +1,60 @@
 import logging
 import math
+from collections import namedtuple
 
 import numpy as np
 
 from ws.RLAgents.self_play.alpha_zero.search.mcts_probability_mgt import mcts_probability_mgt
 
 EPS = 1e-8
-
 log = logging.getLogger(__name__)
 
+def MCTS(
+    fn_get_state_key,
+    fn_get_next_state,
+    fn_get_canonical_form,
+    fn_predict_action_probablities,
+    fn_get_valid_actions,
+    fn_terminal_state_status,
+    num_mcts_simulations,
+    explore_exploit_ratio,
+    max_num_actions
+):
 
-class MCTS():
-    def __init__(self,
-                 fn_get_state_key,
-                 fn_get_next_state,
-                 fn_get_canonical_form,
-                 fn_predict_action_probablities,
-                 fn_get_valid_actions,
-                 fn_terminal_state_status,
-                 num_mcts_simulations,
-                 explore_exploit_ratio,
-                 max_num_actions
-                 ):
+    Qsa = {}  # stores Q values for state,a (as defined in the paper)
+    Nsa = {}  # stores #times edge state,a was visited
+    Ns = {}  # stores #times board_pieces state was visited
+    Ps = {}  # stores initial policy (returned by neural net)
 
-        self.Qsa = {}  # stores Q values for state,a (as defined in the paper)
-        self.Nsa = {}  # stores #times edge state,a was visited
-        self.Ns = {}  # stores #times board_pieces state was visited
-        self.Ps = {}  # stores initial policy (returned by neural net)
+    Es = {}  # stores game.fn_get_game_progress_status ended for board_pieces state
+    Vs = {}  # stores game.fn_get_valid_moves for board_pieces state
 
-        self.Es = {}  # stores game.fn_get_game_progress_status ended for board_pieces state
-        self.Vs = {}  # stores game.fn_get_valid_moves for board_pieces state
+    def fn_get_mcts_counts(state):
+        for i in range(num_mcts_simulations):
+            search(state)
 
-        self.fn_predict_action_probablities = fn_predict_action_probablities
-        self.fn_get_state_key = fn_get_state_key
-        self.fn_get_action_probabilities = mcts_probability_mgt(self.fn_init_mcts, self.fn_get_mcts_count)
-        self.fn_get_valid_actions = fn_get_valid_actions
-        self.fn_terminal_state_status = fn_terminal_state_status
-
-        self.fn_get_next_state = fn_get_next_state
-        self.fn_get_canonical_form = fn_get_canonical_form
-        self.fn_predict_action_probablities = fn_predict_action_probablities
-
-        self.num_mcts_simulations = num_mcts_simulations
-        self.explore_exploit_ratio = explore_exploit_ratio
-        self.max_num_actions = max_num_actions
-
-
-    def fn_get_mcts_count(self, state):
-        for i in range(self.num_mcts_simulations):
-            self.search(state)
-
-        s = self.fn_get_state_key(state)
-        counts = [self.Nsa[(s, a)] if (s, a) in self.Nsa else 0 for a in range(self.max_num_actions)]
+        s = fn_get_state_key(state)
+        counts = [Nsa[(s, a)] if (s, a) in Nsa else 0 for a in range(max_num_actions)]
         return counts
 
-    def fn_init_mcts(self, canonical_board):
+    def fn_init_mcts(canonical_board):
         return None
 
-    def search(self, state):
+    fn_predict_action_probablities = fn_predict_action_probablities
+    fn_get_state_key = fn_get_state_key
+    fn_get_action_probabilities = mcts_probability_mgt(fn_init_mcts, fn_get_mcts_counts)
+    fn_get_valid_actions = fn_get_valid_actions
+    fn_terminal_state_status = fn_terminal_state_status
+
+    fn_get_next_state = fn_get_next_state
+    fn_get_canonical_form = fn_get_canonical_form
+    fn_predict_action_probablities = fn_predict_action_probablities
+
+    num_mcts_simulations = num_mcts_simulations
+    explore_exploit_ratio = explore_exploit_ratio
+    max_num_actions = max_num_actions
+
+    def search(state):
         """
         This function performs one iteration of MCTS. It is recursively called
         till a leaf node is found. The action chosen at each node is one that
@@ -77,71 +74,71 @@ class MCTS():
             v: the negative of the value of the current state
         """
 
-        state_key = self.fn_get_state_key(state)
+        state_key = fn_get_state_key(state)
 
         # ROLLOUT 1 - actual result
-        if state_key not in self.Es:
-            self.Es[state_key] = self.fn_terminal_state_status(state)
-        if self.Es[state_key] != 0:
+        if state_key not in Es:
+            Es[state_key] = fn_terminal_state_status(state)
+        if Es[state_key] != 0:
             # terminal node
-            return -self.Es[state_key]
+            return -Es[state_key]
 
         # ROLLOUT 2 - uses prediction
-        if state_key not in self.Ps:
+        if state_key not in Ps:
             # leaf node
-            self.Ps[state_key], v = self.fn_predict_action_probablities(state)
-            valid_actions = self.fn_get_valid_actions(state)
-            self.Ps[state_key] = self.Ps[state_key] * valid_actions  # masking invalid moves
-            sum_Ps_s = np.sum(self.Ps[state_key])
+            Ps[state_key], v = fn_predict_action_probablities(state)
+            valid_actions = fn_get_valid_actions(state)
+            Ps[state_key] = Ps[state_key] * valid_actions  # masking invalid moves
+            sum_Ps_s = np.sum(Ps[state_key])
             if sum_Ps_s > 0:
-                self.Ps[state_key] /= sum_Ps_s  # renormalize
+                Ps[state_key] /= sum_Ps_s  # renormalize
             else:
                 # if all valid moves were masked make all valid moves equally probable
 
                 # NB! All valid moves may be masked if either your NNet architecture is insufficient or you've get overfitting or something else.
                 # If you have got dozens or hundreds of these messages you should pay attention to your NNet and/or training process.   
                 log.error("All valid moves were masked, doing a workaround.")
-                self.Ps[state_key] = self.Ps[state_key] + valid_actions
-                self.Ps[state_key] /= np.sum(self.Ps[state_key])
+                Ps[state_key] = Ps[state_key] + valid_actions
+                Ps[state_key] /= np.sum(Ps[state_key])
 
-            self.Vs[state_key] = valid_actions
-            self.Ns[state_key] = 0
+            Vs[state_key] = valid_actions
+            Ns[state_key] = 0
             return -v
 
         # SELECTION - node already visited so find next best node in the subtree
-        valid_actions = self.Vs[state_key]
-        best_action = self.fn_get_best_action(state_key, valid_actions)
-        next_state, next_player = self.fn_get_next_state(state, 1, best_action)
-        next_state_canonical = self.fn_get_canonical_form(next_state, next_player)
+        valid_actions = Vs[state_key]
+        best_action = fn_get_best_action(state_key, valid_actions)
+        next_state, next_player = fn_get_next_state(state, 1, best_action)
+        next_state_canonical = fn_get_canonical_form(next_state, next_player)
 
         # EXPANSION
-        v = self.search(next_state_canonical)
+        v = search(next_state_canonical)
 
         # BACKPROP
-        if (state_key, best_action) in self.Qsa: # UPDATE EXISTING
-            self.Qsa[(state_key, best_action)] = (self.Nsa[(state_key, best_action)] * self.Qsa[(state_key, best_action)] + v) / (self.Nsa[(state_key, best_action)] + 1)
-            self.Nsa[(state_key, best_action)] += 1
+        if (state_key, best_action) in Qsa: # UPDATE EXISTING
+            Qsa[(state_key, best_action)] = (Nsa[(state_key, best_action)] * Qsa[(state_key, best_action)] + v) / (Nsa[(state_key, best_action)] + 1)
+            Nsa[(state_key, best_action)] += 1
 
         else: # UPDATE FIRST TIME
-            self.Qsa[(state_key, best_action)] = v
-            self.Nsa[(state_key, best_action)] = 1
+            Qsa[(state_key, best_action)] = v
+            Nsa[(state_key, best_action)] = 1
 
-        self.Ns[state_key] += 1
+        Ns[state_key] += 1
         return -v
 
-    def fn_get_best_action(self, state, valids):
+    def fn_get_best_action(state, valids):
         cur_best = -float('inf')
         best_act = -1
         # pick the action with the highest upper confidence bound
-        for a in range(self.max_num_actions):
+        for a in range(max_num_actions):
             if valids[a]:
-                if (state, a) in self.Qsa:
-                    u = self.Qsa[(state, a)] + self.explore_exploit_ratio * self.Ps[state][a] * math.sqrt(
-                        self.Ns[state]) / (
-                                1 + self.Nsa[(state, a)])
+                if (state, a) in Qsa:
+                    u = Qsa[(state, a)] + explore_exploit_ratio * Ps[state][a] * math.sqrt(
+                        Ns[state]) / (
+                                1 + Nsa[(state, a)])
                 else:
-                    u = self.explore_exploit_ratio * self.Ps[state][a] * math.sqrt(
-                        self.Ns[state] + EPS)  # Q = 0 ?
+                    u = explore_exploit_ratio * Ps[state][a] * math.sqrt(
+                        Ns[state] + EPS)  # Q = 0 ?
                     # u = 0
 
                 if u > cur_best:
@@ -149,3 +146,10 @@ class MCTS():
                     best_act = a
         a = best_act
         return a
+
+    mcts_mgr = namedtuple('_', ['fn_init_mcts', 'fn_get_mcts_counts', 'fn_get_action_probabilities'])
+    mcts_mgr.fn_init_mcts=fn_init_mcts
+    mcts_mgr.fn_get_mcts_counts=fn_get_mcts_counts
+    mcts_mgr.fn_get_action_probabilities = fn_get_action_probabilities
+
+    return mcts_mgr
