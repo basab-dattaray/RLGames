@@ -19,13 +19,13 @@ class MCTS():
         self.game = game
         self.nnet = nnet
         self.args = args
-        self.Qsa = {}  # stores Q values for s,a (as defined in the paper)
-        self.Nsa = {}  # stores #times edge s,a was visited
-        self.Ns = {}  # stores #times board_pieces s was visited
+        self.Qsa = {}  # stores Q values for state,a (as defined in the paper)
+        self.Nsa = {}  # stores #times edge state,a was visited
+        self.Ns = {}  # stores #times board_pieces state was visited
         self.Ps = {}  # stores initial policy (returned by neural net)
 
-        self.Es = {}  # stores game.fn_get_game_progress_status ended for board_pieces s
-        self.Vs = {}  # stores game.fn_get_valid_moves for board_pieces s
+        self.Es = {}  # stores game.fn_get_game_progress_status ended for board_pieces state
+        self.Vs = {}  # stores game.fn_get_valid_moves for board_pieces state
 
         self.fn_get_action_probabilities = mcts_probability_mgt(self.fn_init_mcts, self.fn_get_mcts_count)
 
@@ -60,71 +60,75 @@ class MCTS():
             v: the negative of the value of the current state
         """
 
-        s = self.game.fn_get_string_representation(state)
+        state_key = self.game.fn_get_string_representation(state)
 
         # ROLLOUT 1 - actual result
-        if s not in self.Es:
-            self.Es[s] = self.game.fn_get_game_progress_status(state, 1)
-        if self.Es[s] != 0:
+        if state_key not in self.Es:
+            self.Es[state_key] = self.game.fn_get_game_progress_status(state, 1)
+        if self.Es[state_key] != 0:
             # terminal node
-            return -self.Es[s]
+            return -self.Es[state_key]
 
         # ROLLOUT 2 - uses prediction
-        if s not in self.Ps:
+        if state_key not in self.Ps:
             # leaf node
-            self.Ps[s], v = self.nnet.predict(state)
-            valids = self.game.fn_get_valid_moves(state, 1)
-            self.Ps[s] = self.Ps[s] * valids  # masking invalid moves
-            sum_Ps_s = np.sum(self.Ps[s])
+            self.Ps[state_key], v = self.nnet.predict(state)
+            valid_actions = self.game.fn_get_valid_moves(state, 1)
+            self.Ps[state_key] = self.Ps[state_key] * valid_actions  # masking invalid moves
+            sum_Ps_s = np.sum(self.Ps[state_key])
             if sum_Ps_s > 0:
-                self.Ps[s] /= sum_Ps_s  # renormalize
+                self.Ps[state_key] /= sum_Ps_s  # renormalize
             else:
                 # if all valid moves were masked make all valid moves equally probable
 
                 # NB! All valid moves may be masked if either your NNet architecture is insufficient or you've get overfitting or something else.
                 # If you have got dozens or hundreds of these messages you should pay attention to your NNet and/or training process.   
                 log.error("All valid moves were masked, doing a workaround.")
-                self.Ps[s] = self.Ps[s] + valids
-                self.Ps[s] /= np.sum(self.Ps[s])
+                self.Ps[state_key] = self.Ps[state_key] + valid_actions
+                self.Ps[state_key] /= np.sum(self.Ps[state_key])
 
-            self.Vs[s] = valids
-            self.Ns[s] = 0
+            self.Vs[state_key] = valid_actions
+            self.Ns[state_key] = 0
             return -v
 
         # SELECTION - node already visited so find next best node in the subtree
-        valids = self.Vs[s]
-        cur_best = -float('inf')
-        best_act = -1
-
-        # pick the action with the highest upper confidence bound
-        for a in range(self.game.fn_get_action_size()):
-            if valids[a]:
-                if (s, a) in self.Qsa:
-                    u = self.Qsa[(s, a)] + self.args.cpuct_exploration_exploitation_factor * self.Ps[s][a] * math.sqrt(self.Ns[s]) / (
-                            1 + self.Nsa[(s, a)])
-                else:
-                    u = self.args.cpuct_exploration_exploitation_factor * self.Ps[s][a] * math.sqrt(self.Ns[s] + EPS)  # Q = 0 ?
-                    # u = 0
-
-                if u > cur_best:
-                    cur_best = u
-                    best_act = a
-
-        a = best_act
-        next_state, next_player = self.game.fn_get_next_state(state, 1, a)
+        valid_actions = self.Vs[state_key]
+        best_action = self.fn_get_best_action(state_key, valid_actions)
+        next_state, next_player = self.game.fn_get_next_state(state, 1, best_action)
         next_state_canonical = self.game.fn_get_canonical_form(next_state, next_player)
 
         # EXPANSION
         v = self.search(next_state_canonical)
 
         # BACKPROP
-        if (s, a) in self.Qsa: # UPDATE EXISTING
-            self.Qsa[(s, a)] = (self.Nsa[(s, a)] * self.Qsa[(s, a)] + v) / (self.Nsa[(s, a)] + 1)
-            self.Nsa[(s, a)] += 1
+        if (state_key, best_action) in self.Qsa: # UPDATE EXISTING
+            self.Qsa[(state_key, best_action)] = (self.Nsa[(state_key, best_action)] * self.Qsa[(state_key, best_action)] + v) / (self.Nsa[(state_key, best_action)] + 1)
+            self.Nsa[(state_key, best_action)] += 1
 
         else: # UPDATE FIRST TIME
-            self.Qsa[(s, a)] = v
-            self.Nsa[(s, a)] = 1
+            self.Qsa[(state_key, best_action)] = v
+            self.Nsa[(state_key, best_action)] = 1
 
-        self.Ns[s] += 1
+        self.Ns[state_key] += 1
         return -v
+
+    def fn_get_best_action(self, state, valids):
+        cur_best = -float('inf')
+        best_act = -1
+        # pick the action with the highest upper confidence bound
+        for a in range(self.game.fn_get_action_size()):
+            if valids[a]:
+                if (state, a) in self.Qsa:
+                    u = self.Qsa[(state, a)] + self.args.cpuct_exploration_exploitation_factor * self.Ps[state][a] * math.sqrt(
+                        self.Ns[state]) / (
+                                1 + self.Nsa[(state, a)])
+                else:
+                    u = self.args.cpuct_exploration_exploitation_factor * self.Ps[state][a] * math.sqrt(
+                        self.Ns[state] + EPS)  # Q = 0 ?
+                    # u = 0
+
+                if u > cur_best:
+                    cur_best = u
+                    best_act = a
+        a = best_act
+        return a

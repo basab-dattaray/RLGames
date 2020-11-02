@@ -73,7 +73,7 @@ def agent_mgt(args, file_path):
         nnet = neural_net_mgt(args, game)
 
         if args.do_load_model:
-            # args.fn_record('Loading rel_model_path "%s/%s"...', args.load_folder_file)
+            # args.fn_record('Loading rel_model_path "%state/%state"...', args.load_folder_file)
             if not nnet.fn_load_model():
                 args.fn_record('*** unable to load model')
             else:
