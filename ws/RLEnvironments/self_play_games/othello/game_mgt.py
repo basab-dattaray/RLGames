@@ -92,7 +92,7 @@ def game_mgt(board_size):
                 list_of_symetries += [(rotated_board_flipped, list(rotated_actions_rel_to_board_flipped.ravel()) + [action_probs[-1]])]
         return list_of_symetries
 
-    def fn_get_string_representation(pieces):
+    def fn_get_state_key(pieces):
         return pieces.tostring()
 
 
@@ -128,7 +128,7 @@ def game_mgt(board_size):
         'fn_get_canonical_form',
 
         'fn_get_symetric_samples',
-        'fn_get_string_representation',
+        'fn_get_state_key',
         'fn_get_score' ,
         'fn_display'
         ]
@@ -145,7 +145,7 @@ def game_mgt(board_size):
     game_mgr.fn_get_canonical_form = fn_get_canonical_form
 
     game_mgr.fn_get_symetric_samples = fn_get_symetric_samples
-    game_mgr.fn_get_string_representation = fn_get_string_representation
+    game_mgr.fn_get_state_key = fn_get_state_key
     game_mgr.fn_get_score = fn_get_score
     game_mgr.fn_display = fn_display
 

@@ -21,7 +21,7 @@ class MCTS():
                  explore_exploit_ratio,
                  max_num_actions
                  ):
-        self.game = game
+        # self.game = game
         self.nnet = nnet
         self.args = args
         self.Qsa = {}  # stores Q values for state,a (as defined in the paper)
@@ -49,7 +49,7 @@ class MCTS():
         for i in range(self.args.num_of_mc_simulations):
             self.search(state)
 
-        s = self.game.fn_get_string_representation(state)
+        s = self.game.fn_get_state_key(state)
         counts = [self.Nsa[(s, a)] if (s, a) in self.Nsa else 0 for a in range(self.max_num_actions)]
         return counts
 
@@ -76,7 +76,7 @@ class MCTS():
             v: the negative of the value of the current state
         """
 
-        state_key = self.game.fn_get_string_representation(state)
+        state_key = self.game.fn_get_state_key(state)
 
         # ROLLOUT 1 - actual result
         if state_key not in self.Es:
@@ -111,7 +111,7 @@ class MCTS():
         valid_actions = self.Vs[state_key]
         best_action = self.fn_get_best_action(state_key, valid_actions)
         next_state, next_player = self.fn_get_next_state(state, 1, best_action)
-        next_state_canonical = self.game.fn_get_canonical_form(next_state, next_player)
+        next_state_canonical = self.fn_get_canonical_form(next_state, next_player)
 
         # EXPANSION
         v = self.search(next_state_canonical)
@@ -132,7 +132,7 @@ class MCTS():
         cur_best = -float('inf')
         best_act = -1
         # pick the action with the highest upper confidence bound
-        for a in range(self.game.fn_get_action_size()):
+        for a in range(self.max_num_actions):
             if valids[a]:
                 if (state, a) in self.Qsa:
                     u = self.Qsa[(state, a)] + self.args.cpuct_exploration_exploitation_factor * self.Ps[state][a] * math.sqrt(
