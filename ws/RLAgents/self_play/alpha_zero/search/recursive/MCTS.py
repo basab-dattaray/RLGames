@@ -11,7 +11,7 @@ log = logging.getLogger(__name__)
 
 
 class MCTS():
-    def __init__(self, game, nnet, args,
+    def __init__(self, nnet,
                  fn_get_state_key,
                  fn_get_next_state,
                  fn_get_canonical_form,
@@ -22,9 +22,7 @@ class MCTS():
                  explore_exploit_ratio,
                  max_num_actions
                  ):
-        # self.game = game
         self.nnet = nnet
-        # self.args = args
         self.Qsa = {}  # stores Q values for state,a (as defined in the paper)
         self.Nsa = {}  # stores #times edge state,a was visited
         self.Ns = {}  # stores #times board_pieces state was visited

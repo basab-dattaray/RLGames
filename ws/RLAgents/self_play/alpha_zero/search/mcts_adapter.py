@@ -12,7 +12,7 @@ def mcts_adapter(game, nnet, args):
 
 
         mcts = Mcts(
-            fn_get_state_key = gsme.fn_get_state_key,
+            fn_get_state_key = game.fn_get_state_key,
             fn_get_next_state = game.fn_get_next_state,
             fn_get_canonical_form = game.fn_get_canonical_form,
             fn_predict_action_probablities=fn_predict_action_probablities,
@@ -23,7 +23,7 @@ def mcts_adapter(game, nnet, args):
             max_num_actions=game.fn_get_action_size()
         )
     else:
-        mcts = MCTS(game, nnet, args,
+        mcts = MCTS(nnet,
                     fn_get_state_key = game.fn_get_state_key,
                     fn_get_next_state=game.fn_get_next_state,
                     fn_get_canonical_form=game.fn_get_canonical_form,
