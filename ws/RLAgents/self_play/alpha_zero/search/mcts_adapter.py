@@ -14,20 +14,21 @@ def mcts_adapter(game, nnet, args):
 
         fn_terminal_state_status = lambda pieces: game.fn_get_game_progress_status(pieces, 1)
 
-        def __next_state_mgt(fn_get_game_next_state_for_player, fn_get_current_state_for_player):
-            def fn_find_next_state(state, action):
-                next_state, next_player = fn_get_game_next_state_for_player(state, 1, action)
-                if next_player is None:
-                    return None
-                new_state = fn_get_current_state_for_player(next_state, next_player)
-                return new_state
-
-            return fn_find_next_state
-
-        fn_find_next_state = __next_state_mgt(game.fn_get_next_state, game.fn_get_canonical_form)
+        # def __next_state_mgt(fn_get_game_next_state_for_player, fn_get_current_state_for_player):
+        #     def fn_find_next_state(state, action):
+        #         next_state, next_player = fn_get_game_next_state_for_player(state, 1, action)
+        #         if next_player is None:
+        #             return None
+        #         new_state = fn_get_current_state_for_player(next_state, next_player)
+        #         return new_state
+        #
+        #     return fn_find_next_state
+        #
+        # fn_find_next_state = __next_state_mgt(game.fn_get_next_state, game.fn_get_canonical_form)
 
         mcts = Mcts(
-            fn_find_next_state = fn_find_next_state,
+            fn_get_next_state = game.fn_get_next_state,
+            fn_get_canonical_form = game.fn_get_canonical_form,
             fn_predict_action_probablities=fn_predict_action_probablities,
             fn_get_valid_actions=fn_get_valid_actions,
             fn_terminal_state_status= fn_terminal_state_status,

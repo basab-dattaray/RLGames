@@ -16,7 +16,16 @@ CACHE_RESULTS = False
 
 class Mcts():
 
-    def __init__(self, fn_find_next_state, fn_predict_action_probablities, fn_get_valid_actions, fn_terminal_state_status, num_mcts_simulations, explore_exploit_ratio, max_num_actions):
+    def __init__(self,
+                 fn_get_next_state,
+                 fn_get_canonical_form,
+                 fn_predict_action_probablities,
+                 fn_get_valid_actions,
+                 fn_terminal_state_status,
+                 num_mcts_simulations,
+                 explore_exploit_ratio,
+                 max_num_actions
+                 ):
 
         self.app_path = os.getcwd()
 
@@ -26,17 +35,16 @@ class Mcts():
         
         # self.node_visits = NodeVisitCounter()
         self.root_node = None
-
-        self.fn_find_next_state = fn_find_next_state
+        self.fn_get_next_state = fn_get_next_state,
+        self.fn_get_canonical_form = fn_get_canonical_form,
         self.fn_predict_action_probablities = fn_predict_action_probablities
         self.fn_get_valid_actions = fn_get_valid_actions
         self.fn_terminal_state_status = fn_terminal_state_status
 
         self.state_cache = None
-
-        # self.fn_get_action_probabilities_ = mcts_probability_mgt(self.fn_execute_monte_carlo_tree_search, self.fn_get_mcts_counts, num_mcts_simulations)
         self.fn_get_action_probabilities = mcts_probability_mgt(self.fn_init_mcts, self.fn_get_mcts_counts)
-        self.fn_rollout = rollout_mgt(self.state_cache, self.fn_predict_action_probablities, self.fn_terminal_state_status, self.fn_find_next_state,
+        self.fn_rollout = rollout_mgt(self.state_cache, self.fn_predict_action_probablities, self.fn_terminal_state_status,
+                    fn_get_next_state, fn_get_canonical_form,
                     multirun=False)
 
     def fn_execute_monte_carlo_tree_search(self, state):
