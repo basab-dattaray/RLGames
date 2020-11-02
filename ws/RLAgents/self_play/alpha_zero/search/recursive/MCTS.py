@@ -66,7 +66,7 @@ class MCTS():
 
         # ROLLOUT 1 - actual result
         if state_key not in self.Es:
-            self.Es[state_key] = self.fn_terminal_state_status(state, 1)
+            self.Es[state_key] = self.fn_terminal_state_status(state)
         if self.Es[state_key] != 0:
             # terminal node
             return -self.Es[state_key]
