@@ -68,6 +68,7 @@ def mcts_mgt(
         else:
             if root_node is None:
                 root_node = Node(
+                    state,
                     fn_get_normalized_predictions,
                     state_cache.fn_get_valid_normalized_action_probabilities,
                     max_num_actions,
@@ -75,8 +76,8 @@ def mcts_mgt(
 
                     parent_action=-1,
                     val=0.0,
-                    parent_node=None,
-                    state= state
+                    parent_node=None
+
                 )
 
         selected_node = root_node.fn_select_from_available_leaf_nodes()
