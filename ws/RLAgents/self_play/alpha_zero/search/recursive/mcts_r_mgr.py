@@ -82,7 +82,7 @@ def mcts_r_mgr(
 
         # SELECTION - node already visited so find next best node in the subtree
         valid_actions = Vs[state_key]
-        best_action = fn_get_best_action(state_key, valid_actions)
+        best_action = fn_get_best_action(state_key, valid_actions, max_num_actions, explore_exploit_ratio)
         next_state, next_player = fn_get_next_state(state, 1, best_action)
         next_state_canonical = fn_get_canonical_form(next_state, next_player)
 
@@ -101,7 +101,7 @@ def mcts_r_mgr(
         Ns[state_key] += 1
         return -v
 
-    def fn_get_best_action(state, valids):
+    def fn_get_best_action(state, valids, max_num_actions, explore_exploit_ratio):
         cur_best = -float('inf')
         best_act = -1
         # pick the action with the highest upper confidence bound
