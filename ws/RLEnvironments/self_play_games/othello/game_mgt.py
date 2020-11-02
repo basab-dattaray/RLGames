@@ -95,7 +95,6 @@ def game_mgt(board_size):
     def fn_get_state_key(pieces):
         return pieces.tostring()
 
-
     def fn_get_score(pieces, player):
         b = board_mgt(board_size)
         return b.fn_get_advantage_count(pieces, player)
