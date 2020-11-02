@@ -86,21 +86,21 @@ def mcts_r_mgr(
         # ROLLOUT 2 - uses prediction
         if state_key not in Ps:
             # leaf node
-            Ps[state_key], v = fn_predict_action_probablities(state)
+            pi, v = fn_predict_action_probablities(state)
             valid_actions = fn_get_valid_actions(state)
-            Ps[state_key] = Ps[state_key] * valid_actions  # masking invalid moves
-            sum_Ps_s = np.sum(Ps[state_key])
+            pi = pi * valid_actions  # masking invalid moves
+            sum_Ps_s = np.sum(pi)
             if sum_Ps_s > 0:
-                Ps[state_key] /= sum_Ps_s  # renormalize
+                pi /= sum_Ps_s  # renormalize
             else:
                 # if all valid moves were masked make all valid moves equally probable
 
                 # NB! All valid moves may be masked if either your NNet architecture is insufficient or you've get overfitting or something else.
                 # If you have got dozens or hundreds of these messages you should pay attention to your NNet and/or training process.   
                 log.error("All valid moves were masked, doing a workaround.")
-                Ps[state_key] = Ps[state_key] + valid_actions
-                Ps[state_key] /= np.sum(Ps[state_key])
-
+                pi = pi + valid_actions
+                pi /= np.sum(pi)
+            Ps[state_key] = pi
             Vs[state_key] = valid_actions
             Ns[state_key] = 0
             return -v
