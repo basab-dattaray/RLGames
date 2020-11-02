@@ -1,6 +1,6 @@
 import numpy
 
-def rollout_mgt(state_cache, fn_predict_action_probablities, fn_terminal_state_status,
+def rollout_mgt(fn_predict_action_probablities, fn_terminal_state_status,
                 fn_get_next_state, fn_get_canonical_form,
                 multirun=False):
     def __next_state_mgt(fn_get_game_next_state_for_player, fn_get_current_state_for_player):

@@ -29,12 +29,12 @@ def mcts_mgt(
 
     # app_path =  os.getcwd()
     root_node = None
-    state_cache = None
+    # state_cache = None
 
     def fn_init_mcts(state):
-        nonlocal root_node, state_cache
+        nonlocal root_node #, state_cache
         root_node = None
-        state_cache = state_cache_mgt(fn_get_valid_actions, fn_predict_action_probablities, state)
+        # state_cache = state_cache_mgt(fn_get_valid_actions, fn_predict_action_probablities, state)
         return True
 
     def fn_get_mcts_counts(state):
@@ -57,27 +57,27 @@ def mcts_mgt(
         return counts
 
     fn_get_action_probabilities = mcts_probability_mgt(fn_init_mcts, fn_get_mcts_counts)
-    fn_rollout = rollout_mgt(state_cache, fn_predict_action_probablities, fn_terminal_state_status,
+    fn_rollout = rollout_mgt(fn_predict_action_probablities, fn_terminal_state_status,
                 fn_get_next_state, fn_get_canonical_form,
                 multirun=False)
 
     def fn_execute_monte_carlo_tree_search(state):
         nonlocal  root_node
-        if state_cache is None:
-            return None
-        else:
-            if root_node is None:
-                root_node = Node(
-                    state,
-                    fn_get_normalized_predictions,
-                    # state_cache.fn_get_valid_normalized_action_probabilities,
-                    max_num_actions,
-                    explore_exploit_ratio,
+        # if state_cache is None:
+        #     return None
+        # else:
+        if root_node is None:
+            root_node = Node(
+                state,
+                fn_get_normalized_predictions,
+                # state_cache.fn_get_valid_normalized_action_probabilities,
+                max_num_actions,
+                explore_exploit_ratio,
 
-                    parent_action=-1,
-                    val=0.0,
-                    parent_node=None
-                )
+                parent_action=-1,
+                val=0.0,
+                parent_node=None
+            )
 
         selected_node = root_node.fn_select_from_available_leaf_nodes()
 
