@@ -17,6 +17,7 @@ CACHE_RESULTS = False
 class Mcts():
 
     def __init__(self,
+                 fn_get_state_key,
                  fn_get_next_state,
                  fn_get_canonical_form,
                  fn_predict_action_probablities,
@@ -35,6 +36,8 @@ class Mcts():
         
         # self.node_visits = NodeVisitCounter()
         self.root_node = None
+
+        self.fn_get_state_key = fn_get_state_key,
         self.fn_get_next_state = fn_get_next_state,
         self.fn_get_canonical_form = fn_get_canonical_form,
         self.fn_predict_action_probablities = fn_predict_action_probablities

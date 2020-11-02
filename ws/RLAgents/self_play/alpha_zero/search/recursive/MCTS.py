@@ -12,6 +12,7 @@ log = logging.getLogger(__name__)
 
 class MCTS():
     def __init__(self, game, nnet, args,
+                 fn_get_state_key,
                  fn_get_next_state,
                  fn_get_canonical_form,
                  fn_predict_action_probablities,
@@ -32,6 +33,7 @@ class MCTS():
         self.Es = {}  # stores game.fn_get_game_progress_status ended for board_pieces state
         self.Vs = {}  # stores game.fn_get_valid_moves for board_pieces state
 
+        self.fn_get_state_key = fn_get_state_key
         self.fn_get_action_probabilities = mcts_probability_mgt(self.fn_init_mcts, self.fn_get_mcts_count)
         self.fn_get_valid_actions = fn_get_valid_actions
         self.fn_terminal_state_status = fn_terminal_state_status
@@ -49,7 +51,7 @@ class MCTS():
         for i in range(self.args.num_of_mc_simulations):
             self.search(state)
 
-        s = self.game.fn_get_state_key(state)
+        s = self.fn_get_state_key(state)
         counts = [self.Nsa[(s, a)] if (s, a) in self.Nsa else 0 for a in range(self.max_num_actions)]
         return counts
 
@@ -76,7 +78,7 @@ class MCTS():
             v: the negative of the value of the current state
         """
 
-        state_key = self.game.fn_get_state_key(state)
+        state_key = self.fn_get_state_key(state)
 
         # ROLLOUT 1 - actual result
         if state_key not in self.Es:
