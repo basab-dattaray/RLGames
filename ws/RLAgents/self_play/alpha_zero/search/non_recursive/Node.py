@@ -55,9 +55,9 @@ class Node(object):
         self.visits += 1
 
     def _fn_add_children_nodes(self, normalized_valid_action_probabilities):
-
+        action_probabilities = normalized_valid_action_probabilities[:-2][0]
         children = {}
-        for action_num, action_probability in enumerate(normalized_valid_action_probabilities[:-1]):
+        for action_num, action_probability in enumerate(action_probabilities):
             if action_probability > 0:
 
                 child_node = Node(
@@ -125,7 +125,7 @@ class Node(object):
             return False
 
     def fn_expand_node(self):
-        normalized_valid_action_probabilities = self.fn_get_valid_normalized_action_probabilities()
+        normalized_valid_action_probabilities = self.fn_get_normalized_predictions(self.state) # self.fn_get_valid_normalized_action_probabilities()
         if normalized_valid_action_probabilities is None:
             return None
         first_child_node = self._fn_add_children_nodes(normalized_valid_action_probabilities)
