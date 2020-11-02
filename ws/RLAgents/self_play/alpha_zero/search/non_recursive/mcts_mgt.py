@@ -14,7 +14,7 @@ from ..mcts_probability_mgt import mcts_probability_mgt
 MTCS_RESULTS_FILE_NAME = 'mtcs_results.pkl'
 CACHE_RESULTS = False
 
-class Mcts():
+class mcts_mgt():
 
     def __init__(self,
                  fn_get_state_key,

@@ -1,6 +1,6 @@
 from collections import namedtuple
 
-from ws.RLAgents.self_play.alpha_zero.search.non_recursive.Mcts import Mcts
+from ws.RLAgents.self_play.alpha_zero.search.non_recursive.mcts_mgt import mcts_mgt
 from ws.RLAgents.self_play.alpha_zero.search.recursive.mcts_r_mgr import mcts_r_mgr
 
 
@@ -9,7 +9,7 @@ def mcts_adapter(game, neural_net_mgr, args):
     fn_get_valid_actions = lambda board: game.fn_get_valid_moves(board, 1)
     fn_terminal_state_status = lambda pieces: game.fn_get_game_progress_status(pieces, 1)
 
-    monte_carlo_tree_search = Mcts
+    monte_carlo_tree_search = mcts_mgt
     if args.mcts_recursive:
         monte_carlo_tree_search = mcts_r_mgr
 
