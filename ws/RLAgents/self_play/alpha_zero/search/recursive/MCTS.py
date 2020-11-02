@@ -11,10 +11,6 @@ log = logging.getLogger(__name__)
 
 
 class MCTS():
-    """
-    This class handles the MCTS tree.
-    """
-
     def __init__(self, game, nnet, args,
                  fn_get_next_state,
                  fn_get_canonical_form,
@@ -40,12 +36,21 @@ class MCTS():
         self.fn_get_valid_actions = fn_get_valid_actions
         self.fn_terminal_state_status = fn_terminal_state_status
 
+        self.fn_get_next_state = fn_get_next_state
+        self.fn_get_canonical_form = fn_get_canonical_form
+        self.fn_predict_action_probablities = fn_predict_action_probablities
+
+        self.num_mcts_simulations = num_mcts_simulations
+        self.explore_exploit_ratio = explore_exploit_ratio
+        self.max_num_actions = max_num_actions
+
+
     def fn_get_mcts_count(self, state):
         for i in range(self.args.num_of_mc_simulations):
             self.search(state)
 
         s = self.game.fn_get_string_representation(state)
-        counts = [self.Nsa[(s, a)] if (s, a) in self.Nsa else 0 for a in range(self.game.fn_get_action_size())]
+        counts = [self.Nsa[(s, a)] if (s, a) in self.Nsa else 0 for a in range(self.max_num_actions)]
         return counts
 
     def fn_init_mcts(self, canonical_board):
@@ -105,7 +110,7 @@ class MCTS():
         # SELECTION - node already visited so find next best node in the subtree
         valid_actions = self.Vs[state_key]
         best_action = self.fn_get_best_action(state_key, valid_actions)
-        next_state, next_player = self.game.fn_get_next_state(state, 1, best_action)
+        next_state, next_player = self.fn_get_next_state(state, 1, best_action)
         next_state_canonical = self.game.fn_get_canonical_form(next_state, next_player)
 
         # EXPANSION
