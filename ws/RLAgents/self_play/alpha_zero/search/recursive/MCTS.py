@@ -9,7 +9,7 @@ from ws.RLAgents.self_play.alpha_zero.search.mcts_probability_mgt import mcts_pr
 EPS = 1e-8
 log = logging.getLogger(__name__)
 
-def MCTS(
+def mcts_r_mgr(
     fn_get_state_key,
     fn_get_next_state,
     fn_get_canonical_form,
