@@ -15,7 +15,16 @@ class MCTS():
     This class handles the MCTS tree.
     """
 
-    def __init__(self, game, nnet, args):
+    def __init__(self, game, nnet, args,
+                 fn_get_next_state,
+                 fn_get_canonical_form,
+                 fn_predict_action_probablities,
+                 fn_get_valid_actions,
+                 fn_terminal_state_status,
+                 num_mcts_simulations,
+                 explore_exploit_ratio,
+                 max_num_actions
+                 ):
         self.game = game
         self.nnet = nnet
         self.args = args
