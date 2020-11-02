@@ -15,6 +15,7 @@ MTCS_RESULTS_FILE_NAME = 'mtcs_results.pkl'
 CACHE_RESULTS = False
 
 def mcts_mgt(
+        fn_get_normalized_predictions,
         fn_get_state_key,
         fn_get_next_state,
         fn_get_canonical_form,
