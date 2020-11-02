@@ -37,8 +37,8 @@ class MCTS():
         self.Vs = {}  # stores game.fn_get_valid_moves for board_pieces state
 
         self.fn_get_action_probabilities = mcts_probability_mgt(self.fn_init_mcts, self.fn_get_mcts_count)
-        self.fn_get_valid_actions = lambda board: game.fn_get_valid_moves(board, 1)
-        self.fn_terminal_state_status = lambda pieces: game.fn_get_game_progress_status(pieces, 1)
+        self.fn_get_valid_actions = fn_get_valid_actions
+        self.fn_terminal_state_status = fn_terminal_state_status
 
     def fn_get_mcts_count(self, state):
         for i in range(self.args.num_of_mc_simulations):
