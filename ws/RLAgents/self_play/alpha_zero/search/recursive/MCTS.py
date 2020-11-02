@@ -24,7 +24,7 @@ class MCTS():
                  ):
         # self.game = game
         self.nnet = nnet
-        self.args = args
+        # self.args = args
         self.Qsa = {}  # stores Q values for state,a (as defined in the paper)
         self.Nsa = {}  # stores #times edge state,a was visited
         self.Ns = {}  # stores #times board_pieces state was visited
@@ -48,7 +48,7 @@ class MCTS():
 
 
     def fn_get_mcts_count(self, state):
-        for i in range(self.args.num_of_mc_simulations):
+        for i in range(self.num_mcts_simulations):
             self.search(state)
 
         s = self.fn_get_state_key(state)
@@ -137,11 +137,11 @@ class MCTS():
         for a in range(self.max_num_actions):
             if valids[a]:
                 if (state, a) in self.Qsa:
-                    u = self.Qsa[(state, a)] + self.args.cpuct_exploration_exploitation_factor * self.Ps[state][a] * math.sqrt(
+                    u = self.Qsa[(state, a)] + self.explore_exploit_ratio * self.Ps[state][a] * math.sqrt(
                         self.Ns[state]) / (
                                 1 + self.Nsa[(state, a)])
                 else:
-                    u = self.args.cpuct_exploration_exploitation_factor * self.Ps[state][a] * math.sqrt(
+                    u = self.explore_exploit_ratio * self.Ps[state][a] * math.sqrt(
                         self.Ns[state] + EPS)  # Q = 0 ?
                     # u = 0
 
