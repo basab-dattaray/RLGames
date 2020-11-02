@@ -28,6 +28,8 @@ class MCTS():
         self.Vs = {}  # stores game.fn_get_valid_moves for board_pieces state
 
         self.fn_get_action_probabilities = mcts_probability_mgt(self.fn_init_mcts, self.fn_get_mcts_count)
+        self.fn_get_valid_actions = lambda board: game.fn_get_valid_moves(board, 1)
+        self.fn_terminal_state_status = lambda pieces: game.fn_get_game_progress_status(pieces, 1)
 
     def fn_get_mcts_count(self, state):
         for i in range(self.args.num_of_mc_simulations):
@@ -64,7 +66,7 @@ class MCTS():
 
         # ROLLOUT 1 - actual result
         if state_key not in self.Es:
-            self.Es[state_key] = self.game.fn_get_game_progress_status(state, 1)
+            self.Es[state_key] = self.fn_terminal_state_status(state, 1)
         if self.Es[state_key] != 0:
             # terminal node
             return -self.Es[state_key]
@@ -73,7 +75,7 @@ class MCTS():
         if state_key not in self.Ps:
             # leaf node
             self.Ps[state_key], v = self.nnet.predict(state)
-            valid_actions = self.game.fn_get_valid_moves(state, 1)
+            valid_actions = self.fn_get_valid_actions(state)
             self.Ps[state_key] = self.Ps[state_key] * valid_actions  # masking invalid moves
             sum_Ps_s = np.sum(self.Ps[state_key])
             if sum_Ps_s > 0:
