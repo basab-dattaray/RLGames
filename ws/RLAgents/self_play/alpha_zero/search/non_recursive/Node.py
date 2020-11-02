@@ -10,7 +10,7 @@ class Node(object):
     def __init__(self,
         state,
         fn_get_normalized_predictions,
-        fn_get_valid_normalized_action_probabilities,
+        # fn_get_valid_normalized_action_probabilities,
         num_edges,
         explore_exploit_ratio,
 
@@ -21,7 +21,7 @@ class Node(object):
 
      ):
         self.fn_get_normalized_predictions = fn_get_normalized_predictions
-        self.fn_get_valid_normalized_action_probabilities = fn_get_valid_normalized_action_probabilities
+        # self.fn_get_valid_normalized_action_probabilities = fn_get_valid_normalized_action_probabilities
         self.num_edges = num_edges
         self.explore_exploit_ratio = explore_exploit_ratio
         self.val = val
@@ -63,7 +63,7 @@ class Node(object):
                 child_node = Node(
                     self.state,
                     self.fn_get_normalized_predictions,
-                    self.fn_get_valid_normalized_action_probabilities,
+                    # self.fn_get_valid_normalized_action_probabilities,
                     self.num_edges,
                     self.explore_exploit_ratio,
 
@@ -85,8 +85,8 @@ class Node(object):
         best_child = None
         best_ucb = 0
 
-        normalized_valid_action_probabilities = self.fn_get_valid_normalized_action_probabilities()
-
+        normalized_predictions = self.fn_get_normalized_predictions(self.state) # self.fn_get_valid_normalized_action_probabilities()
+        normalized_valid_action_probabilities = normalized_predictions[:-2][0]
         for key, child in self.children_nodes.items():
             action_num = int(key)
             action_prob = normalized_valid_action_probabilities[action_num]

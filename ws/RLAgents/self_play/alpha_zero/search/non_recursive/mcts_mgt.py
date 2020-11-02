@@ -70,14 +70,13 @@ def mcts_mgt(
                 root_node = Node(
                     state,
                     fn_get_normalized_predictions,
-                    state_cache.fn_get_valid_normalized_action_probabilities,
+                    # state_cache.fn_get_valid_normalized_action_probabilities,
                     max_num_actions,
                     explore_exploit_ratio,
 
                     parent_action=-1,
                     val=0.0,
                     parent_node=None
-
                 )
 
         selected_node = root_node.fn_select_from_available_leaf_nodes()
