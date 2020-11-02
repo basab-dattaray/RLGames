@@ -68,6 +68,7 @@ def mcts_mgt(
         else:
             if root_node is None:
                 root_node = Node(
+                    fn_get_normalized_predictions,
                     state_cache.fn_get_valid_normalized_action_probabilities,
                     max_num_actions,
                     explore_exploit_ratio,

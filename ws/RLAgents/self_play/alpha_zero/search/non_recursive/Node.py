@@ -8,6 +8,7 @@ class Node(object):
     # DEBUG_FLAG = False
 
     def __init__(self,
+        fn_get_normalized_predictions,
         fn_get_valid_normalized_action_probabilities,
         num_edges,
         explore_exploit_ratio,
@@ -18,6 +19,7 @@ class Node(object):
         state= None
 
      ):
+        self.fn_get_normalized_predictions = fn_get_normalized_predictions
         self.fn_get_valid_normalized_action_probabilities = fn_get_valid_normalized_action_probabilities
         self.num_edges = num_edges
         self.explore_exploit_ratio = explore_exploit_ratio
@@ -58,6 +60,7 @@ class Node(object):
             if action_probability > 0:
 
                 child_node = Node(
+                    self.fn_get_normalized_predictions,
                     self.fn_get_valid_normalized_action_probabilities,
                     self.num_edges,
                     self.explore_exploit_ratio,
