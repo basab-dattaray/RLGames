@@ -147,9 +147,9 @@ def mcts_r_mgr(
         a = best_act
         return a
 
-    mcts_mgr = namedtuple('_', ['fn_init_mcts', 'fn_get_mcts_counts', 'fn_get_action_probabilities'])
-    mcts_mgr.fn_init_mcts=fn_init_mcts
-    mcts_mgr.fn_get_mcts_counts=fn_get_mcts_counts
+    mcts_mgr = namedtuple('_', ['fn_get_action_probabilities'])
+    # mcts_mgr.fn_init_mcts=fn_init_mcts
+    # mcts_mgr.fn_get_mcts_counts=fn_get_mcts_counts
     mcts_mgr.fn_get_action_probabilities = fn_get_action_probabilities
 
     return mcts_mgr
