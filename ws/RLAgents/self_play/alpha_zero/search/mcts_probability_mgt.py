@@ -6,7 +6,7 @@ def mcts_probability_mgt(fn_init_mcts, fn_get_counts):
 
     def fn_fn_get_action_probabilities(state, spread_probabilities=1, _test_data = None):
         if fn_init_mcts is not None:
-            fn_init_mcts(state)
+            fn_init_mcts()
 
         if fn_get_counts is not None:
             counts = fn_get_counts(state)
@@ -20,10 +20,6 @@ def mcts_probability_mgt(fn_init_mcts, fn_get_counts):
 
 
     def fn_mcts_probability_spread_out(counts):
-        # counts = [x ** (1. / 1) for x in counts]
-        # counts_sum = float(sum(counts))
-        #
-        # probs = [x / counts_sum for x in counts]
 
         probs = None
         counts_sum = float(sum(counts))

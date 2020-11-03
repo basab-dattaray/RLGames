@@ -25,24 +25,23 @@ class Node(object):
         self.state = state
 
         self.visits = 0
-        self.__states = set()
         self.opponent_factor = 1
         self.children_nodes = {}
         self.id = uuid.uuid4()
 
-        if self.state is None:
-            self.state = self._fn_compute_state(num_edges, parent_node.state, parent_action)
-
-    def _fn_compute_state(self, num_edges, parent_state, parent_action):
-        if parent_action >= num_edges:
-            return None
-        state_dims = numpy.shape(parent_state)
-        x, y = (int(parent_action / state_dims[0]), parent_action % state_dims[1])
-
-        if parent_state[x][y] == 0:
-            parent_state[x][y] = 1
-
-        return parent_state
+    #     if self.state is None:
+    #         self.state = self._fn_compute_state(num_edges, parent_node.state, parent_action)
+    #
+    # def _fn_compute_state(self, num_edges, parent_state, parent_action):
+    #     if parent_action >= num_edges:
+    #         return None
+    #     state_dims = numpy.shape(parent_state)
+    #     x, y = (int(parent_action / state_dims[0]), parent_action % state_dims[1])
+    #
+    #     if parent_state[x][y] == 0:
+    #         parent_state[x][y] = 1
+    #
+    #     return parent_state
 
     def _fn_add_val_to_node(self, val):
         self.val += val
@@ -53,11 +52,9 @@ class Node(object):
         children = {}
         for action_num, action_probability in enumerate(action_probabilities):
             if action_probability > 0:
-
                 child_node = Node(
                     self.state,
                     self.fn_get_normalized_predictions,
-                    # self.fn_get_valid_normalized_action_probabilities,
                     self.num_edges,
                     self.explore_exploit_ratio,
 
@@ -75,7 +72,6 @@ class Node(object):
         return list(children.values())[0]
 
     def _fn_find_best_ucb_child(self):
-         # neuralnet update was based on previous player
         best_child = None
         best_ucb = 0
 
@@ -86,7 +82,7 @@ class Node(object):
             action_prob = normalized_valid_action_probabilities[action_num]
             parent_visits = self.visits
             child_visits = child.visits
-            child_value = child.val * self.opponent_factor
+            child_value = child.val
             if child_visits == 0:
                 return child
 
@@ -134,7 +130,6 @@ class Node(object):
         while parent_node is not None:
             current_node = parent_node
             current_node._fn_add_val_to_node(val)
-            # print(current_node.val)
             parent_node = current_node.parent_node
 
         return self.val

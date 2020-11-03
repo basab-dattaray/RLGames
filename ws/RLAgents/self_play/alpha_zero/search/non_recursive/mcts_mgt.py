@@ -26,7 +26,7 @@ def mcts_mgt(
 
     root_node = None
 
-    def fn_init_mcts(state):
+    def fn_init_mcts():
         nonlocal root_node
         root_node = None
         return True
