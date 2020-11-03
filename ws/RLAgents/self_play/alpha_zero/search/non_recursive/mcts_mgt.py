@@ -5,9 +5,11 @@
 # The more evolved board_pieces states (nodes) will have fewer allowable actions (edges)
 from collections import namedtuple
 
+import numpy
+
 from .Node import Node
 
-from .rollout_mgt import rollout_mgt
+# from .rollout_mgt import rollout_mgt
 from ..mcts_probability_mgt import mcts_probability_mgt
 
 MTCS_RESULTS_FILE_NAME = 'mtcs_results.pkl'
@@ -18,13 +20,48 @@ def mcts_mgt(
         fn_get_state_key,
         fn_get_next_state,
         fn_get_canonical_form,
-        fn_terminal_state_status,
+        fn_terminal_value,
         num_mcts_simulations,
         explore_exploit_ratio,
         max_num_actions
 ):
 
     root_node = None
+
+    def fn_rollout(state):
+        EPS = 1e-8
+
+        def _fn_get_state_info(fn_terminal_value, state):
+            qval = None
+
+            terminal_state = False
+            if fn_terminal_value is not None:
+                qval = fn_terminal_value(state)
+                if qval != 0:
+                    terminal_state = True
+                    return -qval, None, terminal_state
+
+            action_probabilities, state_value = fn_get_normalized_predictions(state)[:-1]
+
+            return state_value[0], action_probabilities, terminal_state
+
+        def _fn_get_best_action(state, action_probs):
+            best_action = numpy.random.choice(len(action_probs), p=action_probs)
+
+            next_state, next_player = fn_get_next_state(state, 1, best_action)
+            next_state_canonical = fn_get_canonical_form(next_state, next_player)
+            return next_state_canonical
+
+        opponent_val, action_probs, is_terminal_state = _fn_get_state_info(
+            fn_terminal_value, state
+        )
+        while not is_terminal_state:
+            next_state = _fn_get_best_action(state, action_probs)
+            opponent_val, action_probs, is_terminal_state = _fn_get_state_info(
+                fn_terminal_value, next_state)
+            state = next_state
+
+        return -opponent_val, is_terminal_state
 
     def fn_init_mcts():
         nonlocal root_node
@@ -50,10 +87,6 @@ def mcts_mgt(
         return counts
 
     fn_get_action_probabilities = mcts_probability_mgt(fn_init_mcts, fn_get_mcts_counts)
-    fn_rollout = rollout_mgt(
-        fn_terminal_state_status,
-        fn_get_normalized_predictions,
-        multirun=False)
 
     def fn_execute_monte_carlo_tree_search(state):
         nonlocal  root_node

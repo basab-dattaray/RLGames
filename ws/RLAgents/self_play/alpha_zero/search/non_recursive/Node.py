@@ -25,7 +25,6 @@ class Node(object):
         self.state = state
 
         self.visits = 0
-        self.opponent_factor = 1
         self.children_nodes = {}
         self.id = uuid.uuid4()
 

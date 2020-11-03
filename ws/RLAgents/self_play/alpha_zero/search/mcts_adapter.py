@@ -9,7 +9,7 @@ from ws.RLAgents.self_play.alpha_zero.search.recursive.mcts_r_mgr import mcts_r_
 def mcts_adapter(game, neural_net_mgr, args):
     fn_predict_action_probablities = neural_net_mgr.predict
     fn_get_valid_actions = lambda board: game.fn_get_valid_moves(board, 1)
-    fn_terminal_state_status = lambda pieces: game.fn_get_game_progress_status(pieces, 1)
+    fn_terminal_value = lambda pieces: game.fn_get_game_progress_status(pieces, 1)
 
     monte_carlo_tree_search = mcts_mgt
     if args.mcts_recursive:
@@ -40,7 +40,7 @@ def mcts_adapter(game, neural_net_mgr, args):
         fn_get_state_key = game.fn_get_state_key,
         fn_get_next_state = game.fn_get_next_state,
         fn_get_canonical_form = game.fn_get_canonical_form,
-        fn_terminal_state_status= fn_terminal_state_status,
+        fn_terminal_value= fn_terminal_value,
         num_mcts_simulations=args.num_of_mc_simulations,
         explore_exploit_ratio=args.cpuct_exploration_exploitation_factor,
         max_num_actions=game.fn_get_action_size()

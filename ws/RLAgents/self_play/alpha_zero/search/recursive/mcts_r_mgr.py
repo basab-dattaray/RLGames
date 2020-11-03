@@ -14,7 +14,7 @@ def mcts_r_mgr(
     fn_get_state_key,
     fn_get_next_state,
     fn_get_canonical_form,
-    fn_terminal_state_status,
+    fn_terminal_value,
     num_mcts_simulations,
     explore_exploit_ratio,
     max_num_actions
@@ -65,7 +65,7 @@ def mcts_r_mgr(
 
         # ROLLOUT 1 - actual result
         if state_key not in Es:
-            Es[state_key] = fn_terminal_state_status(state)
+            Es[state_key] = fn_terminal_value(state)
         if Es[state_key] != 0:
             # terminal node
             return -Es[state_key]
