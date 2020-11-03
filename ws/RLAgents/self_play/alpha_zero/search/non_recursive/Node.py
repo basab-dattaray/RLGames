@@ -10,18 +10,13 @@ class Node(object):
     def __init__(self,
         state,
         fn_get_normalized_predictions,
-        # fn_get_valid_normalized_action_probabilities,
         num_edges,
         explore_exploit_ratio,
-
         parent_action=-1,
         val=0.0,
         parent_node=None
-
-
      ):
         self.fn_get_normalized_predictions = fn_get_normalized_predictions
-        # self.fn_get_valid_normalized_action_probabilities = fn_get_valid_normalized_action_probabilities
         self.num_edges = num_edges
         self.explore_exploit_ratio = explore_exploit_ratio
         self.val = val
@@ -37,7 +32,6 @@ class Node(object):
 
         if self.state is None:
             self.state = self._fn_compute_state(num_edges, parent_node.state, parent_action)
-
 
     def _fn_compute_state(self, num_edges, parent_state, parent_action):
         if parent_action >= num_edges:
@@ -98,7 +92,6 @@ class Node(object):
 
             exploit_val = child_value / child_visits
             explore_val = action_prob * math.sqrt(parent_visits) / (child_visits + 1)
-            # explore_val = action_prob * math.sqrt(numpy.log(parent_visits) / child_visits)
             ucb = exploit_val + self.explore_exploit_ratio * explore_val # Upper Confidence Bound
 
             if best_child is None:

@@ -18,7 +18,6 @@ def mcts_mgt(
         fn_get_state_key,
         fn_get_next_state,
         fn_get_canonical_form,
-        fn_get_valid_actions,
         fn_terminal_state_status,
         num_mcts_simulations,
         explore_exploit_ratio,
