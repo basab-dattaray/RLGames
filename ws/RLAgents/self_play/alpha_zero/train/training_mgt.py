@@ -78,6 +78,33 @@ def training_mgt(game, nn_mgr_N, args):
             def fn_generate_samples(iteration):
                 generation_mcts = mcts_adapter(game, nn_mgr_N, args)
 
+                def _fn_run_one_episode(trainExamples, current_pieces, curPlayer, episode_step):
+                    canonical_board_pieces = game.fn_get_canonical_form(current_pieces, curPlayer)
+                    spread_probabilities = int(episode_step < args.probability_spread_threshold)
+
+                    action_probs = generation_mcts.fn_get_action_probabilities(canonical_board_pieces,
+                                                                               spread_probabilities=spread_probabilities)
+                    if action_probs is None:
+                        return None
+
+                    symetric_samples = game.fn_get_symetric_samples(canonical_board_pieces, action_probs)
+                    # trainExamples = map(lambda b, p: trainExamples.append([b, curPlayer, p, None]), sym)
+                    for sym_canon_board, canon_action_probs in symetric_samples:
+                        trainExamples.append((sym_canon_board, curPlayer, canon_action_probs))
+
+                    action = np.random.choice(len(action_probs), p=action_probs)
+                    next_pieces, player_next = game.fn_get_next_state(current_pieces, curPlayer, action)
+
+                    if DEBUG_FLAG:
+                        print()
+                        print('player:{}'.format(curPlayer))
+                        print()
+                        print(next_pieces)
+
+                    curPlayer = player_next
+                    current_pieces = next_pieces
+                    return trainExamples, current_pieces, curPlayer
+
                 def _fn_run_episodes():
                     trainExamples = []
                     current_pieces = game.fn_get_init_board()
@@ -86,31 +113,8 @@ def training_mgt(game, nn_mgr_N, args):
 
                     while True:
                         episode_step += 1
-                        canonical_board_pieces = game.fn_get_canonical_form(current_pieces, curPlayer)
-                        spread_probabilities = int(episode_step < args.probability_spread_threshold)
 
-                        action_probs = generation_mcts.fn_get_action_probabilities(canonical_board_pieces,
-                                                                                   spread_probabilities=spread_probabilities)
-                        if action_probs is None:
-                            return None
-
-                        symetric_samples = game.fn_get_symetric_samples(canonical_board_pieces, action_probs)
-                        # trainExamples = map(lambda b, p: trainExamples.append([b, curPlayer, p, None]), sym)
-                        for sym_canon_board, canon_action_probs in symetric_samples:
-                            trainExamples.append((sym_canon_board, curPlayer, canon_action_probs))
-
-                        action = np.random.choice(len(action_probs), p=action_probs)
-                        next_pieces, player_next = game.fn_get_next_state(current_pieces, curPlayer, action)
-
-                        if DEBUG_FLAG:
-                            print()
-                            print('player:{}'.format(curPlayer))
-                            print()
-                            print(next_pieces)
-
-                        curPlayer = player_next
-                        current_pieces = next_pieces
-
+                        trainExamples,current_pieces, curPlayer = _fn_run_one_episode(trainExamples, current_pieces, curPlayer, episode_step)
                         game_status = game.fn_get_game_progress_status(current_pieces, curPlayer)
 
                         if game_status != 0 or curPlayer is None:
