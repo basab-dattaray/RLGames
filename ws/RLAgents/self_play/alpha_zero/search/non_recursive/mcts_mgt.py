@@ -9,7 +9,6 @@ import numpy
 
 from .Node import Node
 
-# from .rollout_mgt import rollout_mgt
 from .mcts_cache_mgt import mcts_cache_mgt
 from ..mcts_probability_mgt import mcts_probability_mgt
 
@@ -57,16 +56,16 @@ def mcts_mgt(
             next_state_canonical = fn_get_canonical_form(next_state, next_player)
             return next_state_canonical
 
-        opponent_val, action_probs, is_terminal_state = _fn_get_state_info(
+        q_val, action_probs, is_terminal_state = _fn_get_state_info(
             fn_terminal_value, state
         )
         while not is_terminal_state and LONG_ROLLOUT:
             next_state = _fn_get_best_action(state, action_probs)
-            opponent_val, action_probs, is_terminal_state = _fn_get_state_info(
+            q_val, action_probs, is_terminal_state = _fn_get_state_info(
                 fn_terminal_value, next_state)
             state = next_state
 
-        return -opponent_val, is_terminal_state
+        return q_val, is_terminal_state
 
     def fn_init_mcts():
         nonlocal root_node
@@ -118,7 +117,7 @@ def mcts_mgt(
         score, terminal_state = fn_rollout(selected_node.state)
 
         value = selected_node.fn_back_propagate(score)
-        return value
+        return -value
 
     mcts_mgr = namedtuple('_', ['fn_get_action_probabilities'])
     mcts_mgr.fn_get_action_probabilities = fn_get_action_probabilities

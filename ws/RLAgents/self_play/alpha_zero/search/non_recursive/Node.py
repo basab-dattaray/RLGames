@@ -28,23 +28,10 @@ class Node(object):
         self.children_nodes = {}
         self.id = uuid.uuid4()
 
-    #     if self.state is None:
-    #         self.state = self._fn_compute_state(num_edges, parent_node.state, parent_action)
-    #
-    # def _fn_compute_state(self, num_edges, parent_state, parent_action):
-    #     if parent_action >= num_edges:
-    #         return None
-    #     state_dims = numpy.shape(parent_state)
-    #     x, y = (int(parent_action / state_dims[0]), parent_action % state_dims[1])
-    #
-    #     if parent_state[x][y] == 0:
-    #         parent_state[x][y] = 1
-    #
-    #     return parent_state
-
     def _fn_add_val_to_node(self, val):
         self.val += val
         self.visits += 1
+        return self.val
 
     def _fn_add_children_nodes(self, normalized_valid_action_probabilities):
         action_probabilities = normalized_valid_action_probabilities[:-2][0]
@@ -122,16 +109,16 @@ class Node(object):
 
     def fn_back_propagate(self, val):
         current_node = self
-        self._fn_add_val_to_node(val)
+        val = self._fn_add_val_to_node(val)
 
         parent_node = self.parent_node
 
         while parent_node is not None:
             current_node = parent_node
-            current_node._fn_add_val_to_node(val)
+            val = current_node._fn_add_val_to_node(val)
             parent_node = current_node.parent_node
 
-        return self.val
+        return val
 
 
 

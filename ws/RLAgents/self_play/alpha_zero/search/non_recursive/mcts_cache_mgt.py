@@ -10,9 +10,10 @@ def mcts_cache_mgt(
 
         if state_key not in progress_status_dict:
             progress_status_dict[state_key] = fn_terminal_value(state)
+        else:
+            pass
 
         return progress_status_dict[state_key]
-
 
     mcts_cache_mgr = namedtuple('_', ['fn_get_progress_status'])
     mcts_cache_mgr.fn_get_progress_status = fn_get_progress_status
