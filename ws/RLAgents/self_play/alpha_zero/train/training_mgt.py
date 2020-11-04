@@ -111,10 +111,10 @@ def training_mgt(game, nn_mgr_N, args):
                         curPlayer = player_next
                         current_pieces = next_pieces
 
-                        result = game.fn_get_game_progress_status(current_pieces, curPlayer)
+                        game_status = game.fn_get_game_progress_status(current_pieces, curPlayer)
 
-                        if result != 0 or player_next is None:
-                            return fn_form_sample_data(curPlayer, result, trainExamples)
+                        if game_status != 0 or curPlayer is None:
+                            return fn_form_sample_data(curPlayer, game_status, trainExamples)
 
                 # examples of the iteration
                 if not skipFirstSelfPlay or iteration > 1:
@@ -150,7 +150,6 @@ def training_mgt(game, nn_mgr_N, args):
 
             @tracer(args)
             def _fn_play_next_vs_previous(trainExamples):
-                # training new network, keeping a copy of the old one
                 nn_mgr_N.fn_save_model(filename=args.temp_model_exchange_name)
                 nn_mgr_P.fn_load_model(filename=args.temp_model_exchange_name)
                 pmcts = mcts_adapter(game, nn_mgr_P, args)

@@ -12,7 +12,7 @@ from .Node import Node
 # from .rollout_mgt import rollout_mgt
 from ..mcts_probability_mgt import mcts_probability_mgt
 
-MTCS_RESULTS_FILE_NAME = 'mtcs_results.pkl'
+LONG_ROLLOUT = True
 CACHE_RESULTS = False
 
 def mcts_mgt(
@@ -25,6 +25,7 @@ def mcts_mgt(
         explore_exploit_ratio,
         max_num_actions
 ):
+
 
     root_node = None
 
@@ -55,7 +56,7 @@ def mcts_mgt(
         opponent_val, action_probs, is_terminal_state = _fn_get_state_info(
             fn_terminal_value, state
         )
-        while not is_terminal_state:
+        while not is_terminal_state and LONG_ROLLOUT:
             next_state = _fn_get_best_action(state, action_probs)
             opponent_val, action_probs, is_terminal_state = _fn_get_state_info(
                 fn_terminal_value, next_state)
@@ -69,7 +70,6 @@ def mcts_mgt(
         return True
 
     def fn_get_mcts_counts(state):
-        nonlocal root_node
         def _fn_get_counts():
             if root_node is None:
                 return None
