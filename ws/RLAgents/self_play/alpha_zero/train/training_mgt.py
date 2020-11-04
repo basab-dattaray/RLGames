@@ -11,7 +11,7 @@ from pip._vendor.colorama import Fore
 
 from ws.RLAgents.self_play.alpha_zero.play.Arena import Arena
 from ws.RLAgents.self_play.alpha_zero.search.mcts_adapter import mcts_adapter
-# from ws.RLAgents.self_play.alpha_zero.search.recursive.MCTS import MCTS
+
 from ws.RLUtils.monitoring.tracing.progress_count_mgt import progress_count_mgt
 from ws.RLUtils.monitoring.tracing.tracer import tracer
 
@@ -200,8 +200,8 @@ def training_mgt(game, nn_mgr_N, args):
                                                                                                 update_score))
                 nn_mgr_N.fn_save_model(filename=_fn_getCheckpointFile(iteration))
                 nn_mgr_N.fn_save_model()
-                if not reject: # continue update if the GREEN color is forced
-                    update_count += 1
+            if not reject: # continue update if the GREEN color is forced
+                update_count += 1
 
             args.recorder.fn_record_message(Fore.BLACK)
 
@@ -213,8 +213,4 @@ def training_mgt(game, nn_mgr_N, args):
             fn_run_iteration(iteration)
             if update_count >= args.num_of_successes_for_model_upgrade:
                 break
-
-
-
-
     return fn_execute_training_iterations
