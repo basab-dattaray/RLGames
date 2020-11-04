@@ -187,7 +187,7 @@ def training_mgt(game, nn_mgr_N, args):
 
             model_already_exists = nn_mgr_N.fn_is_model_available(rel_folder=args.rel_model_path)
 
-            if reject:
+            if reject and model_already_exists:
                 color = Fore.RED
                 args.recorder.fn_record_message(
                     color + 'REJECTED New Model: update_threshold: {}, update_score: {}'.format(args.score_based_model_update_threshold,
