@@ -10,7 +10,7 @@ from ws.RLUtils.monitoring.tracing.progress_count_mgt import progress_count_mgt
 
 log = logging.getLogger(__name__)
 
-def Arena(player1, player2, game, fn_display=None, msg_recorder = None):
+def playground_mgt(player1, player2, game, fn_display=None, msg_recorder = None):
 
 
     game_num = 0

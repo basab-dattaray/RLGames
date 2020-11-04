@@ -11,7 +11,7 @@ from datetime import datetime as dt
 
 import numpy
 
-from ws.RLAgents.self_play.alpha_zero.play.Arena import Arena
+from ws.RLAgents.self_play.alpha_zero.play.playground_mgt import playground_mgt
 from ws.RLAgents.self_play.alpha_zero.play.GreedyPlayer import GreedyPlayer
 from ws.RLAgents.self_play.alpha_zero.play.HumanPlayer import HumanPlayer
 from ws.RLAgents.self_play.alpha_zero.play.RandomPlayer import RandomPlayer
@@ -113,7 +113,7 @@ def agent_mgt(args, file_path):
         system_mcts = mcts_adapter(game, system_nn, args)
         fn_system_policy = lambda x: numpy.argmax(system_mcts.fn_get_action_probabilities(x, spread_probabilities=0))
         fn_contender_policy = fn_player_policy(game)
-        arena = Arena(fn_system_policy, fn_contender_policy, game, fn_display=game_mgt(args['board_size']).fn_display,
+        arena = playground_mgt(fn_system_policy, fn_contender_policy, game, fn_display=game_mgt(args['board_size']).fn_display,
                       msg_recorder=args.recorder.fn_record_message)
         system_wins, system_losses, draws = arena.fn_play_games(args.num_of_test_games, verbose=verbose)
 

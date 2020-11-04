@@ -9,7 +9,7 @@ from random import shuffle
 import numpy as np
 from pip._vendor.colorama import Fore
 
-from ws.RLAgents.self_play.alpha_zero.play.Arena import Arena
+from ws.RLAgents.self_play.alpha_zero.play.playground_mgt import playground_mgt
 from ws.RLAgents.self_play.alpha_zero.search.mcts_adapter import mcts_adapter
 
 from ws.RLUtils.monitoring.tracing.progress_count_mgt import progress_count_mgt
@@ -159,7 +159,7 @@ def training_mgt(game, nn_mgr_N, args):
                 nmcts = mcts_adapter(game, nn_mgr_N, args)
                 # args.recorder.fn_record_message()
                 # args.recorder.fn_record_message(f'* Comptete with Previous Version', indent=0)
-                arena = Arena(lambda x: np.argmax(pmcts.fn_get_action_probabilities(x, spread_probabilities=0)),
+                arena = playground_mgt(lambda x: np.argmax(pmcts.fn_get_action_probabilities(x, spread_probabilities=0)),
                               lambda x: np.argmax(nmcts.fn_get_action_probabilities(x, spread_probabilities=0)),
                               game,
                               msg_recorder=args.recorder.fn_record_message)
