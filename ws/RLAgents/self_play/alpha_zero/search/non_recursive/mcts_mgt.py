@@ -10,6 +10,7 @@ import numpy
 from .Node import Node
 
 # from .rollout_mgt import rollout_mgt
+from .mcts_cache_mgt import mcts_cache_mgt
 from ..mcts_probability_mgt import mcts_probability_mgt
 
 LONG_ROLLOUT = True
@@ -25,6 +26,10 @@ def mcts_mgt(
         explore_exploit_ratio,
         max_num_actions
 ):
+    mcts_cache_mgr = mcts_cache_mgt(
+            fn_get_state_key,
+            fn_terminal_value
+    )
 
 
     root_node = None
@@ -34,10 +39,9 @@ def mcts_mgt(
 
         def _fn_get_state_info(fn_terminal_value, state):
             qval = None
-
             terminal_state = False
             if fn_terminal_value is not None:
-                qval = fn_terminal_value(state)
+                qval = mcts_cache_mgr.fn_get_progress_status(state) # fn_terminal_value(state)
                 if qval != 0:
                     terminal_state = True
                     return -qval, None, terminal_state

@@ -54,7 +54,5 @@ if __name__ == '__main__': # test
     r2_fn_mcts_probability_spread_out = fn_get_action_probs(None, 1, [1, 3, 4, 2])
     assert(r2_fn_mcts_probability_spread_out == [.1, .3, .4, .2])
 
-
-
     pass
 
