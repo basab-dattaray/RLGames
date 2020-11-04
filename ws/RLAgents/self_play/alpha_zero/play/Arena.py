@@ -10,9 +10,6 @@ from ws.RLUtils.monitoring.tracing.progress_count_mgt import progress_count_mgt
 log = logging.getLogger(__name__)
 
 class Arena():
-    """
-    An Arena class where any 2 agents can be pit against each other.
-    """
 
     def __init__(self, player1, player2, game, fn_display=None, msg_recorder = None):
         self.player1 = player1
@@ -22,7 +19,7 @@ class Arena():
         self.game_num = 0
         self.msg_recorder = msg_recorder
 
-    def playGame(self, verbose=False):
+    def _fn_play_game(self, verbose=False):
 
         DEBUG = False
 
@@ -98,7 +95,7 @@ class Arena():
         return result
 
 
-    def play_games(self, num_of_games, verbose=False):
+    def fn_play_games(self, num_of_games, verbose=False):
         self.count_episode, self.end_couunting = progress_count_mgt('Game Counts', num_of_games)
         num_div_2 = int(num_of_games / 2)
         extra_for_1 = 0
@@ -109,20 +106,20 @@ class Arena():
             else:
                 extra_for_2 = 1
 
-        oneWon_1, twoWon_1, draws_1 = self.fn_get_gameset_results(num_div_2 + extra_for_1, 1, verbose)
+        oneWon_1, twoWon_1, draws_1 = self._fn_get_gameset_results(num_div_2 + extra_for_1, 1, verbose)
         self.player1, self.player2 = self.player2, self.player1
-        oneWon_2, twoWon_2, draws_2 = self.fn_get_gameset_results(num_div_2 + extra_for_2, -1, verbose)
+        oneWon_2, twoWon_2, draws_2 = self._fn_get_gameset_results(num_div_2 + extra_for_2, -1, verbose)
 
         self.end_couunting()
         return oneWon_1 + oneWon_2, twoWon_1 + twoWon_2, draws_1 + draws_2
 
-    def fn_get_gameset_results(self, num, result_factor, verbose):
+    def _fn_get_gameset_results(self, num, result_factor, verbose):
         oneWon = 0
         twoWon = 0
         draws = 0
         for i in range(num):
             self.count_episode()
-            gameResult = self.playGame(verbose=verbose)
+            gameResult = self._fn_play_game(verbose=verbose)
 
             if gameResult == 1 * result_factor:
                 oneWon += 1

@@ -115,7 +115,7 @@ def agent_mgt(args, file_path):
         fn_contender_policy = fn_player_policy(game)
         arena = Arena(fn_system_policy, fn_contender_policy, game, fn_display=game_mgt(args['board_size']).fn_display,
                       msg_recorder=args.recorder.fn_record_message)
-        system_wins, system_losses, draws = arena.play_games(args.num_of_test_games, verbose=verbose)
+        system_wins, system_losses, draws = arena.fn_play_games(args.num_of_test_games, verbose=verbose)
 
         args.recorder.fn_record_message(f'wins:{system_wins} losses:{system_losses} draws:{draws}')
 
