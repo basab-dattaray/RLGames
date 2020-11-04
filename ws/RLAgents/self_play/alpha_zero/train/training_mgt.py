@@ -200,7 +200,8 @@ def training_mgt(game, nn_mgr_N, args):
                                                                                                 update_score))
                 nn_mgr_N.fn_save_model(filename=_fn_getCheckpointFile(iteration))
                 nn_mgr_N.fn_save_model()
-                update_count += 1
+                if not reject: # continue update if the GREEN color is forced
+                    update_count += 1
 
             args.recorder.fn_record_message(Fore.BLACK)
 
