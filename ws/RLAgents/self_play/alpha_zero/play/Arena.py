@@ -130,7 +130,7 @@ def Arena(player1, player2, game, fn_display=None, msg_recorder = None):
         return oneWon_1 + oneWon_2, twoWon_1 + twoWon_2, draws_1 + draws_2
 
     playground_mgr = namedtuple('_', ['fn_play_games'])
-    playground_mgr.fn_get_action_probabilities=fn_play_games
+    playground_mgr.fn_play_games=fn_play_games
 
     return playground_mgr
 
