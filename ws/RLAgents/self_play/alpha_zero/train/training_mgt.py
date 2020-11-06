@@ -52,7 +52,7 @@ def training_mgt(game, nn_mgr_N, args):
             skipFirstSelfPlay = True
 
     def _fn_record_iter_results(draws, iteration, nwins, pwins):
-        args.recorder.fn_record_message(f'-- Iter {iteration} of {args.numIters}', indent=0)
+        args.recorder.fn_record_message(f'-- Iter {iteration} of {args.num_of_training_iterations}', indent=0)
         update_threshold = 'update threshold: {}'.format(args.score_based_model_update_threshold)
         args.recorder.fn_record_message(update_threshold)
         score = f'nwins:{nwins} pwins:{pwins} draws:{draws}'
@@ -207,7 +207,7 @@ def training_mgt(game, nn_mgr_N, args):
             args.fn_record("!!!  loading 'samples' from file...")
             _fn_load_train_examples()
 
-        for iteration in range(1, args.numIters + 1):
+        for iteration in range(1, args.num_of_training_iterations + 1):
             fn_run_iteration(iteration)
             if update_count >= args.num_of_successes_for_model_upgrade:
                 break
