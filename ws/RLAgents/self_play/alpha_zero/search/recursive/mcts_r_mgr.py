@@ -113,7 +113,7 @@ def mcts_r_mgr(
                                 Nsa[(state, a)])
                 else:
                     u = explore_exploit_ratio * Ps[state][a] * math.sqrt(
-                        Ns[state] + EPS)   # Q = 0 ?
+                        Ns[state] + EPS)  # Q = 0 ?
                     # u = 0
 
                 if u > cur_best:
