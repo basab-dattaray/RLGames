@@ -110,7 +110,7 @@ def mcts_r_mgr(
                 if (state, a) in Qsa:
                     u = Qsa[(state, a)] + explore_exploit_ratio * Ps[state][a] * math.sqrt(
                         np.log(Ns[state]) ) / (
-                                1 + Nsa[(state, a)])
+                                Nsa[(state, a)])
                 else:
                     u = explore_exploit_ratio * Ps[state][a] * math.sqrt(
                         Ns[state] + EPS)  # Q = 0 ?
