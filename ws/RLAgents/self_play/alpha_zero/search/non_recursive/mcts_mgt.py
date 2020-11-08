@@ -59,6 +59,7 @@ def mcts_mgt(
         q_val, action_probs, is_terminal_state = _fn_get_state_info(
             fn_terminal_value, state
         )
+
         while not is_terminal_state and LONG_ROLLOUT:
             next_state = _fn_get_best_action(state, action_probs)
             q_val, action_probs, is_terminal_state = _fn_get_state_info(

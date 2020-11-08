@@ -109,7 +109,7 @@ def mcts_r_mgr(
             if valids[a]:
                 if (state, a) in Qsa:
                     u = Qsa[(state, a)] + explore_exploit_ratio * Ps[state][a] * math.sqrt(
-                        Ns[state]) / (
+                        np.log(Ns[state]) ) / (
                                 1 + Nsa[(state, a)])
                 else:
                     u = explore_exploit_ratio * Ps[state][a] * math.sqrt(
