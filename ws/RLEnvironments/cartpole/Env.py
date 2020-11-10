@@ -7,7 +7,7 @@ class Env:
     def __init__(self, app_info):
         self._env = gym.make(app_info[ENV_NAME])
         self._state_size = self._env.observation_space.shape[0]
-        self._action_size = self._env.action_space.board_size
+        self._action_size = self._env.action_space.n
 
     def fnReset(self):
         return self._env.reset()

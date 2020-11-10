@@ -10,7 +10,7 @@ class Env:
         # self._env = gym.make('lunarlander-v2')
 
         self._state_size = self._env.observation_space.shape[0]
-        self._action_size = self._env.action_space.board_size
+        self._action_size = self._env.action_space.n
         pass
 
     def fnReset(self):
