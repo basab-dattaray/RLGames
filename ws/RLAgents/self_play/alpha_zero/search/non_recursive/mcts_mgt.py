@@ -119,7 +119,7 @@ def mcts_mgt(
         score, terminal_state = fn_rollout(selected_node.state)
 
         value = selected_node.fn_back_propagate(score)
-        return -value
+        return value
 
     mcts_mgr = namedtuple('_', ['fn_get_action_probabilities'])
     mcts_mgr.fn_get_action_probabilities = fn_get_action_probabilities

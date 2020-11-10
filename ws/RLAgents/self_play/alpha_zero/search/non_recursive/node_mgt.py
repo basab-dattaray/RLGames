@@ -21,10 +21,10 @@ def node_mgt(
     children_nodes = {}
     id = uuid.uuid4()
 
-    def fn_add_val_to_node(val):
-        nonlocal  visits
+    def fn_add_val_to_node(new_val):
+        nonlocal  visits, val
         
-        val += val
+        val += new_val
         visits += 1
         return val
 
@@ -104,20 +104,30 @@ def node_mgt(
 
         return first_child_node
 
-    # def fn_back_propagate(val):
+    # def fn_back_propagate(current_val):
     #     nonlocal parent_node
     #
     #     current_node = node_mgr
-    #     val = fn_add_val_to_node(val)
+    #     current_val = fn_add_val_to_node(current_val)
     #
     #     # parent_node = parent_node
     #
     #     while parent_node is not None:
     #         current_node = parent_node
-    #         val = current_node.fn_add_val_to_node(val)
+    #         current_val = current_node.fn_add_val_to_node(current_val)
     #         parent_node = current_node.parent_node
     #
-    #     return val
+    #     return current_val
+
+    def fn_back_propagate(current_val):
+
+        node = node_mgr
+
+        while node is not None:
+            current_val = node.fn_add_val_to_node(current_val)
+            node = node.parent_node
+
+        return current_val
 
     
     node_mgr = namedtuple('_', [
@@ -125,14 +135,15 @@ def node_mgt(
         'children_nodes',
         'id',
         'state',
-        'val',
+        'current_val',
 
         'fn_select_from_available_leaf_nodes',
         'fn_is_already_visited',
         'fn_back_propagate',
         'fn_expand_node',
 
-        'fn_add_val_to_node'
+        'fn_add_val_to_node',
+        'parent_node',
 
     ])
 
@@ -141,6 +152,7 @@ def node_mgt(
     node_mgr.id = id
     node_mgr.state = state
     node_mgr.val = val
+    node_mgr.parent_node = parent_node
 
     node_mgr.fn_select_from_available_leaf_nodes = fn_select_from_available_leaf_nodes
     node_mgr.fn_is_already_visited = fn_is_already_visited
