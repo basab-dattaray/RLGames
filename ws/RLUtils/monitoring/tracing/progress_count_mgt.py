@@ -13,8 +13,8 @@ def progress_count_mgt(title, size):
         sys.stdout.write("\r" + Fore.BLUE + msg)
         sys.stdout.flush()
 
-    def end_couunt():
+    def end_count():
         print(Fore.BLACK)
 
 
-    return count_episode, end_couunt
+    return count_episode, end_count

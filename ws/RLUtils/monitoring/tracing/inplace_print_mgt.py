@@ -1,7 +1,7 @@
 import sys
 
 
-def prnt_mgt(draw_bar=True, max_num_bars=60, indent=8):
+def inplace_print_mgt(draw_bar=True, max_num_bars=60, indent=8):
 
     def fn_print_in_place(bar_max_value=0, bar_actual_value=max_num_bars, text_line=''):
 
