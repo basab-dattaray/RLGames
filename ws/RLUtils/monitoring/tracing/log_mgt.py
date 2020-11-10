@@ -1,7 +1,9 @@
-import logging
+import logging, coloredlogs
 import logging.handlers
 import os
 from datetime import datetime as dt
+
+from ws.RLUtils.monitoring.tracing.CustomFormatter import CustomFormatter
 
 
 def log_mgt(log_dir, show_debug=False, log_file_name = 'log.txt',  fresh_logfile_content=True, fixed_log_file=True):
@@ -37,8 +39,9 @@ def log_mgt(log_dir, show_debug=False, log_file_name = 'log.txt',  fresh_logfile
 
         handler = logging.handlers.RotatingFileHandler(filename=logfile, maxBytes=1000000, backupCount=5)
         handler.setLevel(logging.DEBUG)
-        formatter = logging.Formatter('%(asctime)state - %(message)state')
-        handler.setFormatter(formatter)
+        # formatter = logging.Formatter('%(asctime)state - %(message)state')
+        # formatter = logging.Formatter(CustomFormatter)
+        # handler.setFormatter(formatter)
         logging.getLogger().addHandler(handler)
         _log = logging.getLogger("app." + __name__)
 

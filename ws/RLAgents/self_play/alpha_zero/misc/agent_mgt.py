@@ -114,10 +114,10 @@ def agent_mgt(args, file_path):
         fn_system_policy = lambda x: numpy.argmax(system_mcts.fn_get_action_probabilities(x, spread_probabilities=0))
         fn_contender_policy = fn_player_policy(game)
         arena = playground_mgt(fn_system_policy, fn_contender_policy, game, fn_display=game_mgt(args['board_size']).fn_display,
-                      msg_recorder=args.recorder.fn_log_message)
+                      msg_recorder=args.recorder.fn_write)
         system_wins, system_losses, draws = arena.fn_play_games(args.num_of_test_games, verbose=verbose)
 
-        args.recorder.fn_log_message(f'wins:{system_wins} losses:{system_losses} draws:{draws}')
+        args.recorder.fn_write(f'wins:{system_wins} losses:{system_losses} draws:{draws}')
 
     @tracer(args)
     def fn_change_args(change_args):
@@ -125,7 +125,7 @@ def agent_mgt(args, file_path):
             for k,v in change_args.items():
                 change_args[k] = v
                 # args.fn_log(f'  args[{k}] = {v}')
-                args.recorder.fn_log_message(f'  x[{k}] = {v}')
+                args.recorder.fn_write(f'  x[{k}] = {v}')
 
         return agent_mgr
 
@@ -134,7 +134,7 @@ def agent_mgt(args, file_path):
 
         for k,v in args.items():
             # args.fn_log(f'  args[{k}] = {v}')
-            args.recorder.fn_log_message(f'  args[{k}] = {v}')
+            args.recorder.fn_write(f'  args[{k}] = {v}')
 
         return agent_mgr
 
@@ -144,7 +144,7 @@ def agent_mgt(args, file_path):
         time_diff = int(end_time - start_time)
         mins = math.floor(time_diff / 60)
         secs = time_diff % 60
-        args.recorder.fn_log_message(f'Time elapsed:    minutes: {mins}    seconds: {secs}')
+        args.recorder.fn_write(f'Time elapsed:    minutes: {mins}    seconds: {secs}')
 
         return agent_mgr
 
