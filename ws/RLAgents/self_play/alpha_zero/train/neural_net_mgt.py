@@ -30,8 +30,8 @@ nnet_params = dotdict({
     'num_channels': 512,
 })
 
-def neural_net_mgt(args, game):
-
+def neural_net_mgt(args):
+    game = args.game
     # args = args
     nnet = NeuralNet(game, nnet_params)
     board_x, board_y = game.fn_get_board_size(), game.fn_get_board_size()

@@ -70,7 +70,7 @@ def agent_mgt(args, file_path):
     def fn_train():
         signal.signal(signal.SIGINT, exit_gracefully)
 
-        neural_net_mgr = neural_net_mgt(args, args.game)
+        neural_net_mgr = neural_net_mgt(args)
 
         if args.do_load_model:
             # args.fn_record('Loading rel_model_path "%state/%state"...', args.load_folder_file)
@@ -106,7 +106,7 @@ def agent_mgt(args, file_path):
 
     def fn_test(fn_player_policy, verbose= False, num_of_test_games=2):
         signal.signal(signal.SIGINT, exit_gracefully)
-        system_nn = neural_net_mgt(args, args.game)
+        system_nn = neural_net_mgt(args)
         if not system_nn.fn_load_model():
             return
 
