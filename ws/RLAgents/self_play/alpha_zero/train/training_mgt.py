@@ -78,7 +78,7 @@ def training_mgt(nn_mgr_N, args):
             nonlocal update_count
             @tracer(args)
             def fn_generate_samples(iteration):
-                generation_mcts = mcts_adapter(game, nn_mgr_N, args)
+                generation_mcts = mcts_adapter(nn_mgr_N, args)
 
                 def _fn_run_episodes():
                     trainExamples = []
@@ -156,9 +156,9 @@ def training_mgt(nn_mgr_N, args):
             def _fn_play_next_vs_previous(trainExamples):
                 nn_mgr_N.fn_save_model(filename=args.temp_model_exchange_name)
                 nn_mgr_P.fn_load_model(filename=args.temp_model_exchange_name)
-                pmcts = mcts_adapter(game, nn_mgr_P, args)
+                pmcts = mcts_adapter(nn_mgr_P, args)
                 nn_mgr_N.fn_adjust_model_from_examples(trainExamples)
-                nmcts = mcts_adapter(game, nn_mgr_N, args)
+                nmcts = mcts_adapter(nn_mgr_N, args)
                 # args.calltracer.fn_write()
                 # args.calltracer.fn_write(f'* Comptete with Previous Version', indent=0)
                 arena = playground_mgt(lambda x: np.argmax(pmcts.fn_get_action_probabilities(x, spread_probabilities=0)),

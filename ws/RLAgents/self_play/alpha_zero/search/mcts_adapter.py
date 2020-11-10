@@ -6,7 +6,8 @@ from ws.RLAgents.self_play.alpha_zero.search.non_recursive.mcts_mgt import mcts_
 from ws.RLAgents.self_play.alpha_zero.search.recursive.mcts_r_mgr import mcts_r_mgr
 
 
-def mcts_adapter(game, neural_net_mgr, args):
+def mcts_adapter(neural_net_mgr, args):
+    game = args.game
     fn_predict_action_probablities = neural_net_mgr.predict
     fn_get_valid_actions = lambda board: game.fn_get_valid_moves(board, 1)
     fn_terminal_value = lambda pieces: game.fn_get_game_progress_status(pieces, 1)

@@ -29,10 +29,9 @@ from ws.RLUtils.monitoring.tracing.tracer import tracer
 
 
 def agent_mgt(args, file_path):
-    def setup(args_in, file_path):
+    def setup(file_path):
 
-        args = args_in.copy()
-        args_out = dotdict(args)
+        args_out = dotdict(args.copy())
         _fn_init_arg_with_default_val(args_out, 'logger',logging.getLogger(__name__))
         args_out.demo_folder, args_out.demo_name = AppInfo.fn_get_path_and_app_name(file_path)
         args_out.run_recursive_search = AppInfo.fn_arg_as_bool(args_out, 'run_recursive_search')
@@ -53,7 +52,7 @@ def agent_mgt(args, file_path):
         args_out.old_model_file_path = os.path.join(src_model_folder, 'old_' + args_out.model_name)
         return args_out
 
-    args = setup(args, file_path)
+    args = setup(file_path)
 
     def exit_gracefully(signum, frame):
         #
@@ -111,7 +110,7 @@ def agent_mgt(args, file_path):
         if not system_nn.fn_load_model():
             return
 
-        system_mcts = mcts_adapter(args.game, system_nn, args)
+        system_mcts = mcts_adapter(system_nn, args)
         fn_system_policy = lambda x: numpy.argmax(system_mcts.fn_get_action_probabilities(x, spread_probabilities=0))
         fn_contender_policy = fn_player_policy(args.game)
         arena = playground_mgt(fn_system_policy, fn_contender_policy, args.game, fn_display=game_mgt(args['board_size']).fn_display,
@@ -175,8 +174,8 @@ def agent_mgt(args, file_path):
     if os.path.exists(args.src_model_file_path):
         copy(args.src_model_file_path, args.old_model_file_path)
 
-
-    agent_mgr = namedtuple('_', ['fn_train','fn_test_against_human' ,'fn_test_againt_random' ,'fn_test_against_greedy' ,'fn_change_args' ,'fn_show_args' ,'fn_measure_time_elapsed' ,'fn_archive_log_file'])
+    agent_mgr = namedtuple('_', ['fn_train','fn_test_against_human' ,'fn_test_againt_random' ,'fn_test_against_greedy' ,'fn_change_args' ,'fn_show_args' ,'fn_measure_time_elapsed' ,'fn_archive_log_file',
+                                 'args'])
 
     agent_mgr.fn_train = fn_train
     agent_mgr.fn_test_against_human = fn_test_against_human
@@ -186,12 +185,8 @@ def agent_mgt(args, file_path):
     agent_mgr.fn_show_args = fn_show_args
     agent_mgr.fn_measure_time_elapsed = fn_measure_time_elapsed
     agent_mgr.fn_archive_log_file = fn_archive_log_file
-
+    agent_mgr.arguments = args
     return agent_mgr
-
-
-
-
 
 def _fn_init_arg_with_default_val(args, name, val):
     if name not in args.keys():
