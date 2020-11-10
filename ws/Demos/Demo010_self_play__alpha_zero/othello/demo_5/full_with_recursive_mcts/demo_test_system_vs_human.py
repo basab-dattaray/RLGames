@@ -1,8 +1,8 @@
-from ws.Demos.Demo010_self_play__alpha_zero.othello.demo_5.full_with_recursive_mcts.ARGS import args
+from ws.Demos.Demo010_self_play__alpha_zero.othello.demo_5.full_with_recursive_mcts.ARGS import args_out
 from ws.RLAgents.self_play.alpha_zero.misc.agent_mgt import agent_mgt
 
 if __name__ == "__main__":
-    agent_mgt(args, __file__). \
+    agent_mgt(args_out, __file__). \
         fn_change_args({
             'num_of_mc_simulations': 50,
         }). \
