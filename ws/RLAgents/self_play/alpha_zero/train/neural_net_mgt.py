@@ -46,10 +46,10 @@ def neural_net_mgt(args, game):
         examples: list of examples, each example is of form (board_pieces, action_probs, v)
         """
         optimizer = optim.Adam(nnet.parameters())
-        fn_count_episode, fn_end_couunting = progress_count_mgt('Epochs', args.epochs)
+        fn_count_event, fn_stop_counting = progress_count_mgt('Epochs', args.epochs)
         for epoch in range(args.epochs):
             # args.recorder.fn_log_message(f'Epoch {epoch + 1} of {args.epochs}')
-            fn_count_episode()
+            fn_count_event()
 
             nnet.train()
             pi_losses = AverageMeter()
@@ -83,7 +83,7 @@ def neural_net_mgt(args, game):
                 optimizer.zero_grad()
                 total_loss.backward()
                 optimizer.step()
-        fn_end_couunting()
+        fn_stop_counting()
         args.recorder.fn_log_message(f'Number of Epochs for training new model: {args.epochs}')
 
 

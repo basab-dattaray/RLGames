@@ -95,7 +95,7 @@ def playground_mgt(player1, player2, game, fn_display=None, msg_recorder = None)
             twoWon = 0
             draws = 0
             for i in range(num):
-                count_episode()
+                fn_count_event()
                 gameResult = _fn_play_game(verbose=verbose)
 
                 if gameResult == 1 * result_factor:
@@ -107,7 +107,7 @@ def playground_mgt(player1, player2, game, fn_display=None, msg_recorder = None)
 
             return oneWon, twoWon, draws
 
-        count_episode, end_couunting = progress_count_mgt('Game Counts', num_of_games)
+        fn_count_event, fn_stop_counting = progress_count_mgt('Game Counts', num_of_games)
 
         nonlocal player1, player2
 
@@ -124,7 +124,7 @@ def playground_mgt(player1, player2, game, fn_display=None, msg_recorder = None)
         player1, player2 = player2, player1
         oneWon_2, twoWon_2, draws_2 = _fn_get_gameset_results(num_div_2 + extra_for_2, -1, verbose)
 
-        end_couunting()
+        fn_stop_counting()
         return oneWon_1 + oneWon_2, twoWon_1 + twoWon_2, draws_1 + draws_2
 
     playground_mgr = namedtuple('_', ['fn_play_games'])

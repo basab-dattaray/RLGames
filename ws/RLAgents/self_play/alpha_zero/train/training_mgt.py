@@ -123,15 +123,15 @@ def training_mgt(game, nn_mgr_N, args):
                 # examples of the iteration
                 if not skipFirstSelfPlay or iteration > 1:
                     samples_for_iteration = deque([], maxlen=args.sample_buffer_size)
-                    fn_count_episode, fn_end_couunting = progress_count_mgt('Episodes', args.num_of_training_episodes)
+                    fn_count_event, fn_stop_counting = progress_count_mgt('Episodes', args.num_of_training_episodes)
                     for episode_num in range(1, args.num_of_training_episodes + 1):
-                        fn_count_episode()
+                        fn_count_event()
 
                         # mcts = mcts_adapter(game, nn_mgr_N, args)  # reset search tree
                         episode_result = _fn_run_episodes()
                         if episode_result is not None:
                             samples_for_iteration += episode_result
-                    fn_end_couunting()
+                    fn_stop_counting()
                     args.recorder.fn_log_message(f'Number of Episodes for sample generation: {args.num_of_training_episodes}')
 
                     # save the iteration examples to the history
