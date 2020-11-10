@@ -21,16 +21,18 @@ from ws.RLAgents.self_play.alpha_zero._game.othello._ml_lib.pytorch.NeuralNet im
 
 # log = logging.getLogger(__name__)
 
-nn_args = dotdict({
-    'lr': 0.001,
-    'dropout': 0.3,
-    # 'epochs': 2,
-    'batch_size': 64,
-    'cuda': torch.cuda.is_available(),
-    'num_channels': 512,
-})
+
 
 def neural_net_mgt(args):
+    nn_args = dotdict({
+        'lr': 0.001,
+        'dropout': 0.3,
+        # 'epochs': 2,
+        'batch_size': 64,
+        'cuda': torch.cuda.is_available(),
+        'num_channels': 512,
+    })
+
     def fn_get_untrained_model():
         # nn_args = nn_args
         untrained_nn = NeuralNet(args.game, nn_args)
