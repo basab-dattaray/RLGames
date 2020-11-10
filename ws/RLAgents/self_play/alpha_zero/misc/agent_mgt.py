@@ -45,7 +45,7 @@ def agent_mgt(args, file_path):
     archive_dir = current_dir.replace('/Demos/', '/Archives/')
     args.archive_dir = archive_dir
     args.fn_record = log_mgt(log_dir=archive_dir, fixed_log_file=True)
-    start_time = time()
+
     args.calltracer = call_trace_mgt(args.fn_record)
 
     src_model_folder = os.path.join(args.demo_folder, args.rel_model_path)
@@ -170,6 +170,7 @@ def agent_mgt(args, file_path):
 
         return agent_mgr
 
+    start_time = time()
         # move old model
 
     agent_mgr = namedtuple('_', ['fn_train','fn_test_against_human' ,'fn_test_againt_random' ,'fn_test_against_greedy' ,'fn_change_args' ,'fn_show_args' ,'fn_measure_time_elapsed' ,'fn_archive_log_file'])
