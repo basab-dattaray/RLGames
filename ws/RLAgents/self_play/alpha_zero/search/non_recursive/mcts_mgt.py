@@ -7,9 +7,10 @@ from collections import namedtuple
 
 import numpy
 
-from .Node import Node
+# from .Node import Node
 
 from .mcts_cache_mgt import mcts_cache_mgt
+from .node_mgt import node_mgt
 from ..mcts_probability_mgt import mcts_probability_mgt
 
 LONG_ROLLOUT = True
@@ -96,7 +97,7 @@ def mcts_mgt(
         nonlocal  root_node
 
         if root_node is None:
-            root_node = Node(
+            root_node = node_mgt(
                 state,
                 fn_get_normalized_predictions,
                 max_num_actions,

@@ -4,47 +4,40 @@ from collections import namedtuple
 
 import numpy
 
-def Node(
-    fn_get_valid_normalized_action_probabilities,
-    num_edges,
-    explore_exploit_ratio,
 
-    val=0.0,
-    parent_node=None,
-    parent_action=-1,
-    state= None
+
+def node_mgt(
+        state,
+        fn_get_normalized_predictions,
+        num_edges,
+        explore_exploit_ratio,
+        parent_action,
+        val,
+        parent_node
 ):
+    # DEBUG_FLAG = False
 
     visits = 0
-    __states = set()
-    opponent_factor = 1
     children_nodes = {}
     id = uuid.uuid4()
 
-    def _fn_compute_state(num_edges, parent_state, parent_action):
-        if parent_action >= num_edges:
-            return None
-        state_dims = numpy.shape(parent_state)
-        x, y = (int(parent_action / state_dims[0]), parent_action % state_dims[1])
-
-        if parent_state[x][y] == 0:
-            parent_state[x][y] = 1
-
-        return parent_state
-
-    def _fn_add_val_to_node(val):
-        nonlocal visits
+    def fn_add_val_to_node(val):
+        nonlocal  visits
+        
         val += val
         visits += 1
+        return val
 
     def _fn_add_children_nodes(normalized_valid_action_probabilities):
+        nonlocal parent_action
 
+        action_probabilities = normalized_valid_action_probabilities[:-2][0]
         children = {}
-        for action_num, action_probability in enumerate(normalized_valid_action_probabilities[:-1]):
+        for action_num, action_probability in enumerate(action_probabilities):
             if action_probability > 0:
-
-                child_node = Node(
-                    fn_get_valid_normalized_action_probabilities,
+                child_node = node_mgt(
+                    state,
+                    fn_get_normalized_predictions,
                     num_edges,
                     explore_exploit_ratio,
 
@@ -54,7 +47,7 @@ def Node(
                 )
                 children[str(action_num)] = child_node
 
-        # children_nodes = children # {**children} #???
+        children_nodes = children # {**children} #???
 
         if len(children.values()) == 0:
             return None
@@ -62,24 +55,22 @@ def Node(
         return list(children.values())[0]
 
     def _fn_find_best_ucb_child():
-         # neuralnet update was based on previous player
         best_child = None
         best_ucb = 0
 
-        normalized_valid_action_probabilities = fn_get_valid_normalized_action_probabilities(action_probabilities= None)
-
+        normalized_predictions = fn_get_normalized_predictions(state) # fn_get_valid_normalized_action_probabilities()
+        normalized_valid_action_probabilities = normalized_predictions[:-2][0]
         for key, child in children_nodes.items():
             action_num = int(key)
             action_prob = normalized_valid_action_probabilities[action_num]
             parent_visits = visits
             child_visits = child.visits
-            child_value = child.val * opponent_factor
+            child_value = child.val
             if child_visits == 0:
                 return child
 
             exploit_val = child_value / child_visits
             explore_val = action_prob * math.sqrt(parent_visits) / (child_visits + 1)
-            # explore_val = action_prob * math.sqrt(numpy.log(parent_visits) / child_visits)
             ucb = exploit_val + explore_exploit_ratio * explore_val # Upper Confidence Bound
 
             if best_child is None:
@@ -91,9 +82,6 @@ def Node(
                     best_child = child
 
         return best_child
-
-    def _fn_get_parent_node():
-        return parent_node
 
     def fn_select_from_available_leaf_nodes():
         if len(children_nodes) == 0:  # leaf_node
@@ -109,45 +97,61 @@ def Node(
             return False
 
     def fn_expand_node():
-        normalized_valid_action_probabilities = fn_get_valid_normalized_action_probabilities(action_probabilities= None)
+        normalized_valid_action_probabilities = fn_get_normalized_predictions(state) # fn_get_valid_normalized_action_probabilities()
         if normalized_valid_action_probabilities is None:
             return None
         first_child_node = _fn_add_children_nodes(normalized_valid_action_probabilities)
 
         return first_child_node
 
-    def fn_back_propagate(val):
+    # def fn_back_propagate(val):
+    #     nonlocal parent_node
+    #
+    #     current_node = node_mgr
+    #     val = fn_add_val_to_node(val)
+    #
+    #     # parent_node = parent_node
+    #
+    #     while parent_node is not None:
+    #         current_node = parent_node
+    #         val = current_node.fn_add_val_to_node(val)
+    #         parent_node = current_node.parent_node
+    #
+    #     return val
 
-        _fn_add_val_to_node(val)
+    
+    node_mgr = namedtuple('_', [
+        'visits',
+        'children_nodes',
+        'id',
+        'state',
+        'val',
 
-        # parent_node = self._fn_get_parent_node()
-        current_node = parent_node
+        'fn_select_from_available_leaf_nodes',
+        'fn_is_already_visited',
+        'fn_back_propagate',
+        'fn_expand_node',
 
-        while current_node is not None:
-            current_node._fn_add_val_to_node(val)
-            current_node = current_node.parent_node
+        'fn_add_val_to_node'
 
-        return val
+    ])
 
-    if state is None:
-        state = _fn_compute_state(num_edges, parent_node.state, parent_action)
-
-    node_mgr = namedtuple('x', ['fn_select_from_available_leaf_nodes', 'fn_is_already_visited', 'fn_expand_node', 'fn_back_propagate'])
-    node_mgr.fn_select_from_available_leaf_nodes=fn_select_from_available_leaf_nodes
-    node_mgr.fn_is_already_visited = fn_is_already_visited
-    node_mgr.fn_expand_node = fn_expand_node
-    node_mgr.fn_back_propagate = fn_back_propagate
-
-    node_mgr.fn_get_valid_normalized_action_probabilities=fn_get_valid_normalized_action_probabilities
-    node_mgr.num_edges = num_edges
-    node_mgr.explore_exploit_ratio = explore_exploit_ratio
+    node_mgr.visits = visits
+    node_mgr.children_nodes = children_nodes
+    node_mgr.id = id
+    node_mgr.state = state
     node_mgr.val = val
 
-    node_mgr.parent_node=parent_node
-    node_mgr.parent_action = parent_action
-    node_mgr.state = state
-    node_mgr._fn_add_val_to_node = _fn_add_val_to_node
-    node_mgr.children_nodes = children_nodes
+    node_mgr.fn_select_from_available_leaf_nodes = fn_select_from_available_leaf_nodes
+    node_mgr.fn_is_already_visited = fn_is_already_visited
+    node_mgr.fn_back_propagate = fn_back_propagate
+    node_mgr.fn_expand_node = fn_expand_node
+
+    node_mgr.fn_add_val_to_node = fn_add_val_to_node
 
     return node_mgr
+
+
+
+
 
