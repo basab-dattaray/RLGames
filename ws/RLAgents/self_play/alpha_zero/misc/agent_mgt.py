@@ -44,9 +44,9 @@ def agent_mgt(args, file_path):
     current_dir = file_path.rsplit('/', 1)[0]
     archive_dir = current_dir.replace('/Demos/', '/Archives/')
     args.archive_dir = archive_dir
-    args.fn_record = log_mgt(log_dir=archive_dir, fixed_log_file=True)
+    args.fn_log = log_mgt(log_dir=archive_dir, fixed_log_file=True)
     start_time = time()
-    args.recorder = Recorder(args.fn_record)
+    args.recorder = Recorder(args.fn_log)
 
     src_model_folder = os.path.join(args.demo_folder, args.rel_model_path)
     src_model_file_path = os.path.join(src_model_folder, args.model_name)
@@ -58,12 +58,12 @@ def agent_mgt(args, file_path):
         #
         # if services.chart is not None:
         #     services.chart.fn_close()
-        #     services.fn_record('@@@ Chart Saved')
+        #     services.fn_log('@@@ Chart Saved')
         #
         # fn_archive_it()
         #
-        # services.fn_record('TERMINATED EARLY AFTER SAVING MODEL WEIGHTS')
-        # services.fn_record(f'Total Time Taken = {time() - start_time} seconds')
+        # services.fn_log('TERMINATED EARLY AFTER SAVING MODEL WEIGHTS')
+        # services.fn_log(f'Total Time Taken = {time() - start_time} seconds')
         exit()
 
     @tracer(args)
@@ -73,11 +73,11 @@ def agent_mgt(args, file_path):
         neural_net_mgr = neural_net_mgt(args, game)
 
         if args.do_load_model:
-            # args.fn_record('Loading rel_model_path "%state/%state"...', args.load_folder_file)
+            # args.fn_log('Loading rel_model_path "%state/%state"...', args.load_folder_file)
             if not neural_net_mgr.fn_load_model():
-                args.fn_record('*** unable to load model')
+                args.fn_log('*** unable to load model')
             else:
-                args.fn_record('!!! loaded model')
+                args.fn_log('!!! loaded model')
         else:
             log.warning('!!! Not loading a rel_model_path!')
 
@@ -114,18 +114,18 @@ def agent_mgt(args, file_path):
         fn_system_policy = lambda x: numpy.argmax(system_mcts.fn_get_action_probabilities(x, spread_probabilities=0))
         fn_contender_policy = fn_player_policy(game)
         arena = playground_mgt(fn_system_policy, fn_contender_policy, game, fn_display=game_mgt(args['board_size']).fn_display,
-                      msg_recorder=args.recorder.fn_record_message)
+                      msg_recorder=args.recorder.fn_log_message)
         system_wins, system_losses, draws = arena.fn_play_games(args.num_of_test_games, verbose=verbose)
 
-        args.recorder.fn_record_message(f'wins:{system_wins} losses:{system_losses} draws:{draws}')
+        args.recorder.fn_log_message(f'wins:{system_wins} losses:{system_losses} draws:{draws}')
 
     @tracer(args)
     def fn_change_args(change_args):
         if change_args is not None:
             for k,v in change_args.items():
                 change_args[k] = v
-                # args.fn_record(f'  args[{k}] = {v}')
-                args.recorder.fn_record_message(f'  x[{k}] = {v}')
+                # args.fn_log(f'  args[{k}] = {v}')
+                args.recorder.fn_log_message(f'  x[{k}] = {v}')
 
         return agent_mgr
 
@@ -133,8 +133,8 @@ def agent_mgt(args, file_path):
     def fn_show_args():
 
         for k,v in args.items():
-            # args.fn_record(f'  args[{k}] = {v}')
-            args.recorder.fn_record_message(f'  args[{k}] = {v}')
+            # args.fn_log(f'  args[{k}] = {v}')
+            args.recorder.fn_log_message(f'  args[{k}] = {v}')
 
         return agent_mgr
 
@@ -144,7 +144,7 @@ def agent_mgt(args, file_path):
         time_diff = int(end_time - start_time)
         mins = math.floor(time_diff / 60)
         secs = time_diff % 60
-        args.recorder.fn_record_message(f'Time elapsed:    minutes: {mins}    seconds: {secs}')
+        args.recorder.fn_log_message(f'Time elapsed:    minutes: {mins}    seconds: {secs}')
 
         return agent_mgr
 

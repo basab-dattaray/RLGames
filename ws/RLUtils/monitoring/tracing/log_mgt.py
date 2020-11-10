@@ -42,7 +42,7 @@ def log_mgt(log_dir, show_debug=False, log_file_name = 'log.txt',  fresh_logfile
         logging.getLogger().addHandler(handler)
         _log = logging.getLogger("app." + __name__)
 
-    def fn_record(msg="", color="", debug=False):
+    def fn_log(msg="", color="", debug=False):
 
         # PRINT
         if show_debug or not debug:
@@ -57,4 +57,4 @@ def log_mgt(log_dir, show_debug=False, log_file_name = 'log.txt',  fresh_logfile
 
     setup()
 
-    return fn_record
+    return fn_log

@@ -6,7 +6,7 @@ from ws.RLUtils.monitoring.tracing.trace_example_with_self_contained_record_mgt.
 
 def agent_container():
     args = {}
-    args['fn_recorder'] = record_mgt()
+    args['fn_loger'] = record_mgt()
 
 
     # @tracer(args)

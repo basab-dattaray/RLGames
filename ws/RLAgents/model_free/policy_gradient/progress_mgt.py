@@ -39,10 +39,10 @@ def progress_mgt(app_info):
         average_interval=_log_interval, skip_interval=_plot_skip_interval
     )
 
-    fn_record = app_info[FN_RECORD]
+    fn_log = app_info[FN_RECORD]
 
     def print_it(episode_num, step_num, val):
-        fn_record('SAMPLE GEN EPISODE {:8} \t Steps: {:6} \t Value: {:10.5f}  Goal: {:10.5f}'.
+        fn_log('SAMPLE GEN EPISODE {:8} \t Steps: {:6} \t Value: {:10.5f}  Goal: {:10.5f}'.
               format(episode_num, step_num, val, app_info[REWARD_GOAL]))
 
     def fn_show_training_progress(episode_num, val, step_num):
@@ -51,7 +51,7 @@ def progress_mgt(app_info):
         if episode_num % app_info[LOG_MEAN_INTERVAL] == 0:
             progress_info = {'max_episode_num': app_info[NUM_EPISODES], 'episode_num': episode_num}
 
-            _chart.fn_record_event(
+            _chart.fn_log_event(
                 episode_num,
                 [val]
             )

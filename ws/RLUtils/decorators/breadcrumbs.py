@@ -1,13 +1,13 @@
 from functools import wraps
 
-def encapsulate(func, fn_record= None):
+def encapsulate(func, fn_log= None):
     @wraps(func)
     def wrapper(*args, **kwargs):
-        if fn_record is None:
+        if fn_log is None:
             print()
             print(f'<<<<<< {func.__name__} >>>>>>')
         else:
-            fn_record()
-            fn_record(f'<<<<<< {func.__name__} >>>>>>')
+            fn_log()
+            fn_log(f'<<<<<< {func.__name__} >>>>>>')
         return func(*args, **kwargs)
     return wrapper

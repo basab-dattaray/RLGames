@@ -10,7 +10,7 @@ if __name__ == '__main__':
     acwd = os.path.join(cwd, '_tests')
     log_dir = os.path.join(acwd, "logs")
 
-    fn_record2 = log_mgt(log_dir, show_debug=True, fixed_log_file=False)
+    fn_log2 = log_mgt(log_dir, show_debug=True, fixed_log_file=False)
     color_black_background = Fore.YELLOW + Back.BLACK
-    fn_record2('3. show_debug = True, debug=True', color=color_black_background, debug=True)
-    fn_record2('4. show_debug = True, debug=False', debug=False)
+    fn_log2('3. show_debug = True, debug=True', color=color_black_background, debug=True)
+    fn_log2('4. show_debug = True, debug=False', debug=False)

@@ -6,16 +6,16 @@ from ws.RLUtils.monitoring.tracing.trace_example_without_params.tracer import tr
 
 def record_mgt():
     count = 0
-    def fn_recorder():
+    def fn_loger():
         nonlocal count
         count += 1
         return count
-    return fn_recorder
+    return fn_loger
 
 def agent_container():
     agent_container_ref = namedtuple('_', ['fn_test1','fn_test2'])
 
-    fn_recorder = record_mgt()
+    fn_loger = record_mgt()
 
     @tracer()
     def fn_test1():

@@ -30,14 +30,14 @@ def agent_mgt(app_info, env, arg_dict=None):
 
     _episode_num = 0
 
-    fn_record = app_info[FN_RECORD]
+    fn_log = app_info[FN_RECORD]
 
     def exit_gracefully(signum, frame):
-        fn_record('!!! TERMINATING EARLY!!!')
+        fn_log('!!! TERMINATING EARLY!!!')
         msg = refobj_archive_mgt.fn_archive_all(app_info, fn_save_model=refobj_archive_mgt.fn_save_model)
 
         chart.fn_close()
-        fn_record(msg)
+        fn_log(msg)
         env.fnClose()
         exit()
 
@@ -94,22 +94,22 @@ def agent_mgt(app_info, env, arg_dict=None):
     def fn_run_train():
         if refobj_archive_mgt.fn_load_model is not None:
             if refobj_archive_mgt.fn_load_model():
-                fn_record('SUCCESS in loading model')
+                fn_log('SUCCESS in loading model')
             else:
-                fn_record('FAILED in loading model')
+                fn_log('FAILED in loading model')
 
         fn_run(fn_show_training_progress, fn_should_update_network=fn_should_update_network)
 
-        fn_record(refobj_archive_mgt.fn_archive_all(app_info, refobj_archive_mgt.fn_save_model))
+        fn_log(refobj_archive_mgt.fn_archive_all(app_info, refobj_archive_mgt.fn_save_model))
 
 
     def fn_run_test():
         if refobj_archive_mgt.fn_load_model is None:
-            fn_record("ERROR:: Loading Model: model function missing")
+            fn_log("ERROR:: Loading Model: model function missing")
             return
 
         if not refobj_archive_mgt.fn_load_model():
-            fn_record("ERROR:: Loading Model: model data missing")
+            fn_log("ERROR:: Loading Model: model data missing")
             return
 
         fn_run(fn_show_training_progress, supress_graph=True, consecutive_goal_hits_needed_for_success=1)

@@ -71,8 +71,8 @@ def preparation_mgt(calling_filepath, verbose=False):
         fn_get_key_as_bool, fn_get_key_as_int, fn_get_key_as_str = config_mgt(_app_info)
         debug_mode = fn_get_key_as_bool(DEBUG_MODE)
         session_repo = _app_info[RESULTS_CURRENT_PATH]
-        fn_record = log_mgt(log_dir= session_repo, show_debug=debug_mode)
-        _app_info[FN_RECORD] = fn_record
+        fn_log = log_mgt(log_dir= session_repo, show_debug=debug_mode)
+        _app_info[FN_RECORD] = fn_log
         pass
 
     def _fn_get_env():

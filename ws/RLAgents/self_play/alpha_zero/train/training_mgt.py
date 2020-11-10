@@ -43,20 +43,20 @@ def training_mgt(game, nn_mgr_N, args):
             if r != "y":
                 sys.exit()
         else:
-            args.fn_record("File with trainExamples found. Loading it...")
+            args.fn_log("File with trainExamples found. Loading it...")
             with open(examplesFile, "rb") as f:
                 training_samples_buffer = Unpickler(f).load()
-            args.fn_record('Loading done!')
+            args.fn_log('Loading done!')
 
             # examples based on the model were already collected (loaded)
             skipFirstSelfPlay = True
 
-    def _fn_record_iter_results(draws, iteration, nwins, pwins):
-        args.recorder.fn_record_message(f'-- Iter {iteration} of {args.num_of_training_iterations}', indent=0)
+    def _fn_log_iter_results(draws, iteration, nwins, pwins):
+        args.recorder.fn_log_message(f'-- Iter {iteration} of {args.num_of_training_iterations}', indent=0)
         update_threshold = 'update threshold: {}'.format(args.score_based_model_update_threshold)
-        args.recorder.fn_record_message(update_threshold)
+        args.recorder.fn_log_message(update_threshold)
         score = f'nwins:{nwins} pwins:{pwins} draws:{draws}'
-        args.recorder.fn_record_message(score)
+        args.recorder.fn_log_message(score)
 
     training_samples_buffer = []  # history of examples from args.sample_history_buffer_size latest iterations
     skipFirstSelfPlay = False  # can be overriden in loadTrainExamples()
@@ -132,7 +132,7 @@ def training_mgt(game, nn_mgr_N, args):
                         if episode_result is not None:
                             samples_for_iteration += episode_result
                     fn_end_couunting()
-                    args.recorder.fn_record_message(f'Number of Episodes for sample generation: {args.num_of_training_episodes}')
+                    args.recorder.fn_log_message(f'Number of Episodes for sample generation: {args.num_of_training_episodes}')
 
                     # save the iteration examples to the history
                     training_samples_buffer.append(samples_for_iteration)
@@ -157,21 +157,21 @@ def training_mgt(game, nn_mgr_N, args):
                 pmcts = mcts_adapter(game, nn_mgr_P, args)
                 nn_mgr_N.fn_adjust_model_from_examples(trainExamples)
                 nmcts = mcts_adapter(game, nn_mgr_N, args)
-                # args.recorder.fn_record_message()
-                # args.recorder.fn_record_message(f'* Comptete with Previous Version', indent=0)
+                # args.recorder.fn_log_message()
+                # args.recorder.fn_log_message(f'* Comptete with Previous Version', indent=0)
                 arena = playground_mgt(lambda x: np.argmax(pmcts.fn_get_action_probabilities(x, spread_probabilities=0)),
                               lambda x: np.argmax(nmcts.fn_get_action_probabilities(x, spread_probabilities=0)),
                               game,
-                              msg_recorder=args.recorder.fn_record_message)
+                              msg_recorder=args.recorder.fn_log_message)
                 pwins, nwins, draws = arena.fn_play_games(args.number_of_games_for_model_comarison)
-                args.fn_record()
+                args.fn_log()
                 return draws, nwins, pwins
 
             trainExamples = fn_generate_samples(iteration)
 
             draws, nwins, pwins = _fn_play_next_vs_previous(trainExamples)
 
-            _fn_record_iter_results(draws, iteration, nwins, pwins)
+            _fn_log_iter_results(draws, iteration, nwins, pwins)
 
             reject = False
             update_score = 0
@@ -187,13 +187,13 @@ def training_mgt(game, nn_mgr_N, args):
 
             if reject and model_already_exists:
                 color = Fore.RED
-                args.recorder.fn_record_message(
+                args.recorder.fn_log_message(
                     color + 'REJECTED New Model: update_threshold: {}, update_score: {}'.format(args.score_based_model_update_threshold,
                                                                                                 update_score))
                 nn_mgr_N.fn_load_model(filename=args.temp_model_exchange_name)
             else:
                 color = Fore.GREEN
-                args.recorder.fn_record_message(
+                args.recorder.fn_log_message(
                     color + 'ACCEPTED New Model: update_threshold: {}, update_score: {}'.format(args.score_based_model_update_threshold,
                                                                                                 update_score))
                 nn_mgr_N.fn_save_model(filename=_fn_getCheckpointFile(iteration))
@@ -201,10 +201,10 @@ def training_mgt(game, nn_mgr_N, args):
             if not reject: # continue update if the GREEN color is forced
                 update_count += 1
 
-            args.recorder.fn_record_message(Fore.BLACK)
+            args.recorder.fn_log_message(Fore.BLACK)
 
         if args.do_load_samples:
-            args.fn_record("!!!  loading 'samples' from file...")
+            args.fn_log("!!!  loading 'samples' from file...")
             _fn_load_train_examples()
 
         for iteration in range(1, args.num_of_training_iterations + 1):

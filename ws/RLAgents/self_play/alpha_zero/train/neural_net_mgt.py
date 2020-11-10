@@ -48,7 +48,7 @@ def neural_net_mgt(args, game):
         optimizer = optim.Adam(nnet.parameters())
         fn_count_episode, fn_end_couunting = progress_count_mgt('Epochs', args.epochs)
         for epoch in range(args.epochs):
-            # args.recorder.fn_record_message(f'Epoch {epoch + 1} of {args.epochs}')
+            # args.recorder.fn_log_message(f'Epoch {epoch + 1} of {args.epochs}')
             fn_count_episode()
 
             nnet.train()
@@ -84,7 +84,7 @@ def neural_net_mgt(args, game):
                 total_loss.backward()
                 optimizer.step()
         fn_end_couunting()
-        args.recorder.fn_record_message(f'Number of Epochs for training new model: {args.epochs}')
+        args.recorder.fn_log_message(f'Number of Epochs for training new model: {args.epochs}')
 
 
     def predict(board):

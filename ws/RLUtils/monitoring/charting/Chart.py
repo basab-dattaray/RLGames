@@ -24,7 +24,7 @@ class Chart():
         self.compactor = Compactor(20, self.average_interval, self.skip_interval)
         # self.compactor = Compactor(20, self.log_interval, 1)
 
-    def fn_record_event(self, index, array_of_y_vals):
+    def fn_log_event(self, index, array_of_y_vals):
 
         self.fn_compress_datastream(
             index,

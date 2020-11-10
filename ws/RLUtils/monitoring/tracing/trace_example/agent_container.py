@@ -5,15 +5,15 @@ from ws.RLUtils.monitoring.tracing.trace_example.tracer import tracer
 
 
 def agent_container(args):
-    fn_recorder = args['rec_mgt']
+    fn_loger = args['rec_mgt']
     agent_container_ref = namedtuple('_', ['fn_test1','fn_test2'])
 
-    @tracer(fn_recorder)
+    @tracer(fn_loger)
     def fn_test1():
         print('RUNNING fn_test1')
         return agent_container_ref
 
-    @tracer(fn_recorder)
+    @tracer(fn_loger)
     def fn_test2():
         print('RUNNING fn_test2')
         return agent_container_ref

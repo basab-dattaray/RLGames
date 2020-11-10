@@ -1,7 +1,7 @@
 def record_mgt():
     count = 0
-    def fn_recorder():
+    def fn_loger():
         nonlocal count
         count += 1
         return count
-    return fn_recorder
+    return fn_loger
