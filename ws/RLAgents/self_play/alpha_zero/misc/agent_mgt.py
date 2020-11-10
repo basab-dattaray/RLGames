@@ -49,10 +49,10 @@ def agent_mgt(args, file_path):
     args.calltracer = call_trace_mgt(args.fn_record)
 
     src_model_folder = os.path.join(args.demo_folder, args.rel_model_path)
-    src_model_file_path = os.path.join(src_model_folder, args.model_name)
-    old_model_file_path = os.path.join(src_model_folder, 'old_' + args.model_name)
-    if os.path.exists(src_model_file_path):
-        copy(src_model_file_path, old_model_file_path)
+    args.src_model_file_path = os.path.join(src_model_folder, args.model_name)
+    args.old_model_file_path = os.path.join(src_model_folder, 'old_' + args.model_name)
+    if os.path.exists(args.src_model_file_path):
+        copy(args.src_model_file_path, args.old_model_file_path)
 
     def exit_gracefully(signum, frame):
         #
@@ -161,12 +161,12 @@ def agent_mgt(args, file_path):
             move(src_log_file_name, dst_full_path)
 
         # move old_model.tar
-        if os.path.exists(old_model_file_path):
-            copy(old_model_file_path, dst_full_path)
+        if os.path.exists(args.old_model_file_path):
+            copy(args.old_model_file_path, dst_full_path)
 
         # copy model.tar
-        if os.path.exists(src_model_file_path):
-            copy(src_model_file_path, dst_full_path)
+        if os.path.exists(args.src_model_file_path):
+            copy(args.src_model_file_path, dst_full_path)
 
         return agent_mgr
 
