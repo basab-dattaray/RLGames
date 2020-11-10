@@ -29,12 +29,12 @@ from ws.RLUtils.monitoring.tracing.tracer import tracer
 
 
 def agent_mgt(args, file_path):
-    def _fn_init_arg_with_default_val(args, name, val):
-        if name not in args.keys():
-            args[name] = val
+    def _fn_setup(file_path):
+        def _fn_init_arg_with_default_val(args, name, val):
+            if name not in args.keys():
+                args[name] = val
 
-    def setup(file_path):
-        def init_training_mgr(args_out):
+        def _fn_init_training_mgr(args_out):
             neural_net = neural_net_mgt(args_out)
             if args_out.do_load_model:
                 # nn_args.fn_record('Loading rel_model_path "%state/%state"...', nn_args.load_folder_file)
@@ -69,11 +69,11 @@ def agent_mgt(args, file_path):
         args_out.src_model_file_path = os.path.join(src_model_folder, args_out.model_name)
         args_out.old_model_file_path = os.path.join(src_model_folder, 'old_' + args_out.model_name)
 
-        args_out.training_mgr = init_training_mgr(args_out)
+        args_out.training_mgr = _fn_init_training_mgr(args_out)
 
         return args_out
 
-    args = setup(file_path)
+    args = _fn_setup(file_path)
 
     def exit_gracefully(signum, frame):
         #
