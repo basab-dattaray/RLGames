@@ -7,7 +7,7 @@ class Compactor():
         self.average_interval = average_interval
         self.skip_interval = skip_interval
 
-    # def fn_add(self, *args, **kwargs):
+    # def fn_add(self, *nn_args, **kwargs):
     #     pass
 
     def fn_gen_skip_filter(self, *args, **kwargs):

@@ -73,7 +73,7 @@ def agent_mgt(args, file_path):
         neural_net_mgr = neural_net_mgt(args)
 
         if args.do_load_model:
-            # args.fn_record('Loading rel_model_path "%state/%state"...', args.load_folder_file)
+            # nn_args.fn_record('Loading rel_model_path "%state/%state"...', nn_args.load_folder_file)
             if not neural_net_mgr.fn_load_model():
                 args.fn_record('*** unable to load model')
             else:
@@ -124,7 +124,7 @@ def agent_mgt(args, file_path):
         if change_args is not None:
             for k,v in change_args.items():
                 change_args[k] = v
-                # args.fn_record(f'  args[{k}] = {v}')
+                # nn_args.fn_record(f'  nn_args[{k}] = {v}')
                 args.calltracer.fn_write(f'  x[{k}] = {v}')
 
         return agent_mgr
@@ -133,8 +133,8 @@ def agent_mgt(args, file_path):
     def fn_show_args():
 
         for k,v in args.items():
-            # args.fn_record(f'  args[{k}] = {v}')
-            args.calltracer.fn_write(f'  args[{k}] = {v}')
+            # nn_args.fn_record(f'  nn_args[{k}] = {v}')
+            args.calltracer.fn_write(f'  nn_args[{k}] = {v}')
 
         return agent_mgr
 
@@ -175,7 +175,7 @@ def agent_mgt(args, file_path):
         copy(args.src_model_file_path, args.old_model_file_path)
 
     agent_mgr = namedtuple('_', ['fn_train','fn_test_against_human' ,'fn_test_againt_random' ,'fn_test_against_greedy' ,'fn_change_args' ,'fn_show_args' ,'fn_measure_time_elapsed' ,'fn_archive_log_file',
-                                 'args'])
+                                 'nn_args'])
 
     agent_mgr.fn_train = fn_train
     agent_mgr.fn_test_against_human = fn_test_against_human

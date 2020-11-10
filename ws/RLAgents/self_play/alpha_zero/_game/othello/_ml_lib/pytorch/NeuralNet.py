@@ -7,24 +7,24 @@ import torch.nn.functional as F
 
 
 class NeuralNet(nn.Module):
-    def __init__(self, game, args):
+    def __init__(self, game, nn_args):
         # game params
         self.board_x, self.board_y = game.fn_get_board_size(), game.fn_get_board_size()
         self.action_size = game.fn_get_action_size()
-        self.args = args
+        self.args = nn_args
 
         super(NeuralNet, self).__init__()
-        self.conv1 = nn.Conv2d(1, args.num_channels, 3, stride=1, padding=1)
-        self.conv2 = nn.Conv2d(args.num_channels, args.num_channels, 3, stride=1, padding=1)
-        self.conv3 = nn.Conv2d(args.num_channels, args.num_channels, 3, stride=1)
-        self.conv4 = nn.Conv2d(args.num_channels, args.num_channels, 3, stride=1)
+        self.conv1 = nn.Conv2d(1, nn_args.num_channels, 3, stride=1, padding=1)
+        self.conv2 = nn.Conv2d(nn_args.num_channels, nn_args.num_channels, 3, stride=1, padding=1)
+        self.conv3 = nn.Conv2d(nn_args.num_channels, nn_args.num_channels, 3, stride=1)
+        self.conv4 = nn.Conv2d(nn_args.num_channels, nn_args.num_channels, 3, stride=1)
 
-        self.bn1 = nn.BatchNorm2d(args.num_channels)
-        self.bn2 = nn.BatchNorm2d(args.num_channels)
-        self.bn3 = nn.BatchNorm2d(args.num_channels)
-        self.bn4 = nn.BatchNorm2d(args.num_channels)
+        self.bn1 = nn.BatchNorm2d(nn_args.num_channels)
+        self.bn2 = nn.BatchNorm2d(nn_args.num_channels)
+        self.bn3 = nn.BatchNorm2d(nn_args.num_channels)
+        self.bn4 = nn.BatchNorm2d(nn_args.num_channels)
 
-        self.fc1 = nn.Linear(args.num_channels*(self.board_x-4)*(self.board_y-4), 1024)
+        self.fc1 = nn.Linear(nn_args.num_channels * (self.board_x - 4) * (self.board_y - 4), 1024)
         self.fc_bn1 = nn.BatchNorm1d(1024)
 
         self.fc2 = nn.Linear(1024, 512)

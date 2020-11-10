@@ -60,7 +60,7 @@ def training_mgt(nn_mgr_N, args):
         score = f'nwins:{nwins} pwins:{pwins} draws:{draws}'
         args.calltracer.fn_write(score)
 
-    training_samples_buffer = []  # history of examples from args.sample_history_buffer_size latest iterations
+    training_samples_buffer = []  # history of examples from nn_args.sample_history_buffer_size latest iterations
     skipFirstSelfPlay = False  # can be overriden in loadTrainExamples()
 
     def fn_form_sample_data(current_player, run_result, training_samples):
@@ -129,7 +129,7 @@ def training_mgt(nn_mgr_N, args):
                     for episode_num in range(1, args.num_of_training_episodes + 1):
                         fn_count_event()
 
-                        # mcts = mcts_adapter(game, nn_mgr_N, args)  # reset search tree
+                        # mcts = mcts_adapter(game, nn_mgr_N, nn_args)  # reset search tree
                         episode_result = _fn_run_episodes()
                         if episode_result is not None:
                             samples_for_iteration += episode_result
@@ -159,8 +159,8 @@ def training_mgt(nn_mgr_N, args):
                 pmcts = mcts_adapter(nn_mgr_P, args)
                 nn_mgr_N.fn_adjust_model_from_examples(trainExamples)
                 nmcts = mcts_adapter(nn_mgr_N, args)
-                # args.calltracer.fn_write()
-                # args.calltracer.fn_write(f'* Comptete with Previous Version', indent=0)
+                # nn_args.calltracer.fn_write()
+                # nn_args.calltracer.fn_write(f'* Comptete with Previous Version', indent=0)
                 arena = playground_mgt(lambda x: np.argmax(pmcts.fn_get_action_probabilities(x, spread_probabilities=0)),
                               lambda x: np.argmax(nmcts.fn_get_action_probabilities(x, spread_probabilities=0)),
                               game,

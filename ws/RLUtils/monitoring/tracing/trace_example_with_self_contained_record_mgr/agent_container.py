@@ -9,7 +9,7 @@ def agent_container():
     args['fn_loger'] = record_mgt()
 
 
-    # @tracer(args)
+    # @tracer(nn_args)
     def fn_test1():
         print('RUNNING fn_test1')
         return agent_container_ref

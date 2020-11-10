@@ -9,7 +9,7 @@ coloredlogs.install(level='INFO')  # Change this to DEBUG to see more info.
 
 #
 # if __name__ == "__main__":
-#     agent = Agent(args, __file__)
+#     agent = Agent(nn_args, __file__)
 #     agent.fn_train()
 
 if __name__ == "__main__":
