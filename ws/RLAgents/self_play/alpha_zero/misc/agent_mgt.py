@@ -50,6 +50,8 @@ def agent_mgt(args, file_path):
         src_model_folder = os.path.join(args_out.demo_folder, args_out.rel_model_path)
         args_out.src_model_file_path = os.path.join(src_model_folder, args_out.model_name)
         args_out.old_model_file_path = os.path.join(src_model_folder, 'old_' + args_out.model_name)
+
+
         return args_out
 
     args = setup(file_path)
@@ -71,8 +73,13 @@ def agent_mgt(args, file_path):
     def fn_train():
         signal.signal(signal.SIGINT, exit_gracefully)
 
-        neural_net = neural_net_mgt(args)
+        training_mgr = init_training_mgr()
+        training_mgr.fn_execute_training_iterations()
 
+        return agent_mgr
+
+    def init_training_mgr():
+        neural_net = neural_net_mgt(args)
         if args.do_load_model:
             # nn_args.fn_record('Loading rel_model_path "%state/%state"...', nn_args.load_folder_file)
             if not neural_net.fn_load_model():
@@ -81,11 +88,8 @@ def agent_mgt(args, file_path):
                 args.fn_record('!!! loaded model')
         else:
             args.logger.warning('!!! Not loading a rel_model_path!')
-
         training_mgr = training_mgt(neural_net, args)
-        training_mgr.fn_execute_training_iterations()
-
-        return agent_mgr
+        return training_mgr
 
     @tracer(args)
     def fn_test_against_human():
