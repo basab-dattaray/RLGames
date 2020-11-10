@@ -8,7 +8,7 @@ from pip._vendor.colorama import Fore
 
 from ws.RLUtils.monitoring.tracing.progress_count_mgt import progress_count_mgt
 
-log = logging.getLogger(__name__)
+# log = logging.getLogger(__name__)
 
 def playground_mgt(player1, player2, game, fn_display=None, msg_recorder = None):
     game_num = 0
@@ -58,8 +58,6 @@ def playground_mgt(player1, player2, game, fn_display=None, msg_recorder = None)
                 break_from_while = True
                 break
 
-                # log.debug(f'valids = {valids}')
-                # assert valids[action] > 0
             pieces, cur_player_index = game.fn_get_next_state(pieces, cur_player_index, action)
 
         game_status = game.fn_game_status(pieces)

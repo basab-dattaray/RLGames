@@ -28,10 +28,10 @@ from ws.RLUtils.monitoring.tracing.tracer import tracer
 
 def agent_mgt(args, file_path):
 
-    log = logging.getLogger(__name__)
+    args.logger = logging.getLogger(__name__)
     args = args
     args.demo_folder, args.demo_name = AppInfo.fn_get_path_and_app_name(file_path)
-    args.mcts_recursive = AppInfo.fn_arg_as_bool(args, 'mcts_recursive')
+    args.run_recursive_search = AppInfo.fn_arg_as_bool(args, 'run_recursive_search')
     args.game = game_mgt(args.board_size)
 
     _fn_init_arg_with_default_val(args, 'num_of_successes_for_model_upgrade', 1)
@@ -51,8 +51,6 @@ def agent_mgt(args, file_path):
     src_model_folder = os.path.join(args.demo_folder, args.rel_model_path)
     args.src_model_file_path = os.path.join(src_model_folder, args.model_name)
     args.old_model_file_path = os.path.join(src_model_folder, 'old_' + args.model_name)
-    if os.path.exists(args.src_model_file_path):
-        copy(args.src_model_file_path, args.old_model_file_path)
 
     def exit_gracefully(signum, frame):
         #
@@ -79,9 +77,9 @@ def agent_mgt(args, file_path):
             else:
                 args.fn_record('!!! loaded model')
         else:
-            log.warning('!!! Not loading a rel_model_path!')
+            args.logger.warning('!!! Not loading a rel_model_path!')
 
-        fn_execute_training_iterations = training_mgt(args.game, neural_net_mgr, args)
+        fn_execute_training_iterations = training_mgt(neural_net_mgr, args)
         fn_execute_training_iterations()
 
         return agent_mgr
@@ -171,7 +169,9 @@ def agent_mgt(args, file_path):
         return agent_mgr
 
     start_time = time()
-        # move old model
+    if os.path.exists(args.src_model_file_path):
+        copy(args.src_model_file_path, args.old_model_file_path)
+
 
     agent_mgr = namedtuple('_', ['fn_train','fn_test_against_human' ,'fn_test_againt_random' ,'fn_test_against_greedy' ,'fn_change_args' ,'fn_show_args' ,'fn_measure_time_elapsed' ,'fn_archive_log_file'])
 

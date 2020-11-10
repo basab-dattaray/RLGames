@@ -19,7 +19,7 @@ import torch.optim as optim
 
 from ws.RLAgents.self_play.alpha_zero._game.othello._ml_lib.pytorch.NeuralNet import NeuralNet
 
-log = logging.getLogger(__name__)
+# log = logging.getLogger(__name__)
 
 nnet_params = dotdict({
     'lr': 0.001,

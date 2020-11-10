@@ -9,7 +9,7 @@ coloredlogs.install(level='INFO')  # Change this to DEBUG to see more info.
 if __name__ == "__main__":
     agent_mgt(args, __file__). \
         fn_change_args({
-            'mcts_recursive': 1,
+            'run_recursive_search': 1,
         }). \
         fn_train().\
         fn_change_args({

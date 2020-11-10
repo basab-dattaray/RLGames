@@ -7,7 +7,7 @@ import numpy as np
 from ws.RLAgents.self_play.alpha_zero.search.mcts_probability_mgt import mcts_probability_mgt
 
 EPS = 1e-8
-log = logging.getLogger(__name__)
+# log = logging.getLogger(__name__)
 
 def mcts_r_mgr(
     fn_get_normalized_predictions,

@@ -18,5 +18,5 @@ args = dotdict({
     'epochs': 20,
     'board_size': 5,
     'num_of_test_games': 300,
-    'mcts_recursive': False,
+    'run_recursive_search': False,
 })

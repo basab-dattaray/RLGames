@@ -15,11 +15,13 @@ from ws.RLAgents.self_play.alpha_zero.search.mcts_adapter import mcts_adapter
 from ws.RLUtils.monitoring.tracing.progress_count_mgt import progress_count_mgt
 from ws.RLUtils.monitoring.tracing.tracer import tracer
 
-log = logging.getLogger(__name__)
+# log = logging.getLogger(__name__)
 
-def training_mgt(game, nn_mgr_N, args):
+def training_mgt(nn_mgr_N, args):
 
     DEBUG_FLAG = False
+
+    game = args.game
 
     nn_mgr_P = copy.deepcopy(nn_mgr_N)
 
@@ -38,7 +40,7 @@ def training_mgt(game, nn_mgr_N, args):
         modelFile = os.path.join(args.load_folder_file[0], args.load_folder_file[1])
         examplesFile = modelFile + ".examples"
         if not os.path.isfile(examplesFile):
-            log.warning(f'File "{examplesFile}" with trainExamples not found!')
+            args.logger.warning(f'File "{examplesFile}" with trainExamples not found!')
             r = input("Continue? [y|size]")
             if r != "y":
                 sys.exit()
@@ -137,7 +139,7 @@ def training_mgt(game, nn_mgr_N, args):
                     # save the iteration examples to the history
                     training_samples_buffer.append(samples_for_iteration)
                 if len(training_samples_buffer) > args.sample_history_buffer_size:
-                    log.warning(
+                    args.logger.warning(
                         f"Removing the oldest entry in trainExamples. len(training_samples_buffer) = {len(training_samples_buffer)}")
                     training_samples_buffer.pop(0)
                 # backup history to a file

@@ -29,7 +29,7 @@ def log_mgt(log_dir, show_debug=False, log_file_name = 'log.txt',  fresh_logfile
             except Exception as x:
                 print(x)
                 exit()
-        # log_file_name = 'log.txt'
+
         if not fixed_log_file:
             _log_file_name = dt.now().strftime("%Y_%m_%d_%H_%M_%S")
         logfile = os.path.join(log_dir, _log_file_name)

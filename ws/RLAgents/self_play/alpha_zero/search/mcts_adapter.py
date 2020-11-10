@@ -12,7 +12,7 @@ def mcts_adapter(game, neural_net_mgr, args):
     fn_terminal_value = lambda pieces: game.fn_get_game_progress_status(pieces, 1)
 
     monte_carlo_tree_search = mcts_mgt
-    if args.mcts_recursive:
+    if args.run_recursive_search:
         monte_carlo_tree_search = mcts_r_mgr
     def create_normalized_predictor (fn_predict_action_probablities, fn_get_valid_actions):
         def fn_get_normalized_predictions( state):
@@ -27,7 +27,7 @@ def mcts_adapter(game, neural_net_mgr, args):
 
                 # NB! All valid moves may be masked if either your NNet architecture is insufficient or you've get overfitting or something else.
                 # If you have got dozens or hundreds of these messages you should pay attention to your NNet and/or training process.
-                # log.error("All valid moves were masked, doing a workaround.")
+
                 pi = pi + valid_actions
                 pi /= np.sum(pi)
             return pi, v, valid_actions
