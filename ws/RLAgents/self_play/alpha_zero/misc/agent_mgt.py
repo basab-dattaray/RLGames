@@ -32,7 +32,7 @@ def agent_mgt(args, file_path):
     args = args
     args.demo_folder, args.demo_name = AppInfo.fn_get_path_and_app_name(file_path)
     args.mcts_recursive = AppInfo.fn_arg_as_bool(args, 'mcts_recursive')
-    game = game_mgt(args.board_size)
+    args.game = game_mgt(args.board_size)
 
     _fn_init_arg_with_default_val(args, 'num_of_successes_for_model_upgrade', 1)
     _fn_init_arg_with_default_val(args, 'rel_model_path', 'model/')
@@ -70,7 +70,7 @@ def agent_mgt(args, file_path):
     def fn_train():
         signal.signal(signal.SIGINT, exit_gracefully)
 
-        neural_net_mgr = neural_net_mgt(args, game)
+        neural_net_mgr = neural_net_mgt(args, args.game)
 
         if args.do_load_model:
             # args.fn_record('Loading rel_model_path "%state/%state"...', args.load_folder_file)
@@ -81,7 +81,7 @@ def agent_mgt(args, file_path):
         else:
             log.warning('!!! Not loading a rel_model_path!')
 
-        fn_execute_training_iterations = training_mgt(game, neural_net_mgr, args)
+        fn_execute_training_iterations = training_mgt(args.game, neural_net_mgr, args)
         fn_execute_training_iterations()
 
         return agent_mgr
@@ -106,14 +106,14 @@ def agent_mgt(args, file_path):
 
     def fn_test(fn_player_policy, verbose= False, num_of_test_games=2):
         signal.signal(signal.SIGINT, exit_gracefully)
-        system_nn = neural_net_mgt(args, game)
+        system_nn = neural_net_mgt(args, args.game)
         if not system_nn.fn_load_model():
             return
 
-        system_mcts = mcts_adapter(game, system_nn, args)
+        system_mcts = mcts_adapter(args.game, system_nn, args)
         fn_system_policy = lambda x: numpy.argmax(system_mcts.fn_get_action_probabilities(x, spread_probabilities=0))
-        fn_contender_policy = fn_player_policy(game)
-        arena = playground_mgt(fn_system_policy, fn_contender_policy, game, fn_display=game_mgt(args['board_size']).fn_display,
+        fn_contender_policy = fn_player_policy(args.game)
+        arena = playground_mgt(fn_system_policy, fn_contender_policy, args.game, fn_display=game_mgt(args['board_size']).fn_display,
                       msg_recorder=args.calltracer.fn_write)
         system_wins, system_losses, draws = arena.fn_play_games(args.num_of_test_games, verbose=verbose)
 
