@@ -29,13 +29,31 @@ from ws.RLUtils.monitoring.tracing.tracer import tracer
 
 
 def agent_mgt(args, file_path):
+    def _fn_init_arg_with_default_val(args, name, val):
+        if name not in args.keys():
+            args[name] = val
+
     def setup(file_path):
+        def init_training_mgr(args_out):
+            neural_net = neural_net_mgt(args_out)
+            if args_out.do_load_model:
+                # nn_args.fn_record('Loading rel_model_path "%state/%state"...', nn_args.load_folder_file)
+                if not neural_net.fn_load_model():
+                    args_out.fn_record('*** unable to load model')
+                else:
+                    args_out.fn_record('!!! loaded model')
+            else:
+                args_out.logger.warning('!!! Not loading a rel_model_path!')
+            training_mgr = training_mgt(neural_net, args_out)
+            return training_mgr
 
         args_out = dotdict(args.copy())
         _fn_init_arg_with_default_val(args_out, 'logger',logging.getLogger(__name__))
         args_out.demo_folder, args_out.demo_name = AppInfo.fn_get_path_and_app_name(file_path)
         args_out.run_recursive_search = AppInfo.fn_arg_as_bool(args_out, 'run_recursive_search')
+
         args_out.game = game_mgt(args_out.board_size)
+
         _fn_init_arg_with_default_val(args_out, 'num_of_successes_for_model_upgrade', 1)
         _fn_init_arg_with_default_val(args_out, 'rel_model_path', 'model/')
         _fn_init_arg_with_default_val(args_out, 'do_load_model', False)
@@ -51,6 +69,7 @@ def agent_mgt(args, file_path):
         args_out.src_model_file_path = os.path.join(src_model_folder, args_out.model_name)
         args_out.old_model_file_path = os.path.join(src_model_folder, 'old_' + args_out.model_name)
 
+        args_out.training_mgr = init_training_mgr(args_out)
 
         return args_out
 
@@ -73,23 +92,9 @@ def agent_mgt(args, file_path):
     def fn_train():
         signal.signal(signal.SIGINT, exit_gracefully)
 
-        training_mgr = init_training_mgr()
-        training_mgr.fn_execute_training_iterations()
+        args.training_mgr.fn_execute_training_iterations()
 
         return agent_mgr
-
-    def init_training_mgr():
-        neural_net = neural_net_mgt(args)
-        if args.do_load_model:
-            # nn_args.fn_record('Loading rel_model_path "%state/%state"...', nn_args.load_folder_file)
-            if not neural_net.fn_load_model():
-                args.fn_record('*** unable to load model')
-            else:
-                args.fn_record('!!! loaded model')
-        else:
-            args.logger.warning('!!! Not loading a rel_model_path!')
-        training_mgr = training_mgt(neural_net, args)
-        return training_mgr
 
     @tracer(args)
     def fn_test_against_human():
@@ -180,7 +185,7 @@ def agent_mgt(args, file_path):
         copy(args.src_model_file_path, args.old_model_file_path)
 
     agent_mgr = namedtuple('_', ['fn_train','fn_test_against_human' ,'fn_test_againt_random' ,'fn_test_against_greedy' ,'fn_change_args' ,'fn_show_args' ,'fn_measure_time_elapsed' ,'fn_archive_log_file',
-                                 'nn_args'])
+                                 'args'])
 
     agent_mgr.fn_train = fn_train
     agent_mgr.fn_test_against_human = fn_test_against_human
@@ -193,6 +198,4 @@ def agent_mgt(args, file_path):
     agent_mgr.arguments = args
     return agent_mgr
 
-def _fn_init_arg_with_default_val(args, name, val):
-    if name not in args.keys():
-        args[name] = val
+
