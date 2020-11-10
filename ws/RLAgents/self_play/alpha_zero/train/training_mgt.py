@@ -213,4 +213,8 @@ def training_mgt(nn_mgr_N, args):
             fn_run_iteration(iteration)
             if update_count >= args.num_of_successes_for_model_upgrade:
                 break
-    return fn_execute_training_iterations
+
+    training_mgr  = namedtuple('_', ['fn_execute_training_iterations'])
+    training_mgr.fn_execute_training_iterations = fn_execute_training_iterations
+
+    return training_mgr

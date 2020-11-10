@@ -82,8 +82,8 @@ def agent_mgt(args, file_path):
         else:
             args.logger.warning('!!! Not loading a rel_model_path!')
 
-        fn_execute_training_iterations = training_mgt(neural_net, args)
-        fn_execute_training_iterations()
+        training_mgr = training_mgt(neural_net, args)
+        training_mgr.fn_execute_training_iterations()
 
         return agent_mgr
 
