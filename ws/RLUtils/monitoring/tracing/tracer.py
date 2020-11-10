@@ -5,7 +5,7 @@ import inspect
 def tracer(args):
     # recorder = args['fn_loger']
 
-    recorder = args.recorder
+    recorder = args.calltracer
     def function_wrapper_maker(fn):
         @functools.wraps(fn)
         def fn_wrapper(*args, **kwargs):
