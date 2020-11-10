@@ -21,7 +21,7 @@ from ws.RLAgents.self_play.alpha_zero.train.training_mgt import training_mgt
 from ws.RLEnvironments.self_play_games.othello.game_mgt import game_mgt as Game, game_mgt
 from ws.RLAgents.self_play.alpha_zero.train.neural_net_mgt import neural_net_mgt
 from ws.RLUtils.common.AppInfo import AppInfo
-from ws.RLUtils.monitoring.tracing.Recorder import Recorder
+from ws.RLUtils.monitoring.tracing.call_trace_mgt import call_trace_mgt
 from ws.RLUtils.monitoring.tracing.log_mgt import log_mgt
 from ws.RLUtils.monitoring.tracing.tracer import tracer
 
@@ -46,7 +46,7 @@ def agent_mgt(args, file_path):
     args.archive_dir = archive_dir
     args.fn_log = log_mgt(log_dir=archive_dir, fixed_log_file=True)
     start_time = time()
-    args.recorder = Recorder(args.fn_log)
+    args.recorder = call_trace_mgt(args.fn_log)
 
     src_model_folder = os.path.join(args.demo_folder, args.rel_model_path)
     src_model_file_path = os.path.join(src_model_folder, args.model_name)

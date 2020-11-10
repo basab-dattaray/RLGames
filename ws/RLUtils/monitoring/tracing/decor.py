@@ -1,6 +1,6 @@
 from functools import wraps
 
-from ws.RLUtils.monitoring.tracing.Recorder import Recorder
+from ws.RLUtils.monitoring.tracing.call_trace_mgt import call_trace_mgt
 
 def trace_container():
     def trace(fn):
