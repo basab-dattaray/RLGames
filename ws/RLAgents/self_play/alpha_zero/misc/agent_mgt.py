@@ -28,29 +28,7 @@ from ws.RLUtils.monitoring.tracing.tracer import tracer
 
 def agent_mgt(args, file_path):
 
-    args.logger = logging.getLogger(__name__)
-    args = args
-    args.demo_folder, args.demo_name = AppInfo.fn_get_path_and_app_name(file_path)
-    args.run_recursive_search = AppInfo.fn_arg_as_bool(args, 'run_recursive_search')
-    args.game = game_mgt(args.board_size)
-
-    _fn_init_arg_with_default_val(args, 'num_of_successes_for_model_upgrade', 1)
-    _fn_init_arg_with_default_val(args, 'rel_model_path', 'model/')
-    _fn_init_arg_with_default_val(args, 'do_load_model', False)
-    _fn_init_arg_with_default_val(args, 'do_load_samples', False)
-    _fn_init_arg_with_default_val(args, 'model_name', 'model.tar')
-    _fn_init_arg_with_default_val(args, 'temp_model_exchange_name', '_tmp.tar')
-
-    current_dir = file_path.rsplit('/', 1)[0]
-    archive_dir = current_dir.replace('/Demos/', '/Archives/')
-    args.archive_dir = archive_dir
-    args.fn_record = log_mgt(log_dir=archive_dir, fixed_log_file=True)
-
-    args.calltracer = call_trace_mgt(args.fn_record)
-
-    src_model_folder = os.path.join(args.demo_folder, args.rel_model_path)
-    args.src_model_file_path = os.path.join(src_model_folder, args.model_name)
-    args.old_model_file_path = os.path.join(src_model_folder, 'old_' + args.model_name)
+    args = setup(args, file_path)
 
     def exit_gracefully(signum, frame):
         #
@@ -185,6 +163,29 @@ def agent_mgt(args, file_path):
     agent_mgr.fn_archive_log_file = fn_archive_log_file
 
     return agent_mgr
+
+
+def setup(args, file_path):
+    args.logger = logging.getLogger(__name__)
+    args = args
+    args.demo_folder, args.demo_name = AppInfo.fn_get_path_and_app_name(file_path)
+    args.run_recursive_search = AppInfo.fn_arg_as_bool(args, 'run_recursive_search')
+    args.game = game_mgt(args.board_size)
+    _fn_init_arg_with_default_val(args, 'num_of_successes_for_model_upgrade', 1)
+    _fn_init_arg_with_default_val(args, 'rel_model_path', 'model/')
+    _fn_init_arg_with_default_val(args, 'do_load_model', False)
+    _fn_init_arg_with_default_val(args, 'do_load_samples', False)
+    _fn_init_arg_with_default_val(args, 'model_name', 'model.tar')
+    _fn_init_arg_with_default_val(args, 'temp_model_exchange_name', '_tmp.tar')
+    current_dir = file_path.rsplit('/', 1)[0]
+    archive_dir = current_dir.replace('/Demos/', '/Archives/')
+    args.archive_dir = archive_dir
+    args.fn_record = log_mgt(log_dir=archive_dir, fixed_log_file=True)
+    args.calltracer = call_trace_mgt(args.fn_record)
+    src_model_folder = os.path.join(args.demo_folder, args.rel_model_path)
+    args.src_model_file_path = os.path.join(src_model_folder, args.model_name)
+    args.old_model_file_path = os.path.join(src_model_folder, 'old_' + args.model_name)
+    return args
 
 
 def _fn_init_arg_with_default_val(args, name, val):
