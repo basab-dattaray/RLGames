@@ -34,18 +34,19 @@ def agent_mgt(args, file_path):
             if name not in args.keys():
                 args[name] = val
 
-        def _fn_init_training_mgr(args_out):
-            neural_net = neural_net_mgt(args_out)
-            if args_out.do_load_model:
+        def _fn_init_training_mgr(args_in):
+            # args_in = dotdict(args_in.copy())
+            neural_net_mgr = neural_net_mgt(args_in)
+            if args_in.do_load_model:
                 # nn_args.fn_record('Loading rel_model_path "%state/%state"...', nn_args.load_folder_file)
-                if not neural_net.fn_load_model():
-                    args_out.fn_record('*** unable to load model')
+                if not neural_net_mgr.fn_load_model():
+                    args_in.fn_record('*** unable to load model')
                 else:
-                    args_out.fn_record('!!! loaded model')
+                    args_in.fn_record('!!! loaded model')
             else:
-                args_out.logger.warning('!!! Not loading a rel_model_path!')
-            training_mgr = training_mgt(neural_net, args_out)
-            return training_mgr
+                args_in.logger.warning('!!! Not loading a rel_model_path!')
+            args_in.training_mgr = training_mgt(neural_net_mgr, args_in)
+            return args_in
 
         args_out = dotdict(args.copy())
         _fn_init_arg_with_default_val(args_out, 'logger',logging.getLogger(__name__))
@@ -69,7 +70,7 @@ def agent_mgt(args, file_path):
         args_out.src_model_file_path = os.path.join(src_model_folder, args_out.model_name)
         args_out.old_model_file_path = os.path.join(src_model_folder, 'old_' + args_out.model_name)
 
-        args_out.training_mgr = _fn_init_training_mgr(args_out)
+        args_out = _fn_init_training_mgr(args_out)
 
         return args_out
 
