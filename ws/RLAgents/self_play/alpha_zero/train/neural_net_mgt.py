@@ -33,15 +33,15 @@ def neural_net_mgt(args):
         'num_channels': 512,
     })
 
-    def fn_get_untrained_model():
+    def fn_get_untrained_model(arguments):
         # nn_args = nn_args
-        untrained_nn = NeuralNet(args.game, nn_args)
+        untrained_nn = NeuralNet(arguments.game, nn_args)
 
         if nn_args.cuda:
             untrained_nn.cuda()
         return untrained_nn
 
-    nnet = fn_get_untrained_model()
+    nnet = fn_get_untrained_model(args)
     board_x, board_y = args.game.fn_get_board_size(), args.game.fn_get_board_size()
     action_size = args.game.fn_get_action_size()
 

@@ -30,49 +30,60 @@ from ws.RLUtils.monitoring.tracing.tracer import tracer
 
 def agent_mgt(args, file_path):
     def _fn_setup(file_path):
-        def _fn_init_arg_with_default_val(args, name, val):
-            if name not in args.keys():
-                args[name] = val
+        def _fn_init_arg_with_default_val(arguments, name, val):
+            arguments = dotdict(arguments.copy())
+            if name not in arguments.keys():
+                arguments[name] = val
+            return arguments
 
-        def _fn_init_training_mgr(args_in):
-            # args_in = dotdict(args_in.copy())
-            neural_net_mgr = neural_net_mgt(args_in)
-            if args_in.do_load_model:
+        def _fn_init_training_mgr(arguments):
+            arguments = dotdict(arguments.copy())
+            neural_net_mgr = neural_net_mgt(arguments)
+            if arguments.do_load_model:
                 # nn_args.fn_record('Loading rel_model_path "%state/%state"...', nn_args.load_folder_file)
                 if not neural_net_mgr.fn_load_model():
-                    args_in.fn_record('*** unable to load model')
+                    arguments.fn_record('*** unable to load model')
                 else:
-                    args_in.fn_record('!!! loaded model')
+                    arguments.fn_record('!!! loaded model')
             else:
-                args_in.logger.warning('!!! Not loading a rel_model_path!')
-            args_in.training_mgr = training_mgt(neural_net_mgr, args_in)
-            return args_in
+                arguments.logger.warning('!!! Not loading a rel_model_path!')
+            arguments.training_mgr = training_mgt(neural_net_mgr, arguments)
+            return arguments
 
-        args_out = dotdict(args.copy())
-        _fn_init_arg_with_default_val(args_out, 'logger',logging.getLogger(__name__))
-        args_out.demo_folder, args_out.demo_name = AppInfo.fn_get_path_and_app_name(file_path)
-        args_out.run_recursive_search = AppInfo.fn_arg_as_bool(args_out, 'run_recursive_search')
+        # arguments = dotdict(args.copy())
+        arguments = _fn_init_arg_with_default_val(args, 'logger',logging.getLogger(__name__))
+        demo_folder, demo_name = AppInfo.fn_get_path_and_app_name(file_path)
+        arguments = _fn_init_arg_with_default_val(arguments, 'demo_folder', demo_folder)
+        arguments = _fn_init_arg_with_default_val(arguments, 'demo_name', demo_name)
 
-        args_out.game = game_mgt(args_out.board_size)
-
-        _fn_init_arg_with_default_val(args_out, 'num_of_successes_for_model_upgrade', 1)
-        _fn_init_arg_with_default_val(args_out, 'rel_model_path', 'model/')
-        _fn_init_arg_with_default_val(args_out, 'do_load_model', False)
-        _fn_init_arg_with_default_val(args_out, 'do_load_samples', False)
-        _fn_init_arg_with_default_val(args_out, 'model_name', 'model.tar')
-        _fn_init_arg_with_default_val(args_out, 'temp_model_exchange_name', '_tmp.tar')
+        # arguments.run_recursive_search = AppInfo.fn_arg_as_bool(arguments, 'run_recursive_search')
+        arguments = _fn_init_arg_with_default_val(arguments, 'run_recursive_search', AppInfo.fn_arg_as_bool(arguments, 'run_recursive_search'))
+        # arguments.game = game_mgt(arguments.board_size)
+        arguments = _fn_init_arg_with_default_val(arguments, 'game', game_mgt(arguments.board_size))
+        arguments = _fn_init_arg_with_default_val(arguments, 'num_of_successes_for_model_upgrade', 1)
+        arguments = _fn_init_arg_with_default_val(arguments, 'rel_model_path', 'model/')
+        arguments = _fn_init_arg_with_default_val(arguments, 'do_load_model', False)
+        arguments = _fn_init_arg_with_default_val(arguments, 'do_load_samples', False)
+        arguments = _fn_init_arg_with_default_val(arguments, 'model_name', 'model.tar')
+        arguments = _fn_init_arg_with_default_val(arguments, 'temp_model_exchange_name', '_tmp.tar')
         current_dir = file_path.rsplit('/', 1)[0]
         archive_dir = current_dir.replace('/Demos/', '/Archives/')
-        args_out.archive_dir = archive_dir
-        args_out.fn_record = log_mgt(log_dir=archive_dir, fixed_log_file=True)
-        args_out.calltracer = call_trace_mgt(args_out.fn_record)
-        src_model_folder = os.path.join(args_out.demo_folder, args_out.rel_model_path)
-        args_out.src_model_file_path = os.path.join(src_model_folder, args_out.model_name)
-        args_out.old_model_file_path = os.path.join(src_model_folder, 'old_' + args_out.model_name)
+        # arguments.archive_dir = archive_dir
+        arguments = _fn_init_arg_with_default_val(arguments, 'archive_dir', archive_dir)
+        # arguments.fn_record = log_mgt(log_dir=archive_dir, fixed_log_file=True)
+        arguments = _fn_init_arg_with_default_val(arguments, 'fn_record', log_mgt(log_dir=archive_dir, fixed_log_file=True))
+        # arguments.calltracer = call_trace_mgt(arguments.fn_record)
+        arguments = _fn_init_arg_with_default_val(arguments, 'calltracer', call_trace_mgt(arguments.fn_record))
+        src_model_folder = os.path.join(arguments.demo_folder, arguments.rel_model_path)
+        arguments = _fn_init_arg_with_default_val(arguments, 'calltracer', call_trace_mgt(arguments.fn_record))
+        # arguments.src_model_file_path = os.path.join(src_model_folder, arguments.model_name)
+        arguments = _fn_init_arg_with_default_val(arguments, 'src_model_file_path', os.path.join(src_model_folder, arguments.model_name))
+        # arguments.old_model_file_path = os.path.join(src_model_folder, 'old_' + arguments.model_name)
+        arguments = _fn_init_arg_with_default_val(arguments, 'old_model_file_path', os.path.join(src_model_folder, 'old_' + arguments.model_name))
 
-        args_out = _fn_init_training_mgr(args_out)
+        arguments = _fn_init_training_mgr(arguments)
 
-        return args_out
+        return arguments
 
     args = _fn_setup(file_path)
 
