@@ -39,6 +39,7 @@ def agent_mgt(args, file_path):
         def _fn_init_training_mgr(arguments):
             arguments = dotdict(arguments.copy())
             neural_net_mgr = neural_net_mgt(arguments)
+            arguments = _fn_init_arg_with_default_val(arguments, 'neural_net_mgr', neural_net_mgr)
             if arguments.do_load_model:
                 # nn_args.fn_record('Loading rel_model_path "%state/%state"...', nn_args.load_folder_file)
                 if not neural_net_mgr.fn_load_model():
@@ -47,7 +48,8 @@ def agent_mgt(args, file_path):
                     arguments.fn_record('!!! loaded model')
             else:
                 arguments.logger.warning('!!! Not loading a rel_model_path!')
-            arguments.training_mgr = training_mgt(neural_net_mgr, arguments)
+            training_mgr = training_mgt(neural_net_mgr, arguments)
+            arguments = _fn_init_arg_with_default_val(arguments, 'training_mgr', training_mgr)
             return arguments
 
         # arguments = dotdict(args.copy())

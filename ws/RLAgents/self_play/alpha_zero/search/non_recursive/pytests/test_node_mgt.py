@@ -1,6 +1,7 @@
 import pytest
 
 from ws.RLAgents.self_play.alpha_zero.misc.agent_mgt import agent_mgt
+from ws.RLAgents.self_play.alpha_zero.search.mcts_adapter import mcts_adapter
 from ws.RLAgents.self_play.alpha_zero.search.non_recursive.pytests.ARGS import args
 # from ..node_mgt import node_mgt
 # from ...mcts_adapter import mcts_adapter
@@ -9,15 +10,25 @@ from ws.RLAgents.self_play.alpha_zero.search.non_recursive.pytests.ARGS import a
 GAME_SIZE= 5
 
 @pytest.fixture()
-def init_agent():
+def setup():
 
     agent = agent_mgt(args, __file__)
+
+    mcts = mcts_adapter(agent.arguments.neural_net_mgr, agent.arguments)
     return agent
 
+def fn_get_state():
+    board_size = GAME_SIZE ** 2
+    pieces = [None] * board_size
+    for i in range(board_size):
+        pieces[i] = [0] * board_size
+    return pieces
 
-def test_create_root_node(init_agent):
+def test_create_root_node(setup):
     # agent = init_agent(args, __file__)
-    args = init_agent.arguments
+    args = setup.arguments
+
+    state = fn_get_state()
 
     x = 3
 
