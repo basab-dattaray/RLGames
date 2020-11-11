@@ -28,18 +28,18 @@ from ws.RLUtils.monitoring.tracing.log_mgt import log_mgt
 from ws.RLUtils.monitoring.tracing.tracer import tracer
 
 
+def fn_init_arg_with_default_val(arguments, name, val):
+    arguments = dotdict(arguments.copy())
+    if name not in arguments.keys():
+        arguments[name] = val
+    return arguments
+
 def agent_mgt(args, file_path):
     def _fn_setup(file_path):
-        def _fn_init_arg_with_default_val(arguments, name, val):
-            arguments = dotdict(arguments.copy())
-            if name not in arguments.keys():
-                arguments[name] = val
-            return arguments
-
         def _fn_init_training_mgr(arguments):
             arguments = dotdict(arguments.copy())
             neural_net_mgr = neural_net_mgt(arguments)
-            arguments = _fn_init_arg_with_default_val(arguments, 'neural_net_mgr', neural_net_mgr)
+            arguments = fn_init_arg_with_default_val(arguments, 'neural_net_mgr', neural_net_mgr)
             if arguments.do_load_model:
                 # nn_args.fn_record('Loading rel_model_path "%state/%state"...', nn_args.load_folder_file)
                 if not neural_net_mgr.fn_load_model():
@@ -49,39 +49,39 @@ def agent_mgt(args, file_path):
             else:
                 arguments.logger.warning('!!! Not loading a rel_model_path!')
             training_mgr = training_mgt(neural_net_mgr, arguments)
-            arguments = _fn_init_arg_with_default_val(arguments, 'training_mgr', training_mgr)
+            arguments = fn_init_arg_with_default_val(arguments, 'training_mgr', training_mgr)
             return arguments
 
         # arguments = dotdict(args.copy())
-        arguments = _fn_init_arg_with_default_val(args, 'logger',logging.getLogger(__name__))
+        arguments = fn_init_arg_with_default_val(args, 'logger', logging.getLogger(__name__))
         demo_folder, demo_name = AppInfo.fn_get_path_and_app_name(file_path)
-        arguments = _fn_init_arg_with_default_val(arguments, 'demo_folder', demo_folder)
-        arguments = _fn_init_arg_with_default_val(arguments, 'demo_name', demo_name)
+        arguments = fn_init_arg_with_default_val(arguments, 'demo_folder', demo_folder)
+        arguments = fn_init_arg_with_default_val(arguments, 'demo_name', demo_name)
 
         # arguments.run_recursive_search = AppInfo.fn_arg_as_bool(arguments, 'run_recursive_search')
-        arguments = _fn_init_arg_with_default_val(arguments, 'run_recursive_search', AppInfo.fn_arg_as_bool(arguments, 'run_recursive_search'))
+        arguments = fn_init_arg_with_default_val(arguments, 'run_recursive_search', AppInfo.fn_arg_as_bool(arguments, 'run_recursive_search'))
         # arguments.game = game_mgt(arguments.board_size)
-        arguments = _fn_init_arg_with_default_val(arguments, 'game', game_mgt(arguments.board_size))
-        arguments = _fn_init_arg_with_default_val(arguments, 'num_of_successes_for_model_upgrade', 1)
-        arguments = _fn_init_arg_with_default_val(arguments, 'rel_model_path', 'model/')
-        arguments = _fn_init_arg_with_default_val(arguments, 'do_load_model', False)
-        arguments = _fn_init_arg_with_default_val(arguments, 'do_load_samples', False)
-        arguments = _fn_init_arg_with_default_val(arguments, 'model_name', 'model.tar')
-        arguments = _fn_init_arg_with_default_val(arguments, 'temp_model_exchange_name', '_tmp.tar')
+        arguments = fn_init_arg_with_default_val(arguments, 'game', game_mgt(arguments.board_size))
+        arguments = fn_init_arg_with_default_val(arguments, 'num_of_successes_for_model_upgrade', 1)
+        arguments = fn_init_arg_with_default_val(arguments, 'rel_model_path', 'model/')
+        arguments = fn_init_arg_with_default_val(arguments, 'do_load_model', False)
+        arguments = fn_init_arg_with_default_val(arguments, 'do_load_samples', False)
+        arguments = fn_init_arg_with_default_val(arguments, 'model_name', 'model.tar')
+        arguments = fn_init_arg_with_default_val(arguments, 'temp_model_exchange_name', '_tmp.tar')
         current_dir = file_path.rsplit('/', 1)[0]
         archive_dir = current_dir.replace('/Demos/', '/Archives/')
         # arguments.archive_dir = archive_dir
-        arguments = _fn_init_arg_with_default_val(arguments, 'archive_dir', archive_dir)
+        arguments = fn_init_arg_with_default_val(arguments, 'archive_dir', archive_dir)
         # arguments.fn_record = log_mgt(log_dir=archive_dir, fixed_log_file=True)
-        arguments = _fn_init_arg_with_default_val(arguments, 'fn_record', log_mgt(log_dir=archive_dir, fixed_log_file=True))
+        arguments = fn_init_arg_with_default_val(arguments, 'fn_record', log_mgt(log_dir=archive_dir, fixed_log_file=True))
         # arguments.calltracer = call_trace_mgt(arguments.fn_record)
-        arguments = _fn_init_arg_with_default_val(arguments, 'calltracer', call_trace_mgt(arguments.fn_record))
+        arguments = fn_init_arg_with_default_val(arguments, 'calltracer', call_trace_mgt(arguments.fn_record))
         src_model_folder = os.path.join(arguments.demo_folder, arguments.rel_model_path)
-        arguments = _fn_init_arg_with_default_val(arguments, 'calltracer', call_trace_mgt(arguments.fn_record))
+        arguments = fn_init_arg_with_default_val(arguments, 'calltracer', call_trace_mgt(arguments.fn_record))
         # arguments.src_model_file_path = os.path.join(src_model_folder, arguments.model_name)
-        arguments = _fn_init_arg_with_default_val(arguments, 'src_model_file_path', os.path.join(src_model_folder, arguments.model_name))
+        arguments = fn_init_arg_with_default_val(arguments, 'src_model_file_path', os.path.join(src_model_folder, arguments.model_name))
         # arguments.old_model_file_path = os.path.join(src_model_folder, 'old_' + arguments.model_name)
-        arguments = _fn_init_arg_with_default_val(arguments, 'old_model_file_path', os.path.join(src_model_folder, 'old_' + arguments.model_name))
+        arguments = fn_init_arg_with_default_val(arguments, 'old_model_file_path', os.path.join(src_model_folder, 'old_' + arguments.model_name))
 
         arguments = _fn_init_training_mgr(arguments)
 
