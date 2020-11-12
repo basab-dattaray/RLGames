@@ -48,9 +48,10 @@ def mcts_adapter(neural_net_mgr, args):
     )
     fn_get_action_probabilities = lambda state, spread_probabilities: mcts.fn_get_action_probabilities(state, spread_probabilities)
 
-    mtcs_adapter = namedtuple('_', ['fn_get_action_probabilities'])
+    mtcs_adapter = namedtuple('_', ['fn_get_action_probabilities', 'fn_get_normalized_predictions', 'fn_terminal_value'])
     mtcs_adapter.fn_get_action_probabilities=fn_get_action_probabilities
-
+    mtcs_adapter.fn_get_normalized_predictions=fn_get_normalized_predictions
+    mtcs_adapter.fn_terminal_value = fn_terminal_value
     return mtcs_adapter
 
 

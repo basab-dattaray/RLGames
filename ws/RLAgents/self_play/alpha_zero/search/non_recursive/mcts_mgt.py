@@ -121,8 +121,8 @@ def mcts_mgt(
         value = selected_node.fn_back_propagate(score)
         return value
 
-    mcts_mgr = namedtuple('_', ['fn_get_action_probabilities'])
+    mcts_mgr = namedtuple('_', ['fn_get_action_probabilities', 'fn_execute_monte_carlo_tree_search'])
     mcts_mgr.fn_get_action_probabilities = fn_get_action_probabilities
-
+    mcts_mgr.fn_execute_monte_carlo_tree_search = fn_execute_monte_carlo_tree_search
     return mcts_mgr
 

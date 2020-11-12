@@ -1,7 +1,8 @@
 import pytest
 
-from ws.RLAgents.self_play.alpha_zero.misc.agent_mgt import agent_mgt
+from ws.RLAgents.self_play.alpha_zero.misc.agent_mgt import agent_mgt, fn_init_arg_with_default_val
 from ws.RLAgents.self_play.alpha_zero.search.mcts_adapter import mcts_adapter
+from ws.RLAgents.self_play.alpha_zero.search.non_recursive.node_mgt import node_mgt
 from ws.RLAgents.self_play.alpha_zero.search.non_recursive.pytests.ARGS import args
 # from ..node_mgt import node_mgt
 # from ...mcts_adapter import mcts_adapter
@@ -15,7 +16,10 @@ def setup():
     agent = agent_mgt(args, __file__)
 
     mcts = mcts_adapter(agent.arguments.neural_net_mgr, agent.arguments)
-    return agent
+    fn_get_normalized_predictions = mcts.fn_get_normalized_predictions
+    arguments = fn_init_arg_with_default_val(agent.arguments, 'fn_get_normalized_predictions', fn_get_normalized_predictions)
+
+    return arguments
 
 def fn_get_state():
     board_size = GAME_SIZE ** 2
@@ -26,22 +30,21 @@ def fn_get_state():
 
 def test_create_root_node(setup):
     # agent = init_agent(args, __file__)
-    args = setup.arguments
-
+    args = setup
     state = fn_get_state()
 
-    x = 3
+    root_node = node_mgt(
+        state,
+        args.fn_get_normalized_predictions,
+        args.game.fn_get_action_size(),
+        args.cpuct_exploration_exploitation_factor,
 
-    # root_node = node_mgt(
-    #     state,
-    #     fn_get_normalized_predictions,
-    #     max_num_actions,
-    #     explore_exploit_ratio,
-    #
-    #     parent_action=-1,
-    #     val=0.0,
-    #     parent_node=None
-    # )
+        parent_action=-1,
+        val=0.0,
+        parent_node=None
+    )
+
+    assert root_node is not None
 
 
 
