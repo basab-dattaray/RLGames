@@ -7,8 +7,6 @@ from collections import namedtuple
 
 import numpy
 
-# from .Node import Node
-
 from .mcts_cache_mgt import mcts_cache_mgt
 from .node_mgt import node_mgt
 from ..mcts_probability_mgt import mcts_probability_mgt
@@ -30,7 +28,6 @@ def mcts_mgt(
             fn_get_state_key,
             fn_terminal_value
     )
-
 
     root_node = None
 

@@ -8,7 +8,6 @@ from ws.RLEnvironments.self_play_games.othello.flip_mgt import flip_mgt
 
 def board_mgt(board_size):
 
-
     board_size = board_size
     # Create the empty board_pieces array.
     # board_pieces =  fn_init_board()

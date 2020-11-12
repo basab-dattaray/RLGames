@@ -7,6 +7,8 @@ from ws.RLAgents.self_play.alpha_zero.search.non_recursive.pytests.ARGS import a
 # from ..node_mgt import node_mgt
 # from ...mcts_adapter import mcts_adapter
 # from ws.RLEnvironments.self_play_games.othello.game_mgt import game_mgt
+from ws.RLEnvironments.self_play_games.othello.board_mgt import board_mgt
+from ws.RLEnvironments.self_play_games.othello.game_mgt import game_mgt
 
 GAME_SIZE= 5
 
@@ -33,13 +35,15 @@ def fn_get_state():
 def test_fn_execute_monte_carlo_tree_search(setup):
     # agent = init_agent(args, __file__)
     args = setup.arguments
-    state = fn_get_state()
+
+    # state = args.game.fn_init_board()
+    state = game_mgt(GAME_SIZE).fn_get_init_board()
 
     mcts = mcts_adapter(args.neural_net_mgr, args)
     # fn_get_normalized_predictions = mcts.fn_get_normalized_predictions
     # arguments = fn_init_arg_with_default_val(agent.arguments, 'mcts', mcts)
 
-    value = mcts_mgt(
+    mcts_mgr = mcts_mgt(
         mcts.fn_get_normalized_predictions,
         args.game.fn_get_state_key,
         args.game.fn_get_next_state,
@@ -50,7 +54,14 @@ def test_fn_execute_monte_carlo_tree_search(setup):
         args.game.fn_get_action_size()
     )
 
-    assert value is not None
+    assert mcts_mgr.fn_execute_monte_carlo_tree_search is not None
+    assert mcts_mgr.fn_get_action_probabilities is not None
+
+    qval = mcts_mgr.fn_execute_monte_carlo_tree_search(state)
+
+    assert qval == 1
+
+
 
 
 
