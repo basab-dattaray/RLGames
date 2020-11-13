@@ -3,9 +3,8 @@ import logging
 import math
 import os
 import signal
-# import timeit
 from collections import namedtuple
-from copy import deepcopy
+
 from shutil import copy, move
 from time import time
 from datetime import datetime as dt
@@ -46,8 +45,7 @@ def agent_mgt(args, file_path):
                     arguments.fn_record('*** unable to load model')
                 else:
                     arguments.fn_record('!!! loaded model')
-            else:
-                arguments.logger.warning('!!! Not loading a rel_model_path!')
+
             training_mgr = training_mgt(neural_net_mgr, arguments)
             arguments = fn_init_arg_with_default_val(arguments, 'training_mgr', training_mgr)
             return arguments
@@ -68,19 +66,13 @@ def agent_mgt(args, file_path):
         arguments = fn_init_arg_with_default_val(arguments, 'temp_model_exchange_name', '_tmp.tar')
         current_dir = file_path.rsplit('/', 1)[0]
         archive_dir = current_dir.replace('/Demos/', '/Archives/')
-        # arguments.archive_dir = archive_dir
         arguments = fn_init_arg_with_default_val(arguments, 'archive_dir', archive_dir)
-        # arguments.fn_record = log_mgt(log_dir=archive_dir, fixed_log_file=True)
         arguments = fn_init_arg_with_default_val(arguments, 'fn_record', log_mgt(log_dir=archive_dir, fixed_log_file=True))
-        # arguments.calltracer = call_trace_mgt(arguments.fn_record)
         arguments = fn_init_arg_with_default_val(arguments, 'calltracer', call_trace_mgt(arguments.fn_record))
         src_model_folder = os.path.join(arguments.demo_folder, arguments.rel_model_path)
         arguments = fn_init_arg_with_default_val(arguments, 'calltracer', call_trace_mgt(arguments.fn_record))
-        # arguments.src_model_file_path = os.path.join(src_model_folder, arguments.model_name)
         arguments = fn_init_arg_with_default_val(arguments, 'src_model_file_path', os.path.join(src_model_folder, arguments.model_name))
-        # arguments.old_model_file_path = os.path.join(src_model_folder, 'old_' + arguments.model_name)
         arguments = fn_init_arg_with_default_val(arguments, 'old_model_file_path', os.path.join(src_model_folder, 'old_' + arguments.model_name))
-
         arguments = _fn_init_training_mgr(arguments)
 
         return arguments
