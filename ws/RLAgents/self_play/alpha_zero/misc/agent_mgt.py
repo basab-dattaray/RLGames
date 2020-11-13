@@ -59,7 +59,7 @@ def agent_mgt(args, file_path):
         arguments = fn_init_arg_with_default_val(arguments, 'demo_name', demo_name)
 
         arguments = fn_init_arg_with_default_val(arguments, 'run_recursive_search', AppInfo.fn_arg_as_bool(arguments, 'run_recursive_search'))
-        arguments = fn_init_arg_with_default_val(arguments, 'game', game_mgt(arguments.board_size))
+        arguments = fn_init_arg_with_default_val(arguments, 'game_mgr', game_mgt(arguments.board_size))
         arguments = fn_init_arg_with_default_val(arguments, 'num_of_successes_for_model_upgrade', 1)
         arguments = fn_init_arg_with_default_val(arguments, 'rel_model_path', 'model/')
         arguments = fn_init_arg_with_default_val(arguments, 'do_load_model', False)
@@ -134,8 +134,8 @@ def agent_mgt(args, file_path):
 
         system_mcts = mcts_adapter(system_nn, args)
         fn_system_policy = lambda x: numpy.argmax(system_mcts.fn_get_action_probabilities(x, spread_probabilities=0))
-        fn_contender_policy = fn_player_policy(args.game)
-        arena = playground_mgt(fn_system_policy, fn_contender_policy, args.game, fn_display=game_mgt(args['board_size']).fn_display,
+        fn_contender_policy = fn_player_policy(args.game_mgr)
+        arena = playground_mgt(fn_system_policy, fn_contender_policy, args.game_mgr, fn_display=game_mgt(args['board_size']).fn_display,
                       msg_recorder=args.calltracer.fn_write)
         system_wins, system_losses, draws = arena.fn_play_games(args.num_of_test_games, verbose=verbose)
 

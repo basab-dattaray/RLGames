@@ -7,10 +7,10 @@ from ws.RLAgents.self_play.alpha_zero.search.recursive.mcts_r_mgr import mcts_r_
 
 
 def mcts_adapter(neural_net_mgr, args):
-    game = args.game
+    game_mgr = args.game_mgr
     fn_predict_action_probablities = neural_net_mgr.predict
-    fn_get_valid_actions = lambda board: game.fn_get_valid_moves(board, 1)
-    fn_terminal_value = lambda pieces: game.fn_get_game_progress_status(pieces, 1)
+    fn_get_valid_actions = lambda board: game_mgr.fn_get_valid_moves(board, 1)
+    fn_terminal_value = lambda pieces: game_mgr.fn_get_game_progress_status(pieces, 1)
 
     monte_carlo_tree_search = mcts_mgt
     if args.run_recursive_search:
@@ -38,13 +38,13 @@ def mcts_adapter(neural_net_mgr, args):
 
     mcts = monte_carlo_tree_search(
         fn_get_normalized_predictions = fn_get_normalized_predictions,
-        fn_get_state_key = game.fn_get_state_key,
-        fn_get_next_state = game.fn_get_next_state,
-        fn_get_canonical_form = game.fn_get_canonical_form,
+        fn_get_state_key = game_mgr.fn_get_state_key,
+        fn_get_next_state = game_mgr.fn_get_next_state,
+        fn_get_canonical_form = game_mgr.fn_get_canonical_form,
         fn_terminal_value= fn_terminal_value,
         num_mcts_simulations=args.num_of_mc_simulations,
         explore_exploit_ratio=args.cpuct_exploration_exploitation_factor,
-        max_num_actions=game.fn_get_action_size()
+        max_num_actions=game_mgr.fn_get_action_size()
     )
     fn_get_action_probabilities = lambda state, spread_probabilities: mcts.fn_get_action_probabilities(state, spread_probabilities)
 

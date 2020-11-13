@@ -39,13 +39,13 @@ def test_fn_execute_monte_carlo_tree_search(setup):
 
     mcts_mgr = mcts_mgt(
         mcts.fn_get_normalized_predictions,
-        args.game.fn_get_state_key,
-        args.game.fn_get_next_state,
-        args.game.fn_get_canonical_form,
+        args.game_mgr.fn_get_state_key,
+        args.game_mgr.fn_get_next_state,
+        args.game_mgr.fn_get_canonical_form,
         mcts.fn_terminal_value,
         args.num_of_mc_simulations,
         args.cpuct_exploration_exploitation_factor,
-        args.game.fn_get_action_size()
+        args.game_mgr.fn_get_action_size()
     )
 
     assert mcts_mgr.fn_execute_monte_carlo_tree_search is not None

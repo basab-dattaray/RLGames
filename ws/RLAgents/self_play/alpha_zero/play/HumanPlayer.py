@@ -1,23 +1,23 @@
 
 class HumanPlayer():
-    def __init__(self, game):
-        self.game = game
+    def __init__(self, game_mgr):
+        self.game_mgr = game_mgr
 
     def play(self, board):
         # fn_display(board_pieces)
-        valid = self.game.fn_get_valid_moves(board, 1)
+        valid = self.game_mgr.fn_get_valid_moves(board, 1)
         for i in range(len(valid)):
             if valid[i]:
-                print("[", int(i/self.game.fn_get_board_size()), int(i%self.game.fn_get_board_size()), end="] ")
+                print("[", int(i/self.game_mgr.fn_get_board_size()), int(i%self.game_mgr.fn_get_board_size()), end="] ")
         while True:
             input_move = input()
             input_a = input_move.split(" ")
             if len(input_a) == 2:
                 try:
                     x,y = [int(i) for i in input_a]
-                    if ((0 <= x) and (x < self.game.fn_get_board_size()) and (0 <= y) and (y < self.game.fn_get_board_size())) or \
-                            ((x == self.game.board_size) and (y == 0)):
-                        a = self.game.fn_get_board_size() * x + y if x != -1 else self.game.fn_get_board_size() ** 2
+                    if ((0 <= x) and (x < self.game_mgr.fn_get_board_size()) and (0 <= y) and (y < self.game_mgr.fn_get_board_size())) or \
+                            ((x == self.game_mgr.board_size) and (y == 0)):
+                        a = self.game_mgr.fn_get_board_size() * x + y if x != -1 else self.game_mgr.fn_get_board_size() ** 2
                         if valid[a]:
                             break
                 except ValueError:

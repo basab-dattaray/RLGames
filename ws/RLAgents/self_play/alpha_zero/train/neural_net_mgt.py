@@ -35,7 +35,7 @@ def neural_net_mgt(args):
 
     def fn_get_untrained_model(arguments):
         # nn_args = nn_args
-        untrained_nn = NeuralNet(arguments.game, nn_args)
+        untrained_nn = NeuralNet(arguments.game_mgr, nn_args)
 
         if nn_args.cuda:
             untrained_nn.cuda()
@@ -43,7 +43,7 @@ def neural_net_mgt(args):
 
     nnet = fn_get_untrained_model(args)
     board_x, board_y = args.board_size, args.board_size
-    action_size = args.game.fn_get_action_size()
+    action_size = args.game_mgr.fn_get_action_size()
 
     # @tracer(nn_args)
     def fn_adjust_model_from_examples(examples):

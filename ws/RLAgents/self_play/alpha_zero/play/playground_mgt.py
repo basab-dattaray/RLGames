@@ -10,7 +10,7 @@ from ws.RLUtils.monitoring.tracing.progress_count_mgt import progress_count_mgt
 
 # log = logging.getLogger(__name__)
 
-def playground_mgt(player1, player2, game, fn_display=None, msg_recorder = None):
+def playground_mgt(player1, player2, game_mgr, fn_display=None, msg_recorder = None):
     game_num = 0
 
     def _fn_play_game(verbose=False):
@@ -19,11 +19,11 @@ def playground_mgt(player1, player2, game, fn_display=None, msg_recorder = None)
 
         players = [player2, None, player1]
         cur_player_index = 1
-        pieces = game.fn_get_init_board()
+        pieces = game_mgr.fn_get_init_board()
         it = 0
 
         break_from_while = False
-        while game.fn_get_game_progress_status(pieces, cur_player_index) == 0:
+        while game_mgr.fn_get_game_progress_status(pieces, cur_player_index) == 0:
             it += 1
             if verbose:
                 assert fn_display
@@ -33,9 +33,9 @@ def playground_mgt(player1, player2, game, fn_display=None, msg_recorder = None)
             cur_player = player1 if cur_player_index == 1 else player2
 
             # cur_player = players[cur_player_index + 1]
-            action = cur_player(game.fn_get_canonical_form(pieces, cur_player_index))
+            action = cur_player(game_mgr.fn_get_canonical_form(pieces, cur_player_index))
 
-            valids = game.fn_get_valid_moves(game.fn_get_canonical_form(pieces, cur_player_index), 1)
+            valids = game_mgr.fn_get_valid_moves(game_mgr.fn_get_canonical_form(pieces, cur_player_index), 1)
 
             if valids[action] == 0:
                 if DEBUG:
@@ -58,9 +58,9 @@ def playground_mgt(player1, player2, game, fn_display=None, msg_recorder = None)
                 break_from_while = True
                 break
 
-            pieces, cur_player_index = game.fn_get_next_state(pieces, cur_player_index, action)
+            pieces, cur_player_index = game_mgr.fn_get_next_state(pieces, cur_player_index, action)
 
-        game_status = game.fn_game_status(pieces)
+        game_status = game_mgr.fn_game_status(pieces)
 
         if verbose:
             assert fn_display
@@ -71,7 +71,7 @@ def playground_mgt(player1, player2, game, fn_display=None, msg_recorder = None)
         result = game_status
         if DEBUG:
             color = Fore.RED
-            game_status1 = game.fn_get_game_progress_status(pieces, cur_player_index)
+            game_status1 = game_mgr.fn_get_game_progress_status(pieces, cur_player_index)
 
             result1 = cur_player_index * game_status1
             if result == result1:

@@ -36,7 +36,7 @@ def test_create_root_node(setup):
     root_node = node_mgt(
         state,
         args.fn_get_normalized_predictions,
-        args.game.fn_get_action_size(),
+        args.game_mgr.fn_get_action_size(),
         args.cpuct_exploration_exploitation_factor,
 
         parent_action=-1,

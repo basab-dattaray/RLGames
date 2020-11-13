@@ -21,7 +21,7 @@ def training_mgt(nn_mgr_N, args):
 
     DEBUG_FLAG = False
 
-    game = args.game
+    game_mgr = args.game_mgr
 
     nn_mgr_P = copy.deepcopy(nn_mgr_N)
 
@@ -82,12 +82,12 @@ def training_mgt(nn_mgr_N, args):
 
                 def _fn_run_episodes():
                     trainExamples = []
-                    current_pieces = game.fn_get_init_board()
+                    current_pieces = game_mgr.fn_get_init_board()
                     curPlayer = 1
                     episode_step = 0
 
                     def _fn_run_one_episode(trainExamples, current_pieces, curPlayer, episode_step):
-                        canonical_board_pieces = game.fn_get_canonical_form(current_pieces, curPlayer)
+                        canonical_board_pieces = game_mgr.fn_get_canonical_form(current_pieces, curPlayer)
                         spread_probabilities = int(episode_step < args.probability_spread_threshold)
 
                         action_probs = generation_mcts.fn_get_action_probabilities(canonical_board_pieces,
@@ -95,13 +95,13 @@ def training_mgt(nn_mgr_N, args):
                         if action_probs is None:
                             return None
 
-                        symetric_samples = game.fn_get_symetric_samples(canonical_board_pieces, action_probs)
+                        symetric_samples = game_mgr.fn_get_symetric_samples(canonical_board_pieces, action_probs)
                         # trainExamples = map(lambda b, p: trainExamples.append([b, curPlayer, p, None]), sym)
                         for sym_canon_board, canon_action_probs in symetric_samples:
                             trainExamples.append((sym_canon_board, curPlayer, canon_action_probs))
 
                         action = np.random.choice(len(action_probs), p=action_probs)
-                        next_pieces, player_next = game.fn_get_next_state(current_pieces, curPlayer, action)
+                        next_pieces, player_next = game_mgr.fn_get_next_state(current_pieces, curPlayer, action)
 
                         if DEBUG_FLAG:
                             print()
@@ -117,7 +117,7 @@ def training_mgt(nn_mgr_N, args):
                         episode_step += 1
 
                         trainExamples,current_pieces, curPlayer = _fn_run_one_episode(trainExamples, current_pieces, curPlayer, episode_step)
-                        game_status = game.fn_get_game_progress_status(current_pieces, curPlayer)
+                        game_status = game_mgr.fn_get_game_progress_status(current_pieces, curPlayer)
 
                         if game_status != 0 or curPlayer is None:
                             return fn_form_sample_data(curPlayer, game_status, trainExamples)
@@ -163,7 +163,7 @@ def training_mgt(nn_mgr_N, args):
                 # nn_args.calltracer.fn_write(f'* Comptete with Previous Version', indent=0)
                 arena = playground_mgt(lambda x: np.argmax(pmcts.fn_get_action_probabilities(x, spread_probabilities=0)),
                               lambda x: np.argmax(nmcts.fn_get_action_probabilities(x, spread_probabilities=0)),
-                              game,
+                              game_mgr,
                               msg_recorder=args.calltracer.fn_write)
                 pwins, nwins, draws = arena.fn_play_games(args.number_of_games_for_model_comarison)
                 args.fn_record()
