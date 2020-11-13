@@ -36,22 +36,22 @@ def training_mgt(nn_mgr_N, args):
         with open(filename, "wb+") as f:
             Pickler(f).dump(training_samples_buffer)
 
-    def _fn_load_train_examples():
-        modelFile = os.path.join(args.load_folder_file[0], args.load_folder_file[1])
-        examplesFile = modelFile + ".examples"
-        if not os.path.isfile(examplesFile):
-            args.logger.warning(f'File "{examplesFile}" with trainExamples not found!')
-            r = input("Continue? [y|size]")
-            if r != "y":
-                sys.exit()
-        else:
-            args.fn_record("File with trainExamples found. Loading it...")
-            with open(examplesFile, "rb") as f:
-                training_samples_buffer = Unpickler(f).load()
-            args.fn_record('Loading done!')
-
-            # examples based on the model were already collected (loaded)
-            skipFirstSelfPlay = True
+    # def _fn_load_train_examples():
+    #     modelFile = os.path.join(args.load_folder_file[0], args.load_folder_file[1])
+    #     examplesFile = modelFile + ".examples"
+    #     if not os.path.isfile(examplesFile):
+    #         args.logger.warning(f'File "{examplesFile}" with trainExamples not found!')
+    #         r = input("Continue? [y|size]")
+    #         if r != "y":
+    #             sys.exit()
+    #     else:
+    #         args.fn_record("File with trainExamples found. Loading it...")
+    #         with open(examplesFile, "rb") as f:
+    #             training_samples_buffer = Unpickler(f).load()
+    #         args.fn_record('Loading done!')
+    #
+    #         # examples based on the model were already collected (loaded)
+    #         skipFirstSelfPlay = True
 
     def _fn_log_iter_results(draws, iteration, nwins, pwins):
         args.calltracer.fn_write(f'-- Iter {iteration} of {args.num_of_training_iterations}', indent=0)
@@ -61,7 +61,7 @@ def training_mgt(nn_mgr_N, args):
         args.calltracer.fn_write(score)
 
     training_samples_buffer = []  # history of examples from nn_args.sample_history_buffer_size latest iterations
-    skipFirstSelfPlay = False  # can be overriden in loadTrainExamples()
+    # skipFirstSelfPlay = False  # can be overriden in loadTrainExamples()
 
     def fn_form_sample_data(current_player, run_result, training_samples):
         sample_data = []
@@ -116,14 +116,14 @@ def training_mgt(nn_mgr_N, args):
                     while True:
                         episode_step += 1
 
-                        trainExamples,current_pieces, curPlayer = _fn_run_one_episode(trainExamples, current_pieces, curPlayer, episode_step)
+                        trainExamples, current_pieces, curPlayer = _fn_run_one_episode(trainExamples, current_pieces, curPlayer, episode_step)
                         game_status = game_mgr.fn_get_game_progress_status(current_pieces, curPlayer)
 
                         if game_status != 0 or curPlayer is None:
                             return fn_form_sample_data(curPlayer, game_status, trainExamples)
 
                 # examples of the iteration
-                if not skipFirstSelfPlay or iteration > 1:
+                if iteration > 1:
                     samples_for_iteration = deque([], maxlen=args.sample_buffer_size)
                     fn_count_event, fn_stop_counting = progress_count_mgt('Episodes', args.num_of_training_episodes)
                     for episode_num in range(1, args.num_of_training_episodes + 1):
@@ -204,10 +204,10 @@ def training_mgt(nn_mgr_N, args):
                 update_count += 1
 
             args.calltracer.fn_write(Fore.BLACK)
-
-        if args.do_load_samples:
-            args.fn_record("!!!  loading 'samples' from file...")
-            _fn_load_train_examples()
+        #
+        # if args.do_load_samples:
+        #     args.fn_record("!!!  loading 'samples' from file...")
+        #     _fn_load_train_examples()
 
         for iteration in range(1, args.num_of_training_iterations + 1):
             fn_run_iteration(iteration)
