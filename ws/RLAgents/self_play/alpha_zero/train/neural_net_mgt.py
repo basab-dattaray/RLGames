@@ -42,7 +42,7 @@ def neural_net_mgt(args):
         return untrained_nn
 
     nnet = fn_get_untrained_model(args)
-    board_x, board_y = args.game.fn_get_board_size(), args.game.fn_get_board_size()
+    board_x, board_y = args.board_size, args.board_size
     action_size = args.game.fn_get_action_size()
 
     # @tracer(nn_args)

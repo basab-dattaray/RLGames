@@ -17,12 +17,6 @@ def setup():
 
     agent = agent_mgt(args, __file__)
 
-
-    # arguments = fn_init_arg_with_default_val(arguments, 'fn_get_state_key', arguments.game.fn_get_state_key)
-    # arguments = fn_init_arg_with_default_val(arguments, 'fn_get_next_state', arguments.game.fn_get_next_state)
-    # arguments = fn_init_arg_with_default_val(arguments, 'fn_get_canonical_form', arguments.game.fn_get_canonical_form)
-    # arguments = fn_init_arg_with_default_val(agent.arguments, 'fn_terminal_value', mcts.fn_terminal_value)
-
     return agent
 
 def fn_get_state():

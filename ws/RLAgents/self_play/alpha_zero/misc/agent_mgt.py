@@ -58,9 +58,7 @@ def agent_mgt(args, file_path):
         arguments = fn_init_arg_with_default_val(arguments, 'demo_folder', demo_folder)
         arguments = fn_init_arg_with_default_val(arguments, 'demo_name', demo_name)
 
-        # arguments.run_recursive_search = AppInfo.fn_arg_as_bool(arguments, 'run_recursive_search')
         arguments = fn_init_arg_with_default_val(arguments, 'run_recursive_search', AppInfo.fn_arg_as_bool(arguments, 'run_recursive_search'))
-        # arguments.game = game_mgt(arguments.board_size)
         arguments = fn_init_arg_with_default_val(arguments, 'game', game_mgt(arguments.board_size))
         arguments = fn_init_arg_with_default_val(arguments, 'num_of_successes_for_model_upgrade', 1)
         arguments = fn_init_arg_with_default_val(arguments, 'rel_model_path', 'model/')
