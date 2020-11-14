@@ -72,20 +72,19 @@ def fn_generate_samples(args, iteration, generation_mcts):
             # save the iteration examples to the history
             training_samples_buffer.append(samples_for_iteration)
 
-    if iteration > 0:
-        _fn_generate_all_samples(training_samples_buffer)
+
+    _fn_generate_all_samples(training_samples_buffer)
 
     if len(training_samples_buffer) > args.sample_history_buffer_size:
         args.logger.warning(
             f"Removing the oldest entry in trainExamples. len(training_samples_buffer) = {len(training_samples_buffer)}")
         training_samples_buffer.pop(0)
-    # backup history to a file
-    # NB! the examples were collected using the model from the previous iteration, so (iteration-1)
+
     fn_save_train_examples(args, iteration - 1, training_samples_buffer)
-    # shuffle examples before training
+
     training_samples = []
-    for e in training_samples_buffer:
-        training_samples.extend(e)
+    for samples in training_samples_buffer:
+        training_samples.extend(samples)
     shuffle(training_samples)
 
     return training_samples
