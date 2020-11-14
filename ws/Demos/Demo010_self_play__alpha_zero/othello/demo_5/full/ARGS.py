@@ -1,4 +1,4 @@
-from ws.RLAgents.self_play.alpha_zero.misc.DotDict import DotDict
+from ws.RLUtils.common.DotDict import DotDict
 
 args = DotDict({
     'num_of_training_iterations': 5,

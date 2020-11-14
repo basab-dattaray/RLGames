@@ -10,7 +10,7 @@ from datetime import datetime as dt
 
 import numpy
 
-from ws.RLAgents.self_play.alpha_zero.misc.DotDict import DotDict
+from ws.RLUtils.common.DotDict import DotDict
 from ws.RLAgents.self_play.alpha_zero.play.playground_mgt import playground_mgt
 from ws.RLAgents.self_play.alpha_zero.play.GreedyPlayer import GreedyPlayer
 from ws.RLAgents.self_play.alpha_zero.play.HumanPlayer import HumanPlayer

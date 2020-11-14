@@ -5,11 +5,11 @@ from collections import namedtuple
 
 import numpy as np
 
-from ws.RLUtils.common.AverageMeter import AverageMeter
+from ws.RLAgents.self_play.alpha_zero.misc.AverageMeter import AverageMeter
 from ws.RLUtils.monitoring.tracing.progress_count_mgt import progress_count_mgt
 
 sys.path.append('../../')
-from ws.RLAgents.self_play.alpha_zero.misc.DotDict import *
+from ws.RLUtils.common.DotDict import *
 
 
 import torch
