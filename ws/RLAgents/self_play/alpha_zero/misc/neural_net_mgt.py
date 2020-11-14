@@ -1,5 +1,3 @@
-import inspect
-import logging
 import os
 import sys
 import time
@@ -7,24 +5,23 @@ from collections import namedtuple
 
 import numpy as np
 
+from ws.RLAgents.self_play.alpha_zero.misc.AverageMeter import AverageMeter
 from ws.RLUtils.monitoring.tracing.progress_count_mgt import progress_count_mgt
-from ws.RLUtils.monitoring.tracing.tracer import tracer
 
 sys.path.append('../../')
-from ws.RLAgents.self_play.alpha_zero.misc.utils import *
-# from ws.RLInterfaces.NeuralNet import NeuralNet
+from ws.RLAgents.self_play.alpha_zero.misc.DotDict import *
+
 
 import torch
 import torch.optim as optim
 
 from ws.RLAgents.self_play.alpha_zero._game.othello._ml_lib.pytorch.NeuralNet import NeuralNet
 
-# log = logging.getLogger(__name__)
 
 
 
 def neural_net_mgt(args):
-    nn_args = dotdict({
+    nn_args = DotDict({
         'lr': 0.001,
         'dropout': 0.3,
         # 'epochs': 2,

@@ -1,4 +1,3 @@
-import inspect
 import logging
 import math
 import os
@@ -11,7 +10,7 @@ from datetime import datetime as dt
 
 import numpy
 
-from ws.RLAgents.self_play.alpha_zero.misc.utils import dotdict
+from ws.RLAgents.self_play.alpha_zero.misc.DotDict import DotDict
 from ws.RLAgents.self_play.alpha_zero.play.playground_mgt import playground_mgt
 from ws.RLAgents.self_play.alpha_zero.play.GreedyPlayer import GreedyPlayer
 from ws.RLAgents.self_play.alpha_zero.play.HumanPlayer import HumanPlayer
@@ -19,8 +18,8 @@ from ws.RLAgents.self_play.alpha_zero.play.RandomPlayer import RandomPlayer
 from ws.RLAgents.self_play.alpha_zero.search.mcts_adapter import mcts_adapter
 
 from ws.RLAgents.self_play.alpha_zero.train.training_mgt import training_mgt
-from ws.RLEnvironments.self_play_games.othello.game_mgt import game_mgt as Game, game_mgt
-from ws.RLAgents.self_play.alpha_zero.train.neural_net_mgt import neural_net_mgt
+from ws.RLEnvironments.self_play_games.othello.game_mgt import game_mgt
+from ws.RLAgents.self_play.alpha_zero.misc.neural_net_mgt import neural_net_mgt
 from ws.RLUtils.common.AppInfo import AppInfo
 from ws.RLUtils.monitoring.tracing.call_trace_mgt import call_trace_mgt
 from ws.RLUtils.monitoring.tracing.log_mgt import log_mgt
@@ -28,7 +27,7 @@ from ws.RLUtils.monitoring.tracing.tracer import tracer
 
 
 def fn_init_arg_with_default_val(arguments, name, val):
-    arguments = dotdict(arguments.copy())
+    arguments = DotDict(arguments.copy())
     if name not in arguments.keys():
         arguments[name] = val
     return arguments
@@ -36,7 +35,7 @@ def fn_init_arg_with_default_val(arguments, name, val):
 def agent_mgt(args, file_path):
     def _fn_setup(file_path):
         def _fn_init_training_mgr(arguments):
-            arguments = dotdict(arguments.copy())
+            arguments = DotDict(arguments.copy())
             neural_net_mgr = neural_net_mgt(arguments)
             arguments = fn_init_arg_with_default_val(arguments, 'neural_net_mgr', neural_net_mgr)
             if arguments.do_load_model:

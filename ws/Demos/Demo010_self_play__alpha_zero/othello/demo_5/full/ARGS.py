@@ -1,6 +1,6 @@
-from ws.RLAgents.self_play.alpha_zero.misc.utils import dotdict
+from ws.RLAgents.self_play.alpha_zero.misc.DotDict import DotDict
 
-args = dotdict({
+args = DotDict({
     'num_of_training_iterations': 5,
     'num_of_training_episodes': 50,              # Number of complete self-play games to simulate during a new iteration.
     'probability_spread_threshold': 0,        #
