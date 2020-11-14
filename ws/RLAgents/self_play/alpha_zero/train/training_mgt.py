@@ -23,7 +23,7 @@ def training_mgt(nn_mgr_N, args):
 
     DEBUG_FLAG = False
 
-    game_mgr = args.game_mgr
+
 
     nn_mgr_P = copy.deepcopy(nn_mgr_N)
 
@@ -36,6 +36,7 @@ def training_mgt(nn_mgr_N, args):
 
     @tracer(args)
     def fn_execute_training_iterations():
+        game_mgr = args.game_mgr
         def _fn_form_sample_data(current_player, run_result, training_samples):
             sample_data = []
             for canon_board, player, canon_action_probs in training_samples:
@@ -48,8 +49,8 @@ def training_mgt(nn_mgr_N, args):
         def fn_run_iteration(iteration):
             nonlocal update_count
             @tracer(args)
-            def fn_generate_samples(iteration):
-                generation_mcts = mcts_adapter(nn_mgr_N, args)
+            def fn_generate_samples(args, iteration, generation_mcts):
+
 
                 def _fn_run_episodes():
                     trainExamples = []
@@ -99,8 +100,6 @@ def training_mgt(nn_mgr_N, args):
                     fn_count_event, fn_stop_counting = progress_count_mgt('Episodes', args.num_of_training_episodes)
                     for episode_num in range(1, args.num_of_training_episodes + 1):
                         fn_count_event()
-
-                        # mcts = mcts_adapter(game, nn_mgr_N, nn_args)  # reset search tree
                         episode_result = _fn_run_episodes()
                         if episode_result is not None:
                             samples_for_iteration += episode_result
@@ -140,7 +139,7 @@ def training_mgt(nn_mgr_N, args):
                 args.fn_record()
                 return draws, nwins, pwins
 
-            trainExamples = fn_generate_samples(iteration)
+            trainExamples = fn_generate_samples(args, iteration,  mcts_adapter(nn_mgr_N, args))
 
             draws, nwins, pwins = _fn_play_next_vs_previous(trainExamples)
 
