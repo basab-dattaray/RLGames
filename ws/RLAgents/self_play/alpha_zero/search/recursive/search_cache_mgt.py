@@ -5,7 +5,7 @@ def search_cache_mgt():
     Es = {}
 
     def does_end_exist(state_key):
-        return state_key not in Es
+        return state_key in Es
 
     def get_end_state(state_key):
         if does_end_exist(state_key):

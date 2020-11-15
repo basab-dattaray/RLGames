@@ -69,7 +69,7 @@ def mcts_r_mgr(
         state_key = fn_get_state_key(state)
 
         # ROLLOUT 1 - actual result
-        if search_cache_mgr.fn_does_end_exist(state_key):
+        if not search_cache_mgr.fn_does_end_exist(state_key):
             search_cache_mgr.fn_set_end_state(state_key, fn_terminal_value(state))
         if search_cache_mgr.fn_get_end_state(state_key) != 0:
             # terminal node
