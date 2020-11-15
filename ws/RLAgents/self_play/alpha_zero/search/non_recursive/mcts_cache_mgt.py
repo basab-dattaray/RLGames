@@ -15,6 +15,10 @@ def mcts_cache_mgt(
 
         return progress_status_dict[state_key]
 
+    action_prob_status = {}
+    def fn_get_action_prob(state, action):
+        None
+
     mcts_cache_mgr = namedtuple('_', ['fn_get_progress_status'])
     mcts_cache_mgr.fn_get_progress_status = fn_get_progress_status
 

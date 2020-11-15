@@ -5,10 +5,9 @@
 # The more evolved board_pieces states (nodes) will have fewer allowable actions (edges)
 from collections import namedtuple
 
-import numpy
-
 from .mcts_cache_mgt import mcts_cache_mgt
 from .node_mgt import node_mgt
+from .rollout import fn_rollout
 from ..mcts_probability_mgt import mcts_probability_mgt
 
 LONG_ROLLOUT = True
@@ -30,42 +29,6 @@ def mcts_mgt(
     )
 
     root_node = None
-
-    def fn_rollout(state):
-        EPS = 1e-8
-
-        def _fn_get_state_info(fn_terminal_value, state):
-            qval = None
-            terminal_state = False
-            if fn_terminal_value is not None:
-                qval = mcts_cache_mgr.fn_get_progress_status(state) # fn_terminal_value(state)
-                if qval != 0:
-                    terminal_state = True
-                    return -qval, None, terminal_state
-
-            action_probabilities, state_value = fn_get_normalized_predictions(state)[:-1]
-
-            return state_value[0], action_probabilities, terminal_state
-
-        def _fn_get_best_action(state, action_probs):
-            best_action = numpy.random.choice(len(action_probs), p=action_probs)
-
-            next_state, next_player = fn_get_next_state(state, 1, best_action)
-            next_state_canonical = fn_get_canonical_form(next_state, next_player)
-            return next_state_canonical
-
-        q_val, action_probs, is_terminal_state = _fn_get_state_info(
-            fn_terminal_value, state
-        )
-
-        while not is_terminal_state and LONG_ROLLOUT:
-            next_state = _fn_get_best_action(state, action_probs)
-            q_val, action_probs, is_terminal_state = _fn_get_state_info(
-                fn_terminal_value, next_state)
-            state = next_state
-
-        return q_val, is_terminal_state
-
     def fn_init_mcts():
         nonlocal root_node
         root_node = None
@@ -113,7 +76,9 @@ def mcts_mgt(
                 return None
             pass
 
-        score, terminal_state = fn_rollout(selected_node.state)
+        score, terminal_state = fn_rollout(
+            mcts_cache_mgr, fn_get_normalized_predictions, fn_get_next_state, fn_get_canonical_form, fn_terminal_value,
+            state)
 
         value = selected_node.fn_back_propagate(score)
         return value

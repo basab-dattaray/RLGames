@@ -61,9 +61,9 @@ def training_mgt(nn_mgr_N, args):
                 args.fn_record()
                 return draws, nwins, pwins
 
-            trainExamples = fn_generate_samples(args, iteration,  mcts_adapter(nn_mgr_N, args))
+            training_samples = fn_generate_samples(args, iteration,  mcts_adapter(nn_mgr_N, args))
 
-            draws, nwins, pwins = _fn_play_next_vs_previous(trainExamples)
+            draws, nwins, pwins = _fn_play_next_vs_previous(training_samples)
 
             fn_log_iter_results(args, draws, iteration, nwins, pwins)
 
