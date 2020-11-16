@@ -3,47 +3,59 @@ from collections import namedtuple
 
 def search_cache_mgt():
 
-    def state_cache(dict):
-        _dict = dict
-        _cache_hit_count = 0
-        _cache_access_count = 0
-        _cache_overwrite_try_count = 0
+    def state_cache():
+        dict = {}
+        hit_count = 0
+        access_count = 0
+        overwrite_try_count = 0
 
-        def fn_does_data_frame_exist(state_key):
-            return state_key in _dict
+        def fn_does_state_exist(state_key):
+            return state_key in dict
 
         def fn_get_data(state_key):
-            nonlocal _cache_hit_count, _cache_access_count
+            nonlocal hit_count, access_count
 
-            _cache_access_count += 1
-            if fn_does_data_frame_exist(state_key):
-                _cache_hit_count += 1
-                return _dict[state_key]
+            access_count += 1
+            if fn_does_state_exist(state_key):
+                hit_count += 1
+                return dict[state_key]
             else:
                 return None
 
         def fn_set_data(state_key, val):
-            nonlocal _dict, _cache_overwrite_try_count
+            nonlocal dict, overwrite_try_count
 
-            if fn_does_data_frame_exist(state_key):
-                _cache_overwrite_try_count += 1
+            if fn_does_state_exist(state_key):
+                overwrite_try_count += 1
                 return False
             else:
-                _dict[state_key] = val
+                dict[state_key] = val
             return True
 
         def fn_get_stats():
             return {
-                '_cache_hit_count': _cache_hit_count,
-                '_cache_access_count': _cache_access_count,
-                '_cache_overwrite_try_count': _cache_overwrite_try_count,
+                'size': len(dict),
+                'hit_count': hit_count,
+                'access_count': access_count,
+                'overwrite_try_count': overwrite_try_count,
             }
 
+        state_cache = namedtuple('state_cache', [
+            'fn_does_state_exist',
+            'fn_get_data',
+            'fn_set_data',
+            'fn_get_stats'
+        ])
 
-        return fn_does_data_frame_exist, fn_get_data, fn_set_data, fn_get_stats
+        state_cache.fn_does_state_exist = fn_does_state_exist
+        state_cache.fn_get_data = fn_get_data
+        state_cache.fn_set_data = fn_set_data
+        state_cache.fn_get_stats = fn_get_stats
+
+        return state_cache
 
     Es = {}     # stores game.fn_get_game_progress_status ended for board_pieces state
-    result_cache = state_cache(Es)
+    result_cache = state_cache()
 
     def fn_does_result_for_state_exist(state_key):
         return state_key in Es
@@ -92,9 +104,9 @@ def search_cache_mgt():
         'fn_set_valid_moves'
     ])
     search_cache_mgr.result_cache = result_cache
-    search_cache_mgr.fn_does_result_for_state_exist = fn_does_result_for_state_exist
-    search_cache_mgr.fn_get_result_for_state = fn_get_result_for_state
-    search_cache_mgr.fn_set_result_for_state = fn_set_result_for_state
+    # search_cache_mgr.fn_does_result_for_state_exist = fn_does_result_for_state_exist
+    # search_cache_mgr.fn_get_result_for_state = fn_get_result_for_state
+    # search_cache_mgr.fn_set_result_for_state = fn_set_result_for_state
 
     search_cache_mgr.fn_do_valid_moves_exist = fn_do_valid_moves_exist
     search_cache_mgr.fn_get_valid_moves = fn_get_valid_moves
