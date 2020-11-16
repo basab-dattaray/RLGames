@@ -21,12 +21,12 @@ def mcts_r_mgr(
     max_num_actions
 ):
 
-    Qsa = {}  # stores Q values for state,a (as defined in the paper)
-    Nsa = {}  # stores #times edge state,a was visited
-    Ns = {}  # stores #times board_pieces state was visited
-    Ps = {}  # stores initial policy (returned by neural net)
-    # Es = {}  # stores game.fn_get_game_progress_status ended for board_pieces state
-    # Vs = {}  # stores game.fn_get_valid_moves for board_pieces state
+    Qsa = {}  # stores Q values for state_key,a (as defined in the paper)
+    Nsa = {}  # stores #times edge state_key,a was visited
+    Ns = {}  # stores #times board_pieces state_key was visited
+    # Ps = {}  # stores initial policy (returned by neural net)
+    # Es = {}  # stores game.fn_get_game_progress_status ended for board_pieces state_key
+    # Vs = {}  # stores game.fn_get_valid_moves for board_pieces state_key
 
     search_cache_mgr = search_cache_mgt()
 
@@ -52,17 +52,17 @@ def mcts_r_mgr(
         has the maximum upper confidence bound as in the paper.
 
         Once a leaf node is found, the neural network is called to return an
-        initial policy P and a value v for the state. This value is propagated
-        up the search path. In case the leaf node is a terminal state, the
+        initial policy P and a value v for the state_key. This value is propagated
+        up the search path. In case the leaf node is a terminal state_key, the
         outcome is propagated up the search path. The values of Ns, Nsa, Qsa are
         updated.
 
         NOTE: the return values are the negative of the value of the current
-        state. This is done since v is in [-1,1] and if v is the value of a
-        state for the current player, then its value is -v for the other player.
+        state_key. This is done since v is in [-1,1] and if v is the value of a
+        state_key for the current player, then its value is -v for the other player.
 
         Returns:
-            v: the negative of the value of the current state
+            v: the negative of the value of the current state_key
         """
 
         state_key = fn_get_state_key(state)
@@ -75,10 +75,11 @@ def mcts_r_mgr(
             return -search_cache_mgr.state_results.fn_get_data(state_key)
 
         # ROLLOUT 2 - uses prediction
-        if state_key not in Ps:
+        if not search_cache_mgr.state_policy.fn_does_state_exist(state_key):
             # leaf node
             pi, v, valid_actions = fn_get_normalized_predictions(state)
-            Ps[state_key] = pi
+            # Ps[state_key] = pi
+            search_cache_mgr.state_policy.fn_set_data(state_key, pi)
 
             # Vs[state_key] = valid_actions
             search_cache_mgr.state_valid_moves.fn_set_data(state_key, valid_actions)
@@ -110,19 +111,21 @@ def mcts_r_mgr(
         Ns[state_key] += 1
         return -v
 
-    def fn_get_best_action(state, valids, max_num_actions, explore_exploit_ratio):
+    def fn_get_best_action(state_key, valids, max_num_actions, explore_exploit_ratio):
         cur_best = -float('inf')
         best_act = -1
         # pick the action with the highest upper confidence bound
         for a in range(max_num_actions):
             if valids[a]:
-                if (state, a) in Qsa:
-                    u = Qsa[(state, a)] + explore_exploit_ratio * Ps[state][a] * math.sqrt(
-                        np.log(Ns[state]) ) / (
-                                Nsa[(state, a)])
+                # policy2 = Ps[state_key]
+                policy = search_cache_mgr.state_policy.fn_get_data(state_key)
+                if (state_key, a) in Qsa:
+                    u = Qsa[(state_key, a)] + explore_exploit_ratio * policy[a] * math.sqrt(
+                        np.log(Ns[state_key]) ) / (
+                                Nsa[(state_key, a)])
                 else:
-                    u = explore_exploit_ratio * Ps[state][a] * math.sqrt(
-                        Ns[state] + EPS)  # Q = 0 ?
+                    u = explore_exploit_ratio * policy[a] * math.sqrt(
+                        Ns[state_key] + EPS)  # Q = 0 ?
                     # u = 0
 
                 if u > cur_best:
