@@ -5,7 +5,7 @@ from collections import namedtuple
 import numpy as np
 
 from ws.RLAgents.self_play.alpha_zero.search.mcts_probability_mgt import mcts_probability_mgt
-from ws.RLAgents.self_play.alpha_zero.search.recursive.state_cache_mgt import state_cache_mgt
+from ws.RLAgents.self_play.alpha_zero.search.recursive.search_cache_mgt import search_cache_mgt
 
 EPS = 1e-8
 # log = logging.getLogger(__name__)
@@ -28,7 +28,7 @@ def mcts_r_mgr(
     # Es = {}  # stores game.fn_get_game_progress_status ended for board_pieces state
     # Vs = {}  # stores game.fn_get_valid_moves for board_pieces state
 
-    state_cache_mgr = state_cache_mgt()
+    search_cache_mgr = search_cache_mgt()
 
     def fn_get_mcts_counts(state):
         for i in range(num_mcts_simulations):
@@ -68,11 +68,11 @@ def mcts_r_mgr(
         state_key = fn_get_state_key(state)
 
         # ROLLOUT 1 - actual result
-        if not state_cache_mgr.fn_does_end_state_exist(state_key):
-            state_cache_mgr.fn_set_end_state(state_key, fn_terminal_value(state))
-        if state_cache_mgr.fn_get_end_state(state_key) != 0:
+        if not search_cache_mgr.fn_does_end_state_exist(state_key):
+            search_cache_mgr.fn_set_end_state(state_key, fn_terminal_value(state))
+        if search_cache_mgr.fn_get_end_state(state_key) != 0:
             # terminal node
-            return -state_cache_mgr.fn_get_end_state(state_key)
+            return -search_cache_mgr.fn_get_end_state(state_key)
 
         # ROLLOUT 2 - uses prediction
         if state_key not in Ps:
@@ -81,7 +81,7 @@ def mcts_r_mgr(
             Ps[state_key] = pi
 
             # Vs[state_key] = valid_actions
-            state_cache_mgr.fn_set_valid_moves(state_key, valid_actions)
+            search_cache_mgr.fn_set_valid_moves(state_key, valid_actions)
 
             Ns[state_key] = 0
             return -v
@@ -89,7 +89,7 @@ def mcts_r_mgr(
         # SELECTION - node already visited so find next best node in the subtree
 
         # valid_actions = Vs[state_key]
-        valid_actions = state_cache_mgr.fn_get_valid_moves(state_key)
+        valid_actions = search_cache_mgr.fn_get_valid_moves(state_key)
 
         best_action = fn_get_best_action(state_key, valid_actions, max_num_actions, explore_exploit_ratio)
         next_state, next_player = fn_get_next_state(state, 1, best_action)
