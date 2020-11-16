@@ -27,7 +27,7 @@ def mcts_r_mgr(
     Ps = {}  # stores initial policy (returned by neural net)
 
     # Es = {}  # stores game.fn_get_game_progress_status ended for board_pieces state
-    Vs = {}  # stores game.fn_get_valid_moves for board_pieces state
+    # Vs = {}  # stores game.fn_get_valid_moves for board_pieces state
 
     search_cache_mgr = search_cache_mgt()
 
@@ -69,7 +69,7 @@ def mcts_r_mgr(
         state_key = fn_get_state_key(state)
 
         # ROLLOUT 1 - actual result
-        if not search_cache_mgr.fn_does_end_exist(state_key):
+        if not search_cache_mgr.fn_does_end_state_exist(state_key):
             search_cache_mgr.fn_set_end_state(state_key, fn_terminal_value(state))
         if search_cache_mgr.fn_get_end_state(state_key) != 0:
             # terminal node
@@ -80,12 +80,18 @@ def mcts_r_mgr(
             # leaf node
             pi, v, valid_actions = fn_get_normalized_predictions(state)
             Ps[state_key] = pi
-            Vs[state_key] = valid_actions
+
+            # Vs[state_key] = valid_actions
+            search_cache_mgr.fn_set_valid_moves(state_key, valid_actions)
+
             Ns[state_key] = 0
             return -v
 
         # SELECTION - node already visited so find next best node in the subtree
-        valid_actions = Vs[state_key]
+
+        # valid_actions = Vs[state_key]
+        valid_actions = search_cache_mgr.fn_get_valid_moves(state_key)
+
         best_action = fn_get_best_action(state_key, valid_actions, max_num_actions, explore_exploit_ratio)
         next_state, next_player = fn_get_next_state(state, 1, best_action)
         next_state_canonical = fn_get_canonical_form(next_state, next_player)
