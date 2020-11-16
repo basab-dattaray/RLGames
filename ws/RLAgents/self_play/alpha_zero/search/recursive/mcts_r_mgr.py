@@ -39,8 +39,6 @@ def mcts_r_mgr(
         return counts
 
     def fn_init_mcts():
-        # l_Qsa = len(Qsa)
-        # l_Ps = len(Ps)
         return None
 
     fn_get_action_probabilities = mcts_probability_mgt(fn_init_mcts, fn_get_mcts_counts)
@@ -78,10 +76,8 @@ def mcts_r_mgr(
         if not search_cache_mgr.state_policy.fn_does_state_exist(state_key):
             # leaf node
             pi, v, valid_actions = fn_get_normalized_predictions(state)
-            # Ps[state_key] = pi
             search_cache_mgr.state_policy.fn_set_data(state_key, pi)
 
-            # Vs[state_key] = valid_actions
             search_cache_mgr.state_valid_moves.fn_set_data(state_key, valid_actions)
 
             Ns[state_key] = 0
@@ -89,7 +85,6 @@ def mcts_r_mgr(
 
         # SELECTION - node already visited so find next best node in the subtree
 
-        # valid_actions = Vs[state_key]
         valid_actions = search_cache_mgr.state_valid_moves.fn_get_data(state_key)
 
         best_action = fn_get_best_action(state_key, valid_actions, max_num_actions, explore_exploit_ratio)
@@ -117,7 +112,6 @@ def mcts_r_mgr(
         # pick the action with the highest upper confidence bound
         for a in range(max_num_actions):
             if valids[a]:
-                # policy2 = Ps[state_key]
                 policy = search_cache_mgr.state_policy.fn_get_data(state_key)
                 if (state_key, a) in Qsa:
                     u = Qsa[(state_key, a)] + explore_exploit_ratio * policy[a] * math.sqrt(
