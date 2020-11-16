@@ -68,11 +68,11 @@ def mcts_r_mgr(
         state_key = fn_get_state_key(state)
 
         # ROLLOUT 1 - actual result
-        if not search_cache_mgr.fn_does_end_state_exist(state_key):
-            search_cache_mgr.fn_set_end_state(state_key, fn_terminal_value(state))
-        if search_cache_mgr.fn_get_end_state(state_key) != 0:
+        if not search_cache_mgr.fn_does_result_for_state_exist(state_key):
+            search_cache_mgr.fn_set_result_for_state(state_key, fn_terminal_value(state))
+        if search_cache_mgr.fn_get_result_for_state(state_key) != 0:
             # terminal node
-            return -search_cache_mgr.fn_get_end_state(state_key)
+            return -search_cache_mgr.fn_get_result_for_state(state_key)
 
         # ROLLOUT 2 - uses prediction
         if state_key not in Ps:
