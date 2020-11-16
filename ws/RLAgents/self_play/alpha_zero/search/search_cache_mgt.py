@@ -80,7 +80,7 @@ def search_cache_mgt():
     #         return True
 
     search_cache_mgr = namedtuple('_', [
-        'result_cache',
+        'state_results',
         'state_valid_moves',
         'state_policy'
 

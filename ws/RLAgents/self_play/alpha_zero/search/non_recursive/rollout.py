@@ -1,7 +1,7 @@
 import numpy
 
 
-def fn_rollout(
+def fn_rollout(state_results,
         mcts_cache_mgr, fn_get_normalized_predictions, fn_get_next_state, fn_get_canonical_form, fn_terminal_value,
         state):
     EPS = 1e-8
