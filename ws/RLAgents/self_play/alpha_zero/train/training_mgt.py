@@ -87,6 +87,8 @@ def training_mgt(nn_mgr_N, args):
                 nn_mgr_N.fn_load_model(filename=args.temp_model_exchange_name)
             else:
                 color = Fore.GREEN
+                if reject: # implies that there is no model on disk yet, hence ACCEPT unacceptable update score for now
+                    color = Fore.MAGENTA
                 args.calltracer.fn_write(
                     color + 'ACCEPTED New Model: update_threshold: {}, update_score: {}'.format(args.score_based_model_update_threshold,
                                                                                                 update_score))

@@ -1,11 +1,10 @@
-import logging
 import math
 from collections import namedtuple
 
 import numpy as np
 
 from ws.RLAgents.self_play.alpha_zero.search.mcts_probability_mgt import mcts_probability_mgt
-from ws.RLAgents.self_play.alpha_zero.search.recursive.search_cache_mgt import search_cache_mgt
+from ws.RLAgents.self_play.alpha_zero.search.search_cache_mgt import search_cache_mgt
 
 EPS = 1e-8
 # log = logging.getLogger(__name__)
