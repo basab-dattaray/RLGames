@@ -68,11 +68,11 @@ def mcts_r_mgr(
         state_key = fn_get_state_key(state)
 
         # ROLLOUT 1 - actual result
-        if not search_cache_mgr.result_cache.fn_does_state_exist(state_key):
-            search_cache_mgr.result_cache.fn_set_data(state_key, fn_terminal_value(state))
-        if search_cache_mgr.result_cache.fn_get_data(state_key) != 0:
+        if not search_cache_mgr.state_results.fn_does_state_exist(state_key):
+            search_cache_mgr.state_results.fn_set_data(state_key, fn_terminal_value(state))
+        if search_cache_mgr.state_results.fn_get_data(state_key) != 0:
             # terminal node
-            return -search_cache_mgr.result_cache.fn_get_data(state_key)
+            return -search_cache_mgr.state_results.fn_get_data(state_key)
 
         # ROLLOUT 2 - uses prediction
         if state_key not in Ps:
@@ -81,7 +81,7 @@ def mcts_r_mgr(
             Ps[state_key] = pi
 
             # Vs[state_key] = valid_actions
-            search_cache_mgr.fn_set_valid_moves(state_key, valid_actions)
+            search_cache_mgr.state_valid_moves.fn_set_data(state_key, valid_actions)
 
             Ns[state_key] = 0
             return -v
@@ -89,7 +89,7 @@ def mcts_r_mgr(
         # SELECTION - node already visited so find next best node in the subtree
 
         # valid_actions = Vs[state_key]
-        valid_actions = search_cache_mgr.fn_get_valid_moves(state_key)
+        valid_actions = search_cache_mgr.state_valid_moves.fn_get_data(state_key)
 
         best_action = fn_get_best_action(state_key, valid_actions, max_num_actions, explore_exploit_ratio)
         next_state, next_player = fn_get_next_state(state, 1, best_action)
