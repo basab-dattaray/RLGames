@@ -9,7 +9,7 @@ from .mcts_cache_mgt import mcts_cache_mgt
 from .node_mgt import node_mgt
 from .rollout import fn_rollout
 from ..mcts_probability_mgt import mcts_probability_mgt
-from ..search_cache_mgt import search_cache_mgt
+
 
 LONG_ROLLOUT = True
 CACHE_RESULTS = False
