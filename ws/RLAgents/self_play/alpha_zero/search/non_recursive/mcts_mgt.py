@@ -8,6 +8,7 @@ from collections import namedtuple
 from .mcts_cache_mgt import mcts_cache_mgt
 from .node_mgt import node_mgt
 from .rollout import fn_rollout
+from ..cache_mgt import cache_mgt
 from ..mcts_probability_mgt import mcts_probability_mgt
 
 
@@ -28,7 +29,7 @@ def mcts_mgt(
             fn_get_state_key,
             fn_terminal_value
     )
-    search_cache_mgr = search_cache_mgt()
+    cache_mgr = cache_mgt()
 
     root_node = None
     def fn_init_mcts():
@@ -78,7 +79,7 @@ def mcts_mgt(
                 return None
             pass
 
-        score, terminal_state = fn_rollout(search_cache_mgr.state_results,
+        score, terminal_state = fn_rollout(cache_mgr.state_results,
             mcts_cache_mgr, fn_get_normalized_predictions, fn_get_next_state, fn_get_canonical_form, fn_terminal_value,
             state)
 
