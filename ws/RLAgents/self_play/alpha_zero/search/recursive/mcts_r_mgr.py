@@ -3,6 +3,7 @@ from collections import namedtuple
 
 import numpy as np
 
+from ws.RLAgents.self_play.alpha_zero.search.cache_mgt import cache_mgt
 from ws.RLAgents.self_play.alpha_zero.search.mcts_probability_mgt import mcts_probability_mgt
 from ws.RLAgents.self_play.alpha_zero.search.search_cache_mgt import search_cache_mgt
 
@@ -27,7 +28,8 @@ def mcts_r_mgr(
     # Es = {}  # stores game.fn_get_game_progress_status ended for board_pieces state_key
     # Vs = {}  # stores game.fn_get_valid_moves for board_pieces state_key
 
-    search_cache_mgr = search_cache_mgt()
+    # cache_mgr = search_cache_mgt()
+    cache_mgr = cache_mgt()
 
     def fn_get_mcts_counts(state):
         for i in range(num_mcts_simulations):
@@ -65,26 +67,26 @@ def mcts_r_mgr(
         state_key = fn_get_state_key(state)
 
         # ROLLOUT 1 - actual result
-        if not search_cache_mgr.state_results.fn_does_state_exist(state_key):
-            search_cache_mgr.state_results.fn_set_data(state_key, fn_terminal_value(state))
-        if search_cache_mgr.state_results.fn_get_data(state_key) != 0:
+        if not cache_mgr.state_results.fn_does_state_exist(state_key):
+            cache_mgr.state_results.fn_set_data(state_key, fn_terminal_value(state))
+        if cache_mgr.state_results.fn_get_data(state_key) != 0:
             # terminal node
-            return -search_cache_mgr.state_results.fn_get_data(state_key)
+            return -cache_mgr.state_results.fn_get_data(state_key)
 
         # ROLLOUT 2 - uses prediction
-        if not search_cache_mgr.state_policy.fn_does_state_exist(state_key):
+        if not cache_mgr.state_policy.fn_does_state_exist(state_key):
             # leaf node
             pi, v, valid_actions = fn_get_normalized_predictions(state)
-            search_cache_mgr.state_policy.fn_set_data(state_key, pi)
+            cache_mgr.state_policy.fn_set_data(state_key, pi)
 
-            search_cache_mgr.state_valid_moves.fn_set_data(state_key, valid_actions)
+            cache_mgr.state_valid_moves.fn_set_data(state_key, valid_actions)
 
             Ns[state_key] = 0
             return -v
 
         # SELECTION - node already visited so find next best node in the subtree
 
-        valid_actions = search_cache_mgr.state_valid_moves.fn_get_data(state_key)
+        valid_actions = cache_mgr.state_valid_moves.fn_get_data(state_key)
 
         best_action = fn_get_best_action(state_key, valid_actions, max_num_actions, explore_exploit_ratio)
         next_state, next_player = fn_get_next_state(state, 1, best_action)
@@ -111,7 +113,7 @@ def mcts_r_mgr(
         # pick the action with the highest upper confidence bound
         for a in range(max_num_actions):
             if valids[a]:
-                policy = search_cache_mgr.state_policy.fn_get_data(state_key)
+                policy = cache_mgr.state_policy.fn_get_data(state_key)
                 if (state_key, a) in Qsa:
                     u = Qsa[(state_key, a)] + explore_exploit_ratio * policy[a] * math.sqrt(
                         np.log(Ns[state_key]) ) / (
