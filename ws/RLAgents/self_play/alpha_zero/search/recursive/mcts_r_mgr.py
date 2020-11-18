@@ -20,6 +20,7 @@ def mcts_r_mgr(
     explore_exploit_ratio,
     max_num_actions
 ):
+    USE_QSA_DIRECTLY = False
 
     Qsa = {}  # stores Q values for state_key,a (as defined in the paper)
     Nsa = {}  # stores #times edge state_key,a was visited
@@ -39,6 +40,8 @@ def mcts_r_mgr(
         counts = [Nsa[(s, a)] if (s, a) in Nsa else 0 for a in range(max_num_actions)]
         return counts
 
+    def fn_init_mcts():
+        return None
 
     fn_get_action_probabilities = mcts_probability_mgt(fn_get_mcts_counts)
 
@@ -95,15 +98,23 @@ def mcts_r_mgr(
 
         # BACKPROP
         key = (state_key, best_action)
+        if USE_QSA_DIRECTLY:
+            if key in Qsa: # UPDATE EXISTING
+                Qsa[key] = (Nsa[key] * Qsa[key] + v) / (Nsa[key] + 1)
+                Nsa[key] += 1
 
-        if cache_mgr.state_action_qval.fn_does_state_exist(key):  # UPDATE EXISTING
-            tmp_val = (Nsa[key] * cache_mgr.state_action_qval.fn_get_data(key) + v) / (Nsa[key] + 1)
-            cache_mgr.state_action_qval.fn_set_data(key, tmp_val)
-            Nsa[(state_key, best_action)] += 1
+            else: # UPDATE FIRST TIME
+                Qsa[key] = v
+                Nsa[key] = 1
+        else:
+            if cache_mgr.state_action_qval.fn_does_state_exist(key):  # UPDATE EXISTING
+                tmp_val = (Nsa[key] * cache_mgr.state_action_qval.fn_get_data(key) + v) / (Nsa[key] + 1)
+                cache_mgr.state_action_qval.fn_set_data(key, tmp_val)
+                Nsa[(state_key, best_action)] += 1
 
-        else:  # UPDATE FIRST TIME
-            cache_mgr.state_action_qval.fn_set_data(key, v)
-            Nsa[(state_key, best_action)] = 1
+            else:  # UPDATE FIRST TIME
+                cache_mgr.state_action_qval.fn_set_data(key, v)
+                Nsa[(state_key, best_action)] = 1
 
         Ns[state_key] += 1
         return -v
@@ -116,17 +127,26 @@ def mcts_r_mgr(
             if valids[a]:
                 policy = cache_mgr.state_policy.fn_get_data(state_key)
                 key = (state_key, a)
-
-                if cache_mgr.state_action_qval.fn_does_state_exist(key):
-                    # qval = cache_mgr.state_action_qval.fn_get_data(key)  # Qsa[(state_key, a)]
-                    u = cache_mgr.state_action_qval.fn_get_data(key) \
-                                + explore_exploit_ratio * policy[a] * math.sqrt(
-                        np.log(Ns[state_key])) / (
-                            Nsa[(state_key, a)])
+                if USE_QSA_DIRECTLY:
+                    if key in Qsa:
+                        u = Qsa[key] + explore_exploit_ratio * policy[a] * math.sqrt(
+                            np.log(Ns[state_key]) ) / (
+                                    Nsa[key])
+                    else:
+                        u = explore_exploit_ratio * policy[a] * math.sqrt(
+                            Ns[state_key] + EPS)  # Q = 0 ?
+                        # u = 0
                 else:
-                    u = explore_exploit_ratio * policy[a] * math.sqrt(
-                        Ns[state_key] + EPS)  # Q = 0 ?
-                    # u = 0
+                    if cache_mgr.state_action_qval.fn_does_state_exist(key):
+                        # qval = cache_mgr.state_action_qval.fn_get_data(key)  # Qsa[(state_key, a)]
+                        u = cache_mgr.state_action_qval.fn_get_data(key) \
+                                    + explore_exploit_ratio * policy[a] * math.sqrt(
+                            np.log(Ns[state_key])) / (
+                                Nsa[(state_key, a)])
+                    else:
+                        u = explore_exploit_ratio * policy[a] * math.sqrt(
+                            Ns[state_key] + EPS)  # Q = 0 ?
+                        # u = 0
                 if u > cur_best:
                     cur_best = u
                     best_act = a
