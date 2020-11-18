@@ -34,7 +34,7 @@ def mcts_r_mgr(
 
     def fn_get_mcts_counts(state):
         for i in range(num_mcts_simulations):
-            search(state)
+            fn_search(state)
 
         s = fn_get_state_key(state)
         counts = [Nsa[(s, a)] if (s, a) in Nsa else 0 for a in range(max_num_actions)]
@@ -45,7 +45,7 @@ def mcts_r_mgr(
 
     fn_get_action_probabilities = mcts_probability_mgt(fn_init_mcts, fn_get_mcts_counts)
 
-    def search(state):
+    def fn_search(state):
         """
         This function performs one iteration of MCTS. It is recursively called
         till a leaf node is found. The action chosen at each node is one that
@@ -94,7 +94,7 @@ def mcts_r_mgr(
         next_state_canonical = fn_get_canonical_form(next_state, next_player)
 
         # EXPANSION
-        v = search(next_state_canonical)
+        v = fn_search(next_state_canonical)
 
         # BACKPROP
         key = (state_key, best_action)
