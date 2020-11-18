@@ -57,24 +57,26 @@ def mcts_mgt(
         nonlocal  root_node
 
         def fn_rollout(state):
-            def _fn_get_state_info(fn_terminal_value, state):
 
-                state_key = fn_get_state_key(state)
+            def _fn_get_state_info(fn_terminal_value, new_state):
+
                 terminal_state = False
                 if fn_terminal_value is not None:
-                    # qval_old = mcts_cache_mgr.fn_get_progress_status(state)  # fn_terminal_value(state)
-                    qval = fn_terminal_value(state)
+                    qval = fn_terminal_value(new_state)
+
+                    state_key = fn_get_state_key(new_state)
                     cache_mgr.state_results.fn_set_data(state_key, qval)
                     qval = cache_mgr.state_results.fn_get_data(state_key)
                     if qval != 0:
                         terminal_state = True
                         return -qval, None, terminal_state
 
-                action_probabilities, state_value = fn_get_normalized_predictions(state)[:-1]
+                action_probabilities, state_value = fn_get_normalized_predictions(new_state)[:-1]
 
                 return state_value[0], action_probabilities, terminal_state
 
-            def _fn_get_best_action(state, action_probs):
+            def _fn_get_best_action(action_probs, state):
+
                 best_action = numpy.random.choice(len(action_probs), p=action_probs)
 
                 next_state, next_player = fn_get_next_state(state, 1, best_action)
@@ -86,7 +88,7 @@ def mcts_mgt(
             )
 
             while not is_terminal_state:
-                next_state = _fn_get_best_action(state, action_probs)
+                next_state = _fn_get_best_action(action_probs, state)
                 q_val, action_probs, is_terminal_state = _fn_get_state_info(
                     fn_terminal_value, next_state)
                 state = next_state
