@@ -79,7 +79,7 @@ def mcts_mgt(
                 return None
             pass
 
-        score, terminal_state = fn_rollout(cache_mgr.state_results,
+        score, terminal_state = fn_rollout(cache_mgr, fn_get_state_key,
             mcts_cache_mgr, fn_get_normalized_predictions, fn_get_next_state, fn_get_canonical_form, fn_terminal_value,
             state)
 

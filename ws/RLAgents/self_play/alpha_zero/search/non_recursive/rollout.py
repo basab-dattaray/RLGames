@@ -1,16 +1,20 @@
 import numpy
 
 
-def fn_rollout(state_results,
+def fn_rollout(cache_mgr, fn_get_state_key,
         mcts_cache_mgr, fn_get_normalized_predictions, fn_get_next_state, fn_get_canonical_form, fn_terminal_value,
         state):
     EPS = 1e-8
 
     def _fn_get_state_info(fn_terminal_value, state):
         qval = None
+        state_key = fn_get_state_key(state)
         terminal_state = False
         if fn_terminal_value is not None:
-            qval = mcts_cache_mgr.fn_get_progress_status(state)  # fn_terminal_value(state)
+            qval_old = mcts_cache_mgr.fn_get_progress_status(state)  # fn_terminal_value(state)
+            qval = fn_terminal_value(state)
+            cache_mgr.state_results.fn_set_data(state_key, qval)
+            qval = cache_mgr.state_results.fn_get_data(state_key)
             if qval != 0:
                 terminal_state = True
                 return -qval, None, terminal_state
