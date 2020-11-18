@@ -110,11 +110,11 @@ def mcts_r_mgr(
             if cache_mgr.state_action_qval.fn_does_state_exist(key):  # UPDATE EXISTING
                 tmp_val = (Nsa[key] * cache_mgr.state_action_qval.fn_get_data(key) + v) / (Nsa[key] + 1)
                 cache_mgr.state_action_qval.fn_set_data(key, tmp_val)
-                Nsa[(state_key, best_action)] += 1
+                Nsa[(key)] += 1
 
             else:  # UPDATE FIRST TIME
                 cache_mgr.state_action_qval.fn_set_data(key, v)
-                Nsa[(state_key, best_action)] = 1
+                Nsa[(key)] = 1
 
         Ns[state_key] += 1
         return -v
@@ -129,7 +129,8 @@ def mcts_r_mgr(
                 key = (state_key, a)
                 if USE_QSA_DIRECTLY:
                     if key in Qsa:
-                        u = Qsa[key] + explore_exploit_ratio * policy[a] * math.sqrt(
+                        u = Qsa[key] \
+                                    + explore_exploit_ratio * policy[a] * math.sqrt(
                             np.log(Ns[state_key]) ) / (
                                     Nsa[key])
                     else:
@@ -142,7 +143,7 @@ def mcts_r_mgr(
                         u = cache_mgr.state_action_qval.fn_get_data(key) \
                                     + explore_exploit_ratio * policy[a] * math.sqrt(
                             np.log(Ns[state_key])) / (
-                                Nsa[(state_key, a)])
+                                Nsa[(key)])
                     else:
                         u = explore_exploit_ratio * policy[a] * math.sqrt(
                             Ns[state_key] + EPS)  # Q = 0 ?
