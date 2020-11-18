@@ -39,10 +39,8 @@ def mcts_r_mgr(
         counts = [Nsa[(s, a)] if (s, a) in Nsa else 0 for a in range(max_num_actions)]
         return counts
 
-    def fn_init_mcts():
-        return None
 
-    fn_get_action_probabilities = mcts_probability_mgt(fn_init_mcts, fn_get_mcts_counts)
+    fn_get_action_probabilities = mcts_probability_mgt(fn_get_mcts_counts)
 
     def fn_search(state):
         """

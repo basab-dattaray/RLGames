@@ -1,12 +1,12 @@
 import numpy as np
 
 
-def mcts_probability_mgt(fn_init_mcts, fn_get_counts):
+def mcts_probability_mgt(fn_get_counts):
     force_single_high_probability = True
 
     def fn_get_action_probabilities(state, spread_probabilities=1, _test_data = None):
-        if fn_init_mcts is not None:
-            fn_init_mcts()
+        # if fn_init_mcts is not None:
+        #     fn_init_mcts()
 
         if fn_get_counts is not None:
             counts = fn_get_counts(state)
@@ -43,7 +43,7 @@ def mcts_probability_mgt(fn_init_mcts, fn_get_counts):
     return fn_get_action_probabilities
 
 if __name__ == '__main__': # test
-    fn_get_action_probs = mcts_probability_mgt(fn_init_mcts=None, fn_get_counts=None)
+    fn_get_action_probs = mcts_probability_mgt(fn_get_counts=None)
 
     results_fn_mcts_probability_select_one_win = fn_get_action_probs(None, 0, [3, 1, -4, 3])
     assert(results_fn_mcts_probability_select_one_win == [1, 0, 0, 0] or results_fn_mcts_probability_select_one_win == [0, 0, 0, 1])

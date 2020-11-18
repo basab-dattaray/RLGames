@@ -29,10 +29,6 @@ def mcts_mgt(
     cache_mgr = cache_mgt()
 
     root_node = None
-    def fn_init_mcts():
-        nonlocal root_node
-        root_node = None
-        return True
 
     def fn_get_mcts_counts(state):
         def _fn_get_counts():
@@ -51,7 +47,7 @@ def mcts_mgt(
         counts = _fn_get_counts()
         return counts
 
-    fn_get_action_probabilities = mcts_probability_mgt(fn_init_mcts, fn_get_mcts_counts)
+    fn_get_action_probabilities = mcts_probability_mgt(fn_get_mcts_counts)
 
     def fn_execute_monte_carlo_tree_search(state):
         nonlocal  root_node
