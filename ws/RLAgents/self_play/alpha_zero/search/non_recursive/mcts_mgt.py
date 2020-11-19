@@ -7,7 +7,7 @@ from collections import namedtuple
 
 import numpy
 
-from .node_mgt import node
+from .node_mgt import node_mgt
 from ..cache_mgt import cache_mgt
 from ..mcts_probability_mgt import mcts_probability_mgt
 
@@ -27,6 +27,7 @@ def mcts_mgt(
         max_num_actions
 ):
     cache_mgr = cache_mgt()
+    node_mgr = node_mgt()
 
     root_node = None
 
@@ -92,7 +93,7 @@ def mcts_mgt(
             return q_val, is_terminal_state
 
         if root_node is None:
-            root_node = node(
+            root_node = node_mgr.node(
                 state,
                 fn_get_normalized_predictions,
                 max_num_actions,
