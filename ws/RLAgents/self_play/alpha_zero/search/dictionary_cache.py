@@ -25,6 +25,7 @@ def dictionary_cache():
 
         if fn_does_state_exist(key):
             overwrite_try_count += 1
+            dict[key] = val
             return False
         else:
             dict[key] = val
