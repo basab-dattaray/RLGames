@@ -106,7 +106,7 @@ def agent_mgt(args, file_path):
         return agent_mgr
 
     @tracer(args)
-    def fn_test_againt_random():
+    def fn_test_against_random():
         fn_random_player_policy = lambda g: RandomPlayer(g).play
         fn_test(fn_random_player_policy, num_of_test_games= args.num_of_test_games)
         return agent_mgr
@@ -192,7 +192,7 @@ def agent_mgt(args, file_path):
 
     agent_mgr.fn_train = fn_train
     agent_mgr.fn_test_against_human = fn_test_against_human
-    agent_mgr.fn_test_againt_random = fn_test_againt_random
+    agent_mgr.fn_test_against_random = fn_test_against_random
     agent_mgr.fn_test_against_greedy = fn_test_against_greedy
     agent_mgr.fn_change_args = fn_change_args
     agent_mgr.fn_show_args = fn_show_args
