@@ -19,9 +19,8 @@ def node_mgt(
         visits = 0
         children_nodes = {}
 
-
-
         def _fn_add_children_nodes(normalized_valid_action_probabilities):
+            nonlocal children_nodes
 
             action_probabilities = normalized_valid_action_probabilities[:-2][0]
             children_nodes = {}
@@ -95,20 +94,6 @@ def node_mgt(
 
             return first_child_node
 
-        # def fn_back_propagate(current_val):
-        #     nonlocal parent_node
-        #
-        #     current_node = node_mgr
-        #     current_val = _fn_add_val_to_node(current_val)
-        #
-        #     # parent_node = parent_node
-        #
-        #     while parent_node is not None:
-        #         current_node = parent_node
-        #         current_val = current_node._fn_add_val_to_node(current_val)
-        #         parent_node = current_node.parent_node
-        #
-        #     return current_val
         def _fn_add_val_to_node(new_val):
             nonlocal visits, val
 
@@ -129,7 +114,7 @@ def node_mgt(
         node_obj = namedtuple('_', [
             'visits',
             'children_nodes',
-            'state',
+            # 'state',
             'current_val',
 
             'fn_select_from_available_leaf_nodes',
