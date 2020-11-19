@@ -5,12 +5,12 @@ from collections import namedtuple
 import numpy
 
 
-def node_mgt():
+def node_mgt(
+        fn_get_normalized_predictions,
+        explore_exploit_ratio,
+):
     def node(
             state,
-            fn_get_normalized_predictions,
-            num_edges,
-            explore_exploit_ratio,
             val,
             parent_node
     ):
@@ -34,10 +34,6 @@ def node_mgt():
                 if action_probability > 0:
                     child_node = node(
                         state,
-                        fn_get_normalized_predictions,
-                        num_edges,
-                        explore_exploit_ratio,
-
                         val=0.0,
                         parent_node= node_obj,  # ??? cant be None
                     )

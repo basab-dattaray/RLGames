@@ -27,7 +27,10 @@ def mcts_mgt(
         max_num_actions
 ):
     cache_mgr = cache_mgt()
-    node_mgr = node_mgt()
+    node_mgr = node_mgt(
+        fn_get_normalized_predictions,
+        explore_exploit_ratio
+    )
 
     root_node = None
 
@@ -95,9 +98,6 @@ def mcts_mgt(
         if root_node is None:
             root_node = node_mgr.node(
                 state,
-                fn_get_normalized_predictions,
-                max_num_actions,
-                explore_exploit_ratio,
                 val=0.0,
                 parent_node=None
             )
