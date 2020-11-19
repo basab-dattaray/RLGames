@@ -19,17 +19,12 @@ def node_mgt(
         visits = 0
         children_nodes = {}
 
-        def _fn_add_val_to_node(new_val):
-            nonlocal  visits, val
 
-            val += new_val
-            visits += 1
-            return val
 
         def _fn_add_children_nodes(normalized_valid_action_probabilities):
 
             action_probabilities = normalized_valid_action_probabilities[:-2][0]
-            children = {}
+            children_nodes = {}
             for action_num, action_probability in enumerate(action_probabilities):
                 if action_probability > 0:
                     child_node = node(
@@ -37,19 +32,17 @@ def node_mgt(
                         val=0.0,
                         parent_node= node_obj,  # ??? cant be None
                     )
-                    children[str(action_num)] = child_node
+                    children_nodes[str(action_num)] = child_node
 
-            children_nodes = children # {**children} #???
+            # children_nodes = children_nodes # {**children} #???
 
-            if len(children.values()) == 0:
+            if len(children_nodes.values()) == 0:
                 return None
 
-            return list(children.values())[0]
+            return list(children_nodes.values())[0]
 
 
-
-        def fn_select_from_available_leaf_nodes():
-            def _fn_find_best_ucb_child():
+        def _fn_find_best_ucb_child():
                 best_child = None
                 best_ucb = 0
 
@@ -78,6 +71,9 @@ def node_mgt(
                             best_child = child
 
                 return best_child
+
+
+        def fn_select_from_available_leaf_nodes():
 
             if len(children_nodes) == 0:  # leaf_node
                 return node_obj
@@ -113,14 +109,19 @@ def node_mgt(
         #         parent_node = current_node.parent_node
         #
         #     return current_val
+        def _fn_add_val_to_node(new_val):
+            nonlocal visits, val
+
+            val += new_val
+            visits += 1
+            return val
 
         def fn_back_propagate(current_val):
+            current_node = node_obj
 
-            node = node_obj
-
-            while node is not None:
-                current_val = node._fn_add_val_to_node(current_val)
-                node = node.parent_node
+            while current_node is not None:
+                current_val = _fn_add_val_to_node(current_val)
+                current_node = current_node.parent_node
 
             return current_val
 
@@ -137,13 +138,12 @@ def node_mgt(
             'fn_expand_node',
 
             # '_fn_add_val_to_node',
-            'parent_node',
-
+            'parent_node'
         ])
 
         node_obj.visits = visits
         node_obj.children_nodes = children_nodes
-        node_obj.state = state
+        # node_obj.state = state
         node_obj.val = val
         node_obj.parent_node = parent_node
 
@@ -151,13 +151,11 @@ def node_mgt(
         node_obj.fn_is_already_visited = fn_is_already_visited
         node_obj.fn_back_propagate = fn_back_propagate
         node_obj.fn_expand_node = fn_expand_node
-
-        # node_obj._fn_add_val_to_node = _fn_add_val_to_node
-
         return node_obj
+
     node_mgr = namedtuple('_', ['node'])
     node_mgr.node = node
-    return node
+    return node_mgr
 
 
 
