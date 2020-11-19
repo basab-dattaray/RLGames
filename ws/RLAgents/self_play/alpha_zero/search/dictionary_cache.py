@@ -14,11 +14,19 @@ def dictionary_cache():
         nonlocal hit_count, access_count
 
         access_count += 1
-        if fn_does_state_exist(key):
-            hit_count += 1
-            return dict[key]
-        else:
-            return None
+        hit_count += 1
+        return dict[key]
+
+
+    # def fn_get_data(key):
+    #     nonlocal hit_count, access_count
+    #
+    #     access_count += 1
+    #     if fn_does_state_exist(key):
+    #         hit_count += 1
+    #         return dict[key]
+    #     else:
+    #         return None
 
     def fn_set_data(key, val):
         nonlocal dict, overwrite_try_count
