@@ -2,9 +2,9 @@ import pytest
 
 from ws.RLAgents.self_play.alpha_zero.misc.agent_mgt import agent_mgt, fn_init_arg_with_default_val
 from ws.RLAgents.self_play.alpha_zero.search.mcts_adapter import mcts_adapter
-from ws.RLAgents.self_play.alpha_zero.search.non_recursive.node_mgt import node_mgt
+from ws.RLAgents.self_play.alpha_zero.search.non_recursive.node_mgt import node
 from ws.RLAgents.self_play.alpha_zero.search.non_recursive.pytests.ARGS import args
-# from ..node_mgt import node_mgt
+# from ..node import node
 # from ...mcts_adapter import mcts_adapter
 # from ws.RLEnvironments.self_play_games.othello.game_mgt import game_mgt
 
@@ -33,7 +33,7 @@ def test_create_root_node(setup):
     args = setup
     state = fn_get_state()
 
-    root_node = node_mgt(
+    root_node = node(
         state,
         args.fn_get_normalized_predictions,
         args.game_mgr.fn_get_action_size(),

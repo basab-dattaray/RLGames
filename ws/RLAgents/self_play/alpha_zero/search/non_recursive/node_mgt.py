@@ -6,7 +6,7 @@ import numpy
 
 
 
-def node_mgt(
+def node(
         state,
         fn_get_normalized_predictions,
         num_edges,
@@ -32,14 +32,14 @@ def node_mgt(
         children = {}
         for action_num, action_probability in enumerate(action_probabilities):
             if action_probability > 0:
-                child_node = node_mgt(
+                child_node = node(
                     state,
                     fn_get_normalized_predictions,
                     num_edges,
                     explore_exploit_ratio,
 
                     val=0.0,
-                    parent_node= node_mgr,  # ??? cant be None
+                    parent_node= node_obj,  # ??? cant be None
                 )
                 children[str(action_num)] = child_node
 
@@ -81,7 +81,7 @@ def node_mgt(
 
     def fn_select_from_available_leaf_nodes():
         if len(children_nodes) == 0:  # leaf_node
-            return node_mgr
+            return node_obj
 
         best_child = _fn_find_best_ucb_child()
         return best_child.fn_select_from_available_leaf_nodes()
@@ -117,7 +117,7 @@ def node_mgt(
 
     def fn_back_propagate(current_val):
 
-        node = node_mgr
+        node = node_obj
 
         while node is not None:
             current_val = node.fn_add_val_to_node(current_val)
@@ -126,7 +126,7 @@ def node_mgt(
         return current_val
 
     
-    node_mgr = namedtuple('_', [
+    node_obj = namedtuple('_', [
         'visits',
         'children_nodes',
         'state',
@@ -142,20 +142,20 @@ def node_mgt(
 
     ])
 
-    node_mgr.visits = visits
-    node_mgr.children_nodes = children_nodes
-    node_mgr.state = state
-    node_mgr.val = val
-    node_mgr.parent_node = parent_node
+    node_obj.visits = visits
+    node_obj.children_nodes = children_nodes
+    node_obj.state = state
+    node_obj.val = val
+    node_obj.parent_node = parent_node
 
-    node_mgr.fn_select_from_available_leaf_nodes = fn_select_from_available_leaf_nodes
-    node_mgr.fn_is_already_visited = fn_is_already_visited
-    node_mgr.fn_back_propagate = fn_back_propagate
-    node_mgr.fn_expand_node = fn_expand_node
+    node_obj.fn_select_from_available_leaf_nodes = fn_select_from_available_leaf_nodes
+    node_obj.fn_is_already_visited = fn_is_already_visited
+    node_obj.fn_back_propagate = fn_back_propagate
+    node_obj.fn_expand_node = fn_expand_node
 
-    node_mgr.fn_add_val_to_node = fn_add_val_to_node
+    node_obj.fn_add_val_to_node = fn_add_val_to_node
 
-    return node_mgr
+    return node_obj
 
 
 
