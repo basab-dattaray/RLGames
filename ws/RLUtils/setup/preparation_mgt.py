@@ -42,30 +42,18 @@ def preparation_mgt(calling_filepath, verbose=False):
             print(env_folder)
 
     def _fn_setup_paths_in_app_info():
-        try:
-            # establish archiving paths
-            _app_info[AGENT_FOLDER_PATH] = 'ws.RLAgents.{}'.format(_app_info[STRATEGY])
-            fn_load_top_object = loader_mgt()
-            # plugin_mgt = fn_load_top_object(_app_info[AGENT_FOLDER_PATH], 'plugin_mgt', 'plugin_mgt')
-            #
-            # fn_get_archive_name, fn_get_subfolder_name = plugin_mgt(_app_info)
-            _app_info[ARCHIVE_SUB_FOLDER] = demo_name # fn_get_archive_name()
+        _app_info[AGENT_FOLDER_PATH] = 'ws.RLAgents.{}'.format(_app_info[STRATEGY])
+        _app_info[ARCHIVE_SUB_FOLDER] = demo_name # fn_get_archive_name()
 
-            base_path = _app_info[RESULTS_BASE_PATH]
-            # x=  _app_info[DEMO_PATH].replace('Demos', '_Logs')
-            # sub_folder_name = demo_name # fn_get_subfolder_name ()
-            if _app_info[ARCHIVE_SUB_FOLDER] is not None:
-                base_path = os.path.join(base_path, _app_info[ARCHIVE_SUB_FOLDER])
+        base_path = _app_info[RESULTS_BASE_PATH]
+        if _app_info[ARCHIVE_SUB_FOLDER] is not None:
+            base_path = os.path.join(base_path, _app_info[ARCHIVE_SUB_FOLDER])
 
-            _app_info[RESULTS_CURRENT_PATH] = os.path.join(base_path, 'Current')
-            _app_info[RESULTS_ARCHIVE_PATH] = os.path.join(_app_info[DEMO_PATH].replace('Demos', ARCHIVES), demo_name)
-            if verbose:
-                print(_app_info[ARCHIVE_SUB_FOLDER])
-            pass
-        except Exception as x:
-            if verbose:
-                print(x)
-            exit()
+        _app_info[RESULTS_CURRENT_PATH] = os.path.join(base_path, 'Current')
+        _app_info[RESULTS_ARCHIVE_PATH] = os.path.join(_app_info[DEMO_PATH].replace('Demos', ARCHIVES), demo_name)
+        if verbose:
+            print(_app_info[ARCHIVE_SUB_FOLDER])
+
 
     def _fn_setup_logging():
         fn_get_key_as_bool, fn_get_key_as_int, fn_get_key_as_str = config_mgt(_app_info)

@@ -2,12 +2,11 @@ import importlib
 
 
 def get_module(tag, package_tag):
-    obj = None
     try:
         obj = importlib.import_module(tag, package_tag)
-    except Exception as x:
-        pass
-    return obj
+        return obj
+    except:
+        return None
 
 
 def load_function(function_name, module_tag, subpackage_tag, package_tag=None):

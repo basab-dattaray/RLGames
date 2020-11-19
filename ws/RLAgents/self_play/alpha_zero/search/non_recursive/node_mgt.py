@@ -11,7 +11,6 @@ def node_mgt(
         fn_get_normalized_predictions,
         num_edges,
         explore_exploit_ratio,
-        parent_action,
         val,
         parent_node
 ):
@@ -29,7 +28,6 @@ def node_mgt(
         return val
 
     def _fn_add_children_nodes(normalized_valid_action_probabilities):
-        nonlocal parent_action
 
         action_probabilities = normalized_valid_action_probabilities[:-2][0]
         children = {}
@@ -43,7 +41,6 @@ def node_mgt(
 
                     val=0.0,
                     parent_node= node_mgr,  # ??? cant be None
-                    parent_action= action_num
                 )
                 children[str(action_num)] = child_node
 

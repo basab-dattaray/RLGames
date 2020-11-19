@@ -23,17 +23,16 @@ class ActorCritic(nn.Module):
 
     def forward(self, state):
         action_info = None
-        try:
-            hidden = self.state_to_hidden(state)
-            state = F.relu(hidden)
 
-            self.state_value = self.value_layer(state)
+        hidden = self.state_to_hidden(state)
+        state = F.relu(hidden)
 
-            action_info = self.action_layer(state)
-            action_probs = F.softmax(action_info)
-            return action_probs
-        except Exception as x:
-            print(x)
+        self.state_value = self.value_layer(state)
+
+        action_info = self.action_layer(state)
+        action_probs = F.softmax(action_info)
+        return action_probs
+
         return None
 
     def get_state_value(self):

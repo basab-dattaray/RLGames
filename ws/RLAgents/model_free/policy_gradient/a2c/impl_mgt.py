@@ -43,11 +43,10 @@ def impl_mgt(app_info):
 
         actor_dict = torch.load(model_name_path)
 
-        try:
-            _model_actor_critic.load_state_dict(actor_dict)
-            return True
-        except Exception as x:
-            return False
+
+        _model_actor_critic.load_state_dict(actor_dict)
+        return True
+
 
     def fn_save_to_neural_net(current_folder_path):
         nonlocal _model_actor_critic

@@ -97,8 +97,6 @@ def mcts_mgt(
                 fn_get_normalized_predictions,
                 max_num_actions,
                 explore_exploit_ratio,
-
-                parent_action=-1,
                 val=0.0,
                 parent_node=None
             )

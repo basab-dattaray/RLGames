@@ -24,11 +24,7 @@ def log_mgt(log_dir, show_debug=False, log_file_name = 'log.txt',  fresh_logfile
         logging.getLogger().setLevel(_log_level)
 
         if os.path.exists(log_dir) is False:
-            try:
-                os.makedirs(log_dir)
-            except Exception as x:
-                print(x)
-                exit()
+            os.makedirs(log_dir)
 
         if not fixed_log_file:
             _log_file_name = dt.now().strftime("%Y_%m_%d_%H_%M_%S")

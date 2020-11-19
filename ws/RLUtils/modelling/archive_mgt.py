@@ -48,12 +48,9 @@ def archive_mgt(fn_save_to_neural_net, fn_load_from_neural_net, archive_folder_p
 
     def fn_save_model():
 
-        try:
-            fn_save_to_neural_net(current_folder_path)
+        fn_save_to_neural_net(current_folder_path)
+        return current_folder_path
 
-            return current_folder_path
-        except Exception as x:
-            return None
 
 
 
