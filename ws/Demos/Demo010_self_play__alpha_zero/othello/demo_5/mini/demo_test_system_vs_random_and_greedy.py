@@ -8,5 +8,5 @@ if __name__ == "__main__":
             'num_of_test_games': 12
         }). \
         fn_show_args(). \
-        fn_test_againt_greedy(). \
-        fn_test_againt_random()
+        fn_test_against_greedy(). \
+        fn_test_against_random()
