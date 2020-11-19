@@ -97,24 +97,24 @@ def mcts_r_mgr(
         v = fn_search(next_state_canonical)
 
         # BACKPROP
-        key = (state_key, best_action)
+        state_action_key = (state_key, best_action)
         if USE_QSA_DIRECTLY:
-            if key in Qsa: # UPDATE EXISTING
-                Qsa[key] = (Nsa[key] * Qsa[key] + v) / (Nsa[key] + 1)
-                Nsa[key] += 1
+            if state_action_key in Qsa: # UPDATE EXISTING
+                Qsa[state_action_key] = (Nsa[state_action_key] * Qsa[state_action_key] + v) / (Nsa[state_action_key] + 1)
+                Nsa[state_action_key] += 1
 
             else: # UPDATE FIRST TIME
-                Qsa[key] = v
-                Nsa[key] = 1
+                Qsa[state_action_key] = v
+                Nsa[state_action_key] = 1
         else:
-            if cache_mgr.state_action_qval.fn_does_state_exist(key):  # UPDATE EXISTING
-                tmp_val = (Nsa[key] * cache_mgr.state_action_qval.fn_get_data(key) + v) / (Nsa[key] + 1)
-                cache_mgr.state_action_qval.fn_set_data(key, tmp_val)
-                Nsa[(key)] += 1
+            if cache_mgr.state_action_qval.fn_does_state_exist(state_action_key):  # UPDATE EXISTING
+                tmp_val = (Nsa[state_action_key] * cache_mgr.state_action_qval.fn_get_data(state_action_key) + v) / (Nsa[state_action_key] + 1)
+                cache_mgr.state_action_qval.fn_set_data(state_action_key, tmp_val)
+                Nsa[(state_action_key)] += 1
 
             else:  # UPDATE FIRST TIME
-                cache_mgr.state_action_qval.fn_set_data(key, v)
-                Nsa[(key)] = 1
+                cache_mgr.state_action_qval.fn_set_data(state_action_key, v)
+                Nsa[(state_action_key)] = 1
 
         Ns[state_key] += 1
         return -v
@@ -126,24 +126,24 @@ def mcts_r_mgr(
         for a in range(max_num_actions):
             if valids[a]:
                 policy = cache_mgr.state_policy.fn_get_data(state_key)
-                key = (state_key, a)
+                state_action_key = (state_key, a)
                 if USE_QSA_DIRECTLY:
-                    if key in Qsa:
-                        u = Qsa[key] \
+                    if state_action_key in Qsa:
+                        u = Qsa[state_action_key] \
                                     + explore_exploit_ratio * policy[a] * math.sqrt(
                             np.log(Ns[state_key]) ) / (
-                                    Nsa[key])
+                                    Nsa[state_action_key])
                     else:
                         u = explore_exploit_ratio * policy[a] * math.sqrt(
                             Ns[state_key] + EPS)  # Q = 0 ?
                         # u = 0
                 else:
-                    if cache_mgr.state_action_qval.fn_does_state_exist(key):
+                    if cache_mgr.state_action_qval.fn_does_state_exist(state_action_key):
                         # qval = cache_mgr.state_action_qval.fn_get_data(key)  # Qsa[(state_key, a)]
-                        u = cache_mgr.state_action_qval.fn_get_data(key) \
+                        u = cache_mgr.state_action_qval.fn_get_data(state_action_key) \
                                     + explore_exploit_ratio * policy[a] * math.sqrt(
                             np.log(Ns[state_key])) / (
-                                Nsa[(key)])
+                                Nsa[(state_action_key)])
                     else:
                         u = explore_exploit_ratio * policy[a] * math.sqrt(
                             Ns[state_key] + EPS)  # Q = 0 ?
