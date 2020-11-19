@@ -19,7 +19,7 @@ def node_mgt(
         visits = 0
         children_nodes = {}
 
-        def fn_add_val_to_node(new_val):
+        def _fn_add_val_to_node(new_val):
             nonlocal  visits, val
 
             val += new_val
@@ -46,36 +46,39 @@ def node_mgt(
 
             return list(children.values())[0]
 
-        def _fn_find_best_ucb_child():
-            best_child = None
-            best_ucb = 0
 
-            normalized_predictions = fn_get_normalized_predictions(state) # fn_get_valid_normalized_action_probabilities()
-            normalized_valid_action_probabilities = normalized_predictions[:-2][0]
-            for key, child in children_nodes.items():
-                action_num = int(key)
-                action_prob = normalized_valid_action_probabilities[action_num]
-                parent_visits = visits
-                child_visits = child.visits
-                child_value = child.val
-                if child_visits == 0:
-                    return child
-
-                exploit_val = child_value / child_visits
-                explore_val = action_prob * math.sqrt(parent_visits) / (child_visits + 1)
-                ucb = exploit_val + explore_exploit_ratio * explore_val # Upper Confidence Bound
-
-                if best_child is None:
-                    best_child = child
-                    best_ucb = ucb
-                else:
-                    if ucb > best_ucb:
-                        best_ucb = ucb
-                        best_child = child
-
-            return best_child
 
         def fn_select_from_available_leaf_nodes():
+            def _fn_find_best_ucb_child():
+                best_child = None
+                best_ucb = 0
+
+                normalized_predictions = fn_get_normalized_predictions(
+                    state)  # fn_get_valid_normalized_action_probabilities()
+                normalized_valid_action_probabilities = normalized_predictions[:-2][0]
+                for key, child in children_nodes.items():
+                    action_num = int(key)
+                    action_prob = normalized_valid_action_probabilities[action_num]
+                    parent_visits = visits
+                    child_visits = child.visits
+                    child_value = child.val
+                    if child_visits == 0:
+                        return child
+
+                    exploit_val = child_value / child_visits
+                    explore_val = action_prob * math.sqrt(parent_visits) / (child_visits + 1)
+                    ucb = exploit_val + explore_exploit_ratio * explore_val  # Upper Confidence Bound
+
+                    if best_child is None:
+                        best_child = child
+                        best_ucb = ucb
+                    else:
+                        if ucb > best_ucb:
+                            best_ucb = ucb
+                            best_child = child
+
+                return best_child
+
             if len(children_nodes) == 0:  # leaf_node
                 return node_obj
 
@@ -100,13 +103,13 @@ def node_mgt(
         #     nonlocal parent_node
         #
         #     current_node = node_mgr
-        #     current_val = fn_add_val_to_node(current_val)
+        #     current_val = _fn_add_val_to_node(current_val)
         #
         #     # parent_node = parent_node
         #
         #     while parent_node is not None:
         #         current_node = parent_node
-        #         current_val = current_node.fn_add_val_to_node(current_val)
+        #         current_val = current_node._fn_add_val_to_node(current_val)
         #         parent_node = current_node.parent_node
         #
         #     return current_val
@@ -116,7 +119,7 @@ def node_mgt(
             node = node_obj
 
             while node is not None:
-                current_val = node.fn_add_val_to_node(current_val)
+                current_val = node._fn_add_val_to_node(current_val)
                 node = node.parent_node
 
             return current_val
@@ -133,7 +136,7 @@ def node_mgt(
             'fn_back_propagate',
             'fn_expand_node',
 
-            'fn_add_val_to_node',
+            # '_fn_add_val_to_node',
             'parent_node',
 
         ])
@@ -149,7 +152,7 @@ def node_mgt(
         node_obj.fn_back_propagate = fn_back_propagate
         node_obj.fn_expand_node = fn_expand_node
 
-        node_obj.fn_add_val_to_node = fn_add_val_to_node
+        # node_obj._fn_add_val_to_node = _fn_add_val_to_node
 
         return node_obj
     node_mgr = namedtuple('_', ['node'])
