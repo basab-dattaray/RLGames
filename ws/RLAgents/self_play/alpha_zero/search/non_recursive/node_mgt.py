@@ -18,7 +18,6 @@ def node_mgt(
 
     visits = 0
     children_nodes = {}
-    id = uuid.uuid4()
 
     def fn_add_val_to_node(new_val):
         nonlocal  visits, val
@@ -130,7 +129,6 @@ def node_mgt(
     node_mgr = namedtuple('_', [
         'visits',
         'children_nodes',
-        'id',
         'state',
         'current_val',
 
@@ -146,7 +144,6 @@ def node_mgt(
 
     node_mgr.visits = visits
     node_mgr.children_nodes = children_nodes
-    node_mgr.id = id
     node_mgr.state = state
     node_mgr.val = val
     node_mgr.parent_node = parent_node
