@@ -67,14 +67,14 @@ def mcts_r_mgr(
         state_key = fn_get_state_key(state)
 
         # ROLLOUT 1 - actual result
-        if not cache_mgr.state_results.fn_does_state_exist(state_key):
+        if not cache_mgr.state_results.fn_does_key_exist(state_key):
             cache_mgr.state_results.fn_set_data(state_key, fn_terminal_value(state))
         if cache_mgr.state_results.fn_get_data(state_key) != 0:
             # terminal node
             return -cache_mgr.state_results.fn_get_data(state_key)
 
         # ROLLOUT 2 - uses prediction
-        if not cache_mgr.state_policy.fn_does_state_exist(state_key):
+        if not cache_mgr.state_policy.fn_does_key_exist(state_key):
             # leaf node
             pi, v, valid_actions = fn_get_normalized_predictions(state)
             cache_mgr.state_policy.fn_set_data(state_key, pi)
@@ -98,7 +98,7 @@ def mcts_r_mgr(
         # BACKPROP
         state_action_key = (state_key, best_action)
 
-        if cache_mgr.state_action_qval.fn_does_state_exist(state_action_key):  # UPDATE EXISTING
+        if cache_mgr.state_action_qval.fn_does_key_exist(state_action_key):  # UPDATE EXISTING
             tmp_val = (Nsa[state_action_key] * cache_mgr.state_action_qval.fn_get_data(state_action_key) + v) / (Nsa[state_action_key] + 1)
             cache_mgr.state_action_qval.fn_set_data(state_action_key, tmp_val)
             Nsa[(state_action_key)] += 1
@@ -119,7 +119,7 @@ def mcts_r_mgr(
                 policy = cache_mgr.state_policy.fn_get_data(state_key)
                 state_action_key = (state_key, a)
 
-                if cache_mgr.state_action_qval.fn_does_state_exist(state_action_key):
+                if cache_mgr.state_action_qval.fn_does_key_exist(state_action_key):
                     # qval = cache_mgr.state_action_qval.fn_get_data(key)  # Qsa[(state_key, a)]
                     u = cache_mgr.state_action_qval.fn_get_data(state_action_key) \
                                 + explore_exploit_ratio * policy[a] * math.sqrt(
