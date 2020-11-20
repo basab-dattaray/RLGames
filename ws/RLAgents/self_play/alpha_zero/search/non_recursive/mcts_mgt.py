@@ -99,9 +99,7 @@ def mcts_mgt(
 
         if root_node is None:
             root_node = node_mgr.node(
-                state,
-                val=0.0,
-                parent_node=None
+                state
             )
 
         selected_node = root_node.fn_select_from_available_leaf_nodes()
