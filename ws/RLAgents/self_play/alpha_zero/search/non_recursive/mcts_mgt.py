@@ -35,25 +35,27 @@ def mcts_mgt(
     root_node = None
 
     def fn_get_mcts_counts(state):
+
         def _fn_get_counts():
+
             if root_node is None:
                 return None
             else:
-                childrenNodes = root_node.children_nodes
+                childrenNodes = root_node.fn_get_children_nodes()
                 counts = [0] * max_num_actions
-                for key, val in childrenNodes.items():
+                for key, current_node in childrenNodes.items():
                     index = int(key)
-                    counts[index] = val.visits
+                    counts[index] = current_node.fn_get_num_visits()
                 return counts
 
         for i in range(num_mcts_simulations):
-            fn_execute_monte_carlo_tree_search(state)
+            fn_execute_search(state)
         counts = _fn_get_counts()
         return counts
 
     fn_get_action_probabilities = mcts_probability_mgt(fn_get_mcts_counts)
 
-    def fn_execute_monte_carlo_tree_search(state):
+    def fn_execute_search(state):
         nonlocal  root_node
 
         def fn_rollout(state):
@@ -117,6 +119,6 @@ def mcts_mgt(
 
     mcts_mgr = namedtuple('_', ['fn_get_action_probabilities', 'fn_execute_monte_carlo_tree_search'])
     mcts_mgr.fn_get_action_probabilities = fn_get_action_probabilities
-    mcts_mgr.fn_execute_monte_carlo_tree_search = fn_execute_monte_carlo_tree_search
+    mcts_mgr.fn_execute_monte_carlo_tree_search = fn_execute_search
     return mcts_mgr
 

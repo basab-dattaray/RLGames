@@ -48,26 +48,26 @@ def node_mgt(
                 normalized_predictions = fn_get_normalized_predictions(
                     state)  # fn_get_valid_normalized_action_probabilities()
                 normalized_valid_action_probabilities = normalized_predictions[:-2][0]
-                for key, child in children_nodes.items():
+                for key, child_node in children_nodes.items():
                     action_num = int(key)
                     action_prob = normalized_valid_action_probabilities[action_num]
                     parent_visits = visits
-                    child_visits = child.visits
-                    child_value = child.val
+                    child_visits = child_node.fn_get_num_visits()
+                    child_value = child_node.fn_get_node_val()
                     if child_visits == 0:
-                        return child
+                        return child_node
 
                     exploit_val = child_value / child_visits
                     explore_val = action_prob * math.sqrt(parent_visits) / (child_visits + 1)
                     ucb = exploit_val + explore_exploit_ratio * explore_val  # Upper Confidence Bound
 
                     if best_child is None:
-                        best_child = child
+                        best_child = child_node
                         best_ucb = ucb
                     else:
                         if ucb > best_ucb:
                             best_ucb = ucb
-                            best_child = child
+                            best_child = child_node
 
                 return best_child
 
@@ -110,12 +110,20 @@ def node_mgt(
 
             return current_val
 
+        def fn_get_num_visits():
+            return visits
+
+        def fn_get_children_nodes():
+            return children_nodes
+
+        def fn_get_node_val():
+            return val
+
 
         node_obj = namedtuple('_', [
-            'visits',
-            'children_nodes',
-            # 'state',
-            'current_val',
+            'fn_get_num_visits',
+            'fn_get_children_node',
+            'fn_get_node_val',
 
             'fn_select_from_available_leaf_nodes',
             'fn_is_already_visited',
@@ -126,10 +134,10 @@ def node_mgt(
             'parent_node'
         ])
 
-        node_obj.visits = visits
-        node_obj.children_nodes = children_nodes
-        # node_obj.state = state
-        node_obj.val = val
+        node_obj.fn_get_num_visits = fn_get_num_visits
+        node_obj.fn_get_children_nodes = fn_get_children_nodes
+
+        node_obj.fn_get_node_val = fn_get_node_val
         node_obj.parent_node = parent_node
 
         node_obj.fn_select_from_available_leaf_nodes = fn_select_from_available_leaf_nodes
