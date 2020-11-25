@@ -31,7 +31,7 @@ def mcts_r_mgr(
     cache_mgr = cache_mgt()
 
 
-    ucb_mgr = ucb_mgt(cache_mgr, lambda s: Ns[s], lambda sa: Nsa[sa])
+    ucb_mgr = ucb_mgt(cache_mgr.state_action_qval, cache_mgr.state_policy, lambda s: Ns[s], lambda sa: Nsa[sa])
 
     def fn_get_mcts_counts(state):
         for i in range(num_mcts_simulations):
