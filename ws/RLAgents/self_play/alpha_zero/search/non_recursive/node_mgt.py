@@ -6,7 +6,7 @@ import numpy
 
 
 def node_mgt(
-        fn_get_normalized_predictions,
+        fn_get_prediction_info,
         explore_exploit_ratio,
 ):
     def node(
@@ -19,10 +19,10 @@ def node_mgt(
         visits = 0
         children_nodes = {}
 
-        def _fn_add_children_nodes(normalized_valid_action_probabilities):
+        def _fn_add_children_nodes(action_probabilities):
             nonlocal children_nodes
 
-            action_probabilities = normalized_valid_action_probabilities[:-2][0]
+            # action_probabilities = normalized_valid_action_probabilities[:-2][0]
             children_nodes = {}
             for action_num, action_probability in enumerate(action_probabilities):
                 if action_probability > 0:
@@ -45,7 +45,7 @@ def node_mgt(
                 best_child = None
                 best_ucb = 0
 
-                normalized_predictions = fn_get_normalized_predictions(
+                normalized_predictions = fn_get_prediction_info(
                     state)  # fn_get_valid_normalized_action_probabilities()
                 normalized_valid_action_probabilities = normalized_predictions[:-2][0]
                 for key, child_node in children_nodes.items():
@@ -87,10 +87,10 @@ def node_mgt(
                 return False
 
         def fn_expand_node():
-            normalized_valid_action_probabilities = fn_get_normalized_predictions(state) # fn_get_valid_normalized_action_probabilities()
-            if normalized_valid_action_probabilities is None:
+            action_probabilities, _, _ = fn_get_prediction_info(state) # fn_get_valid_normalized_action_probabilities()
+            if action_probabilities is None:
                 return None
-            first_child_node = _fn_add_children_nodes(normalized_valid_action_probabilities)
+            first_child_node = _fn_add_children_nodes(action_probabilities)
 
             return first_child_node
 

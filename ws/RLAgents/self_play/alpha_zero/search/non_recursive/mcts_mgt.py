@@ -17,7 +17,7 @@ CACHE_RESULTS = False
 EPS = 1e-8
 
 def mcts_mgt(
-        fn_get_normalized_predictions,
+        fn_get_prediction_info,
         fn_get_state_key,
         fn_get_next_state,
         fn_get_canonical_form,
@@ -28,7 +28,7 @@ def mcts_mgt(
 ):
     cache_mgr = cache_mgt()
     node_mgr = node_mgt(
-        fn_get_normalized_predictions,
+        fn_get_prediction_info,
         explore_exploit_ratio
     )
 
@@ -78,7 +78,7 @@ def mcts_mgt(
                         terminal_state = True
                         return -state_result, None, terminal_state
 
-                action_probabilities, state_value, x = fn_get_normalized_predictions(new_state)
+                action_probabilities, state_value, action_probs = fn_get_prediction_info(new_state)
 
                 return state_value[0], action_probabilities, terminal_state
 

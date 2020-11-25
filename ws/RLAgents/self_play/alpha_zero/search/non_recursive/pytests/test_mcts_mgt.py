@@ -34,11 +34,11 @@ def test_fn_execute_monte_carlo_tree_search(setup):
     state = game_mgt(GAME_SIZE).fn_get_init_board()
 
     mcts = mcts_adapter(args.neural_net_mgr, args)
-    # fn_get_normalized_predictions = mcts.fn_get_normalized_predictions
+    # fn_get_prediction_info = mcts.fn_get_prediction_info
     # arguments = fn_init_arg_with_default_val(agent.arguments, 'mcts', mcts)
 
     mcts_mgr = mcts_mgt(
-        mcts.fn_get_normalized_predictions,
+        mcts.fn_get_prediction_info,
         args.game_mgr.fn_get_state_key,
         args.game_mgr.fn_get_next_state,
         args.game_mgr.fn_get_canonical_form,

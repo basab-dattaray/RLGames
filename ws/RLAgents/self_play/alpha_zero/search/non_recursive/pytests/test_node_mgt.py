@@ -16,8 +16,8 @@ def setup():
     agent = agent_mgt(args, __file__)
 
     mcts = mcts_adapter(agent.arguments.neural_net_mgr, agent.arguments)
-    fn_get_normalized_predictions = mcts.fn_get_normalized_predictions
-    arguments = fn_init_arg_with_default_val(agent.arguments, 'fn_get_normalized_predictions', fn_get_normalized_predictions)
+    fn_get_prediction_info = mcts.fn_get_prediction_info
+    arguments = fn_init_arg_with_default_val(agent.arguments, 'fn_get_prediction_info', fn_get_prediction_info)
 
     return arguments
 
@@ -35,7 +35,7 @@ def test_create_root_node(setup):
 
     root_node = node(
         state,
-        args.fn_get_normalized_predictions,
+        args.fn_get_prediction_info,
         args.game_mgr.fn_get_action_size(),
         args.cpuct_exploration_exploitation_factor,
 

@@ -10,7 +10,7 @@ from ws.RLAgents.self_play.alpha_zero.search.ucb_mgt import ucb_mgt
 
 
 def mcts_r_mgr(
-    fn_get_normalized_predictions,
+    fn_get_prediction_info,
     fn_get_state_key,
     fn_get_next_state,
     fn_get_canonical_form,
@@ -78,7 +78,7 @@ def mcts_r_mgr(
         # ROLLOUT 2 - uses prediction
         if not cache_mgr.state_policy.fn_does_key_exist(state_key):
             # leaf node
-            pi, v, valid_actions = fn_get_normalized_predictions(state)
+            pi, v, valid_actions = fn_get_prediction_info(state)
             cache_mgr.state_policy.fn_set_data(state_key, pi)
 
             cache_mgr.state_valid_moves.fn_set_data(state_key, valid_actions)

@@ -16,7 +16,7 @@ def mcts_adapter(neural_net_mgr, args):
     if args.run_recursive_search:
         monte_carlo_tree_search = mcts_r_mgr
     def create_normalized_predictor (fn_predict_action_probablities, fn_get_valid_actions):
-        def fn_get_normalized_predictions( state):
+        def fn_get_prediction_info( state):
             pi, v = fn_predict_action_probablities(state)
             valid_actions = fn_get_valid_actions(state)
             pi = pi * valid_actions  # masking invalid moves
@@ -32,12 +32,12 @@ def mcts_adapter(neural_net_mgr, args):
                 pi = pi + valid_actions
                 pi /= np.sum(pi)
             return pi, v, valid_actions
-        return fn_get_normalized_predictions
+        return fn_get_prediction_info
 
-    fn_get_normalized_predictions = create_normalized_predictor (fn_predict_action_probablities, fn_get_valid_actions)
+    fn_get_prediction_info = create_normalized_predictor (fn_predict_action_probablities, fn_get_valid_actions)
 
     mcts = monte_carlo_tree_search(
-        fn_get_normalized_predictions = fn_get_normalized_predictions,
+        fn_get_prediction_info = fn_get_prediction_info,
         fn_get_state_key = game_mgr.fn_get_state_key,
         fn_get_next_state = game_mgr.fn_get_next_state,
         fn_get_canonical_form = game_mgr.fn_get_canonical_form,
@@ -48,9 +48,9 @@ def mcts_adapter(neural_net_mgr, args):
     )
     fn_get_action_probabilities = lambda state, spread_probabilities: mcts.fn_get_action_probabilities(state, spread_probabilities)
 
-    mtcs_adapter = namedtuple('_', ['fn_get_action_probabilities', 'fn_get_normalized_predictions', 'fn_terminal_value'])
+    mtcs_adapter = namedtuple('_', ['fn_get_action_probabilities', 'fn_get_prediction_info', 'fn_terminal_value'])
     mtcs_adapter.fn_get_action_probabilities=fn_get_action_probabilities
-    mtcs_adapter.fn_get_normalized_predictions=fn_get_normalized_predictions
+    mtcs_adapter.fn_get_prediction_info=fn_get_prediction_info
     mtcs_adapter.fn_terminal_value = fn_terminal_value
     return mtcs_adapter
 
