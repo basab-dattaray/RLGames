@@ -7,8 +7,10 @@ from ws.RLAgents.self_play.alpha_zero.search.cache_mgt import cache_mgt
 from ws.RLAgents.self_play.alpha_zero.search.mcts_probability_mgt import mcts_probability_mgt
 
 
-EPS = 1e-8
+
 # log = logging.getLogger(__name__)
+from ws.RLAgents.self_play.alpha_zero.search.recursive.ucb_mgt import ucb_mgt
+
 
 def mcts_r_mgr(
     fn_get_normalized_predictions,
@@ -21,7 +23,7 @@ def mcts_r_mgr(
     max_num_actions
 ):
 
-    Qsa = {}  # stores Q values for state_key,action (as defined in the paper)
+    # Qsa = {}  # stores Q values for state_key,action (as defined in the paper)
     Nsa = {}  # stores #times edge state_key,action was visited
     Ns = {}  # stores #times board_pieces state_key was visited
     # Ps = {}  # stores initial policy (returned by neural net)
@@ -30,6 +32,9 @@ def mcts_r_mgr(
 
     # cache_mgr = search_cache_mgt()
     cache_mgr = cache_mgt()
+
+
+    ucb_mgr = ucb_mgt(cache_mgr, lambda s: Ns[s], lambda sa: Nsa[sa])
 
     def fn_get_mcts_counts(state):
         for i in range(num_mcts_simulations):
@@ -88,7 +93,7 @@ def mcts_r_mgr(
 
         valid_actions = cache_mgr.state_valid_moves.fn_get_data(state_key)
 
-        best_action = fn_get_best_action(state_key, valid_actions, max_num_actions, explore_exploit_ratio)
+        best_action = ucb_mgr.fn_get_best_action(state_key, valid_actions, max_num_actions, explore_exploit_ratio)
         next_state, next_player = fn_get_next_state(state, 1, best_action)
         next_state_canonical = fn_get_canonical_form(next_state, next_player)
 
@@ -109,32 +114,6 @@ def mcts_r_mgr(
 
         Ns[state_key] += 1
         return -v
-
-    def fn_get_best_action(state_key, valids, max_num_actions, explore_exploit_ratio):
-        best_ucb = -float('inf')
-        best_act = -1
-        # pick the action with the highest upper confidence bound
-        for action\
-                in range(max_num_actions):
-            if valids[action]:
-                policy = cache_mgr.state_policy.fn_get_data(state_key)
-                state_action_key = (state_key, action)
-
-                if cache_mgr.state_action_qval.fn_does_key_exist(state_action_key):
-                    # qval = cache_mgr.state_action_qval.fn_get_data(key)  # Qsa[(state_key, action)]
-                    ucb = cache_mgr.state_action_qval.fn_get_data(state_action_key) \
-                                + explore_exploit_ratio * policy[action] * math.sqrt(
-                        np.log(Ns[state_key])) / (
-                            Nsa[(state_action_key)])
-                else:
-                    ucb = explore_exploit_ratio * policy[action] * math.sqrt(
-                        Ns[state_key] + EPS)  # Q = 0 ?
-                    # u = 0
-                if ucb > best_ucb:
-                    best_ucb = ucb
-                    best_act = action
-        action = best_act
-        return action
 
     mcts_mgr = namedtuple('_', ['fn_get_action_probabilities'])
     mcts_mgr.fn_get_action_probabilities = fn_get_action_probabilities
