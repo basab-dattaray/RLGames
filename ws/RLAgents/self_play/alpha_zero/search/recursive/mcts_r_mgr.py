@@ -78,13 +78,13 @@ def mcts_r_mgr(
         # ROLLOUT 2 - uses prediction
         if not cache_mgr.state_policy.fn_does_key_exist(state_key):
             # leaf node
-            pi, v, valid_actions = fn_get_prediction_info(state)
-            cache_mgr.state_policy.fn_set_data(state_key, pi)
+            policy, state_val, valid_actions = fn_get_prediction_info(state)
+            cache_mgr.state_policy.fn_set_data(state_key, policy)
 
             cache_mgr.state_valid_moves.fn_set_data(state_key, valid_actions)
 
             Ns[state_key] = 0
-            return -v
+            return -state_val
 
         # SELECTION - node already visited so find next best node in the subtree
 
@@ -95,22 +95,22 @@ def mcts_r_mgr(
         next_state_canonical = fn_get_canonical_form(next_state, next_player)
 
         # EXPANSION
-        v = fn_search(next_state_canonical)
+        state_val = fn_search(next_state_canonical)
 
         # BACKPROP
         state_action_key = (state_key, best_action)
 
         if cache_mgr.state_action_qval.fn_does_key_exist(state_action_key):  # UPDATE EXISTING
-            tmp_val = (Nsa[state_action_key] * cache_mgr.state_action_qval.fn_get_data(state_action_key) + v) / (Nsa[state_action_key] + 1)
+            tmp_val = (Nsa[state_action_key] * cache_mgr.state_action_qval.fn_get_data(state_action_key) + state_val) / (Nsa[state_action_key] + 1)
             cache_mgr.state_action_qval.fn_set_data(state_action_key, tmp_val)
             Nsa[(state_action_key)] += 1
 
         else:  # UPDATE FIRST TIME
-            cache_mgr.state_action_qval.fn_set_data(state_action_key, v)
+            cache_mgr.state_action_qval.fn_set_data(state_action_key, state_val)
             Nsa[(state_action_key)] = 1
 
         Ns[state_key] += 1
-        return -v
+        return -state_val
 
     mcts_mgr = namedtuple('_', ['fn_get_action_probabilities'])
     mcts_mgr.fn_get_action_probabilities = fn_get_action_probabilities

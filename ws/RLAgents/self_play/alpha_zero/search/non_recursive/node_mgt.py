@@ -45,9 +45,9 @@ def node_mgt(
                 best_child = None
                 best_ucb = 0
 
-                normalized_predictions = fn_get_prediction_info(
+                normalized_valid_action_probabilities, _, _ = fn_get_prediction_info(
                     state)  # fn_get_valid_normalized_action_probabilities()
-                normalized_valid_action_probabilities = normalized_predictions[:-2][0]
+
                 for key, child_node in children_nodes.items():
                     action_num = int(key)
                     action_prob = normalized_valid_action_probabilities[action_num]

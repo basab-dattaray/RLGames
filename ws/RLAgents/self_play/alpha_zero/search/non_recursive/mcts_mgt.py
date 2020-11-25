@@ -80,7 +80,7 @@ def mcts_mgt(
 
                 action_probabilities, state_value, action_probs = fn_get_prediction_info(new_state)
 
-                return state_value[0], action_probabilities, terminal_state
+                return state_value, action_probabilities, terminal_state
 
             def _fn_get_best_action(action_probs, state):
 

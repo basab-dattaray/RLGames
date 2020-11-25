@@ -17,21 +17,21 @@ def mcts_adapter(neural_net_mgr, args):
         monte_carlo_tree_search = mcts_r_mgr
     def create_normalized_predictor (fn_predict_action_probablities, fn_get_valid_actions):
         def fn_get_prediction_info( state):
-            pi, v = fn_predict_action_probablities(state)
+            action_probalities, wrapped_state_val = fn_predict_action_probablities(state)
             valid_actions = fn_get_valid_actions(state)
-            pi = pi * valid_actions  # masking invalid moves
-            sum_Ps_s = np.sum(pi)
+            action_probalities = action_probalities * valid_actions  # masking invalid moves
+            sum_Ps_s = np.sum(action_probalities)
             if sum_Ps_s > 0:
-                pi /= sum_Ps_s  # renormalize
+                action_probalities /= sum_Ps_s  # renormalize
             else:
                 # if all valid moves were masked make all valid moves equally probable
 
                 # NB! All valid moves may be masked if either your NNet architecture is insufficient or you've get overfitting or something else.
                 # If you have got dozens or hundreds of these messages you should pay attention to your NNet and/or training process.
 
-                pi = pi + valid_actions
-                pi /= np.sum(pi)
-            return pi, v, valid_actions
+                action_probalities = action_probalities + valid_actions
+                action_probalities /= np.sum(action_probalities)
+            return action_probalities, wrapped_state_val[0], valid_actions
         return fn_get_prediction_info
 
     fn_get_prediction_info = create_normalized_predictor (fn_predict_action_probablities, fn_get_valid_actions)
