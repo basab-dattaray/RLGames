@@ -49,7 +49,7 @@ def test_fn_execute_monte_carlo_tree_search(setup):
     )
 
     assert mcts_mgr.fn_execute_monte_carlo_tree_search is not None
-    assert mcts_mgr.fn_get_action_probabilities is not None
+    assert mcts_mgr.fn_get_policy is not None
 
     qval = mcts_mgr.fn_execute_monte_carlo_tree_search(state)
 

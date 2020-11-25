@@ -44,7 +44,7 @@ def mcts_r_mgr(
     def fn_init_mcts():
         return None
 
-    fn_get_action_probabilities = mcts_probability_mgt(fn_get_mcts_counts)
+    fn_get_policy = mcts_probability_mgt(fn_get_mcts_counts)
 
     def fn_search(state):
         """
@@ -112,7 +112,7 @@ def mcts_r_mgr(
         Ns[state_key] += 1
         return -state_val
 
-    mcts_mgr = namedtuple('_', ['fn_get_action_probabilities'])
-    mcts_mgr.fn_get_action_probabilities = fn_get_action_probabilities
+    mcts_mgr = namedtuple('_', ['fn_get_policy'])
+    mcts_mgr.fn_get_policy = fn_get_policy
 
     return mcts_mgr

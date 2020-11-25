@@ -126,7 +126,7 @@ def agent_mgt(args, file_path):
                 return
 
             system_mcts = mcts_adapter(system_nn, args)
-            fn_system_policy = lambda x: numpy.argmax(system_mcts.fn_get_action_probabilities(x, spread_probabilities=0))
+            fn_system_policy = lambda x: numpy.argmax(system_mcts.fn_get_policy(x, spread_probabilities=0))
             fn_contender_policy = fn_player_policy(args.game_mgr)
             arena = playground_mgt(fn_system_policy, fn_contender_policy, args.game_mgr, fn_display=game_mgt(args['board_size']).fn_display,
                           msg_recorder=args.calltracer.fn_write)

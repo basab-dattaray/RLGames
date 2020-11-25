@@ -19,12 +19,12 @@ def node_mgt(
         visits = 0
         children_nodes = {}
 
-        def _fn_add_children_nodes(action_probabilities):
+        def _fn_add_children_nodes(policy):
             nonlocal children_nodes
 
-            # action_probabilities = normalized_valid_action_probabilities[:-2][0]
+            # policy = normalized_valid_policy[:-2][0]
             children_nodes = {}
-            for action_num, action_probability in enumerate(action_probabilities):
+            for action_num, action_probability in enumerate(policy):
                 if action_probability > 0:
                     child_node = node(
                         state,
@@ -45,12 +45,12 @@ def node_mgt(
                 best_child = None
                 best_ucb = 0
 
-                normalized_valid_action_probabilities, _, _ = fn_get_prediction_info(
-                    state)  # fn_get_valid_normalized_action_probabilities()
+                normalized_valid_policy, _, _ = fn_get_prediction_info(
+                    state)  # fn_get_valid_normalized_policy()
 
                 for key, child_node in children_nodes.items():
                     action_num = int(key)
-                    action_prob = normalized_valid_action_probabilities[action_num]
+                    action_prob = normalized_valid_policy[action_num]
                     parent_visits = visits
                     child_visits = child_node.fn_get_num_visits()
                     child_value = child_node.fn_get_node_val()
@@ -87,10 +87,10 @@ def node_mgt(
                 return False
 
         def fn_expand_node():
-            action_probabilities, _, _ = fn_get_prediction_info(state) # fn_get_valid_normalized_action_probabilities()
-            if action_probabilities is None:
+            policy, _, _ = fn_get_prediction_info(state) # fn_get_valid_normalized_policy()
+            if policy is None:
                 return None
-            first_child_node = _fn_add_children_nodes(action_probabilities)
+            first_child_node = _fn_add_children_nodes(policy)
 
             return first_child_node
 

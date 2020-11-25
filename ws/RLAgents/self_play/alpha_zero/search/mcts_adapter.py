@@ -46,10 +46,10 @@ def mcts_adapter(neural_net_mgr, args):
         explore_exploit_ratio=args.cpuct_exploration_exploitation_factor,
         max_num_actions=game_mgr.fn_get_action_size()
     )
-    fn_get_action_probabilities = lambda state, spread_probabilities: mcts.fn_get_action_probabilities(state, spread_probabilities)
+    fn_get_policy = lambda state, spread_probabilities: mcts.fn_get_policy(state, spread_probabilities)
 
-    mtcs_adapter = namedtuple('_', ['fn_get_action_probabilities', 'fn_get_prediction_info', 'fn_terminal_value'])
-    mtcs_adapter.fn_get_action_probabilities=fn_get_action_probabilities
+    mtcs_adapter = namedtuple('_', ['fn_get_policy', 'fn_get_prediction_info', 'fn_terminal_value'])
+    mtcs_adapter.fn_get_policy=fn_get_policy
     mtcs_adapter.fn_get_prediction_info=fn_get_prediction_info
     mtcs_adapter.fn_terminal_value = fn_terminal_value
     return mtcs_adapter

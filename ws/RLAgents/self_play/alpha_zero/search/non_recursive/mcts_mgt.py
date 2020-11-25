@@ -53,7 +53,7 @@ def mcts_mgt(
         counts = _fn_get_counts()
         return counts
 
-    fn_get_action_probabilities = mcts_probability_mgt(fn_get_mcts_counts)
+    fn_get_policy = mcts_probability_mgt(fn_get_mcts_counts)
 
     def fn_execute_search(state):
         nonlocal  root_node
@@ -78,9 +78,9 @@ def mcts_mgt(
                         terminal_state = True
                         return -state_result, None, terminal_state
 
-                action_probabilities, state_value, action_probs = fn_get_prediction_info(new_state)
+                policy, state_value, action_probs = fn_get_prediction_info(new_state)
 
-                return state_value, action_probabilities, terminal_state
+                return state_value, policy, terminal_state
 
             def _fn_get_best_action(action_probs, state):
 
@@ -120,8 +120,8 @@ def mcts_mgt(
         value = selected_node.fn_back_propagate(score)
         return value
 
-    mcts_mgr = namedtuple('_', ['fn_get_action_probabilities', 'fn_execute_monte_carlo_tree_search'])
-    mcts_mgr.fn_get_action_probabilities = fn_get_action_probabilities
+    mcts_mgr = namedtuple('_', ['fn_get_policy', 'fn_execute_monte_carlo_tree_search'])
+    mcts_mgr.fn_get_policy = fn_get_policy
     mcts_mgr.fn_execute_monte_carlo_tree_search = fn_execute_search
     return mcts_mgr
 

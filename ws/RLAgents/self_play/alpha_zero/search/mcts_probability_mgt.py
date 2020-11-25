@@ -4,7 +4,7 @@ import numpy as np
 def mcts_probability_mgt(fn_get_counts):
     force_single_high_probability = True
 
-    def fn_get_action_probabilities(state, spread_probabilities=1, _test_data = None):
+    def fn_get_policy(state, spread_probabilities=1, _test_data = None):
         # if fn_init_mcts is not None:
         #     fn_init_mcts()
 
@@ -40,7 +40,7 @@ def mcts_probability_mgt(fn_get_counts):
         probs[bestA] = 1
         return probs
 
-    return fn_get_action_probabilities
+    return fn_get_policy
 
 if __name__ == '__main__': # test
     fn_get_action_probs = mcts_probability_mgt(fn_get_counts=None)

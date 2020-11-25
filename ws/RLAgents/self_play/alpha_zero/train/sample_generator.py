@@ -29,7 +29,7 @@ def fn_generate_samples(args, iteration, generation_mcts):
             canonical_board_pieces = game_mgr.fn_get_canonical_form(current_pieces, curPlayer)
             spread_probabilities = int(episode_step < args.probability_spread_threshold)
 
-            action_probs = generation_mcts.fn_get_action_probabilities(canonical_board_pieces,
+            action_probs = generation_mcts.fn_get_policy(canonical_board_pieces,
                                                                        spread_probabilities=spread_probabilities)
             if action_probs is None:
                 return None
