@@ -5,8 +5,25 @@ def mcts_probability_mgt(fn_get_counts):
     force_single_high_probability = True
 
     def fn_get_policy(state, spread_probabilities=1, _test_data = None):
-        # if fn_init_mcts is not None:
-        #     fn_init_mcts()
+        def fn_mcts_probability_spread_out(counts):
+
+            probs = None
+            counts_sum = float(sum(counts))
+            if counts_sum == 0:
+                probs = [1 / len(counts)] * len(counts)
+                return probs
+            else:
+                probs = [x / counts_sum for x in counts]
+                pass
+
+            return probs
+
+        def fn_mcts_probability_select_one_win(counts):
+            bestAs = np.array(np.argwhere(counts == np.max(counts))).flatten()
+            bestA = np.random.choice(bestAs)
+            probs = [0] * len(counts)
+            probs[bestA] = 1
+            return probs
 
         if fn_get_counts is not None:
             counts = fn_get_counts(state)
@@ -19,26 +36,7 @@ def mcts_probability_mgt(fn_get_counts):
             return fn_mcts_probability_spread_out(counts)
 
 
-    def fn_mcts_probability_spread_out(counts):
 
-        probs = None
-        counts_sum = float(sum(counts))
-        if counts_sum == 0:
-            probs = [1/len(counts)] * len(counts)
-            return probs
-        else:
-            probs = [x/counts_sum for x in counts]
-            pass
-
-        return probs
-
-
-    def fn_mcts_probability_select_one_win(counts):
-        bestAs = np.array(np.argwhere(counts == np.max(counts))).flatten()
-        bestA = np.random.choice(bestAs)
-        probs = [0] * len(counts)
-        probs[bestA] = 1
-        return probs
 
     return fn_get_policy
 
