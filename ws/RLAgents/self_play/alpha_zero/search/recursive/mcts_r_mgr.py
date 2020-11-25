@@ -21,8 +21,8 @@ def mcts_r_mgr(
     max_num_actions
 ):
 
-    Qsa = {}  # stores Q values for state_key,a (as defined in the paper)
-    Nsa = {}  # stores #times edge state_key,a was visited
+    Qsa = {}  # stores Q values for state_key,action (as defined in the paper)
+    Nsa = {}  # stores #times edge state_key,action was visited
     Ns = {}  # stores #times board_pieces state_key was visited
     # Ps = {}  # stores initial policy (returned by neural net)
     # Es = {}  # stores game.fn_get_game_progress_status ended for board_pieces state_key
@@ -47,17 +47,17 @@ def mcts_r_mgr(
     def fn_search(state):
         """
         This function performs one iteration of MCTS. It is recursively called
-        till a leaf node is found. The action chosen at each node is one that
+        till action leaf node is found. The action chosen at each node is one that
         has the maximum upper confidence bound as in the paper.
 
-        Once a leaf node is found, the neural network is called to return an
-        initial policy P and a value v for the state_key. This value is propagated
-        up the search path. In case the leaf node is a terminal state_key, the
+        Once action leaf node is found, the neural network is called to return an
+        initial policy P and action value v for the state_key. This value is propagated
+        up the search path. In case the leaf node is action terminal state_key, the
         outcome is propagated up the search path. The values of Ns, Nsa, Qsa are
         updated.
 
         NOTE: the return values are the negative of the value of the current
-        state_key. This is done since v is in [-1,1] and if v is the value of a
+        state_key. This is done since v is in [-1,1] and if v is the value of action
         state_key for the current player, then its value is -v for the other player.
 
         Returns:
@@ -111,29 +111,30 @@ def mcts_r_mgr(
         return -v
 
     def fn_get_best_action(state_key, valids, max_num_actions, explore_exploit_ratio):
-        cur_best = -float('inf')
+        best_ucb = -float('inf')
         best_act = -1
         # pick the action with the highest upper confidence bound
-        for a in range(max_num_actions):
-            if valids[a]:
+        for action\
+                in range(max_num_actions):
+            if valids[action]:
                 policy = cache_mgr.state_policy.fn_get_data(state_key)
-                state_action_key = (state_key, a)
+                state_action_key = (state_key, action)
 
                 if cache_mgr.state_action_qval.fn_does_key_exist(state_action_key):
-                    # qval = cache_mgr.state_action_qval.fn_get_data(key)  # Qsa[(state_key, a)]
-                    u = cache_mgr.state_action_qval.fn_get_data(state_action_key) \
-                                + explore_exploit_ratio * policy[a] * math.sqrt(
+                    # qval = cache_mgr.state_action_qval.fn_get_data(key)  # Qsa[(state_key, action)]
+                    ucb = cache_mgr.state_action_qval.fn_get_data(state_action_key) \
+                                + explore_exploit_ratio * policy[action] * math.sqrt(
                         np.log(Ns[state_key])) / (
                             Nsa[(state_action_key)])
                 else:
-                    u = explore_exploit_ratio * policy[a] * math.sqrt(
+                    ucb = explore_exploit_ratio * policy[action] * math.sqrt(
                         Ns[state_key] + EPS)  # Q = 0 ?
                     # u = 0
-                if u > cur_best:
-                    cur_best = u
-                    best_act = a
-        a = best_act
-        return a
+                if ucb > best_ucb:
+                    best_ucb = ucb
+                    best_act = action
+        action = best_act
+        return action
 
     mcts_mgr = namedtuple('_', ['fn_get_action_probabilities'])
     mcts_mgr.fn_get_action_probabilities = fn_get_action_probabilities
