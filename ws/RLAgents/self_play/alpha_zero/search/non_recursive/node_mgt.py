@@ -45,20 +45,19 @@ def node_mgt(
                 best_child = None
                 best_ucb = 0
 
-                normalized_valid_policy, _, _ = fn_get_prediction_info(
-                    state)  # fn_get_valid_normalized_policy()
+                policy, _, _ = fn_get_prediction_info(state)
 
                 for key, child_node in children_nodes.items():
                     action_num = int(key)
-                    action_prob = normalized_valid_policy[action_num]
-                    parent_visits = visits
+                    action_prob = policy[action_num]
+
                     child_visits = child_node.fn_get_num_visits()
                     child_value = child_node.fn_get_node_val()
                     if child_visits == 0:
                         return child_node
 
                     exploit_val = child_value / child_visits
-                    explore_val = action_prob * math.sqrt(parent_visits) / (child_visits + 1)
+                    explore_val = action_prob * math.sqrt(visits) / (child_visits + 1)
                     ucb = exploit_val + explore_exploit_ratio * explore_val  # Upper Confidence Bound
 
                     if best_child is None:
