@@ -1,22 +1,18 @@
 import numpy as np
 
 
-def mcts_probability_mgt(fn_get_counts):
-    force_single_high_probability = True
+def policy_mgt(fn_get_counts):
 
-    def fn_get_policy(state, spread_probabilities=1, _test_data = None):
+    def fn_get_policy(state, do_spread_probabilities=1, _test_data = None):
         def fn_mcts_probability_spread_out(counts):
-
-            probs = None
             counts_sum = float(sum(counts))
             if counts_sum == 0:
                 probs = [1 / len(counts)] * len(counts)
                 return probs
             else:
                 probs = [x / counts_sum for x in counts]
-                pass
+                return probs
 
-            return probs
 
         def fn_mcts_probability_select_one_win(counts):
             bestAs = np.array(np.argwhere(counts == np.max(counts))).flatten()
@@ -30,18 +26,15 @@ def mcts_probability_mgt(fn_get_counts):
         else:
             counts = _test_data
 
-        if spread_probabilities == 0:
+        if do_spread_probabilities == 0:
             return fn_mcts_probability_select_one_win(counts)
         else:
             return fn_mcts_probability_spread_out(counts)
 
-
-
-
     return fn_get_policy
 
 if __name__ == '__main__': # test
-    fn_get_action_probs = mcts_probability_mgt(fn_get_counts=None)
+    fn_get_action_probs = policy_mgt(fn_get_counts=None)
 
     results_fn_mcts_probability_select_one_win = fn_get_action_probs(None, 0, [3, 1, -4, 3])
     assert(results_fn_mcts_probability_select_one_win == [1, 0, 0, 0] or results_fn_mcts_probability_select_one_win == [0, 0, 0, 1])

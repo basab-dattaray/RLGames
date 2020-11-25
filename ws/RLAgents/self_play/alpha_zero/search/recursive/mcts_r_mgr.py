@@ -1,7 +1,7 @@
 from collections import namedtuple
 
 from ws.RLAgents.self_play.alpha_zero.search.cache_mgt import cache_mgt
-from ws.RLAgents.self_play.alpha_zero.search.mcts_probability_mgt import mcts_probability_mgt
+from ws.RLAgents.self_play.alpha_zero.search.policy_mgt import policy_mgt
 
 
 
@@ -44,7 +44,7 @@ def mcts_r_mgr(
     def fn_init_mcts():
         return None
 
-    fn_get_policy = mcts_probability_mgt(fn_get_mcts_counts)
+    fn_get_policy = policy_mgt(fn_get_mcts_counts)
 
     def fn_search(state):
         """

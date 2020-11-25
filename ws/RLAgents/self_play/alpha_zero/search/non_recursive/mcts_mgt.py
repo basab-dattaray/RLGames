@@ -9,7 +9,7 @@ import numpy
 
 from .node_mgt import node_mgt
 from ..cache_mgt import cache_mgt
-from ..mcts_probability_mgt import mcts_probability_mgt
+from ..policy_mgt import policy_mgt
 
 
 LONG_ROLLOUT = True
@@ -53,7 +53,7 @@ def mcts_mgt(
         counts = _fn_get_counts()
         return counts
 
-    fn_get_policy = mcts_probability_mgt(fn_get_mcts_counts)
+    fn_get_policy = policy_mgt(fn_get_mcts_counts)
 
     def fn_execute_search(state):
         nonlocal  root_node
