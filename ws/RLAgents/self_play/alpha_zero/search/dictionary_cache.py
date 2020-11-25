@@ -18,15 +18,15 @@ def dictionary_cache():
         return dict[key]
 
 
-    # def fn_get_data(key):
-    #     nonlocal hit_count, access_count
-    #
-    #     access_count += 1
-    #     if fn_does_key_exist(key):
-    #         hit_count += 1
-    #         return dict[key]
-    #     else:
-    #         return None
+    def fn_get_data_or_none(key):
+        nonlocal hit_count, access_count
+
+        access_count += 1
+        if fn_does_key_exist(key):
+            hit_count += 1
+            return dict[key]
+        else:
+            return None
 
     def fn_set_data(key, val):
         nonlocal dict, overwrite_try_count
@@ -56,6 +56,7 @@ def dictionary_cache():
 
     dictionary_cache.fn_does_key_exist = fn_does_key_exist
     dictionary_cache.fn_get_data = fn_get_data
+    dictionary_cache.fn_get_data_or_none = fn_get_data_or_none
     dictionary_cache.fn_set_data = fn_set_data
     dictionary_cache.fn_get_stats = fn_get_stats
 

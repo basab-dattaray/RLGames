@@ -58,22 +58,27 @@ def mcts_mgt(
     def fn_execute_search(state):
         nonlocal  root_node
 
+
         def fn_rollout(state):
 
             def _fn_get_state_info(fn_terminal_value, new_state):
+                state_key = fn_get_state_key(new_state)
 
                 terminal_state = False
                 if fn_terminal_value is not None:
-                    qval = fn_terminal_value(new_state)
+                    state_result = cache_mgr.state_results.fn_get_data_or_none(state_key)
+                    if state_result is None:
+                        state_result = fn_terminal_value(new_state)
+                        cache_mgr.state_results.fn_set_data(state_key, state_result)
 
-                    state_key = fn_get_state_key(new_state)
-                    cache_mgr.state_results.fn_set_data(state_key, qval)
-                    qval = cache_mgr.state_results.fn_get_data(state_key)
-                    if qval != 0:
+                    # state_key = fn_get_state_key(new_state)
+                    # cache_mgr.state_results.fn_set_data(state_key, state_result)
+                    # state_result = cache_mgr.state_results.fn_get_data(state_key)
+                    if state_result != 0:
                         terminal_state = True
-                        return -qval, None, terminal_state
+                        return -state_result, None, terminal_state
 
-                action_probabilities, state_value = fn_get_normalized_predictions(new_state)[:-1]
+                action_probabilities, state_value, x = fn_get_normalized_predictions(new_state)
 
                 return state_value[0], action_probabilities, terminal_state
 
@@ -85,17 +90,17 @@ def mcts_mgt(
                 next_state_canonical = fn_get_canonical_form(next_state, next_player)
                 return next_state_canonical
 
-            q_val, action_probs, is_terminal_state = _fn_get_state_info(
+            state_result, action_probs, is_terminal_state = _fn_get_state_info(
                 fn_terminal_value, state
             )
 
             while not is_terminal_state:
                 next_state = _fn_get_best_action(action_probs, state)
-                q_val, action_probs, is_terminal_state = _fn_get_state_info(
+                state_result, action_probs, is_terminal_state = _fn_get_state_info(
                     fn_terminal_value, next_state)
                 state = next_state
 
-            return q_val, is_terminal_state
+            return state_result, is_terminal_state
 
         if root_node is None:
             root_node = node_mgr.node(

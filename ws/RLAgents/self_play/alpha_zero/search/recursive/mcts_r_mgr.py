@@ -1,7 +1,4 @@
-import math
 from collections import namedtuple
-
-import numpy as np
 
 from ws.RLAgents.self_play.alpha_zero.search.cache_mgt import cache_mgt
 from ws.RLAgents.self_play.alpha_zero.search.mcts_probability_mgt import mcts_probability_mgt
@@ -9,7 +6,7 @@ from ws.RLAgents.self_play.alpha_zero.search.mcts_probability_mgt import mcts_pr
 
 
 # log = logging.getLogger(__name__)
-from ws.RLAgents.self_play.alpha_zero.search.recursive.ucb_mgt import ucb_mgt
+from ws.RLAgents.self_play.alpha_zero.search.ucb_mgt import ucb_mgt
 
 
 def mcts_r_mgr(
