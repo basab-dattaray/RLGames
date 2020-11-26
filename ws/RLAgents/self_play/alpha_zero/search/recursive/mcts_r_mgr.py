@@ -27,6 +27,11 @@ def mcts_r_mgr(
     # Es = {}  # stores game.fn_get_game_progress_status ended for board_pieces state_key
     # Vs = {}  # stores game.fn_get_valid_moves for board_pieces state_key
 
+    fn_get_state_visits = lambda s: Ns[s]
+    fn_get_child_state_visits = lambda sa: Nsa[sa]
+    fn_does_child_state_visits_exist = lambda sa: sa in Nsa
+
+
     # cache_mgr = search_cache_mgt()
     cache_mgr = cache_mgt()
 
@@ -38,7 +43,7 @@ def mcts_r_mgr(
             fn_search(state)
 
         s = fn_get_state_key(state)
-        counts = [Nsa[(s, a)] if (s, a) in Nsa else 0 for a in range(max_num_actions)]
+        counts = [fn_get_child_state_visits((s, a)) if fn_does_child_state_visits_exist((s, a)) else 0 for a in range(max_num_actions)]
         return counts
 
     def fn_init_mcts():
