@@ -13,8 +13,6 @@ def search_helper(
             fn_set_child_state_visits,
             fn_incr_child_state_visits
 ):
-    Nsa = {}  # stores #times edge state_key,action was visited
-    Ns = {}  # stores #times board_pieces state_key was visited
 
     def fn_update_state_during_backprop(state_key, action, state_val):
         state_action_key = (state_key, action)
