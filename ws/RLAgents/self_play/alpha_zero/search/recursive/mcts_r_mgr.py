@@ -126,11 +126,18 @@ def mcts_r_mgr(
 
 
         # BACKPROP
-        state_action_key = (state_key, best_action)
+
         state_val = fn_search(next_state_canonical)
 
+        fn_update_state_during_backprop(state_key, best_action, state_val)
+
+        return -state_val
+
+    def fn_update_state_during_backprop(state_key, action, state_val):
+        state_action_key = (state_key, action)
         if cache_mgr.state_action_qval.fn_does_key_exist(state_action_key):  # UPDATE EXISTING
-            tmp_val = (fn_get_child_state_visits(state_action_key) * cache_mgr.state_action_qval.fn_get_data(state_action_key) + state_val) / (fn_get_child_state_visits(state_action_key)  + 1)
+            tmp_val = (fn_get_child_state_visits(state_action_key) * cache_mgr.state_action_qval.fn_get_data(
+                state_action_key) + state_val) / (fn_get_child_state_visits(state_action_key) + 1)
             cache_mgr.state_action_qval.fn_set_data(state_action_key, tmp_val)
 
             # Nsa[(state_action_key)] += 1
@@ -141,11 +148,8 @@ def mcts_r_mgr(
 
             # Nsa[(state_action_key)] = 1
             fn_set_child_state_visits(state_action_key, 1)
-
         # Ns[state_key] += 1
         fn_incr_state_visits(state_key)
-
-        return -state_val
 
     mcts_mgr = namedtuple('_', ['fn_get_policy'])
     mcts_mgr.fn_get_policy = fn_get_policy
