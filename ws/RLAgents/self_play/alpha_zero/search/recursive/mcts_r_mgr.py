@@ -94,11 +94,11 @@ def mcts_r_mgr(
         next_state, next_player = fn_get_next_state(state, 1, best_action)
         next_state_canonical = fn_get_canonical_form(next_state, next_player)
 
-        # EXPANSION
-        state_val = fn_search(next_state_canonical)
+
 
         # BACKPROP
         state_action_key = (state_key, best_action)
+        state_val = fn_search(next_state_canonical)
 
         if cache_mgr.state_action_qval.fn_does_key_exist(state_action_key):  # UPDATE EXISTING
             tmp_val = (Nsa[state_action_key] * cache_mgr.state_action_qval.fn_get_data(state_action_key) + state_val) / (Nsa[state_action_key] + 1)
