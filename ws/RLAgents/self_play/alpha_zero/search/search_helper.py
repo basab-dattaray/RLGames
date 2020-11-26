@@ -9,8 +9,6 @@ def search_helper(
             state_action_qval, state_policy,
             fn_get_state_visits,
             fn_get_child_state_visits,
-            fn_does_child_state_visits_exist,
-            fn_set_state_visits,
             fn_incr_state_visits,
             fn_set_child_state_visits,
             fn_incr_child_state_visits
@@ -35,6 +33,7 @@ def search_helper(
             fn_set_child_state_visits(state_action_key, 1)
         # Ns[state_key] += 1
         fn_incr_state_visits(state_key)
+
     def fn_get_best_ucb_action(state_key, valids, max_num_actions, explore_exploit_ratio):
         best_ucb = -float('inf')
         best_act = -1

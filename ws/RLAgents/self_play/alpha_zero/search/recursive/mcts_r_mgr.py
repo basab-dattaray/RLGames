@@ -54,8 +54,6 @@ def mcts_r_mgr(
     search_help = search_helper(cache_mgr.state_action_qval, cache_mgr.state_policy,
                       fn_get_state_visits,
                       fn_get_child_state_visits,
-                      fn_does_child_state_visits_exist,
-                      fn_set_state_visits,
                       fn_incr_state_visits,
                       fn_set_child_state_visits,
                       fn_incr_child_state_visits
