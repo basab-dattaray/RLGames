@@ -51,7 +51,7 @@ def mcts_r_mgr(
     # cache_mgr = search_cache_mgt()
     cache_mgr = cache_mgt()
 
-    ucb_mgr = search_helper(cache_mgr.state_action_qval, cache_mgr.state_policy,
+    search_help = search_helper(cache_mgr.state_action_qval, cache_mgr.state_policy,
                       fn_get_state_visits,
                       fn_get_child_state_visits,
                       fn_does_child_state_visits_exist,
@@ -119,7 +119,7 @@ def mcts_r_mgr(
 
         valid_actions = cache_mgr.state_valid_moves.fn_get_data(state_key)
 
-        best_action = ucb_mgr.fn_get_best_action(state_key, valid_actions, max_num_actions, explore_exploit_ratio)
+        best_action = search_help.fn_get_best_ucb_action(state_key, valid_actions, max_num_actions, explore_exploit_ratio)
         next_state, next_player = fn_get_next_state(state, 1, best_action)
         next_state_canonical = fn_get_canonical_form(next_state, next_player)
 

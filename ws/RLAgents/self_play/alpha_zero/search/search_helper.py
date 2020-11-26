@@ -13,7 +13,7 @@ def search_helper(state_action_qval, state_policy,
             fn_set_child_state_visits,
             fn_incr_child_state_visits
 ):
-    def fn_get_best_action(state_key, valids, max_num_actions, explore_exploit_ratio):
+    def fn_get_best_ucb_action(state_key, valids, max_num_actions, explore_exploit_ratio):
         best_ucb = -float('inf')
         best_act = -1
         # pick the action with the highest upper confidence bound
@@ -40,8 +40,8 @@ def search_helper(state_action_qval, state_policy,
         action = best_act
         return action
 
-    search_helper = namedtuple('_', ['fn_get_best_action'])
-    search_helper.fn_get_best_action = fn_get_best_action
+    search_helper = namedtuple('_', ['fn_get_best_ucb_action'])
+    search_helper.fn_get_best_ucb_action = fn_get_best_ucb_action
 
     return search_helper
 
