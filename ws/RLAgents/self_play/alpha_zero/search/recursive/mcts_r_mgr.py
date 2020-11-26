@@ -31,6 +31,22 @@ def mcts_r_mgr(
     fn_get_child_state_visits = lambda sa: Nsa[sa]
     fn_does_child_state_visits_exist = lambda sa: sa in Nsa
 
+    def fn_set_state_visits(state_key, visits):
+        nonlocal Ns
+        Ns[state_key] = visits
+
+    def fn_incr_state_visits(state_key):
+        nonlocal Ns
+        Ns[state_key] += 1
+
+    def fn_set_child_state_visits(state_action_key, visits):
+        nonlocal Nsa
+        Nsa[state_action_key] = visits
+
+    def fn_incr_child_state_visits(state_action_key):
+        nonlocal Nsa
+        Nsa[state_action_key] += 1
+
     # cache_mgr = search_cache_mgt()
     cache_mgr = cache_mgt()
 
@@ -86,7 +102,9 @@ def mcts_r_mgr(
 
             cache_mgr.state_valid_moves.fn_set_data(state_key, valid_actions)
 
-            Ns[state_key] = 0
+            # Ns[state_key] = 0
+            fn_set_state_visits(state_key, 0)
+
             return -state_val
 
         # SELECTION - node already visited so find next best node in the subtree
@@ -104,15 +122,21 @@ def mcts_r_mgr(
         state_val = fn_search(next_state_canonical)
 
         if cache_mgr.state_action_qval.fn_does_key_exist(state_action_key):  # UPDATE EXISTING
-            tmp_val = (Nsa[state_action_key] * cache_mgr.state_action_qval.fn_get_data(state_action_key) + state_val) / (Nsa[state_action_key] + 1)
+            tmp_val = (fn_get_child_state_visits(state_action_key) * cache_mgr.state_action_qval.fn_get_data(state_action_key) + state_val) / (fn_get_child_state_visits(state_action_key)  + 1)
             cache_mgr.state_action_qval.fn_set_data(state_action_key, tmp_val)
-            Nsa[(state_action_key)] += 1
+
+            # Nsa[(state_action_key)] += 1
+            fn_incr_child_state_visits(state_action_key)
 
         else:  # UPDATE FIRST TIME
             cache_mgr.state_action_qval.fn_set_data(state_action_key, state_val)
-            Nsa[(state_action_key)] = 1
 
-        Ns[state_key] += 1
+            # Nsa[(state_action_key)] = 1
+            fn_set_child_state_visits(state_action_key, 1)
+
+        # Ns[state_key] += 1
+        fn_incr_state_visits(state_key)
+
         return -state_val
 
     mcts_mgr = namedtuple('_', ['fn_get_policy'])
