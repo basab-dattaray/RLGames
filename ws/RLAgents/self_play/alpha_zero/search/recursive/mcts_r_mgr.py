@@ -6,7 +6,7 @@ from ws.RLAgents.self_play.alpha_zero.search.policy_mgt import policy_mgt
 
 
 # log = logging.getLogger(__name__)
-from ws.RLAgents.self_play.alpha_zero.search.ucb_mgt import ucb_mgt
+from ws.RLAgents.self_play.alpha_zero.search.search_helper import search_helper
 
 
 def mcts_r_mgr(
@@ -21,12 +21,13 @@ def mcts_r_mgr(
 ):
 
     # Qsa = {}  # stores Q values for state_key,action (as defined in the paper)
-    Nsa = {}  # stores #times edge state_key,action was visited
-    Ns = {}  # stores #times board_pieces state_key was visited
+
     # Ps = {}  # stores initial policy (returned by neural net)
     # Es = {}  # stores game.fn_get_game_progress_status ended for board_pieces state_key
     # Vs = {}  # stores game.fn_get_valid_moves for board_pieces state_key
 
+    Nsa = {}  # stores #times edge state_key,action was visited
+    Ns = {}  # stores #times board_pieces state_key was visited
     fn_get_state_visits = lambda s: Ns[s]
     fn_get_child_state_visits = lambda sa: Nsa[sa]
     fn_does_child_state_visits_exist = lambda sa: sa in Nsa
@@ -50,7 +51,14 @@ def mcts_r_mgr(
     # cache_mgr = search_cache_mgt()
     cache_mgr = cache_mgt()
 
-    ucb_mgr = ucb_mgt(cache_mgr.state_action_qval, cache_mgr.state_policy, fn_get_state_visits, fn_get_child_state_visits)
+    ucb_mgr = search_helper(cache_mgr.state_action_qval, cache_mgr.state_policy,
+                      fn_get_state_visits,
+                      fn_get_child_state_visits,
+                      fn_does_child_state_visits_exist,
+                      fn_set_state_visits,
+                      fn_set_child_state_visits,
+                      fn_incr_child_state_visits
+    )
 
     def fn_get_mcts_counts(state):
         for i in range(num_mcts_simulations):
