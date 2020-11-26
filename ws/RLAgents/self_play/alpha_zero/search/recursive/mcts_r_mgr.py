@@ -56,6 +56,7 @@ def mcts_r_mgr(
                       fn_get_child_state_visits,
                       fn_does_child_state_visits_exist,
                       fn_set_state_visits,
+                      fn_incr_state_visits,
                       fn_set_child_state_visits,
                       fn_incr_child_state_visits
     )
@@ -68,8 +69,6 @@ def mcts_r_mgr(
         counts = [fn_get_child_state_visits((s, a)) if fn_does_child_state_visits_exist((s, a)) else 0 for a in range(max_num_actions)]
         return counts
 
-    def fn_init_mcts():
-        return None
 
     fn_get_policy = policy_mgt(fn_get_mcts_counts)
 
@@ -116,40 +115,37 @@ def mcts_r_mgr(
             return -state_val
 
         # SELECTION - node already visited so find next best node in the subtree
-
         valid_actions = cache_mgr.state_valid_moves.fn_get_data(state_key)
 
         best_action = search_help.fn_get_best_ucb_action(state_key, valid_actions, max_num_actions, explore_exploit_ratio)
         next_state, next_player = fn_get_next_state(state, 1, best_action)
         next_state_canonical = fn_get_canonical_form(next_state, next_player)
 
-
-
         # BACKPROP
 
         state_val = fn_search(next_state_canonical)
 
-        fn_update_state_during_backprop(state_key, best_action, state_val)
+        search_help.fn_update_state_during_backprop(state_key, best_action, state_val)
 
         return -state_val
 
-    def fn_update_state_during_backprop(state_key, action, state_val):
-        state_action_key = (state_key, action)
-        if cache_mgr.state_action_qval.fn_does_key_exist(state_action_key):  # UPDATE EXISTING
-            tmp_val = (fn_get_child_state_visits(state_action_key) * cache_mgr.state_action_qval.fn_get_data(
-                state_action_key) + state_val) / (fn_get_child_state_visits(state_action_key) + 1)
-            cache_mgr.state_action_qval.fn_set_data(state_action_key, tmp_val)
-
-            # Nsa[(state_action_key)] += 1
-            fn_incr_child_state_visits(state_action_key)
-
-        else:  # UPDATE FIRST TIME
-            cache_mgr.state_action_qval.fn_set_data(state_action_key, state_val)
-
-            # Nsa[(state_action_key)] = 1
-            fn_set_child_state_visits(state_action_key, 1)
-        # Ns[state_key] += 1
-        fn_incr_state_visits(state_key)
+    # def fn_update_state_during_backprop(state_key, action, state_val):
+    #     state_action_key = (state_key, action)
+    #     if cache_mgr.state_action_qval.fn_does_key_exist(state_action_key):  # UPDATE EXISTING
+    #         tmp_val = (fn_get_child_state_visits(state_action_key) * cache_mgr.state_action_qval.fn_get_data(
+    #             state_action_key) + state_val) / (fn_get_child_state_visits(state_action_key) + 1)
+    #         cache_mgr.state_action_qval.fn_set_data(state_action_key, tmp_val)
+    #
+    #         # Nsa[(state_action_key)] += 1
+    #         fn_incr_child_state_visits(state_action_key)
+    #
+    #     else:  # UPDATE FIRST TIME
+    #         cache_mgr.state_action_qval.fn_set_data(state_action_key, state_val)
+    #
+    #         # Nsa[(state_action_key)] = 1
+    #         fn_set_child_state_visits(state_action_key, 1)
+    #     # Ns[state_key] += 1
+    #     fn_incr_state_visits(state_key)
 
     mcts_mgr = namedtuple('_', ['fn_get_policy'])
     mcts_mgr.fn_get_policy = fn_get_policy
