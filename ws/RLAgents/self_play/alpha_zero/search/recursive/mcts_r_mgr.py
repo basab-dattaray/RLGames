@@ -31,12 +31,10 @@ def mcts_r_mgr(
     fn_get_child_state_visits = lambda sa: Nsa[sa]
     fn_does_child_state_visits_exist = lambda sa: sa in Nsa
 
-
     # cache_mgr = search_cache_mgt()
     cache_mgr = cache_mgt()
 
-
-    ucb_mgr = ucb_mgt(cache_mgr.state_action_qval, cache_mgr.state_policy, lambda s: Ns[s], lambda sa: Nsa[sa])
+    ucb_mgr = ucb_mgt(cache_mgr.state_action_qval, cache_mgr.state_policy, fn_get_state_visits, fn_get_child_state_visits)
 
     def fn_get_mcts_counts(state):
         for i in range(num_mcts_simulations):
