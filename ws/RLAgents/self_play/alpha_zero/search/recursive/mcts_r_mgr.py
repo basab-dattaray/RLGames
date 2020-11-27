@@ -6,6 +6,7 @@ from ws.RLAgents.self_play.alpha_zero.search.policy_mgt import policy_mgt
 
 
 # log = logging.getLogger(__name__)
+from ws.RLAgents.self_play.alpha_zero.search.recursive.state_visit_mgt import state_visit_mgt
 from ws.RLAgents.self_play.alpha_zero.search.search_helper import search_helper
 
 
@@ -26,37 +27,15 @@ def mcts_r_mgr(
     # Es = {}  # stores game.fn_get_game_progress_status ended for board_pieces state_key
     # Vs = {}  # stores game.fn_get_valid_moves for board_pieces state_key
 
-    Nsa = {}  # stores #times edge state_key,action was visited
-    Ns = {}  # stores #times board_pieces state_key was visited
-    fn_get_state_visits = lambda s: Ns[s]
-    fn_get_child_state_visits = lambda sa: Nsa[sa]
-    fn_does_child_state_visits_exist = lambda sa: sa in Nsa
-
-    def fn_set_state_visits(state_key, visits):
-        nonlocal Ns
-        Ns[state_key] = visits
-
-    def fn_incr_state_visits(state_key):
-        nonlocal Ns
-        Ns[state_key] += 1
-
-    def fn_set_child_state_visits(state_action_key, visits):
-        nonlocal Nsa
-        Nsa[state_action_key] = visits
-
-    def fn_incr_child_state_visits(state_action_key):
-        nonlocal Nsa
-        Nsa[state_action_key] += 1
+    state_visits = state_visit_mgt()
 
     # cache_mgr = search_cache_mgt()
     cache_mgr = cache_mgt()
 
-    search_help = search_helper(cache_mgr.state_action_qval, cache_mgr.state_policy,
-                      fn_get_state_visits,
-                      fn_get_child_state_visits,
-                      fn_incr_state_visits,
-                      fn_set_child_state_visits,
-                      fn_incr_child_state_visits
+    search_help = search_helper(
+        cache_mgr.state_action_qval,
+        cache_mgr.state_policy,
+        state_visits
     )
 
     def fn_get_mcts_counts(state):
@@ -64,7 +43,7 @@ def mcts_r_mgr(
             fn_search(state)
 
         s = fn_get_state_key(state)
-        counts = [fn_get_child_state_visits((s, a)) if fn_does_child_state_visits_exist((s, a)) else 0 for a in range(max_num_actions)]
+        counts = [state_visits.fn_get_child_state_visits((s, a)) if state_visits.fn_does_child_state_visits_exist((s, a)) else 0 for a in range(max_num_actions)]
         return counts
 
 
@@ -89,7 +68,7 @@ def mcts_r_mgr(
             cache_mgr.state_valid_moves.fn_set_data(state_key, valid_actions)
 
             # Ns[state_key] = 0
-            fn_set_state_visits(state_key, 0)
+            state_visits.fn_set_state_visits(state_key, 0)
 
             return -state_val
 
