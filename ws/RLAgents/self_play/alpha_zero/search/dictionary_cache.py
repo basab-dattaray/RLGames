@@ -31,16 +31,22 @@ def dictionary_cache():
     def fn_set_data(key, val):
         nonlocal dict, overwrite_try_count
 
+        def _fn_set_val(dict, key, val):
+            if type(val) == dict:
+                revised_dict = dict[key].copy()
+                revised_dict.update(val)
+                dict[key] = revised_dict
+            else:
+                dict[key] = val
+
+
         if fn_does_key_exist(key):
             overwrite_try_count += 1
             _fn_set_val(dict, key, val)
             return False
         else:
-            _fn_set_val(dict, key, val)
-        return True
-
-    def _fn_set_val(dict, key, val):
-        dict[key] = val
+            dict[key] = val
+            return True
 
     def fn_get_stats():
         return {
