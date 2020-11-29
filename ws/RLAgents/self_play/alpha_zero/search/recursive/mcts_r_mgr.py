@@ -60,7 +60,7 @@ def mcts_r_mgr(
             return -cache_mgr.state_results.fn_get_data(state_key)
 
         # ROLLOUT 2 - uses prediction
-        if not cache_mgr.state_policy.fn_does_key_exist(state_key):
+        if not cache_mgr.state_info.fn_does_key_exist(state_key):
             # leaf node
             policy, state_val, valid_actions = fn_get_prediction_info(state)
             state_info = {

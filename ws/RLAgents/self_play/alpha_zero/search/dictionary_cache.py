@@ -33,11 +33,14 @@ def dictionary_cache():
 
         if fn_does_key_exist(key):
             overwrite_try_count += 1
-            dict[key] = val
+            _fn_set_val(dict, key, val)
             return False
         else:
-            dict[key] = val
+            _fn_set_val(dict, key, val)
         return True
+
+    def _fn_set_val(dict, key, val):
+        dict[key] = val
 
     def fn_get_stats():
         return {
