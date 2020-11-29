@@ -63,6 +63,12 @@ def mcts_r_mgr(
         if not cache_mgr.state_policy.fn_does_key_exist(state_key):
             # leaf node
             policy, state_val, valid_actions = fn_get_prediction_info(state)
+            state_info = {
+                'policy': policy,
+                'state_val': state_val,
+                'valid_actions': valid_actions
+            }
+            cache_mgr.state_info.fn_set_data(state_key, state_info)
             cache_mgr.state_policy.fn_set_data(state_key, policy)
 
             cache_mgr.state_valid_moves.fn_set_data(state_key, valid_actions)
