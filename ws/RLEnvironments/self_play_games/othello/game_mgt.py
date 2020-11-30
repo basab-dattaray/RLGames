@@ -115,10 +115,11 @@ def game_mgt(board_size):
 
         print("-----------------------")
 
-    def fn_next_state_given_action(state, best_action):
-        next_state, next_player = fn_get_next_state(state, 1, best_action)
+    def fn_next_state_given_action(state, action):
+        next_state, next_player = fn_get_next_state(state, 1, action)
         next_state_canonical = fn_get_canonical_form(next_state, next_player)
         return next_state_canonical
+
 
     game_mgr = namedtuple('_', [
         'fn_get_init_board',
