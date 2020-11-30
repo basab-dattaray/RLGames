@@ -22,6 +22,7 @@ def mcts_mgt(
         fn_get_next_state,
         fn_get_canonical_form,
         fn_terminal_value,
+        fn_next_state_given_action,
         num_mcts_simulations,
         explore_exploit_ratio,
         max_num_actions
@@ -86,9 +87,10 @@ def mcts_mgt(
 
                 best_action = numpy.random.choice(len(action_probs), p=action_probs)
 
-                next_state, next_player = fn_get_next_state(state, 1, best_action)
-                next_state_canonical = fn_get_canonical_form(next_state, next_player)
+                next_state_canonical = fn_next_state_given_action(state, best_action)
                 return next_state_canonical
+
+
 
             state_result, action_probs, is_terminal_state = _fn_get_state_info(
                 fn_terminal_value, state

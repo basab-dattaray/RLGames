@@ -115,6 +115,11 @@ def game_mgt(board_size):
 
         print("-----------------------")
 
+    def fn_next_state_given_action(state, best_action):
+        next_state, next_player = fn_get_next_state(state, 1, best_action)
+        next_state_canonical = fn_get_canonical_form(next_state, next_player)
+        return next_state_canonical
+
     game_mgr = namedtuple('_', [
         'fn_get_init_board',
         'fn_get_board_size',
@@ -129,7 +134,9 @@ def game_mgt(board_size):
         'fn_get_symetric_samples',
         'fn_get_state_key',
         'fn_get_score' ,
-        'fn_display'
+        'fn_display',
+
+        'fn_next_state_given_action'
         ]
     )
 
@@ -147,5 +154,7 @@ def game_mgt(board_size):
     game_mgr.fn_get_state_key = fn_get_state_key
     game_mgr.fn_get_score = fn_get_score
     game_mgr.fn_display = fn_display
+
+    game_mgr.fn_next_state_given_action = fn_next_state_given_action
 
     return game_mgr

@@ -58,6 +58,8 @@ def board_mgt(board_size):
             copied_pieces[x][y] = color
         return True, copied_pieces
 
+
+
     board_mgr = namedtuple('_', [
         'fn_init_board',
         'fn_get_advantage_count',
