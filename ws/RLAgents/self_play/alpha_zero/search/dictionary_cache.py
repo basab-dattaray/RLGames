@@ -59,6 +59,7 @@ def dictionary_cache():
     dictionary_cache = namedtuple('state_cache', [
         'fn_does_key_exist',
         'fn_get_data',
+        'fn_get_data_or_none',
         'fn_set_data',
         'fn_get_stats'
     ])
