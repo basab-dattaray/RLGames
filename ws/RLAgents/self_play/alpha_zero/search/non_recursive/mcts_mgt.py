@@ -120,8 +120,7 @@ def mcts_mgt(
         value = selected_node.fn_back_propagate(score)
         return value
 
-    mcts_mgr = namedtuple('_', ['fn_get_policy', 'fn_execute_monte_carlo_tree_search'])
+    mcts_mgr = namedtuple('_', ['fn_get_policy'])
     mcts_mgr.fn_get_policy = fn_get_policy
-    mcts_mgr.fn_execute_monte_carlo_tree_search = fn_execute_search
     return mcts_mgr
 
