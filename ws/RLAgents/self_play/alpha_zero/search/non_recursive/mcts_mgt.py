@@ -17,12 +17,13 @@ CACHE_RESULTS = False
 EPS = 1e-8
 
 def mcts_mgt(
+        game_mgr,
         fn_get_prediction_info,
-        fn_get_state_key,
-        fn_get_next_state,
-        fn_get_canonical_form,
+        # fn_get_state_key,
+        # fn_get_next_state,
+        # fn_get_canonical_form,
         fn_terminal_value,
-        fn_next_state_given_action,
+        # fn_next_state_given_action,
         num_mcts_simulations,
         explore_exploit_ratio,
         max_num_actions
@@ -63,7 +64,7 @@ def mcts_mgt(
         def fn_rollout(state):
 
             def _fn_get_state_info(fn_terminal_value, new_state):
-                state_key = fn_get_state_key(new_state)
+                state_key = game_mgr.fn_get_state_key(new_state)
 
                 terminal_state = False
                 if fn_terminal_value is not None:
@@ -87,7 +88,7 @@ def mcts_mgt(
 
                 best_action = numpy.random.choice(len(action_probs), p=action_probs)
 
-                next_state_canonical = fn_next_state_given_action(state, best_action)
+                next_state_canonical = game_mgr.fn_next_state_given_action(state, best_action)
                 return next_state_canonical
 
 
