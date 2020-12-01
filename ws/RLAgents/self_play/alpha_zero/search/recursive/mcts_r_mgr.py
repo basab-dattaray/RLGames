@@ -11,12 +11,13 @@ from ws.RLAgents.self_play.alpha_zero.search.search_helper import search_helper
 
 
 def mcts_r_mgr(
+    game_mgr,
     fn_get_prediction_info,
-    fn_get_state_key,
-    fn_get_next_state,
-    fn_get_canonical_form,
+    # fn_get_state_key,
+    # fn_get_next_state,
+    # fn_get_canonical_form,
     fn_terminal_value,
-    fn_next_state_given_action,
+    # fn_next_state_given_action,
     num_mcts_simulations,
     explore_exploit_ratio,
     max_num_actions
@@ -43,7 +44,7 @@ def mcts_r_mgr(
         for i in range(num_mcts_simulations):
             fn_search(state)
 
-        s = fn_get_state_key(state)
+        s = game_mgr.fn_get_state_key(state)
         counts = [state_visits.fn_get_child_state_visits((s, a)) if state_visits.fn_does_child_state_visits_exist((s, a)) else 0 for a in range(max_num_actions)]
         return counts
 
@@ -51,7 +52,7 @@ def mcts_r_mgr(
     fn_get_policy = policy_mgt(fn_get_mcts_counts)
 
     def fn_search(state):
-        state_key = fn_get_state_key(state)
+        state_key = game_mgr.fn_get_state_key(state)
 
         # ROLLOUT 1 - actual result
         if not cache_mgr.state_results.fn_does_key_exist(state_key):
@@ -83,8 +84,8 @@ def mcts_r_mgr(
         valid_actions = cache_mgr.state_valid_moves.fn_get_data(state_key)
 
         best_action = search_help.fn_get_best_ucb_action(state_key, valid_actions, max_num_actions, explore_exploit_ratio)
-        next_state, next_player = fn_get_next_state(state, 1, best_action)
-        next_state_canonical = fn_get_canonical_form(next_state, next_player)
+        next_state, next_player = game_mgr.fn_get_next_state(state, 1, best_action)
+        next_state_canonical = game_mgr.fn_get_canonical_form(next_state, next_player)
 
         # BACKPROP
         state_val = fn_search(next_state_canonical)
