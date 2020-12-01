@@ -38,7 +38,7 @@ def mcts_adapter(neural_net_mgr, args):
         # fn_get_state_key = game_mgr.fn_get_state_key,
         # fn_get_next_state = game_mgr.fn_get_next_state,
         # fn_get_canonical_form = game_mgr.fn_get_canonical_form,
-        fn_terminal_value= fn_terminal_value,
+        # fn_terminal_value= fn_terminal_value,
         # fn_next_state_given_action= game_mgr.fn_next_state_given_action,
         num_mcts_simulations=args.num_of_mc_simulations,
         explore_exploit_ratio=args.cpuct_exploration_exploitation_factor,
@@ -49,7 +49,7 @@ def mcts_adapter(neural_net_mgr, args):
     mtcs_adapter = namedtuple('_', ['fn_get_policy', 'fn_get_prediction_info', 'fn_terminal_value'])
     mtcs_adapter.fn_get_policy=fn_get_policy
     # mtcs_adapter.fn_get_prediction_info=fn_get_prediction_info
-    mtcs_adapter.fn_terminal_value = fn_terminal_value
+    # mtcs_adapter.fn_terminal_value = fn_terminal_value
     return mtcs_adapter
 
 

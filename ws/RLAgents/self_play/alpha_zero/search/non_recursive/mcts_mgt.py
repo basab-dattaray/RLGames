@@ -23,7 +23,7 @@ def mcts_mgt(
         # fn_get_state_key,
         # fn_get_next_state,
         # fn_get_canonical_form,
-        fn_terminal_value,
+        # fn_terminal_value,
         # fn_next_state_given_action,
         num_mcts_simulations,
         explore_exploit_ratio,
@@ -63,7 +63,6 @@ def mcts_mgt(
 
     def fn_execute_search(state):
         nonlocal  root_node
-
 
         def fn_rollout(state):
 
