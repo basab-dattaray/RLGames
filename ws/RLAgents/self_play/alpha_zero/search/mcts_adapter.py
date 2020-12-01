@@ -21,7 +21,7 @@ def mcts_adapter(neural_net_mgr, args):
     )
     fn_get_policy = lambda state, spread_probabilities: mcts.fn_get_policy(state, spread_probabilities)
 
-    mtcs_adapter = namedtuple('_', ['fn_get_policy', 'fn_get_prediction_info', 'fn_terminal_value'])
+    mtcs_adapter = namedtuple('_', ['fn_get_policy'])
     mtcs_adapter.fn_get_policy=fn_get_policy
     return mtcs_adapter
 
