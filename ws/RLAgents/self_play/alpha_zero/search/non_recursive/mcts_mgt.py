@@ -18,6 +18,7 @@ EPS = 1e-8
 
 def mcts_mgt(
         game_mgr,
+        neural_net_mgr,
         fn_get_prediction_info,
         # fn_get_state_key,
         # fn_get_next_state,
@@ -28,6 +29,8 @@ def mcts_mgt(
         explore_exploit_ratio,
         max_num_actions
 ):
+
+
     cache_mgr = cache_mgt()
     node_mgr = node_mgt(
         fn_get_prediction_info,

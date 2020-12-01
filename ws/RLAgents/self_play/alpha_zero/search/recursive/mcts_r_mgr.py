@@ -3,15 +3,13 @@ from collections import namedtuple
 from ws.RLAgents.self_play.alpha_zero.search.cache_mgt import cache_mgt
 from ws.RLAgents.self_play.alpha_zero.search.policy_mgt import policy_mgt
 
-
-
-# log = logging.getLogger(__name__)
 from ws.RLAgents.self_play.alpha_zero.search.recursive.state_visit_mgt import state_visit_mgt
 from ws.RLAgents.self_play.alpha_zero.search.search_helper import search_helper
 
 
 def mcts_r_mgr(
     game_mgr,
+    neural_net_mgr,
     fn_get_prediction_info,
     # fn_get_state_key,
     # fn_get_next_state,

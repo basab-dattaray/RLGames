@@ -33,6 +33,7 @@ def mcts_adapter(neural_net_mgr, args):
 
     mcts = monte_carlo_tree_search(
         game_mgr,
+        neural_net_mgr,
         fn_get_prediction_info = fn_get_prediction_info,
         # fn_get_state_key = game_mgr.fn_get_state_key,
         # fn_get_next_state = game_mgr.fn_get_next_state,
