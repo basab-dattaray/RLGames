@@ -4,13 +4,13 @@ from ws.RLAgents.self_play.alpha_zero.search.cache_mgt import cache_mgt
 from ws.RLAgents.self_play.alpha_zero.search.policy_mgt import policy_mgt
 
 from ws.RLAgents.self_play.alpha_zero.search.recursive.state_visit_mgt import state_visit_mgt
-from ws.RLAgents.self_play.alpha_zero.search.search_helper import search_helper
+from ws.RLAgents.self_play.alpha_zero.search.search_helper import search_helper, create_normalized_predictor
 
 
 def mcts_r_mgr(
     game_mgr,
     neural_net_mgr,
-    fn_get_prediction_info,
+    # fn_get_prediction_info,
     # fn_get_state_key,
     # fn_get_next_state,
     # fn_get_canonical_form,
@@ -20,7 +20,9 @@ def mcts_r_mgr(
     explore_exploit_ratio,
     max_num_actions
 ):
-
+    fn_terminal_value = lambda pieces: game_mgr.fn_get_game_progress_status(pieces, 1)
+    fn_get_valid_actions = lambda board: game_mgr.fn_get_valid_moves(board, 1)
+    fn_get_prediction_info = create_normalized_predictor (neural_net_mgr.predict, fn_get_valid_actions)
     # Qsa = {}  # stores Q values for state_key,action (as defined in the paper)
 
     # Ps = {}  # stores initial policy (returned by neural net)

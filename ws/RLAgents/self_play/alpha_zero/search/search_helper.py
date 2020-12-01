@@ -4,13 +4,27 @@ from collections import namedtuple
 import numpy as np
 
 
-EPS = 1e-8
+def create_normalized_predictor(fn_predict_action_probablities, fn_get_valid_actions):
+    def fn_get_prediction_info(state):
+        action_probalities, wrapped_state_val = fn_predict_action_probablities(state)
+        valid_actions = fn_get_valid_actions(state)
+        action_probalities = action_probalities * valid_actions  # masking invalid moves
+        sum_Ps_s = np.sum(action_probalities)
+        if sum_Ps_s > 0:
+            action_probalities /= sum_Ps_s  # renormalize
+        else:
+            action_probalities = action_probalities + valid_actions
+            action_probalities /= np.sum(action_probalities)
+        return action_probalities, wrapped_state_val[0], valid_actions
+
+    return fn_get_prediction_info
+
 def search_helper(
         state_action_qval,
         state_policy,
         state_visits
 ):
-
+    EPS = 1e-8
     def fn_update_state_during_backprop(state_key, action, state_val):
         state_action_key = (state_key, action)
         if state_action_qval.fn_does_key_exist(state_action_key):  # UPDATE EXISTING

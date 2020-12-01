@@ -10,7 +10,7 @@ import numpy
 from .node_mgt import node_mgt
 from ..cache_mgt import cache_mgt
 from ..policy_mgt import policy_mgt
-
+from ..search_helper import create_normalized_predictor
 
 LONG_ROLLOUT = True
 CACHE_RESULTS = False
@@ -19,7 +19,7 @@ EPS = 1e-8
 def mcts_mgt(
         game_mgr,
         neural_net_mgr,
-        fn_get_prediction_info,
+        # fn_get_prediction_info,
         # fn_get_state_key,
         # fn_get_next_state,
         # fn_get_canonical_form,
@@ -29,8 +29,9 @@ def mcts_mgt(
         explore_exploit_ratio,
         max_num_actions
 ):
-
-
+    fn_terminal_value = lambda pieces: game_mgr.fn_get_game_progress_status(pieces, 1)
+    fn_get_valid_actions = lambda board: game_mgr.fn_get_valid_moves(board, 1)
+    fn_get_prediction_info = create_normalized_predictor (neural_net_mgr.predict, fn_get_valid_actions)
     cache_mgr = cache_mgt()
     node_mgr = node_mgt(
         fn_get_prediction_info,
