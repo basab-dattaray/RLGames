@@ -19,12 +19,6 @@ EPS = 1e-8
 def mcts_mgt(
         game_mgr,
         neural_net_mgr,
-        # fn_get_prediction_info,
-        # fn_get_state_key,
-        # fn_get_next_state,
-        # fn_get_canonical_form,
-        # fn_terminal_value,
-        # fn_next_state_given_action,
         num_mcts_simulations,
         explore_exploit_ratio,
         max_num_actions
