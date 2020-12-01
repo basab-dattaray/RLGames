@@ -105,7 +105,8 @@ def node_mgt(
 
             while current_node is not None:
                 current_val = _fn_add_val_to_node(current_val)
-                current_node = current_node.fn_get_parent_node()
+                new_node = current_node.fn_get_parent_node()
+                current_node = new_node
 
             return current_val
 
