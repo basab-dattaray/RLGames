@@ -66,10 +66,9 @@ def playground_mgt(player1, player2, game_mgr, fn_display=None, msg_recorder = N
 
         if verbose:
             assert fn_display
-            print()
-            print("Game over: Turn ", str(it), "Result ", str(game_status))
             fn_display(pieces)
-
+            print()
+            print("GAME OVER: Turn ", str(it), "Result ", str(game_status))
 
         result = game_status
         if DEBUG:
