@@ -104,7 +104,7 @@ def agent_mgt(args, file_path):
         @tracer(args)
         def fn_test_against_human():
             fn_human_player_policy = lambda g: HumanPlayer(g).play
-            fn_test(fn_human_player_policy, verbose= True)
+            fn_test(fn_human_player_policy, verbose= True, num_of_test_games= 2)
             return agent_mgr
 
         @tracer(args)
@@ -119,7 +119,7 @@ def agent_mgt(args, file_path):
             fn_test(fn_random_player_policy, num_of_test_games= args.num_of_test_games)
             return agent_mgr
 
-        def fn_test(fn_player_policy, verbose= False, num_of_test_games=2):
+        def fn_test(fn_player_policy, verbose= False, num_of_test_games= 2):
             signal.signal(signal.SIGINT, exit_gracefully)
             system_nn = neural_net_mgt(args)
             if not system_nn.fn_load_model():
@@ -130,7 +130,7 @@ def agent_mgt(args, file_path):
             fn_contender_policy = fn_player_policy(args.game_mgr)
             arena = playground_mgt(fn_system_policy, fn_contender_policy, args.game_mgr, fn_display=game_mgt(args['board_size']).fn_display,
                           msg_recorder=args.calltracer.fn_write)
-            system_wins, system_losses, draws = arena.fn_play_games(args.num_of_test_games, verbose=verbose)
+            system_wins, system_losses, draws = arena.fn_play_games(num_of_test_games, verbose=verbose)
 
             args.calltracer.fn_write(f'wins:{system_wins} losses:{system_losses} draws:{draws}')
 
@@ -140,7 +140,7 @@ def agent_mgt(args, file_path):
                 for k,v in change_args.items():
                     change_args[k] = v
                     # nn_args.fn_record(f'  nn_args[{k}] = {v}')
-                    args.calltracer.fn_write(f'  x[{k}] = {v}')
+                    args.calltracer.fn_write(f'  args[{k}] = {v}')
 
             return agent_mgr
 
@@ -149,7 +149,7 @@ def agent_mgt(args, file_path):
 
             for k,v in args.items():
                 # nn_args.fn_record(f'  nn_args[{k}] = {v}')
-                args.calltracer.fn_write(f'  nn_args[{k}] = {v}')
+                args.calltracer.fn_write(f'  args[{k}] = {v}')
 
             return agent_mgr
 

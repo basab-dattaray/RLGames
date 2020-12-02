@@ -6,6 +6,8 @@ class HumanPlayer():
     def play(self, board):
         # fn_display(board_pieces)
         valid = self.game_mgr.fn_get_valid_moves(board, 1)
+        if valid[-1] == 1:
+            return None
         for i in range(len(valid)):
             if valid[i]:
                 print("[", int(i/self.game_mgr.fn_get_board_size()), int(i%self.game_mgr.fn_get_board_size()), end="] ")

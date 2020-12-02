@@ -27,6 +27,7 @@ def playground_mgt(player1, player2, game_mgr, fn_display=None, msg_recorder = N
             it += 1
             if verbose:
                 assert fn_display
+                print()
                 print("Turn ", str(it), "Player ", str(cur_player_index))
                 fn_display(pieces)
 
@@ -34,7 +35,8 @@ def playground_mgt(player1, player2, game_mgr, fn_display=None, msg_recorder = N
 
             # cur_player = players[cur_player_index + 1]
             action = cur_player(game_mgr.fn_get_canonical_form(pieces, cur_player_index))
-
+            if action == None:
+                break
             valids = game_mgr.fn_get_valid_moves(game_mgr.fn_get_canonical_form(pieces, cur_player_index), 1)
 
             if valids[action] == 0:
@@ -64,6 +66,7 @@ def playground_mgt(player1, player2, game_mgr, fn_display=None, msg_recorder = N
 
         if verbose:
             assert fn_display
+            print()
             print("Game over: Turn ", str(it), "Result ", str(game_status))
             fn_display(pieces)
 
