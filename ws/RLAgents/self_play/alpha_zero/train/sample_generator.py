@@ -63,7 +63,7 @@ def fn_generate_samples(args, iteration, generation_mcts):
                 return _fn_form_sample_data(curPlayer, game_status, all_samples_from_iteration)
 
     @tracer(args)
-    def _fn_generate_all_samples(training_samples_buffer):
+    def _fn_generate_all_samples():
             samples_for_iteration = deque([], maxlen=args.sample_buffer_size)
             fn_count_event, fn_stop_counting = progress_count_mgt('Episodes', args.num_of_training_episodes)
 
@@ -77,9 +77,10 @@ def fn_generate_samples(args, iteration, generation_mcts):
             args.calltracer.fn_write(f'Number of Episodes for sample generation: {args.num_of_training_episodes}')
 
             # save the iteration examples to the history
-            training_samples_buffer.append(samples_for_iteration)
+            return samples_for_iteration
 
-    _fn_generate_all_samples(training_samples_buffer)
+    all_samples = _fn_generate_all_samples()
+    training_samples_buffer.append(all_samples)
 
     if len(training_samples_buffer) > args.sample_history_buffer_size:
         args.logger.warning(
@@ -87,7 +88,6 @@ def fn_generate_samples(args, iteration, generation_mcts):
         training_samples_buffer.pop(0)
 
     fn_save_train_examples(args, iteration - 1, training_samples_buffer)
-
     training_samples = []
     for samples in training_samples_buffer:
         training_samples.extend(samples)
