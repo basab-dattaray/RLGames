@@ -11,6 +11,7 @@ from utils.lists import flatten
 from .node_mgt import node_mgt
 from ..cache_mgt import cache_mgt
 from ..policy_mgt import policy_mgt
+from ..prediction_mgt import prediction_mgt
 from ..search_helper import create_normalized_predictor
 
 LONG_ROLLOUT = True
@@ -24,10 +25,12 @@ def mcts_mgt(
         explore_exploit_ratio,
         max_num_actions
 ):
-    fn_terminal_value = lambda pieces: game_mgr.fn_get_game_progress_status(pieces, 1)
-    fn_get_valid_actions = lambda board: game_mgr.fn_get_valid_moves(board, 1)
-    fn_get_prediction_info = create_normalized_predictor (neural_net_mgr.predict, fn_get_valid_actions)
+    # fn_terminal_value = lambda pieces: game_mgr.fn_get_game_progress_status(pieces, 1)
+    # fn_get_valid_actions = lambda board: game_mgr.fn_get_valid_moves(board, 1)
+    # fn_get_prediction_info = create_normalized_predictor (neural_net_mgr.predict, fn_get_valid_actions)
     cache_mgr = cache_mgt()
+    fn_get_prediction_info = prediction_mgt(game_mgr, cache_mgr, neural_net_mgr)
+
     node_mgr = node_mgt(
         fn_get_prediction_info,
         explore_exploit_ratio
@@ -60,45 +63,15 @@ def mcts_mgt(
         nonlocal  root_node
 
         def fn_rollout(state_this):
-
-            def _fn_get_state_predictions(state):
-                state_key = game_mgr.fn_get_state_key(state)
-
-                state_predictions = cache_mgr.state_predictions.fn_get_data_or_none(state_key)
-                if state_predictions is None:
-                    action_probalities, wrapped_state_val = neural_net_mgr.predict(state_key)
-                    cache_mgr.state_predictions.fn_set_data(state_key, (action_probalities, wrapped_state_val[0]))
-                return state_predictions
-
-            def _fn_get_valid_moves(state):
-                state_key = game_mgr.fn_get_state_key(state)
-
-                state_valid_moves = cache_mgr.state_predictions.fn_get_data_or_none(state_key)
-                if state_valid_moves is None:
-                    valid_moves = neural_net_mgr.predict(state_key)
-                    cache_mgr.state_predictions.fn_set_data(state_key, valid_moves)
-                return state_valid_moves
-
-            def _fn_get_prediction_info(state):
-                action_probalities, wrapped_state_val = _fn_get_state_predictions(state)
-                valid_moves = _fn_get_valid_moves(state)
-                action_probalities = action_probalities * valid_moves  # masking invalid moves
-                sum_Ps_s = numpy.sum(action_probalities)
-                if sum_Ps_s > 0:
-                    action_probalities /= sum_Ps_s  # renormalize
-                else:
-                    action_probalities = action_probalities + valid_moves
-                    action_probalities /= numpy.sum(action_probalities)
-                return action_probalities, wrapped_state_val[0], valid_moves
-
             def _fn_get_state_stats(state):
                 zeros_in_state = len(list(filter(lambda e: e == 0, numpy.array(state).flatten())))
                 minuses_in_state = len(list(filter(lambda e: e == -1, numpy.array(state).flatten())))
                 plusses_in_state = len(list(filter(lambda e: e == 1, numpy.array(state).flatten())))
                 return zeros_in_state, minuses_in_state, plusses_in_state
 
-            action_probs, state_result, _ = _fn_get_prediction_info(state_this)
             player_this = 1
+            action_probs, state_result, _ = fn_get_prediction_info(state_this, player_this)
+
             i_ = 0
 
             while action_probs is not None:
@@ -117,7 +90,7 @@ def mcts_mgt(
                 player_this = player_next
 
                 state_next_canonical = game_mgr.fn_get_canonical_form(state_this, player_this)
-                action_probs, state_result, _ = _fn_get_prediction_info(state_next_canonical) # caonical state is needed for net prediction
+                action_probs, state_result, _ = fn_get_prediction_info(state_next_canonical, player_this) # caonical state is needed for net prediction
 
                 i_ += 1
 
