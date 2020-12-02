@@ -82,15 +82,14 @@ def mcts_mgt(
                 this_state_stats = _fn_get_state_stats(state_this)
                 next_state_stats = _fn_get_state_stats(state_next)
 
-                if this_state_stats == next_state_stats:
+                if player_next == player_this:
                     break
 
+                state_next_canonical = game_mgr.fn_get_canonical_form(state_next, player_next) # caonical state is needed for net prediction
+                action_probs, state_result, _ = fn_get_prediction_info(state = state_next_canonical, player = 1) # get prediction from perspective of player 1
 
                 state_this = state_next
                 player_this = player_next
-
-                state_next_canonical = game_mgr.fn_get_canonical_form(state_this, player_this)
-                action_probs, state_result, _ = fn_get_prediction_info(state_next_canonical, player_this) # caonical state is needed for net prediction
 
                 i_ += 1
 
