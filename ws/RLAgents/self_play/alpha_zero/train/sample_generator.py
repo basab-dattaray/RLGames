@@ -20,13 +20,13 @@ def fn_generate_samples(args, iteration, generation_mcts):
         return sample_data
 
     def _fn_generate_samples_for_an_iteration():
-        trainExamples = []
+        # trainExamples = []
         all_samples_from_iteration = []
         current_pieces = game_mgr.fn_get_init_board()
         curPlayer = 1
         episode_step = 0
 
-        def _fn_run_one_episode(samples, current_pieces, curPlayer, episode_step):
+        def _fn_run_one_episode(current_pieces, curPlayer, episode_step):
             samples_from_episodes = []
             canonical_board_pieces = game_mgr.fn_get_canonical_form(current_pieces, curPlayer)
             spread_probabilities = int(episode_step < args.probability_spread_threshold)
@@ -40,27 +40,27 @@ def fn_generate_samples(args, iteration, generation_mcts):
             symmetric_samples = game_mgr.fn_get_symetric_samples(canonical_board_pieces, action_probs)
             # samples = map(lambda b, p: samples.append([b, curPlayer, p, None]), sym)
             for sym_canon_board, canon_action_probs in symmetric_samples:
-                samples.append((sym_canon_board, curPlayer, canon_action_probs))
+                # samples.append((sym_canon_board, curPlayer, canon_action_probs))
                 samples_from_episodes.append((sym_canon_board, curPlayer, canon_action_probs))
 
             action = np.random.choice(len(action_probs), p=action_probs)
             next_pieces, player_next = game_mgr.fn_get_next_state(current_pieces, curPlayer, action)
 
             current_pieces = next_pieces
-            return samples_from_episodes, samples, current_pieces, player_next
+            return samples_from_episodes, current_pieces, player_next
 
         while True:
             episode_step += 1
 
-            samples_from_episodes, trainExamples, current_pieces, curPlayer = \
-                _fn_run_one_episode(trainExamples, current_pieces, curPlayer, episode_step)
+            samples_from_episodes, current_pieces, curPlayer = \
+                _fn_run_one_episode(current_pieces, curPlayer, episode_step)
 
             all_samples_from_iteration.extend(samples_from_episodes)
 
             game_status = game_mgr.fn_get_game_progress_status(current_pieces, curPlayer)
 
             if game_status != 0 or curPlayer is None:
-                return _fn_form_sample_data(curPlayer, game_status, trainExamples)
+                return _fn_form_sample_data(curPlayer, game_status, all_samples_from_iteration)
 
     @tracer(args)
     def _fn_generate_all_samples(training_samples_buffer):
@@ -78,7 +78,6 @@ def fn_generate_samples(args, iteration, generation_mcts):
 
             # save the iteration examples to the history
             training_samples_buffer.append(samples_for_iteration)
-
 
     _fn_generate_all_samples(training_samples_buffer)
 
