@@ -5,11 +5,11 @@ class HumanPlayer():
 
     def play(self, board):
         # fn_display(board_pieces)
-        valid = self.game_mgr.fn_get_valid_moves(board, 1)
-        if valid[-1] == 1:
+        valid_moves = self.game_mgr.fn_get_valid_moves(board, 1)
+        if valid_moves[-1] == 1:
             return None
-        for i in range(len(valid)):
-            if valid[i]:
+        for i in range(len(valid_moves)):
+            if valid_moves[i]:
                 print("[", int(i/self.game_mgr.fn_get_board_size()), int(i%self.game_mgr.fn_get_board_size()), end="] ")
         while True:
             input_move = input()
@@ -20,7 +20,7 @@ class HumanPlayer():
                     if ((0 <= x) and (x < self.game_mgr.fn_get_board_size()) and (0 <= y) and (y < self.game_mgr.fn_get_board_size())) or \
                             ((x == self.game_mgr.board_size) and (y == 0)):
                         a = self.game_mgr.fn_get_board_size() * x + y if x != -1 else self.game_mgr.fn_get_board_size() ** 2
-                        if valid[a]:
+                        if valid_moves[a]:
                             break
                 except ValueError:
                     # Input needs to be an integer

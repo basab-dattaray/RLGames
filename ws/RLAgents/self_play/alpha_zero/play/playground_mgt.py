@@ -37,9 +37,9 @@ def playground_mgt(player1, player2, game_mgr, fn_display=None, msg_recorder = N
             action = cur_player(game_mgr.fn_get_canonical_form(pieces, cur_player_index))
             if action == None:
                 break
-            valids = game_mgr.fn_get_valid_moves(game_mgr.fn_get_canonical_form(pieces, cur_player_index), 1)
+            valid_moves = game_mgr.fn_get_valid_moves(game_mgr.fn_get_canonical_form(pieces, cur_player_index), 1)
 
-            if valids[action] == 0:
+            if valid_moves[action] == 0:
                 if DEBUG:
                     x = (int) (action / len(pieces))
                     y = action % len(pieces)
@@ -48,7 +48,7 @@ def playground_mgt(player1, player2, game_mgr, fn_display=None, msg_recorder = N
                     msg_recorder(f'Current Player: {cur_player_index} ')
 
 
-                    msg_recorder(f'valids = {valids}')
+                    msg_recorder(f'valid_moves = {valid_moves}')
                     msg_recorder('')
 
                     for i in range(len(pieces)):

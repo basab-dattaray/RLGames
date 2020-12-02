@@ -44,16 +44,16 @@ def game_mgt(board_size):
         return (pieces, -player)
 
     def fn_get_valid_moves(pieces, player):
-        valids = [0]*fn_get_action_size()
+        valid_moves = [0]*fn_get_action_size()
         b = board_mgt(board_size)
 
         legalMoves =  b.fn_find_legal_moves(pieces, player)
         if len(legalMoves)==0:
-            valids[-1]=1
-            return np.array(valids)
+            valid_moves[-1]=1
+            return np.array(valid_moves)
         for x, y in legalMoves:
-            valids[board_size * x + y]=1
-        return np.array(valids)
+            valid_moves[board_size * x + y]=1
+        return np.array(valid_moves)
 
     def fn_get_game_progress_status(pieces, player):
         if player is None:

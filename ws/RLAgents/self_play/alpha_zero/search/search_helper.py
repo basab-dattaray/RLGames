@@ -43,12 +43,12 @@ def search_helper(
         # Ns[state_key] += 1
         state_visits.fn_incr_state_visits(state_key)
 
-    def fn_get_best_ucb_action(state_key, valids, max_num_actions, explore_exploit_ratio):
+    def fn_get_best_ucb_action(state_key, valid_moves, max_num_actions, explore_exploit_ratio):
         best_ucb = -float('inf')
         best_act = -1
         # pick the action with the highest upper confidence bound
         for action in range(max_num_actions):
-            if valids[action]:
+            if valid_moves[action]:
                 policy = state_policy.fn_get_data(state_key)
                 state_action_key = (state_key, action)
 

@@ -25,9 +25,6 @@ def mcts_mgt(
         explore_exploit_ratio,
         max_num_actions
 ):
-    # fn_terminal_value = lambda pieces: game_mgr.fn_get_game_progress_status(pieces, 1)
-    # fn_get_valid_actions = lambda board: game_mgr.fn_get_valid_moves(board, 1)
-    # fn_get_prediction_info = create_normalized_predictor (neural_net_mgr.predict, fn_get_valid_actions)
     cache_mgr = cache_mgt()
     fn_get_prediction_info = prediction_mgt(game_mgr, cache_mgr, neural_net_mgr)
 

@@ -4,10 +4,10 @@ class GreedyPlayer():
         self.game_mgr = game_mgr
 
     def play(self, pieces):
-        valids = self.game_mgr.fn_get_valid_moves(pieces, 1)
+        valid_moves = self.game_mgr.fn_get_valid_moves(pieces, 1)
         candidates = []
         for a in range(self.game_mgr.fn_get_action_size()):
-            if valids[a]==0:
+            if valid_moves[a]==0:
                 continue
             nextPieces, _ = self.game_mgr.fn_get_next_state(pieces, 1, a)
             score = self.game_mgr.fn_get_score(nextPieces, 1)

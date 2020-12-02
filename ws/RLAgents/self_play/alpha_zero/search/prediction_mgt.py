@@ -19,16 +19,16 @@ def prediction_mgt(game_mgr, cache_mgr, neural_net_mgr):
     def _fn_get_valid_moves(state, player):
         state_key = game_mgr.fn_get_state_key(state)
 
-        valids = cache_mgr.state_valid_moves.fn_get_data_or_none(state_key)
-        if valids is not None:
-            return valids
+        valid_moves = cache_mgr.state_valid_moves.fn_get_data_or_none(state_key)
+        if valid_moves is not None:
+            return valid_moves
 
-        valids = game_mgr.fn_get_valid_moves(state, player)
-        if valids[-1] == 1:
+        valid_moves = game_mgr.fn_get_valid_moves(state, player)
+        if valid_moves[-1] == 1:
             return None
-        cache_mgr.state_valid_moves.fn_set_data(state_key, valids)
+        cache_mgr.state_valid_moves.fn_set_data(state_key, valid_moves)
 
-        return valids
+        return valid_moves
 
     def fn_get_prediction_info(state, player):
         action_probalities, state_val = _fn_get_state_predictions(state)

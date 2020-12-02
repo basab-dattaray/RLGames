@@ -7,7 +7,7 @@ class RandomPlayer():
 
     def play(self, board):
         a = np.random.randint(self.game_mgr.fn_get_action_size())
-        valids = self.game_mgr.fn_get_valid_moves(board, 1)
-        while valids[a]!=1:
+        valid_moves = self.game_mgr.fn_get_valid_moves(board, 1)
+        while valid_moves[a]!=1:
             a = np.random.randint(self.game_mgr.fn_get_action_size())
         return a
