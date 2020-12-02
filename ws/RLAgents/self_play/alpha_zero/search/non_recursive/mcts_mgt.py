@@ -6,6 +6,7 @@
 from collections import namedtuple
 
 import numpy
+from utils.lists import flatten
 
 from .node_mgt import node_mgt
 from ..cache_mgt import cache_mgt
@@ -58,49 +59,73 @@ def mcts_mgt(
     def fn_execute_search(state):
         nonlocal  root_node
 
-        def fn_rollout(state):
+        def fn_rollout(state_this):
 
-            def _fn_get_state_info(fn_terminal_value, new_state):
-                state_key = game_mgr.fn_get_state_key(new_state)
+            def _fn_get_state_predictions(state):
+                state_key = game_mgr.fn_get_state_key(state)
 
-                terminal_state = False
-                if fn_terminal_value is not None:
-                    state_result = cache_mgr.state_results.fn_get_data_or_none(state_key)
-                    if state_result is None:
-                        state_result = fn_terminal_value(new_state)
-                        cache_mgr.state_results.fn_set_data(state_key, state_result)
+                state_predictions = cache_mgr.state_predictions.fn_get_data_or_none(state_key)
+                if state_predictions is None:
+                    action_probalities, wrapped_state_val = neural_net_mgr.predict(state_key)
+                    cache_mgr.state_predictions.fn_set_data(state_key, (action_probalities, wrapped_state_val[0]))
+                return state_predictions
 
-                    # state_key = fn_get_state_key(new_state)
-                    # cache_mgr.state_results.fn_set_data(state_key, state_result)
-                    # state_result = cache_mgr.state_results.fn_get_data(state_key)
-                    if state_result != 0:
-                        terminal_state = True
-                        return -state_result, None, terminal_state
+            def _fn_get_valid_moves(state):
+                state_key = game_mgr.fn_get_state_key(state)
 
-                policy, state_value, action_probs = fn_get_prediction_info(new_state)
+                state_valid_moves = cache_mgr.state_predictions.fn_get_data_or_none(state_key)
+                if state_valid_moves is None:
+                    valid_moves = neural_net_mgr.predict(state_key)
+                    cache_mgr.state_predictions.fn_set_data(state_key, valid_moves)
+                return state_valid_moves
 
-                return state_value, policy, terminal_state
+            def _fn_get_prediction_info(state):
+                action_probalities, wrapped_state_val = _fn_get_state_predictions(state)
+                valid_moves = _fn_get_valid_moves(state)
+                action_probalities = action_probalities * valid_moves  # masking invalid moves
+                sum_Ps_s = numpy.sum(action_probalities)
+                if sum_Ps_s > 0:
+                    action_probalities /= sum_Ps_s  # renormalize
+                else:
+                    action_probalities = action_probalities + valid_moves
+                    action_probalities /= numpy.sum(action_probalities)
+                return action_probalities, wrapped_state_val[0], valid_moves
 
-            def _fn_get_best_action(action_probs, state):
+            def _fn_get_state_stats(state):
+                zeros_in_state = len(list(filter(lambda e: e == 0, numpy.array(state).flatten())))
+                minuses_in_state = len(list(filter(lambda e: e == -1, numpy.array(state).flatten())))
+                plusses_in_state = len(list(filter(lambda e: e == 1, numpy.array(state).flatten())))
+                return zeros_in_state, minuses_in_state, plusses_in_state
 
+            action_probs, state_result, _ = _fn_get_prediction_info(state_this)
+            player_this = 1
+            i_ = 0
+
+            while action_probs is not None:
                 best_action = numpy.random.choice(len(action_probs), p=action_probs)
 
-                next_state_canonical = game_mgr.fn_next_state_given_action(state, best_action)
-                return next_state_canonical
+                state_next, player_next = game_mgr.fn_get_next_state(state_this, player_this, best_action)
+
+                this_state_stats = _fn_get_state_stats(state_this)
+                next_state_stats = _fn_get_state_stats(state_next)
+
+                if this_state_stats == next_state_stats:
+                    break
 
 
+                state_this = state_next
+                player_this = player_next
 
-            state_result, action_probs, is_terminal_state = _fn_get_state_info(
-                fn_terminal_value, state
-            )
+                state_next_canonical = game_mgr.fn_get_canonical_form(state_this, player_this)
+                action_probs, state_result, _ = _fn_get_prediction_info(state_next_canonical) # caonical state is needed for net prediction
 
-            while not is_terminal_state:
-                next_state = _fn_get_best_action(action_probs, state)
-                state_result, action_probs, is_terminal_state = _fn_get_state_info(
-                    fn_terminal_value, next_state)
-                state = next_state
+                i_ += 1
 
-            return state_result, is_terminal_state
+            _, minusses, plusses = _fn_get_state_stats(state_this)
+            raw_result = 0 if plusses == minusses else 1 if plusses > minusses else -1
+            player_based_result = raw_result * player_this
+
+            return player_based_result
 
         if root_node is None:
             root_node = node_mgr.node(
@@ -115,7 +140,7 @@ def mcts_mgt(
                 return None
             pass
 
-        score, terminal_state = fn_rollout(state)
+        score = fn_rollout(state)
 
         value = selected_node.fn_back_propagate(score)
         return value

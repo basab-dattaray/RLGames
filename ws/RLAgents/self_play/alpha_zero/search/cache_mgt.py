@@ -10,6 +10,7 @@ def cache_mgt():
     state_policy = dictionary_cache()
     state_action_qval = dictionary_cache()
     state_info = dictionary_cache()
+    state_predictions = dictionary_cache()
 
     cache_mgr = namedtuple('_', [
         'state_results',
@@ -17,6 +18,7 @@ def cache_mgt():
         'state_policy',
         'state_action_qval',
         'state_info',
+        'state_predictions'
 
     ])
     cache_mgr.state_results = state_results
@@ -24,5 +26,6 @@ def cache_mgt():
     cache_mgr.state_policy = state_policy
     cache_mgr.state_action_qval = state_action_qval
     cache_mgr.state_info = state_info
+    cache_mgr.state_predictions = state_predictions
 
     return cache_mgr
