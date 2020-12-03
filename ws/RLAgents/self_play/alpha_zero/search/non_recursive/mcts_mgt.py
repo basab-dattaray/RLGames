@@ -29,7 +29,8 @@ def mcts_mgt(
     node_mgr = node_mgt(
         fn_get_prediction_info,
         fn_find_best_ucb_child,
-        explore_exploit_ratio
+        explore_exploit_ratio,
+        max_num_actions
     )
 
     root_node = None

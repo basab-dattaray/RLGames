@@ -9,6 +9,7 @@ def node_mgt(
         fn_get_prediction_info,
         fn_find_best_ucb_child,
         explore_exploit_ratio,
+        max_num_actions,
 ):
     def node(
             state,
@@ -19,21 +20,20 @@ def node_mgt(
 
         visits = 0
         children_nodes = {}
-        policy, state_result, valid_moves = fn_get_prediction_info(state=state, player=1)  # get prediction from perspective of player 1
+        # policy, state_result, valid_moves = fn_get_prediction_info(state=state, player=1)  # get prediction from perspective of player 1
 
-        def _fn_add_children_nodes(policy):
+        def _fn_add_children_nodes():
             nonlocal children_nodes
 
             # policy = normalized_valid_policy[:-2][0]
             children_nodes = {}
-            for action_num, action_probability in enumerate(policy):
-                if action_probability > 0:
-                    child_node = node(
-                        state,
-                        val=0.0,
-                        parent_node= node_obj,  # ??? cant be None
-                    )
-                    children_nodes[str(action_num)] = child_node
+            for action_num in range(max_num_actions):
+                child_node = node(
+                    state,
+                    val=0.0,
+                    parent_node= node_obj,  # ??? cant be None
+                )
+                children_nodes[str(action_num)] = child_node
 
             if len(children_nodes.values()) == 0:
                 return None
@@ -56,18 +56,9 @@ def node_mgt(
                 return False
 
         def fn_expand_node():
-            if children_nodes is None:
-                pass # add children nodes
+            first_child_node = _fn_add_children_nodes()
 
-
-
-        # def fn_expand_node():
-        #     policy, _, _ = fn_get_prediction_info(state= state, player= 1) # fn_get_valid_normalized_policy()
-        #     if policy is None:
-        #         return None
-        #     first_child_node = _fn_add_children_nodes(policy)
-        #
-        #     return first_child_node
+            return first_child_node
 
         def _fn_add_val_to_node(new_val):
             nonlocal visits, val
