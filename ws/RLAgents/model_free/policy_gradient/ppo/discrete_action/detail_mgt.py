@@ -18,9 +18,9 @@ def detail_mgt(app_info):
 
     def fn_pick_action(state, buffer, policy_old_actor):
         state = torch.from_numpy(state).float().to(app_info[GPU_DEVICE])
-        action_probs = policy_old_actor.forward(state)
+        policy = policy_old_actor.forward(state)
 
-        dist = Categorical(action_probs)
+        dist = Categorical(policy)
         action = dist.sample()
 
         buffer.states.append(state)
@@ -30,8 +30,8 @@ def detail_mgt(app_info):
         return action.item()
 
     def fn_evaluate(policy_actor, policy_critic, states, actions):
-        action_probs = policy_actor.forward(states)
-        dist = Categorical(action_probs)
+        policy = policy_actor.forward(states)
+        dist = Categorical(policy)
 
         action_logprobs = dist.log_prob(actions)
         dist_entropy = dist.entropy()

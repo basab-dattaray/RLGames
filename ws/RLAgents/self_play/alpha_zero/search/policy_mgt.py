@@ -3,8 +3,8 @@ import numpy as np
 
 def policy_mgt(fn_get_counts):
 
-    def fn_get_policy(state, do_spread_probabilities=1, _test_data = None):
-        def fn_mcts_probability_spread_out(counts):
+    def fn_get_policy(state, do_random_selection=True, _test_data = None):
+        def fn_policy_random_selection(counts):
             counts_sum = float(sum(counts))
             if counts_sum == 0:
                 probs = [1 / len(counts)] * len(counts)
@@ -13,11 +13,11 @@ def policy_mgt(fn_get_counts):
                 probs = [x / counts_sum for x in counts]
                 return probs
 
-        def fn_mcts_probability_select_one_win(counts):
-            bestAs = np.array(np.argwhere(counts == np.max(counts))).flatten()
-            bestA = np.random.choice(bestAs)
+        def fn_policy_specific_selection(counts):
+            best_actions = np.array(np.argwhere(counts == np.max(counts))).flatten()
+            the_best_action = np.random.choice(best_actions)
             probs = [0] * len(counts)
-            probs[bestA] = 1
+            probs[the_best_action] = 1
             return probs
 
         if fn_get_counts is not None:
@@ -25,10 +25,10 @@ def policy_mgt(fn_get_counts):
         else:
             counts = _test_data
 
-        if do_spread_probabilities == 0:
-            return fn_mcts_probability_select_one_win(counts)
+        if do_random_selection:
+            return fn_policy_specific_selection(counts)
         else:
-            return fn_mcts_probability_spread_out(counts)
+            return fn_policy_random_selection(counts)
 
     return fn_get_policy
 

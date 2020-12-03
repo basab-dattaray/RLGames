@@ -45,7 +45,7 @@ def neural_net_mgt(args):
     # @tracer(nn_args)
     def fn_adjust_model_from_examples(examples):
         """
-        examples: list of examples, each example is of form (board_pieces, action_probs, v)
+        examples: list of examples, each example is of form (board_pieces, policy, v)
         """
         optimizer = optim.Adam(nnet.parameters())
         fn_count_event, fn_stop_counting = progress_count_mgt('Epochs', args.epochs)

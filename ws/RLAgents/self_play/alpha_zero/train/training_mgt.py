@@ -8,8 +8,7 @@ from pip._vendor.colorama import Fore
 from ws.RLAgents.self_play.alpha_zero.play.playground_mgt import playground_mgt
 from ws.RLAgents.self_play.alpha_zero.search.mcts_adapter import mcts_adapter
 from ws.RLAgents.self_play.alpha_zero.train.sample_generator import fn_generate_samples
-from ws.RLAgents.self_play.alpha_zero.train.training_helper import fn_save_train_examples, fn_log_iteration_results, \
-    fn_getCheckpointFile
+from ws.RLAgents.self_play.alpha_zero.train.training_helper import  fn_log_iteration_results, fn_getCheckpointFile
 
 from ws.RLUtils.monitoring.tracing.tracer import tracer
 def training_mgt(nn_mgr_N, args):
@@ -64,10 +63,12 @@ def training_mgt(nn_mgr_N, args):
                 pmcts = mcts_adapter(nn_mgr_P, args)
                 nn_mgr_N.fn_adjust_model_from_examples(training_samples)
                 nmcts = mcts_adapter(nn_mgr_N, args)
-                arena = playground_mgt(lambda x: np.argmax(pmcts.fn_get_policy(x, spread_probabilities=0)),
-                              lambda x: np.argmax(nmcts.fn_get_policy(x, spread_probabilities=0)),
-                              game_mgr,
-                              msg_recorder=args.calltracer.fn_write)
+                arena = playground_mgt(
+                    lambda x: np.argmax(pmcts.fn_get_policy(x, do_random_selection= False)),
+                    lambda x: np.argmax(nmcts.fn_get_policy(x, do_random_selection= False)),
+                    game_mgr,
+                    msg_recorder=args.calltracer.fn_write
+                )
                 pwins, nwins, draws = arena.fn_play_games(args.number_of_games_for_model_comarison)
                 args.fn_record()
                 return draws, nwins, pwins

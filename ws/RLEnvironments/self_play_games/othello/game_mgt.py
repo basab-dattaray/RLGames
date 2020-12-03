@@ -79,8 +79,8 @@ def game_mgt(board_size):
         canonical_pieces =  player * pieces
         return canonical_pieces
 
-    def fn_get_symetric_samples(pieces, action_probs):
-        pi_board = np.reshape(action_probs, (board_size, board_size))
+    def fn_get_symetric_samples(pieces, policy):
+        pi_board = np.reshape(policy, (board_size, board_size))
         list_of_symetries = []
 
         for i in range(1, 5):

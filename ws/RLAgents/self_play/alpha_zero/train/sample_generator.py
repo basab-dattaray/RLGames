@@ -29,20 +29,18 @@ def fn_generate_samples(args, iteration, generation_mcts):
         def _fn_run_one_episode(current_pieces, curPlayer, episode_step):
             samples_from_episodes = []
             canonical_board_pieces = game_mgr.fn_get_canonical_form(current_pieces, curPlayer)
-            spread_probabilities = int(episode_step < args.probability_spread_threshold)
+            policy = generation_mcts.fn_get_policy(
+                canonical_board_pieces, do_random_selection=int(episode_step < args.probability_spread_threshold))
 
-            action_probs = generation_mcts.fn_get_policy(
-                canonical_board_pieces, spread_probabilities=spread_probabilities)
-
-            if action_probs is None:
+            if policy is None:
                 return None
 
-            symmetric_samples = game_mgr.fn_get_symetric_samples(canonical_board_pieces, action_probs)
+            symmetric_samples = game_mgr.fn_get_symetric_samples(canonical_board_pieces, policy)
 
             for sym_canon_board, canon_action_probs in symmetric_samples:
                 samples_from_episodes.append((sym_canon_board, curPlayer, canon_action_probs))
 
-            action = np.random.choice(len(action_probs), p=action_probs)
+            action = np.random.choice(len(policy), p=policy)
             next_pieces, player_next = game_mgr.fn_get_next_state(current_pieces, curPlayer, action)
 
             current_pieces = next_pieces

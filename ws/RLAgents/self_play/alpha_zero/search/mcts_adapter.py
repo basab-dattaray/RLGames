@@ -19,7 +19,7 @@ def mcts_adapter(neural_net_mgr, args):
         explore_exploit_ratio=args.cpuct_exploration_exploitation_factor,
         max_num_actions=game_mgr.fn_get_action_size()
     )
-    fn_get_policy = lambda state, spread_probabilities: mcts.fn_get_policy(state, spread_probabilities)
+    fn_get_policy = lambda state, do_random_selection: mcts.fn_get_policy(state, do_random_selection)
 
     mtcs_adapter = namedtuple('_', ['fn_get_policy'])
     mtcs_adapter.fn_get_policy=fn_get_policy

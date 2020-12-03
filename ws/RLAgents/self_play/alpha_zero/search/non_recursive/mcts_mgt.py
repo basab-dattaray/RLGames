@@ -67,12 +67,12 @@ def mcts_mgt(
                 return zeros_in_state, minuses_in_state, plusses_in_state
 
             player_this = 1
-            action_probs, state_result, _ = fn_get_prediction_info(state_this, player_this)
+            policy, state_result, _ = fn_get_prediction_info(state_this, player_this)
 
             i_ = 0
 
-            while action_probs is not None:
-                best_action = numpy.random.choice(len(action_probs), p=action_probs)
+            while policy is not None:
+                best_action = numpy.random.choice(len(policy), p=policy)
 
                 state_next, player_next = game_mgr.fn_get_next_state(state_this, player_this, best_action)
 
@@ -83,7 +83,7 @@ def mcts_mgt(
                     break
 
                 state_next_canonical = game_mgr.fn_get_canonical_form(state_next, player_next) # caonical state is needed for net prediction
-                action_probs, state_result, valid_moves = fn_get_prediction_info(state = state_next_canonical, player = 1) # get prediction from perspective of player 1
+                policy, state_result, valid_moves = fn_get_prediction_info(state = state_next_canonical, player = 1) # get prediction from perspective of player 1
                 if valid_moves is None:
                     break
 

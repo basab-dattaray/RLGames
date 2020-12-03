@@ -30,8 +30,8 @@ class ActorCritic(nn.Module):
         self.state_value = self.value_layer(state)
 
         action_info = self.action_layer(state)
-        action_probs = F.softmax(action_info)
-        return action_probs
+        policy = F.softmax(action_info)
+        return policy
 
         return None
 
