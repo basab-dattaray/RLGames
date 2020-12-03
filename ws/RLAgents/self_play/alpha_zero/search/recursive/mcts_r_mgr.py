@@ -14,6 +14,10 @@ def mcts_r_mgr(
     explore_exploit_ratio,
     max_num_actions
 ):
+    # def fn_get_valid_actions(board):
+    #     valid_moves = game_mgr.fn_get_valid_moves(board, 1)
+    #     return valid_moves
+
     fn_terminal_value = lambda pieces: game_mgr.fn_get_game_progress_status(pieces, 1)
     fn_get_valid_actions = lambda board: game_mgr.fn_get_valid_moves(board, 1)
     fn_get_prediction_info = create_normalized_predictor (neural_net_mgr.predict, fn_get_valid_actions)
@@ -58,6 +62,8 @@ def mcts_r_mgr(
         if not cache_mgr.state_info.fn_does_key_exist(state_key):
             # leaf node
             policy, state_val, valid_actions = fn_get_prediction_info(state)
+            if valid_actions is None:
+                return -state_val
             state_info = {
                 'policy': policy,
                 'state_val': state_val,
@@ -82,6 +88,9 @@ def mcts_r_mgr(
 
         # BACKPROP
         state_val = fn_search(next_state_canonical)
+        # if ret_val is not None:
+        #     state_val = ret_val
+
         search_help.fn_update_state_during_backprop(state_key, best_action, state_val)
 
         return -state_val

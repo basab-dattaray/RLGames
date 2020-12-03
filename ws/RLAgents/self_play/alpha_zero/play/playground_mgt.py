@@ -38,7 +38,8 @@ def playground_mgt(player1, player2, game_mgr, fn_display=None, msg_recorder = N
             if action == None:
                 break
             valid_moves = game_mgr.fn_get_valid_moves(game_mgr.fn_get_canonical_form(pieces, cur_player_index), 1)
-
+            if valid_moves is None:
+                break
             if valid_moves[action] == 0:
                 if DEBUG:
                     x = (int) (action / len(pieces))
@@ -90,6 +91,8 @@ def playground_mgt(player1, player2, game_mgr, fn_display=None, msg_recorder = N
 
 
     def fn_play_games(num_of_games, verbose=False):
+        nonlocal player1, player2
+
         def _fn_get_gameset_results(num, result_factor, verbose):
             oneWon = 0
             twoWon = 0
@@ -108,8 +111,6 @@ def playground_mgt(player1, player2, game_mgr, fn_display=None, msg_recorder = N
             return oneWon, twoWon, draws
 
         fn_count_event, fn_stop_counting = progress_count_mgt('Game Counts', num_of_games)
-
-        nonlocal player1, player2
 
         num_div_2 = int(num_of_games / 2)
         extra_for_1 = 0

@@ -8,6 +8,9 @@ def create_normalized_predictor(fn_predict_action_probablities, fn_get_valid_act
     def fn_get_prediction_info(state):
         action_probalities, wrapped_state_val = fn_predict_action_probablities(state)
         valid_actions = fn_get_valid_actions(state)
+        if valid_actions is None:
+            return action_probalities, wrapped_state_val[0], None
+
         action_probalities = action_probalities * valid_actions  # masking invalid moves
         sum_Ps_s = np.sum(action_probalities)
         if sum_Ps_s > 0:

@@ -6,7 +6,7 @@ class HumanPlayer():
     def play(self, board):
         # fn_display(board_pieces)
         valid_moves = self.game_mgr.fn_get_valid_moves(board, 1)
-        if valid_moves[-1] == 1:
+        if valid_moves is None:
             return None
         for i in range(len(valid_moves)):
             if valid_moves[i]:

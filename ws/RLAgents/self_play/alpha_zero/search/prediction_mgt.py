@@ -24,7 +24,7 @@ def prediction_mgt(game_mgr, cache_mgr, neural_net_mgr):
             return valid_moves
 
         valid_moves = game_mgr.fn_get_valid_moves(state, player)
-        if valid_moves[-1] == 1:
+        if valid_moves is None:
             return None
         cache_mgr.state_valid_moves.fn_set_data(state_key, valid_moves)
 
