@@ -64,7 +64,7 @@ def agent_mgt(args, file_path):
             arguments = fn_init_arg_with_default_val(arguments, 'do_load_model', False)
             arguments = fn_init_arg_with_default_val(arguments, 'do_load_samples', False)
             arguments = fn_init_arg_with_default_val(arguments, 'model_name', 'model.tar')
-            arguments = fn_init_arg_with_default_val(arguments, 'temp_model_exchange_name', '_tmp.tar')
+            arguments = fn_init_arg_with_default_val(arguments, 'temp_model_exchange_filename', '_tmp.tar')
             current_dir = file_path.rsplit('/', 1)[0]
             archive_dir = current_dir.replace('/Demos/', '/Archives/')
             arguments = fn_init_arg_with_default_val(arguments, 'archive_dir', archive_dir)

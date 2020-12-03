@@ -20,7 +20,7 @@ def fn_generate_samples(args, iteration, generation_mcts):
         return sample_data
 
     def _fn_generate_samples_for_an_iteration():
-        # trainExamples = []
+        # training_samples = []
         all_samples_from_iteration = []
         current_pieces = game_mgr.fn_get_init_board()
         curPlayer = 1
@@ -83,7 +83,7 @@ def fn_generate_samples(args, iteration, generation_mcts):
 
     if len(training_samples_buffer) > args.sample_history_buffer_size:
         args.logger.warning(
-            f"Removing the oldest entry in trainExamples. len(training_samples_buffer) = {len(training_samples_buffer)}")
+            f"Removing the oldest entry in training_samples. len(training_samples_buffer) = {len(training_samples_buffer)}")
         training_samples_buffer.pop(0)
 
     fn_save_train_examples(args, iteration - 1, training_samples_buffer)

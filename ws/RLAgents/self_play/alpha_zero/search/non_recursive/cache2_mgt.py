@@ -17,7 +17,7 @@ def cache2_mgt(game_mgr, cache_mgr, neural_net_mgr):
         cache_mgr.state_predictions.fn_set_data(state_key, predictions)
         return predictions
 
-    def _fn_get_valid_moves(state, player):
+    def fn_get_valid_moves(state, player):
         state_key = game_mgr.fn_get_state_key(state)
 
         valid_moves = cache_mgr.state_valid_moves.fn_get_data_or_none(state_key)
@@ -33,7 +33,7 @@ def cache2_mgt(game_mgr, cache_mgr, neural_net_mgr):
 
     def fn_get_prediction_info(state, player):
         policy, state_val = _fn_get_state_predictions(state)
-        valid_moves = _fn_get_valid_moves(state, player)
+        valid_moves = fn_get_valid_moves(state, player)
         if valid_moves is None:
             return policy, state_val, valid_moves
         policy = policy * valid_moves  # masking invalid moves
@@ -110,4 +110,4 @@ def cache2_mgt(game_mgr, cache_mgr, neural_net_mgr):
 
 
 
-    return fn_get_prediction_info, fn_find_best_ucb_child
+    return fn_get_prediction_info, fn_find_best_ucb_child, fn_get_valid_moves

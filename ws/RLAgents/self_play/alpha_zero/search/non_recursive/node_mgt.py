@@ -6,7 +6,7 @@ import numpy
 
 
 def node_mgt(
-        fn_get_prediction_info,
+        fn_get_valid_moves,
         fn_find_best_ucb_child,
         explore_exploit_ratio,
         max_num_actions,
