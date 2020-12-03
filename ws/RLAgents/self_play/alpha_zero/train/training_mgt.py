@@ -15,25 +15,9 @@ from ws.RLAgents.self_play.alpha_zero.train.sample_generator import fn_generate_
 from ws.RLAgents.self_play.alpha_zero.train.training_helper import fn_save_train_examples, fn_log_iter_results, \
     fn_getCheckpointFile
 
-from ws.RLUtils.monitoring.tracing.progress_count_mgt import progress_count_mgt
 from ws.RLUtils.monitoring.tracing.tracer import tracer
-
-# log = logging.getLogger(__name__)
-
 def training_mgt(nn_mgr_N, args):
-
-    DEBUG_FLAG = False
-
-
-
     nn_mgr_P = copy.deepcopy(nn_mgr_N)
-
-
-
-    # training_samples_buffer = []  # history of examples from nn_args.sample_history_buffer_size latest iterations
-    # skipFirstSelfPlay = False  # can be overriden in loadTrainExamples()
-
-
 
     @tracer(args)
     def fn_execute_training_iterations():
@@ -51,8 +35,6 @@ def training_mgt(nn_mgr_N, args):
                 pmcts = mcts_adapter(nn_mgr_P, args)
                 nn_mgr_N.fn_adjust_model_from_examples(trainExamples)
                 nmcts = mcts_adapter(nn_mgr_N, args)
-                # nn_args.calltracer.fn_write()
-                # nn_args.calltracer.fn_write(f'* Comptete with Previous Version', indent=0)
                 arena = playground_mgt(lambda x: np.argmax(pmcts.fn_get_policy(x, spread_probabilities=0)),
                               lambda x: np.argmax(nmcts.fn_get_policy(x, spread_probabilities=0)),
                               game_mgr,

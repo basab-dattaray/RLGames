@@ -31,7 +31,7 @@ def game_mgt(board_size):
         return board_size
 
     def fn_get_action_size():
-        return board_size * board_size + 1
+        return board_size * board_size
 
     def fn_get_next_state(pieces, player, action):
         if action == board_size*board_size:
@@ -80,17 +80,17 @@ def game_mgt(board_size):
         return canonical_pieces
 
     def fn_get_symetric_samples(pieces, action_probs):
-        pi_board = np.reshape(action_probs[:-1], (board_size, board_size))
+        pi_board = np.reshape(action_probs, (board_size, board_size))
         list_of_symetries = []
 
         for i in range(1, 5):
                 rotated_board = np.rot90(pieces, i)
                 rotated_actions_rel_to_board = np.rot90(pi_board, i)
-                list_of_symetries += [(rotated_board, list(rotated_actions_rel_to_board.ravel()) + [action_probs[-1]])]
+                list_of_symetries += [(rotated_board, list(rotated_actions_rel_to_board.ravel()))]
 
                 rotated_board_flipped = np.fliplr(rotated_board)
                 rotated_actions_rel_to_board_flipped = np.fliplr(rotated_actions_rel_to_board)
-                list_of_symetries += [(rotated_board_flipped, list(rotated_actions_rel_to_board_flipped.ravel()) + [action_probs[-1]])]
+                list_of_symetries += [(rotated_board_flipped, list(rotated_actions_rel_to_board_flipped.ravel()))]
         return list_of_symetries
 
     def fn_get_state_key(pieces):

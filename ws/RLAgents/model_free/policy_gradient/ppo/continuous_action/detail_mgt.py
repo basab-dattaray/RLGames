@@ -19,7 +19,6 @@ def detail_mgt(app_info):
         return loss
 
     def fn_pick_action(state, buffer, policy_old_actor):
-        # tensored_state = torch.FloatTensor(state.reshape(1, -1)).to(device)
         tensored_state = torch.from_numpy(state).float().to(device)
         action_mean = policy_old_actor.forward(tensored_state)
         action_size = app_info[ACTION_DIMENSIONS]

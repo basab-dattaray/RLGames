@@ -38,9 +38,8 @@ def fn_generate_samples(args, iteration, generation_mcts):
                 return None
 
             symmetric_samples = game_mgr.fn_get_symetric_samples(canonical_board_pieces, action_probs)
-            # samples = map(lambda b, p: samples.append([b, curPlayer, p, None]), sym)
+
             for sym_canon_board, canon_action_probs in symmetric_samples:
-                # samples.append((sym_canon_board, curPlayer, canon_action_probs))
                 samples_from_episodes.append((sym_canon_board, curPlayer, canon_action_probs))
 
             action = np.random.choice(len(action_probs), p=action_probs)
