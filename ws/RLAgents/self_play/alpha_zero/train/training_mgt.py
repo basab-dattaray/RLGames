@@ -21,7 +21,7 @@ def training_mgt(nn_mgr_N, args):
         update_count = 0
         @tracer(args)
 
-        def _fn_pitting_results(iteration, nwins, pwins):
+        def _fn_interpret_competition_results(iteration, nwins, pwins):
             nonlocal update_count
             reject = False
             update_score = 0
@@ -77,7 +77,7 @@ def training_mgt(nn_mgr_N, args):
             draws, nwins, pwins = _fn_play_next_vs_previous(training_samples)
             fn_log_iteration_results(args, draws, iteration, nwins, pwins)
 
-            _fn_pitting_results(iteration, nwins, pwins)
+            _fn_interpret_competition_results(iteration, nwins, pwins)
 
         for iteration in range(1, args.num_of_training_iterations + 1):
             fn_run_iteration(iteration)

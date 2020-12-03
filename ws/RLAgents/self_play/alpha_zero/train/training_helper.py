@@ -30,8 +30,6 @@ def fn_load_train_examples(args):
             training_samples_buffer = Unpickler(f).load()
         args.fn_record('Loading done!')
 
-        # examples based on the model were already collected (loaded)
-        skipFirstSelfPlay = True
 
 
 def fn_log_iteration_results(args, draws, iteration, nwins, pwins):

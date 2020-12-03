@@ -20,7 +20,6 @@ def fn_generate_samples(args, iteration, generation_mcts):
         return sample_data
 
     def _fn_generate_samples_for_an_iteration():
-        # training_samples = []
         all_samples_from_iteration = []
         current_pieces = game_mgr.fn_get_init_board()
         curPlayer = 1
