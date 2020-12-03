@@ -64,8 +64,8 @@ def game_mgt(board_size):
 
         if b.fn_are_any_legal_moves_available(pieces, player):
             return 0
-        if b.fn_are_any_legal_moves_available(pieces, -player):
-            return 0
+        # if b.fn_are_any_legal_moves_available(pieces, -player):
+        #     return 0
         if b.fn_get_advantage_count(pieces, player) > 0:
             return 1
         return -1
