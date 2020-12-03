@@ -13,7 +13,6 @@ def policy_mgt(fn_get_counts):
                 probs = [x / counts_sum for x in counts]
                 return probs
 
-
         def fn_mcts_probability_select_one_win(counts):
             bestAs = np.array(np.argwhere(counts == np.max(counts))).flatten()
             bestA = np.random.choice(bestAs)

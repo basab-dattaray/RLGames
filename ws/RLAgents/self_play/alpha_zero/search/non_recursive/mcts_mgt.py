@@ -83,7 +83,9 @@ def mcts_mgt(
                     break
 
                 state_next_canonical = game_mgr.fn_get_canonical_form(state_next, player_next) # caonical state is needed for net prediction
-                action_probs, state_result, _ = fn_get_prediction_info(state = state_next_canonical, player = 1) # get prediction from perspective of player 1
+                action_probs, state_result, valid_moves = fn_get_prediction_info(state = state_next_canonical, player = 1) # get prediction from perspective of player 1
+                if valid_moves is None:
+                    break
 
                 state_this = state_next
                 player_this = player_next

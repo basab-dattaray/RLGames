@@ -33,7 +33,8 @@ def prediction_mgt(game_mgr, cache_mgr, neural_net_mgr):
     def fn_get_prediction_info(state, player):
         action_probalities, state_val = _fn_get_state_predictions(state)
         valid_moves = _fn_get_valid_moves(state, player)
-
+        if valid_moves is None:
+            return action_probalities, state_val, valid_moves
         action_probalities = action_probalities * valid_moves  # masking invalid moves
         sum_Ps_s = numpy.sum(action_probalities)
         if sum_Ps_s > 0:

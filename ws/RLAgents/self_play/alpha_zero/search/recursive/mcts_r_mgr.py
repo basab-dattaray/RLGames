@@ -82,7 +82,7 @@ def mcts_r_mgr(
         # SELECTION - node already visited so find next best node in the subtree
         valid_actions = cache_mgr.state_valid_moves.fn_get_data(state_key)
 
-        best_action = search_help.fn_get_best_ucb_action(state_key, valid_actions, max_num_actions, explore_exploit_ratio)
+        best_action = search_help.fn_get_best_ucb_action(cache_mgr, state_key, max_num_actions, explore_exploit_ratio)
         next_state, next_player = game_mgr.fn_get_next_state(state, 1, best_action)
         next_state_canonical = game_mgr.fn_get_canonical_form(next_state, next_player)
 
