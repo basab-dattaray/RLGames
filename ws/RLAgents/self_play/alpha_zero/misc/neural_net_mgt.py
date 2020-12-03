@@ -61,23 +61,23 @@ def neural_net_mgt(args):
 
             for _ in range(batch_count):
                 sample_ids = np.random.randint(len(examples), size=nn_args.batch_size)
-                batch_of_states, batch_of_action_probablities, batch_of_results = list(zip(*[examples[i] for i in sample_ids]))
-                batch_of_states = torch.FloatTensor(np.array(batch_of_states).astype(np.float64))
-                batch_of_action_probablities_as_nparray = torch.FloatTensor(np.array(batch_of_action_probablities))
-                batch_of_results_as_array = torch.FloatTensor(np.array(batch_of_results).astype(np.float64))
+                batch_of_states_as_tuple, batch_of_policies_as_tuple, batch_of_results_as_tuple = list(zip(*[examples[i] for i in sample_ids]))
+                batch_of_states = torch.FloatTensor(np.array(batch_of_states_as_tuple).astype(np.float64))
+                batch_of_policies = torch.FloatTensor(np.array(batch_of_policies_as_tuple))
+                batch_of_results = torch.FloatTensor(np.array(batch_of_results_as_tuple).astype(np.float64))
 
                 # predict
                 if nn_args.cuda:
-                    batch_of_states, batch_of_action_probablities_as_nparray, batch_of_results_as_array = batch_of_states.contiguous().cuda(), batch_of_action_probablities_as_nparray.contiguous().cuda(), batch_of_results_as_array.contiguous().cuda()
+                    batch_of_states, batch_of_policies, batch_of_results = batch_of_states.contiguous().cuda(), batch_of_policies.contiguous().cuda(), batch_of_results.contiguous().cuda()
 
                 # compute output
-                batch_of_predicted_action_probs, batch_of_predicted_values = nnet(batch_of_states)
-                loss_action_probablities = fn_loss_for_action_probs(batch_of_action_probablities_as_nparray, batch_of_predicted_action_probs)
-                loss_values = fn_loss_for_values(batch_of_results_as_array, batch_of_predicted_values)
-                total_loss = loss_action_probablities + loss_values
+                batch_of_predicted_policies, batch_of_predicted_results = nnet(batch_of_states)
+                loss_policies = _fn_loss_for_policies(batch_of_policies, batch_of_predicted_policies)
+                loss_values = _fn_loss_for_values(batch_of_results, batch_of_predicted_results)
+                total_loss = loss_policies + loss_values
 
                 # record loss
-                pi_losses.update(loss_action_probablities.item(), batch_of_states.size(0))
+                pi_losses.update(loss_policies.item(), batch_of_states.size(0))
                 v_losses.update(loss_values.item(), batch_of_states.size(0))
                 # t.set_postfix(Loss_pi=pi_losses, Loss_v=v_losses)
 
@@ -102,11 +102,11 @@ def neural_net_mgt(args):
 
         return torch.exp(pi).data.cpu().numpy()[0], v.data.cpu().numpy()[0]
 
-    def fn_loss_for_action_probs(targets, outputs):
-        return -torch.sum(targets * outputs) / targets.size()[0]
+    def _fn_loss_for_policies(actual_policies, predicted_policies):
+        return -torch.sum(actual_policies * predicted_policies) / actual_policies.size()[0]
 
-    def fn_loss_for_values(targets, outputs):
-        return torch.sum((targets - outputs.view(-1)) ** 2) / targets.size()[0]
+    def _fn_loss_for_values(actual_results, predicted_results):
+        return torch.sum((actual_results - predicted_results.view(-1)) ** 2) / actual_results.size()[0]
 
     def fn_save_model(filename= args['model_name']):
         folder = os.path.join(args.demo_folder, args.rel_model_path)

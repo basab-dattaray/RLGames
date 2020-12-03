@@ -14,9 +14,9 @@ def fn_generate_samples(args, iteration, generation_mcts):
 
     def _fn_form_sample_data(current_player, run_result, training_samples):
         sample_data = []
-        for canon_board, player, canon_action_probs in training_samples:
+        for canon_board, player, canon_policies in training_samples:
             result = run_result * (1 if (player == current_player) else -1)
-            sample_data.append([canon_board, canon_action_probs, result])
+            sample_data.append([canon_board, canon_policies, result])
         return sample_data
 
     def _fn_generate_samples_for_an_iteration():
@@ -36,8 +36,8 @@ def fn_generate_samples(args, iteration, generation_mcts):
 
             symmetric_samples = game_mgr.fn_get_symetric_samples(canonical_board_pieces, policy)
 
-            for sym_canon_board, canon_action_probs in symmetric_samples:
-                samples_from_episodes.append((sym_canon_board, curPlayer, canon_action_probs))
+            for sym_canon_board, canon_policies in symmetric_samples:
+                samples_from_episodes.append((sym_canon_board, curPlayer, canon_policies))
 
             action = np.random.choice(len(policy), p=policy)
             next_pieces, player_next = game_mgr.fn_get_next_state(current_pieces, curPlayer, action)

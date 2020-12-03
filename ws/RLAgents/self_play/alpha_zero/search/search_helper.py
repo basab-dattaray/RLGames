@@ -2,9 +2,9 @@ import math
 from collections import namedtuple
 import numpy as np
 
-def create_normalized_predictor(fn_predict_action_probablities, fn_get_valid_actions):
+def create_normalized_predictor(fn_predict_policies, fn_get_valid_actions):
     def fn_get_prediction_info(state):
-        action_probalities, wrapped_state_val = fn_predict_action_probablities(state)
+        action_probalities, wrapped_state_val = fn_predict_policies(state)
         valid_actions = fn_get_valid_actions(state)
         if valid_actions is None:
             return action_probalities, wrapped_state_val[0], None
