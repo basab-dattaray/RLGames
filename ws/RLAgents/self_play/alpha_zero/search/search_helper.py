@@ -1,8 +1,6 @@
 import math
 from collections import namedtuple
-
 import numpy as np
-
 
 def create_normalized_predictor(fn_predict_action_probablities, fn_get_valid_actions):
     def fn_get_prediction_info(state):

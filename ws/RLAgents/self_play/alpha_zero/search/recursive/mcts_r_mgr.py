@@ -80,7 +80,6 @@ def mcts_r_mgr(
             return -state_val
 
         # SELECTION - node already visited so find next best node in the subtree
-        valid_actions = cache_mgr.state_valid_moves.fn_get_data(state_key)
 
         best_action = search_help.fn_get_best_ucb_action(cache_mgr, state_key, max_num_actions, explore_exploit_ratio)
         next_state, next_player = game_mgr.fn_get_next_state(state, 1, best_action)
@@ -88,8 +87,6 @@ def mcts_r_mgr(
 
         # BACKPROP
         state_val = fn_search(next_state_canonical)
-        # if ret_val is not None:
-        #     state_val = ret_val
 
         search_help.fn_update_state_during_backprop(state_key, best_action, state_val)
 

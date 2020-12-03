@@ -6,13 +6,11 @@
 from collections import namedtuple
 
 import numpy
-from utils.lists import flatten
 
 from .node_mgt import node_mgt
 from ..cache_mgt import cache_mgt
 from ..policy_mgt import policy_mgt
-from ..prediction_mgt import prediction_mgt
-from ..search_helper import create_normalized_predictor
+from ws.RLAgents.self_play.alpha_zero.search.non_recursive.cache2_mgt import cache2_mgt
 
 LONG_ROLLOUT = True
 CACHE_RESULTS = False
@@ -26,10 +24,11 @@ def mcts_mgt(
         max_num_actions
 ):
     cache_mgr = cache_mgt()
-    fn_get_prediction_info = prediction_mgt(game_mgr, cache_mgr, neural_net_mgr)
+    fn_get_prediction_info, fn_find_best_ucb_child = cache2_mgt(game_mgr, cache_mgr, neural_net_mgr)
 
     node_mgr = node_mgt(
         fn_get_prediction_info,
+        fn_find_best_ucb_child,
         explore_exploit_ratio
     )
 

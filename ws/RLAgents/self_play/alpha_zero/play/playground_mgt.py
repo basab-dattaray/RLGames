@@ -17,18 +17,16 @@ def playground_mgt(player1, player2, game_mgr, fn_display=None, msg_recorder = N
         nonlocal game_num
         DEBUG = False
 
-        players = [player2, None, player1]
         cur_player_index = 1
         pieces = game_mgr.fn_get_init_board()
-        it = 0
+        loop_count = 0
 
-        break_from_while = False
         while game_mgr.fn_get_game_progress_status(pieces, cur_player_index) == 0:
-            it += 1
+            loop_count += 1
             if verbose:
                 assert fn_display
                 print()
-                print("Turn ", str(it), "Player ", str(cur_player_index))
+                print("Turn ", str(loop_count), "Player ", str(cur_player_index))
                 fn_display(pieces)
 
             cur_player = player1 if cur_player_index == 1 else player2
@@ -41,25 +39,7 @@ def playground_mgt(player1, player2, game_mgr, fn_display=None, msg_recorder = N
             if valid_moves is None:
                 break
             if valid_moves[action] == 0:
-                if DEBUG:
-                    x = (int) (action / len(pieces))
-                    y = action % len(pieces)
-                    msg_recorder(f'Action {action} is not valid!   [{x} {y}]')
-
-                    msg_recorder(f'Current Player: {cur_player_index} ')
-
-
-                    msg_recorder(f'valid_moves = {valid_moves}')
-                    msg_recorder('')
-
-                    for i in range(len(pieces)):
-                        # arr_of_strs = map(lambda size: '{0:03d}'.format(size), board_pieces[i])
-                        # line = list(arr_of_strs)
-                        lst = list(map(lambda n: '0' if n == 0 else '+' if n > 0 else '-', pieces[i]))
-                        line = functools.reduce(lambda a,b : a + ' ' + b,lst)
-                        msg_recorder(line)
-                break_from_while = True
-                break
+                 break
 
             pieces, cur_player_index = game_mgr.fn_get_next_state(pieces, cur_player_index, action)
 
@@ -69,23 +49,9 @@ def playground_mgt(player1, player2, game_mgr, fn_display=None, msg_recorder = N
             assert fn_display
             fn_display(pieces)
             print()
-            print("GAME OVER: Turn ", str(it), "Result ", str(game_status))
+            print("GAME OVER: Turn ", str(loop_count), "Result ", str(game_status))
 
         result = game_status
-        if DEBUG:
-            color = Fore.RED
-            game_status1 = game_mgr.fn_get_game_progress_status(pieces, cur_player_index)
-
-            result1 = cur_player_index * game_status1
-            if result == result1:
-                color = Fore.GREEN
-
-            msg_recorder(color + f'curPlayer= {cur_player_index}')
-            msg_recorder(f'RESULT:: {result}')
-            msg_recorder(f'RESULT1:: {result1}  --> old')
-
-            msg_recorder(Fore.BLUE)
-        # print(f'Game number={game_num}; curPlayer={curPlayer}; result={result}')
         game_num += 1
         return result
 

@@ -7,6 +7,7 @@ import numpy
 
 def node_mgt(
         fn_get_prediction_info,
+        fn_find_best_ucb_child,
         explore_exploit_ratio,
 ):
     def node(
@@ -18,6 +19,7 @@ def node_mgt(
 
         visits = 0
         children_nodes = {}
+        policy, state_result, valid_moves = fn_get_prediction_info(state=state, player=1)  # get prediction from perspective of player 1
 
         def _fn_add_children_nodes(policy):
             nonlocal children_nodes
@@ -33,42 +35,10 @@ def node_mgt(
                     )
                     children_nodes[str(action_num)] = child_node
 
-            # children_nodes = children_nodes # {**children} #???
-
             if len(children_nodes.values()) == 0:
                 return None
 
             return list(children_nodes.values())[0]
-
-
-        def _fn_find_best_ucb_child():
-                best_child = None
-                best_ucb = 0
-
-                policy, _, _ = fn_get_prediction_info(state)
-
-                for key, child_node in children_nodes.items():
-                    action_num = int(key)
-                    action_prob = policy[action_num]
-
-                    child_visits = child_node.fn_get_num_visits()
-                    child_value = child_node.fn_get_node_val()
-                    if child_visits == 0:
-                        return child_node
-
-                    exploit_val = child_value / child_visits
-                    explore_val = action_prob * math.sqrt(visits) / (child_visits + 1)
-                    ucb = exploit_val + explore_exploit_ratio * explore_val  # Upper Confidence Bound
-
-                    if best_child is None:
-                        best_child = child_node
-                        best_ucb = ucb
-                    else:
-                        if ucb > best_ucb:
-                            best_ucb = ucb
-                            best_child = child_node
-
-                return best_child
 
 
         def fn_select_from_available_leaf_nodes():
@@ -76,7 +46,7 @@ def node_mgt(
             if len(children_nodes) == 0:  # leaf_node
                 return node_obj
 
-            best_child = _fn_find_best_ucb_child()
+            best_child = fn_find_best_ucb_child(state, children_nodes, visits, explore_exploit_ratio)
             return best_child.fn_select_from_available_leaf_nodes()
 
         def fn_is_already_visited():
@@ -86,12 +56,18 @@ def node_mgt(
                 return False
 
         def fn_expand_node():
-            policy, _, _ = fn_get_prediction_info(state) # fn_get_valid_normalized_policy()
-            if policy is None:
-                return None
-            first_child_node = _fn_add_children_nodes(policy)
+            if children_nodes is None:
+                pass # add children nodes
 
-            return first_child_node
+
+
+        # def fn_expand_node():
+        #     policy, _, _ = fn_get_prediction_info(state= state, player= 1) # fn_get_valid_normalized_policy()
+        #     if policy is None:
+        #         return None
+        #     first_child_node = _fn_add_children_nodes(policy)
+        #
+        #     return first_child_node
 
         def _fn_add_val_to_node(new_val):
             nonlocal visits, val
