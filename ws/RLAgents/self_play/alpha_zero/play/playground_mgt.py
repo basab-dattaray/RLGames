@@ -14,6 +14,13 @@ def playground_mgt(player1, player2, game_mgr, fn_display=None, msg_recorder = N
     game_num = 0
 
     def _fn_play_game(verbose=False):
+        def _fn_display_if_verbose(verbose):
+            if verbose:
+                assert fn_display
+                print()
+                print("Turn ", str(loop_count), "Player ", str(cur_player_index))
+                fn_display(pieces)
+
         nonlocal game_num
         DEBUG = False
 
@@ -23,11 +30,7 @@ def playground_mgt(player1, player2, game_mgr, fn_display=None, msg_recorder = N
 
         while game_mgr.fn_get_game_progress_status(pieces, cur_player_index) == 0:
             loop_count += 1
-            if verbose:
-                assert fn_display
-                print()
-                print("Turn ", str(loop_count), "Player ", str(cur_player_index))
-                fn_display(pieces)
+            _fn_display_if_verbose(verbose)
 
             cur_player = player1 if cur_player_index == 1 else player2
 
@@ -38,22 +41,19 @@ def playground_mgt(player1, player2, game_mgr, fn_display=None, msg_recorder = N
             valid_moves = game_mgr.fn_get_valid_moves(game_mgr.fn_get_canonical_form(pieces, cur_player_index), 1)
             if valid_moves is None:
                 break
-            if valid_moves[action] == 0:
-                 break
+            # if valid_moves[action] == 0:
+            #      break
 
             pieces, cur_player_index = game_mgr.fn_get_next_state(pieces, cur_player_index, action)
 
         game_status = game_mgr.fn_game_status(pieces)
 
-        if verbose:
-            assert fn_display
-            fn_display(pieces)
-            print()
-            print("GAME OVER: Turn ", str(loop_count), "Result ", str(game_status))
+        _fn_display_if_verbose(verbose)
 
         result = game_status
         game_num += 1
         return result
+
 
 
     def fn_play_games(num_of_games, verbose=False):
