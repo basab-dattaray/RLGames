@@ -86,9 +86,7 @@ def game_mgt(board_size):
         for i in range(1, 5):
                 rotated_board = np.rot90(pieces, i)
                 rotated_actions_rel_to_board = np.rot90(pi_board, i)
-                list_of_symetries += [(rotated_board, list(rotated_actions_rel_to_board.ravel())
-                                       )]
-
+                list_of_symetries += [(rotated_board, list(rotated_actions_rel_to_board.ravel()))]
                 rotated_board_flipped = np.fliplr(rotated_board)
                 rotated_actions_rel_to_board_flipped = np.fliplr(rotated_actions_rel_to_board)
                 list_of_symetries += [(rotated_board_flipped, list(rotated_actions_rel_to_board_flipped.ravel()))]
@@ -117,11 +115,6 @@ def game_mgt(board_size):
 
         print("-----------------------")
 
-    def fn_next_state_given_action(state, action):
-        next_state, next_player = fn_get_next_state(state, 1, action)
-        next_state_canonical = fn_get_canonical_form(next_state, next_player)
-        return next_state_canonical
-
 
     game_mgr = namedtuple('_', [
         'fn_get_init_board',
@@ -139,7 +132,6 @@ def game_mgt(board_size):
         'fn_get_score' ,
         'fn_display',
 
-        'fn_next_state_given_action'
         ]
     )
 
@@ -157,7 +149,5 @@ def game_mgt(board_size):
     game_mgr.fn_get_state_key = fn_get_state_key
     game_mgr.fn_get_score = fn_get_score
     game_mgr.fn_display = fn_display
-
-    game_mgr.fn_next_state_given_action = fn_next_state_given_action
 
     return game_mgr
