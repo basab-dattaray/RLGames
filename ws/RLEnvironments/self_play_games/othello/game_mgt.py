@@ -86,7 +86,8 @@ def game_mgt(board_size):
         for i in range(1, 5):
                 rotated_board = np.rot90(pieces, i)
                 rotated_actions_rel_to_board = np.rot90(pi_board, i)
-                list_of_symetries += [(rotated_board, list(rotated_actions_rel_to_board.ravel()))]
+                list_of_symetries += [(rotated_board, list(rotated_actions_rel_to_board.ravel())
+                                       )]
 
                 rotated_board_flipped = np.fliplr(rotated_board)
                 rotated_actions_rel_to_board_flipped = np.fliplr(rotated_actions_rel_to_board)
