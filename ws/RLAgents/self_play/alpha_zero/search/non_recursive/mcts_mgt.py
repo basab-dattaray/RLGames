@@ -36,8 +36,17 @@ def mcts_mgt(
 
     # policy, wrapped_state_val = neural_net_mgr.predict(state)
     fn_get_policy = lambda state, do_random_selection: neural_net_mgr.predict(state)[0]
-    fn_best_action = lambda state: numpy.argmax(fn_get_policy(state, do_random_selection=False))
 
+    # fn_get_action_given_state = lambda state: numpy.argmax(fn_get_policy(state, do_random_selection=False))
+
+    def fn_get_action_given_state(state):
+        return 1
+
+    playground = playground_mgt(
+        fn_get_action_given_state,
+        fn_get_action_given_state,
+        game_mgr
+    )
     root_node = None
 
     def fn_get_mcts_counts(state):
@@ -103,12 +112,10 @@ def mcts_mgt(
         #
         #     return player_based_result
         def fn_rollout(state):
-            playground = playground_mgt(
-                fn_best_action,
-                fn_best_action,
-                game_mgr
-            )
-            return fn_best_action(state)
+
+            result = playground.fn_play_one_game(state, verbose=False)
+
+            return result
 
         if root_node is None:
             root_node = node_mgr.node(

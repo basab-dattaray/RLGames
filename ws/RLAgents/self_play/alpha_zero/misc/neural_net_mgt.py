@@ -71,7 +71,7 @@ def neural_net_mgt(args):
                     batch_of_states, batch_of_policies, batch_of_results = batch_of_states.contiguous().cuda(), batch_of_policies.contiguous().cuda(), batch_of_results.contiguous().cuda()
 
                 # compute output
-                batch_of_predicted_policies, batch_of_predicted_results = nnet(batch_of_states)
+                batch_of_predicted_policies, batch_of_predicted_results = nnet.forward(batch_of_states)
                 loss_policies = _fn_loss_for_policies(batch_of_policies, batch_of_predicted_policies)
                 loss_values = _fn_loss_for_values(batch_of_results, batch_of_predicted_results)
                 total_loss = loss_policies + loss_values
