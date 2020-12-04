@@ -8,9 +8,6 @@ from ws.RLUtils.monitoring.tracing.progress_count_mgt import progress_count_mgt
 
 def playground_mgt(fn_policy_player1, fn_policy_player2, game_mgr, fn_display=None, msg_recorder = None):
     game_num = 0
-
-
-
     def _fn_play_game(verbose=False):
         def _fn_switch_policy(cur_player_index):
             curent_policy = fn_policy_player1 if cur_player_index == 1 else fn_policy_player2

@@ -88,7 +88,6 @@ def neural_net_mgt(args):
         fn_stop_counting()
         args.calltracer.fn_write(f'Number of Epochs for training new model: {args.epochs}')
 
-
     def predict(board):
         start = time.time()
 
@@ -98,15 +97,17 @@ def neural_net_mgt(args):
         board = board.view(1, board_x, board_y)
         nnet.eval()
         with torch.no_grad():
-            pi, v = nnet(board)
+            policy, value = nnet(board)
 
-        return torch.exp(pi).data.cpu().numpy()[0], v.data.cpu().numpy()[0]
+        return torch.exp(policy).data.cpu().numpy()[0], value.data.cpu().numpy()[0]
 
     def _fn_loss_for_policies(actual_policies, predicted_policies):
-        return -torch.sum(actual_policies * predicted_policies) / actual_policies.size()[0]
+        loss = -torch.sum(actual_policies * predicted_policies) / actual_policies.size()[0]
+        return loss
 
     def _fn_loss_for_values(actual_results, predicted_results):
-        return torch.sum((actual_results - predicted_results.view(-1)) ** 2) / actual_results.size()[0]
+        loss = torch.sum((actual_results - predicted_results.view(-1)) ** 2) / actual_results.size()[0]
+        return loss
 
     def fn_save_model(filename= args['model_name']):
         folder = os.path.join(args.demo_folder, args.rel_model_path)
@@ -138,7 +139,6 @@ def neural_net_mgt(args):
             return True
         else:
             return False
-
 
     neural_net_mgr = namedtuple('_', [
         'fn_get_untrained_model',
