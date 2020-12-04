@@ -60,20 +60,20 @@ def fn_generate_samples(args, iteration, generation_mcts):
 
     @tracer(args)
     def _fn_generate_all_samples():
-            samples_for_iteration = deque([], maxlen=args.sample_buffer_size)
-            fn_count_event, fn_stop_counting = progress_count_mgt('Episodes', args.num_of_training_episodes)
+        samples_for_iteration = deque([], maxlen=args.sample_buffer_size)
+        fn_count_event, fn_stop_counting = progress_count_mgt('Episodes', args.num_of_training_episodes)
 
-            for episode_num in range(1, args.num_of_training_episodes + 1):
-                fn_count_event()
-                episode_result = _fn_generate_samples_for_an_iteration()
-                if episode_result is not None:
-                    samples_for_iteration += episode_result
+        for episode_num in range(1, args.num_of_training_episodes + 1):
+            fn_count_event()
+            episode_result = _fn_generate_samples_for_an_iteration()
+            if episode_result is not None:
+                samples_for_iteration += episode_result
 
-            fn_stop_counting()
-            args.calltracer.fn_write(f'Number of Episodes for sample generation: {args.num_of_training_episodes}')
+        fn_stop_counting()
+        args.calltracer.fn_write(f'Number of Episodes for sample generation: {args.num_of_training_episodes}')
 
-            # save the iteration examples to the history
-            return samples_for_iteration
+        # save the iteration examples to the history
+        return samples_for_iteration
 
     all_samples = _fn_generate_all_samples()
     training_samples_buffer.append(all_samples)

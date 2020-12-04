@@ -8,7 +8,7 @@ from ws.RLUtils.monitoring.tracing.progress_count_mgt import progress_count_mgt
 
 def playground_mgt(fn_policy_player1, fn_policy_player2, game_mgr, fn_display=None, msg_recorder = None):
     game_num = 0
-    def _fn_play_game(verbose=False):
+    def fn_play_one_game(verbose=False):
         def _fn_switch_policy(cur_player_index):
             curent_policy = fn_policy_player1 if cur_player_index == 1 else fn_policy_player2
             return curent_policy
@@ -53,8 +53,6 @@ def playground_mgt(fn_policy_player1, fn_policy_player2, game_mgr, fn_display=No
         game_num += 1
         return result
 
-
-
     def fn_play_games(num_of_games, verbose=False):
         nonlocal fn_policy_player1, fn_policy_player2
 
@@ -64,7 +62,7 @@ def playground_mgt(fn_policy_player1, fn_policy_player2, game_mgr, fn_display=No
             draws = 0
             for i in range(num):
                 fn_count_event()
-                gameResult = _fn_play_game(verbose=verbose)
+                gameResult = fn_play_one_game(verbose=verbose)
 
                 if gameResult == 1 * result_factor:
                     oneWon += 1
@@ -93,8 +91,9 @@ def playground_mgt(fn_policy_player1, fn_policy_player2, game_mgr, fn_display=No
         fn_stop_counting()
         return oneWon_1 + oneWon_2, twoWon_1 + twoWon_2, draws_1 + draws_2
 
-    playground_mgr = namedtuple('_', ['fn_play_games'])
+    playground_mgr = namedtuple('_', ['fn_play_games', 'fn_play_one_game'])
     playground_mgr.fn_play_games=fn_play_games
+    playground_mgr.fn_play_one_game=fn_play_one_game
 
     return playground_mgr
 
