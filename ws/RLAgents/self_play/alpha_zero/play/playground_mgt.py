@@ -8,7 +8,7 @@ from ws.RLUtils.monitoring.tracing.progress_count_mgt import progress_count_mgt
 
 def playground_mgt(fn_policy_player1, fn_policy_player2, game_mgr, fn_display=None, msg_recorder = None):
     game_num = 0
-    def fn_play_one_game(verbose=False):
+    def fn_play_one_game(pieces, verbose=False):
         def _fn_switch_policy(cur_player_index):
             curent_policy = fn_policy_player1 if cur_player_index == 1 else fn_policy_player2
             return curent_policy
@@ -23,7 +23,7 @@ def playground_mgt(fn_policy_player1, fn_policy_player2, game_mgr, fn_display=No
         nonlocal game_num
 
         cur_player_index = 1
-        pieces = game_mgr.fn_get_init_board()
+
         loop_count = 0
 
         while game_mgr.fn_get_game_progress_status(pieces, cur_player_index) == 0:
@@ -62,7 +62,8 @@ def playground_mgt(fn_policy_player1, fn_policy_player2, game_mgr, fn_display=No
             draws = 0
             for i in range(num):
                 fn_count_event()
-                gameResult = fn_play_one_game(verbose=verbose)
+                pieces = game_mgr.fn_get_init_board()
+                gameResult = fn_play_one_game(pieces, verbose=verbose)
 
                 if gameResult == 1 * result_factor:
                     oneWon += 1

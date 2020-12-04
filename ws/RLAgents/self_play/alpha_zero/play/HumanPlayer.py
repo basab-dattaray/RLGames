@@ -3,7 +3,7 @@ class HumanPlayer():
     def __init__(self, game_mgr):
         self.game_mgr = game_mgr
 
-    def fn_policy(self, board):
+    def fn_get_action(self, board):
         # fn_display(board_pieces)
         valid_moves = self.game_mgr.fn_get_valid_moves(board, 1)
         if valid_moves is None:

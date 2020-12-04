@@ -103,19 +103,19 @@ def agent_mgt(args, file_path):
 
         @tracer(args)
         def fn_test_against_human():
-            fn_human_player_policy = lambda g: HumanPlayer(g).play
+            fn_human_player_policy = lambda g: HumanPlayer(g).fn_get_action
             fn_test(fn_human_player_policy, verbose= True, num_of_test_games= 2)
             return agent_mgr
 
         @tracer(args)
         def fn_test_against_random():
-            fn_random_player_policy = lambda g: RandomPlayer(g).play
+            fn_random_player_policy = lambda g: RandomPlayer(g).fn_get_action
             fn_test(fn_random_player_policy, num_of_test_games= args.num_of_test_games)
             return agent_mgr
 
         @tracer(args)
         def fn_test_against_greedy():
-            fn_random_player_policy = lambda g: GreedyPlayer(g).play
+            fn_random_player_policy = lambda g: GreedyPlayer(g).fn_get_action
             fn_test(fn_random_player_policy, num_of_test_games= args.num_of_test_games)
             return agent_mgr
 
