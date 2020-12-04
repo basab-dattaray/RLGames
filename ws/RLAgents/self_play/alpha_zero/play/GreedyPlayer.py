@@ -3,7 +3,7 @@ class GreedyPlayer():
     def __init__(self, game_mgr):
         self.game_mgr = game_mgr
 
-    def play(self, pieces):
+    def fn_policy(self, pieces):
         valid_moves = self.game_mgr.fn_get_valid_moves(pieces, 1)
         if valid_moves is None:
             return None

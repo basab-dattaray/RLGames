@@ -5,7 +5,7 @@ class RandomPlayer():
     def __init__(self, game_mgr):
         self.game_mgr = game_mgr
 
-    def play(self, board):
+    def fn_policy(self, board):
         action = np.random.randint(self.game_mgr.fn_get_action_size())
         valid_moves = self.game_mgr.fn_get_valid_moves(board, 1)
         if valid_moves is None:
