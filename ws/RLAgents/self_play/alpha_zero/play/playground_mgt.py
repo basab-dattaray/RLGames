@@ -6,12 +6,12 @@ from random import random
 from ws.RLUtils.monitoring.tracing.progress_count_mgt import progress_count_mgt
 
 
-def playground_mgt(fn_policy_player1, fn_policy_player2, game_mgr, fn_display=None, msg_recorder = None):
+def playground_mgt(fn_get_action_given_state_player1, fn_get_action_given_state__player2, game_mgr, fn_display=None, msg_recorder = None):
     game_num = 0
     def fn_play_one_game(pieces, verbose=False):
-        def _fn_switch_policy(cur_player_index):
-            curent_policy = fn_policy_player1 if cur_player_index == 1 else fn_policy_player2
-            return curent_policy
+        def _fn_switch_get_action_given_state(cur_player_index):
+            fn_get_action_given_state = fn_get_action_given_state_player1 if cur_player_index == 1 else fn_get_action_given_state__player2
+            return fn_get_action_given_state
 
         def _fn_display_if_verbose(verbose):
             if verbose:
@@ -30,7 +30,7 @@ def playground_mgt(fn_policy_player1, fn_policy_player2, game_mgr, fn_display=No
             loop_count += 1
             _fn_display_if_verbose(verbose)
 
-            curent_policy = _fn_switch_policy(cur_player_index)
+            _fn_current_get_action_given_state = _fn_switch_get_action_given_state(cur_player_index)
 
             canonical_pieces = game_mgr.fn_get_canonical_form(pieces, cur_player_index)
 
@@ -39,7 +39,7 @@ def playground_mgt(fn_policy_player1, fn_policy_player2, game_mgr, fn_display=No
             if valid_moves is None:
                 break
 
-            action = curent_policy(canonical_pieces)
+            action = _fn_current_get_action_given_state(canonical_pieces)
             if action == None:
                 break
 
@@ -54,7 +54,7 @@ def playground_mgt(fn_policy_player1, fn_policy_player2, game_mgr, fn_display=No
         return result
 
     def fn_play_games(num_of_games, verbose=False):
-        nonlocal fn_policy_player1, fn_policy_player2
+        nonlocal fn_get_action_given_state_player1, fn_get_action_given_state__player2
 
         def _fn_get_gameset_results(num, result_factor, verbose):
             oneWon = 0
@@ -86,7 +86,7 @@ def playground_mgt(fn_policy_player1, fn_policy_player2, game_mgr, fn_display=No
                 extra_for_2 = 1
 
         oneWon_1, twoWon_1, draws_1 = _fn_get_gameset_results(num_div_2 + extra_for_1, 1, verbose)
-        fn_policy_player1, fn_policy_player2 = fn_policy_player2, fn_policy_player1
+        fn_get_action_given_state_player1, fn_get_action_given_state__player2 = fn_get_action_given_state__player2, fn_get_action_given_state_player1
         oneWon_2, twoWon_2, draws_2 = _fn_get_gameset_results(num_div_2 + extra_for_2, -1, verbose)
 
         fn_stop_counting()
