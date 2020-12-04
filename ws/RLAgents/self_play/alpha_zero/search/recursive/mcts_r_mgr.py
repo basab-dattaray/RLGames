@@ -10,6 +10,7 @@ from ws.RLAgents.self_play.alpha_zero.search.search_helper import search_helper,
 def mcts_r_mgr(
     game_mgr,
     neural_net_mgr,
+    playground_mgt,
     num_mcts_simulations,
     explore_exploit_ratio,
     max_num_actions

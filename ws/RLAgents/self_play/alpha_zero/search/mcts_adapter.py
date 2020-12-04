@@ -1,7 +1,7 @@
 from collections import namedtuple
 
 # import numpy as np
-
+from ws.RLAgents.self_play.alpha_zero.play.playground_mgt import playground_mgt
 from ws.RLAgents.self_play.alpha_zero.search.non_recursive.mcts_mgt import mcts_mgt
 from ws.RLAgents.self_play.alpha_zero.search.recursive.mcts_r_mgr import mcts_r_mgr
 
@@ -15,6 +15,7 @@ def mcts_adapter(neural_net_mgr, args):
     mcts = monte_carlo_tree_search(
         game_mgr,
         neural_net_mgr,
+        playground_mgt,
         num_mcts_simulations=args.num_of_mc_simulations,
         explore_exploit_ratio=args.cpuct_exploration_exploitation_factor,
         max_num_actions=game_mgr.fn_get_action_size()

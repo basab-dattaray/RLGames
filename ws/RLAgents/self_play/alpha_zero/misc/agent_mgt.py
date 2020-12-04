@@ -128,9 +128,9 @@ def agent_mgt(args, file_path):
             system_mcts = mcts_adapter(system_nn, args)
             fn_system_policy = lambda state: numpy.argmax(system_mcts.fn_get_policy(state, do_random_selection=False))
             fn_contender_policy = fn_player_policy(args.game_mgr)
-            arena = playground_mgt(fn_system_policy, fn_contender_policy, args.game_mgr, fn_display=game_mgt(args['board_size']).fn_display,
+            playground = playground_mgt(fn_system_policy, fn_contender_policy, args.game_mgr, fn_display=game_mgt(args['board_size']).fn_display,
                           msg_recorder=args.calltracer.fn_write)
-            system_wins, system_losses, draws = arena.fn_play_games(num_of_test_games, verbose=verbose)
+            system_wins, system_losses, draws = playground.fn_play_games(num_of_test_games, verbose=verbose)
 
             args.calltracer.fn_write(f'wins:{system_wins} losses:{system_losses} draws:{draws}')
 

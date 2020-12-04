@@ -63,13 +63,13 @@ def training_mgt(nn_mgr_N, args):
                 pmcts = mcts_adapter(nn_mgr_P, args)
                 nn_mgr_N.fn_adjust_model_from_examples(training_samples)
                 nmcts = mcts_adapter(nn_mgr_N, args)
-                arena = playground_mgt(
+                playground = playground_mgt(
                     lambda state: np.argmax(pmcts.fn_get_policy(state, do_random_selection= False)),
                     lambda state: np.argmax(nmcts.fn_get_policy(state, do_random_selection= False)),
                     game_mgr,
                     msg_recorder=args.calltracer.fn_write
                 )
-                pwins, nwins, draws = arena.fn_play_games(args.number_of_games_for_model_comarison)
+                pwins, nwins, draws = playground.fn_play_games(args.number_of_games_for_model_comarison)
                 args.fn_record()
                 return draws, nwins, pwins
 

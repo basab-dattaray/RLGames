@@ -19,6 +19,7 @@ EPS = 1e-8
 def mcts_mgt(
         game_mgr,
         neural_net_mgr,
+        playground_mgt,
         num_mcts_simulations,
         explore_exploit_ratio,
         max_num_actions
@@ -32,6 +33,8 @@ def mcts_mgt(
         explore_exploit_ratio,
         max_num_actions
     )
+
+    # fn_system_policy = lambda state: numpy.argmax(system_mcts.fn_get_policy(state, do_random_selection=False))
 
     root_node = None
 
