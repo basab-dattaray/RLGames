@@ -16,6 +16,18 @@ def node_mgt(
             state,
             parent_node,
     ):
+        node_obj = namedtuple('_', [
+            'fn_get_num_visits',
+            'fn_get_children_node',
+            'fn_get_node_val',
+
+            'fn_select_from_available_leaf_nodes',
+            'fn_is_already_visited',
+            'fn_back_propagate',
+            'fn_expand_node',
+            'fn_get_parent_node'
+        ])
+
         _visits = 0
         _val=0.0
         _children_nodes = {}
@@ -25,7 +37,6 @@ def node_mgt(
             best_child = None
             best_ucb = 0
 
-            # policy, _, _ = fn_get_prediction_info(state)
             policy, state_val, _ = fn_get_prediction_info(state)
 
             for action_num, child_node in enumerate(node.children_nodes):
@@ -38,7 +49,7 @@ def node_mgt(
                     return child_node
 
                 exploit_val = child_value / child_visits
-                explore_val = action_prob * math.sqrt(visits) / (child_visits + 1)
+                explore_val = action_prob * math.sqrt(_visits) / (child_visits + 1)
                 ucb = exploit_val + explore_exploit_ratio * explore_val  # Upper Confidence Bound
 
                 if best_child is None:
@@ -52,21 +63,21 @@ def node_mgt(
             return best_child
 
         def _fn_add_children_nodes(parent):
-            for action_num in range(max_num_actions):
-                child_node = node(
-                    state,
-                    parent_node = parent,
-                )
-                valid_nodes = fn_get_valid_moves(state, 1)
-                for action, valid in enumerate(valid_nodes):
-                    if valid != 0:
-                        _children_nodes[action] =  None
+            valid_nodes = fn_get_valid_moves(state, 1)
+            for action, valid in enumerate(valid_nodes):
+                if valid != 0:
+                    child_node = node(
+                        state,
+                        parent_node=parent,
+                    )
+                    _children_nodes[action] =  child_node
 
             if len(_children_nodes) == 0:
                 return None
 
-            first_child = _children_nodes[0]
-            return first_child
+            first_child_key= list(_children_nodes.keys())[0]
+            first_child_node = _children_nodes[first_child_key]
+            return first_child_node
 
         def fn_select_from_available_leaf_nodes():
             if parent_node is None:
@@ -114,17 +125,7 @@ def node_mgt(
         def fn_get_parent_node():
             return parent_node
 
-        node_obj = namedtuple('_', [
-            'fn_get_num_visits',
-            'fn_get_children_node',
-            'fn_get_node_val',
 
-            'fn_select_from_available_leaf_nodes',
-            'fn_is_already_visited',
-            'fn_back_propagate',
-            'fn_expand_node',
-            'fn_get_parent_node'
-        ])
 
         node_obj.fn_get_num_visits = fn_get_num_visits
         node_obj.fn_get_children_nodes = fn_get_children_nodes

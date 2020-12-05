@@ -4,7 +4,7 @@ from ws.RLAgents.self_play.alpha_zero.search.cache_mgt import cache_mgt
 from ws.RLAgents.self_play.alpha_zero.search.policy_mgt import policy_mgt
 
 from ws.RLAgents.self_play.alpha_zero.search.recursive.state_visit_mgt import state_visit_mgt
-from ws.RLAgents.self_play.alpha_zero.search.search_helper import search_helper, create_normalized_predictor
+from ws.RLAgents.self_play.alpha_zero.search.recursive.search_helper import search_helper, create_normalized_predictor
 
 
 def mcts_r_mgr(

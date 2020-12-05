@@ -81,4 +81,4 @@ def cache2_mgt(game_mgr, cache_mgr, neural_net_mgr):
 
 
 
-    return fn_get_prediction_info, fn_find_best_ucb_child, fn_get_valid_moves
+    return fn_get_prediction_info, fn_get_valid_moves
