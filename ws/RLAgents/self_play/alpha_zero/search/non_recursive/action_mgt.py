@@ -9,8 +9,7 @@ def action_mgt(USE_SMART_PREDICTOR_FOR_ROLLOUT, fn_get_valid_moves, fn_get_predi
         return normalized_valid_moves
 
     def _fn_get_possible_actions_from_predictions(state):
-        prediction_info = fn_get_prediction_info(state, 1)
-        policy = prediction_info[0]
+        policy, _, _ = fn_get_prediction_info(state, 1)
         return policy
 
     def fn_generate_action_getter(fn_get_possible_actions):

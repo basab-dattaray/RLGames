@@ -55,7 +55,7 @@ def mcts_mgt(
             else:
                 children_nodes = root_node.fn_get_children_nodes()
                 counts = [0] * max_num_actions
-                for index, current_node in enumerate(children_nodes):
+                for index, current_node in children_nodes.items():
                     visits = current_node.fn_get_num_visits()
                     counts[index] = visits
                 return counts

@@ -29,13 +29,17 @@ def node_mgt(
         _children_nodes = {}
         _parent_node = copy.deepcopy(parent_node)
 
+        def fn_get_children_node():
+            return _children_nodes
+
         def fn_find_best_ucb_child(node):
             best_child = None
             best_ucb = 0
 
-            policy, state_val, _ = fn_get_prediction_info(state)
+            policy, state_val, _= fn_get_prediction_info(state, 1)
 
-            for action_num, child_node in enumerate(node.children_nodes):
+            children_nodes = node.fn_get_children_node()
+            for action_num, child_node in children_nodes.items():
 
                 action_prob = policy[action_num]
 
@@ -122,7 +126,7 @@ def node_mgt(
             return parent_node
 
 
-
+        node_obj.fn_get_children_node = fn_get_children_node
         node_obj.fn_get_num_visits = fn_get_num_visits
         node_obj.fn_get_children_nodes = fn_get_children_nodes
         node_obj.fn_get_node_val = fn_get_node_val
