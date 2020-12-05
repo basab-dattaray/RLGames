@@ -45,35 +45,6 @@ def cache2_mgt(game_mgr, cache_mgr, neural_net_mgr):
             policy /= numpy.sum(policy)
         return policy, state_val, valid_moves
 
-    def fn_find_best_ucb_child(state, children_nodes, visits, explore_exploit_ratio):
-        best_child = None
-        best_ucb = 0
-
-        # policy, _, _ = fn_get_prediction_info(state)
-        policy, state_val = _fn_get_state_predictions(state)
-
-        for action_num, child_node in enumerate(children_nodes):
-
-            action_prob = policy[action_num]
-
-            child_visits = child_node.fn_get_num_visits()
-            child_value = child_node.fn_get_node_val()
-            if child_visits == 0:
-                return child_node
-
-            exploit_val = child_value / child_visits
-            explore_val = action_prob * math.sqrt(visits) / (child_visits + 1)
-            ucb = exploit_val + explore_exploit_ratio * explore_val  # Upper Confidence Bound
-
-            if best_child is None:
-                best_child = child_node
-                best_ucb = ucb
-            else:
-                if ucb > best_ucb:
-                    best_ucb = ucb
-                    best_child = child_node
-
-        return best_child
 
     #
     # def fn_get_best_ucb_action(state, max_num_actions, explore_exploit_ratio):

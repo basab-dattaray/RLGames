@@ -1,3 +1,4 @@
+import copy
 import math
 import uuid
 from collections import namedtuple
@@ -6,82 +7,109 @@ import numpy
 
 
 def node_mgt(
-        fn_find_best_ucb_child,
+        fn_get_valid_moves,
+        fn_get_prediction_info,
         explore_exploit_ratio,
         max_num_actions,
 ):
     def node(
             state,
-            parent_node=None,
-            children_nodes=[]
+            parent_node,
     ):
-        visits = 0
-        val=0.0
+        _visits = 0
+        _val=0.0
+        _children_nodes = {}
+        _parent_node = copy.deepcopy(parent_node)
 
+        def fn_find_best_ucb_child(node):
+            best_child = None
+            best_ucb = 0
 
-        def _fn_add_children_nodes(parent, children):
+            # policy, _, _ = fn_get_prediction_info(state)
+            policy, state_val, _ = fn_get_prediction_info(state)
+
+            for action_num, child_node in enumerate(node.children_nodes):
+
+                action_prob = policy[action_num]
+
+                child_visits = child_node.fn_get_num_visits()
+                child_value = child_node.fn_get_node_val()
+                if child_visits == 0:
+                    return child_node
+
+                exploit_val = child_value / child_visits
+                explore_val = action_prob * math.sqrt(visits) / (child_visits + 1)
+                ucb = exploit_val + explore_exploit_ratio * explore_val  # Upper Confidence Bound
+
+                if best_child is None:
+                    best_child = child_node
+                    best_ucb = ucb
+                else:
+                    if ucb > best_ucb:
+                        best_ucb = ucb
+                        best_child = child_node
+
+            return best_child
+
+        def _fn_add_children_nodes(parent):
             for action_num in range(max_num_actions):
                 child_node = node(
                     state,
                     parent_node = parent,
-                    children_nodes=[]
-
                 )
-                children.append(child_node)
+                valid_nodes = fn_get_valid_moves(state, 1)
+                for action, valid in enumerate(valid_nodes):
+                    if valid != 0:
+                        _children_nodes[action] =  None
 
-            if len(children_nodes) == 0:
+            if len(_children_nodes) == 0:
                 return None
 
-            first_child = list(children_nodes)[0]
+            first_child = _children_nodes[0]
             return first_child
 
         def fn_select_from_available_leaf_nodes():
             if parent_node is None:
-                first_child_node = _fn_add_children_nodes(node_obj, children_nodes)
+                first_child_node = _fn_add_children_nodes(node_obj)
 
-            if len(children_nodes) == 0:  # leaf_node
+            if len(_children_nodes) == 0:  # leaf_node
                 return node_obj
 
-            best_child_node = fn_find_best_ucb_child(state, children_nodes, visits, explore_exploit_ratio)
+            best_child_node = fn_find_best_ucb_child(node_obj)
             selected_node = best_child_node.fn_select_from_available_leaf_nodes()
             return selected_node
 
         def fn_is_already_visited():
-            if visits > 0:
+            if _visits > 0:
                 return True
             else:
                 return False
 
         def fn_expand_node():
-            first_child_node = _fn_add_children_nodes(node_obj, children_nodes)
+            first_child_node = _fn_add_children_nodes(node_obj, _children_nodes)
 
             return first_child_node
 
-        def _fn_add_val_to_node(new_val):
-            nonlocal visits, val
+        def fn_back_propagate(current_val, depth = 1):
+            nonlocal _val, _visits
 
-            val += new_val
-            visits += 1
-            return val
+            _val += current_val
+            _visits += 1
 
-        def fn_back_propagate(current_val):
-            current_node = node_obj
-
-            while current_node is not None:
-                current_val = _fn_add_val_to_node(current_val)
-                new_node = current_node.fn_get_parent_node()
-                current_node = new_node
-
-            return current_val
+            parent = fn_get_parent_node()
+            if parent is None:
+                return depth
+            else:
+                return parent.fn_back_propagate(current_val, depth + 1)
 
         def fn_get_num_visits():
-            return visits
+            return _visits
 
         def fn_get_children_nodes():
-            return children_nodes
+            return _children_nodes
 
         def fn_get_node_val():
-            return val
+            return _val
 
         def fn_get_parent_node():
             return parent_node

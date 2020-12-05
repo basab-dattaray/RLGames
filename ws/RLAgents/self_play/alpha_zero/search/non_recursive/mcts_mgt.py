@@ -31,14 +31,11 @@ def mcts_mgt(
     fn_get_prediction_info, fn_find_best_ucb_child, fn_get_valid_moves = cache2_mgt(game_mgr, cache_mgr, neural_net_mgr)
 
     node_mgr = node_mgt(
-        fn_find_best_ucb_child,
+        fn_get_valid_moves,
+        fn_get_prediction_info,
         explore_exploit_ratio,
         max_num_actions
     )
-
-    # policy, wrapped_state_val = neural_net_mgr.predict(state)
-    # fn_get_policy = lambda state, do_random_selection: neural_net_mgr.predict(state)[0]
-    # fn_get_action_given_state = lambda state: numpy.argmax(fn_get_policy(state, do_random_selection=False))
 
     fn_get_action_given_state = action_mgt(USE_SMART_PREDICTOR_FOR_ROLLOUT, fn_get_valid_moves, fn_get_prediction_info)
 
@@ -56,11 +53,11 @@ def mcts_mgt(
             if root_node is None:
                 return None
             else:
-                childrenNodes = root_node.fn_get_children_nodes()
+                children_nodes = root_node.fn_get_children_nodes()
                 counts = [0] * max_num_actions
-                for key, current_node in childrenNodes.items():
-                    index = int(key)
-                    counts[index] = current_node.fn_get_num_visits()
+                for index, current_node in enumerate(children_nodes):
+                    visits = current_node.fn_get_num_visits()
+                    counts[index] = visits
                 return counts
 
         for i in range(num_mcts_simulations):
@@ -79,7 +76,8 @@ def mcts_mgt(
 
         if root_node is None:
             root_node = node_mgr.node(
-                state
+                state,
+                parent_node = None
             )
 
         selected_node = root_node.fn_select_from_available_leaf_nodes()
@@ -91,9 +89,8 @@ def mcts_mgt(
             pass
 
         score = fn_rollout(state)
-
-        value = selected_node.fn_back_propagate(score)
-        return value
+        tree_depth = selected_node.fn_back_propagate(score)
+        pass
 
     mcts_mgr = namedtuple('_', ['fn_get_policy'])
     mcts_mgr.fn_get_policy = fn_get_policy
