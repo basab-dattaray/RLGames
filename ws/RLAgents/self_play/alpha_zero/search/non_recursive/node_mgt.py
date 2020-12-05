@@ -1,10 +1,6 @@
 import copy
 import math
-import uuid
 from collections import namedtuple
-
-import numpy
-
 
 def node_mgt(
         fn_get_valid_moves,
