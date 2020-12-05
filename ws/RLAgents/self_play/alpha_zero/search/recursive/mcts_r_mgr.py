@@ -15,18 +15,9 @@ def mcts_r_mgr(
     explore_exploit_ratio,
     max_num_actions
 ):
-    # def fn_get_valid_actions(board):
-    #     valid_moves = game_mgr.fn_get_valid_moves(board, 1)
-    #     return valid_moves
-
     fn_terminal_value = lambda pieces: game_mgr.fn_get_game_progress_status(pieces, 1)
     fn_get_valid_actions = lambda board: game_mgr.fn_get_valid_moves(board, 1)
     fn_get_prediction_info = create_normalized_predictor (neural_net_mgr.predict, fn_get_valid_actions)
-    # Qsa = {}  # stores Q values for state_key,action (as defined in the paper)
-
-    # Ps = {}  # stores initial policy (returned by neural net)
-    # Es = {}  # stores game.fn_get_game_progress_status ended for board_pieces state_key
-    # Vs = {}  # stores game.fn_get_valid_moves for board_pieces state_key
 
     state_visits = state_visit_mgt()
 
@@ -97,3 +88,9 @@ def mcts_r_mgr(
     mcts_mgr.fn_get_policy = fn_get_policy
 
     return mcts_mgr
+
+# Qsa = {}  # stores Q values for state_key,action (as defined in the paper)
+
+# Ps = {}  # stores initial policy (returned by neural net)
+# Es = {}  # stores game.fn_get_game_progress_status ended for board_pieces state_key
+# Vs = {}  # stores game.fn_get_valid_moves for board_pieces state_key

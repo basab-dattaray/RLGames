@@ -37,9 +37,9 @@ def cache2_mgt(game_mgr, cache_mgr, neural_net_mgr):
         if valid_moves is None:
             return policy, state_val, valid_moves
         policy = policy * valid_moves  # masking invalid moves
-        sum_Ps_s = numpy.sum(policy)
-        if sum_Ps_s > 0:
-            policy /= sum_Ps_s  # renormalize
+        sum_policy = numpy.sum(policy)
+        if sum_policy > 0:
+            policy /= sum_policy  # renormalize
         else:
             policy = policy + valid_moves
             policy /= numpy.sum(policy)

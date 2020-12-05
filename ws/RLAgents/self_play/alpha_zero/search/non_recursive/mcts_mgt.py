@@ -12,9 +12,10 @@ from ..cache_mgt import cache_mgt
 from ..policy_mgt import policy_mgt
 from ws.RLAgents.self_play.alpha_zero.search.non_recursive.cache2_mgt import cache2_mgt
 
-LONG_ROLLOUT = True
-CACHE_RESULTS = False
-EPS = 1e-8
+USE_SMART_PREDICTOR_FOR_ROLLOUT = False
+# LONG_ROLLOUT = True
+# CACHE_RESULTS = False
+# EPS = 1e-8
 
 def mcts_mgt(
         game_mgr,
@@ -24,6 +25,7 @@ def mcts_mgt(
         explore_exploit_ratio,
         max_num_actions
 ):
+
     cache_mgr = cache_mgt()
     fn_get_prediction_info, fn_find_best_ucb_child, fn_get_valid_moves = cache2_mgt(game_mgr, cache_mgr, neural_net_mgr)
 
@@ -35,12 +37,37 @@ def mcts_mgt(
     )
 
     # policy, wrapped_state_val = neural_net_mgr.predict(state)
-    fn_get_policy = lambda state, do_random_selection: neural_net_mgr.predict(state)[0]
-
+    # fn_get_policy = lambda state, do_random_selection: neural_net_mgr.predict(state)[0]
     # fn_get_action_given_state = lambda state: numpy.argmax(fn_get_policy(state, do_random_selection=False))
 
-    def fn_get_action_given_state(state):
-        return 1
+    def _fn_get_possible_actions_from_valid_moves(state):
+        valid_moves = fn_get_valid_moves(state, 1)
+        sum_policy = numpy.sum(valid_moves)
+        normalized_valid_moves = valid_moves / sum_policy
+        return normalized_valid_moves
+
+    def _fn_get_possible_actions_from_predictions(state):
+        prediction_info = fn_get_prediction_info(state, 1)
+        policy = prediction_info[0]
+        return policy
+
+    def fn_generate_action_getter(fn_get_possible_actions):
+
+        def fn_get_action_given_state(state):
+            normalized_valid_moves = fn_get_possible_actions(state)
+
+            action = numpy.random.choice(len(normalized_valid_moves), p=normalized_valid_moves)
+            return action
+        return fn_get_action_given_state
+
+    fn_get_possible_actions = None
+    if USE_SMART_PREDICTOR_FOR_ROLLOUT:
+        fn_get_possible_actions = _fn_get_possible_actions_from_predictions
+    else:
+        fn_get_possible_actions = _fn_get_possible_actions_from_valid_moves
+
+    fn_get_action_given_state = fn_generate_action_getter(fn_get_possible_actions)
+
 
     playground = playground_mgt(
         fn_get_action_given_state,
@@ -73,48 +100,8 @@ def mcts_mgt(
     def fn_execute_search(state):
         nonlocal  root_node
 
-        # def fn_rollout(state_this):
-        #     def _fn_get_state_stats(state):
-        #         zeros_in_state = len(list(filter(lambda e: e == 0, numpy.array(state).flatten())))
-        #         minuses_in_state = len(list(filter(lambda e: e == -1, numpy.array(state).flatten())))
-        #         plusses_in_state = len(list(filter(lambda e: e == 1, numpy.array(state).flatten())))
-        #         return zeros_in_state, minuses_in_state, plusses_in_state
-        #
-        #     player_this = 1
-        #     policy, state_result, _ = fn_get_prediction_info(state_this, player_this)
-        #
-        #     i_ = 0
-        #
-        #     while policy is not None:
-        #         best_action = numpy.random.choice(len(policy), p=policy)
-        #
-        #         state_next, player_next = game_mgr.fn_get_next_state(state_this, player_this, best_action)
-        #
-        #         this_state_stats = _fn_get_state_stats(state_this)
-        #         next_state_stats = _fn_get_state_stats(state_next)
-        #
-        #         if player_next == player_this:
-        #             break
-        #
-        #         state_next_canonical = game_mgr.fn_get_canonical_form(state_next, player_next) # caonical state is needed for net prediction
-        #         policy, state_result, valid_moves = fn_get_prediction_info(state = state_next_canonical, player = 1) # get prediction from perspective of player 1
-        #         if valid_moves is None:
-        #             break
-        #
-        #         state_this = state_next
-        #         player_this = player_next
-        #
-        #         i_ += 1
-        #
-        #     _, minusses, plusses = _fn_get_state_stats(state_this)
-        #     raw_result = 0 if plusses == minusses else 1 if plusses > minusses else -1
-        #     player_based_result = raw_result * player_this
-        #
-        #     return player_based_result
         def fn_rollout(state):
-
             result = playground.fn_play_one_game(state, verbose=False)
-
             return result
 
         if root_node is None:

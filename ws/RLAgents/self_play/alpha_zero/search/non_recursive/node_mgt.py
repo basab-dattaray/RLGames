@@ -16,11 +16,8 @@ def node_mgt(
             val = 0.0,
             parent_node = None
     ):
-        # DEBUG_FLAG = False
-
         visits = 0
         children_nodes = {}
-        # policy, state_result, valid_moves = fn_get_prediction_info(state=state, player=1)  # get prediction from perspective of player 1
 
         def _fn_add_children_nodes():
             nonlocal children_nodes
