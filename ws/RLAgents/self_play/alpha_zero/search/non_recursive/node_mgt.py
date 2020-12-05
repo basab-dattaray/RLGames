@@ -12,38 +12,39 @@ def node_mgt(
 ):
     def node(
             state,
-            val = 0.0,
-            parent_node = None
+            parent_node=None,
+            children_nodes=[]
     ):
         visits = 0
-        children_nodes = {}
+        val=0.0
 
-        def _fn_add_children_nodes():
-            nonlocal children_nodes
 
-            # policy = normalized_valid_policy[:-2][0]
-            children_nodes = {}
+        def _fn_add_children_nodes(parent, children):
             for action_num in range(max_num_actions):
                 child_node = node(
                     state,
-                    val=0.0,
-                    parent_node= node_obj,  # ??? cant be None
-                )
-                children_nodes[str(action_num)] = child_node
+                    parent_node = parent,
+                    children_nodes=[]
 
-            if len(children_nodes.values()) == 0:
+                )
+                children.append(child_node)
+
+            if len(children_nodes) == 0:
                 return None
 
-            return list(children_nodes.values())[0]
-
+            first_child = list(children_nodes)[0]
+            return first_child
 
         def fn_select_from_available_leaf_nodes():
+            if parent_node is None:
+                first_child_node = _fn_add_children_nodes(node_obj, children_nodes)
 
             if len(children_nodes) == 0:  # leaf_node
                 return node_obj
 
-            best_child = fn_find_best_ucb_child(state, children_nodes, visits, explore_exploit_ratio)
-            return best_child.fn_select_from_available_leaf_nodes()
+            best_child_node = fn_find_best_ucb_child(state, children_nodes, visits, explore_exploit_ratio)
+            selected_node = best_child_node.fn_select_from_available_leaf_nodes()
+            return selected_node
 
         def fn_is_already_visited():
             if visits > 0:
@@ -52,7 +53,7 @@ def node_mgt(
                 return False
 
         def fn_expand_node():
-            first_child_node = _fn_add_children_nodes()
+            first_child_node = _fn_add_children_nodes(node_obj, children_nodes)
 
             return first_child_node
 

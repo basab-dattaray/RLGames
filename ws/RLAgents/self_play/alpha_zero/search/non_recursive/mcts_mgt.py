@@ -7,6 +7,7 @@ from collections import namedtuple
 
 import numpy
 
+from .action_mgt import action_mgt
 from .node_mgt import node_mgt
 from ..cache_mgt import cache_mgt
 from ..policy_mgt import policy_mgt
@@ -39,7 +40,7 @@ def mcts_mgt(
     # fn_get_policy = lambda state, do_random_selection: neural_net_mgr.predict(state)[0]
     # fn_get_action_given_state = lambda state: numpy.argmax(fn_get_policy(state, do_random_selection=False))
 
-    fn_get_action_given_state = action_mgt(fn_get_valid_moves, fn_get_prediction_info)
+    fn_get_action_given_state = action_mgt(USE_SMART_PREDICTOR_FOR_ROLLOUT, fn_get_valid_moves, fn_get_prediction_info)
 
     playground = playground_mgt(
         fn_get_action_given_state,
@@ -99,33 +100,4 @@ def mcts_mgt(
     return mcts_mgr
 
 
-def action_mgt(fn_get_valid_moves, fn_get_prediction_info):
-    def _fn_get_possible_actions_from_valid_moves(state):
-        valid_moves = fn_get_valid_moves(state, 1)
-        sum_policy = numpy.sum(valid_moves)
-        normalized_valid_moves = valid_moves / sum_policy
-        return normalized_valid_moves
-
-    def _fn_get_possible_actions_from_predictions(state):
-        prediction_info = fn_get_prediction_info(state, 1)
-        policy = prediction_info[0]
-        return policy
-
-    def fn_generate_action_getter(fn_get_possible_actions):
-
-        def fn_get_action_given_state(state):
-            normalized_valid_moves = fn_get_possible_actions(state)
-
-            action = numpy.random.choice(len(normalized_valid_moves), p=normalized_valid_moves)
-            return action
-
-        return fn_get_action_given_state
-
-    fn_get_possible_actions = None
-    if USE_SMART_PREDICTOR_FOR_ROLLOUT:
-        fn_get_possible_actions = _fn_get_possible_actions_from_predictions
-    else:
-        fn_get_possible_actions = _fn_get_possible_actions_from_valid_moves
-    fn_get_action_given_state = fn_generate_action_getter(fn_get_possible_actions)
-    return fn_get_action_given_state
 

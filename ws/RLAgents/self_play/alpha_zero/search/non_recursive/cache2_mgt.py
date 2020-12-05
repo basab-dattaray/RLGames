@@ -52,8 +52,8 @@ def cache2_mgt(game_mgr, cache_mgr, neural_net_mgr):
         # policy, _, _ = fn_get_prediction_info(state)
         policy, state_val = _fn_get_state_predictions(state)
 
-        for key, child_node in children_nodes.items():
-            action_num = int(key)
+        for action_num, child_node in enumerate(children_nodes):
+
             action_prob = policy[action_num]
 
             child_visits = child_node.fn_get_num_visits()
