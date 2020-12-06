@@ -43,7 +43,9 @@ def playground_mgt(fn_get_action_given_state_player1, fn_get_action_given_state_
             if action == None:
                 break
 
-            pieces, cur_player_index = game_mgr.fn_get_next_state(pieces, cur_player_index, action)
+            pieces, _ = game_mgr.fn_get_next_state(pieces, cur_player_index, action)
+            next_player_index = -1 * cur_player_index
+            cur_player_index = next_player_index
 
         game_status = game_mgr.fn_game_status(pieces)
 
