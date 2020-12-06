@@ -11,6 +11,7 @@ def node_mgt(
     def node(
             state,
             parent_node,
+            player
     ):
         node_obj = namedtuple('_', [
             'fn_get_num_visits',
@@ -69,6 +70,7 @@ def node_mgt(
                     child_node = node(
                         state,
                         parent_node=parent,
+                        player = player * -1
                     )
                     _children_nodes[action] =  child_node
 

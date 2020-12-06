@@ -1,5 +1,5 @@
+import copy
 from collections import namedtuple
-from copy import copy
 
 import numpy
 
@@ -48,7 +48,7 @@ def board_mgt(board_size):
 
 
     def fn_execute_flips(pieces, move, color):
-        copied_pieces = copy(pieces)
+        copied_pieces = copy.deepcopy(pieces)
         flip_trails = flip_mgr.fn_get_flippables(copied_pieces, color, move)
 
         if flip_trails is None or len(list(flip_trails))==0:

@@ -77,7 +77,8 @@ def mcts_mgt(
         if root_node is None:
             root_node = node_mgr.node(
                 state,
-                parent_node = None
+                parent_node = None,
+                player = 1
             )
 
         selected_node = root_node.fn_select_from_available_leaf_nodes()
@@ -88,8 +89,8 @@ def mcts_mgt(
                 return None
             pass
 
-        score = fn_rollout(state)
-        tree_depth = selected_node.fn_back_propagate(score)
+        score = selected_node.fn_rollout(state)
+        tree_depth = fn_back_propagate(score)
         pass
 
     mcts_mgr = namedtuple('_', ['fn_get_policy'])

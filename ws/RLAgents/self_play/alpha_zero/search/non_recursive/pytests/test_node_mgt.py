@@ -33,16 +33,16 @@ def test_create_root_node(setup):
     args = setup
     state = fn_get_state()
 
-    root_node = node(
-        state,
-        args.fn_get_prediction_info,
-        args.game_mgr.fn_get_action_size(),
-        args.cpuct_exploration_exploitation_factor,
-
-        parent_action=-1,
-        val=0.0,
-        parent_node=None
-    )
+    # root_node = node(
+    #     state,
+    #     args.fn_get_prediction_info,
+    #     args.game_mgr.fn_get_action_size(),
+    #     args.cpuct_exploration_exploitation_factor,
+    #
+    #     parent_action=-1,
+    #     val=0.0,
+    #     parent_node=None
+    # )
 
     assert root_node is not None
 
