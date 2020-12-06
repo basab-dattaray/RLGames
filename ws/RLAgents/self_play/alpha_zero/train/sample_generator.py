@@ -40,7 +40,7 @@ def fn_generate_samples(args, iteration, generation_mcts):
                 samples_from_episodes.append((sym_canon_board, cur_player_index, canon_policies))
 
             action = np.random.choice(len(policy), p=policy)
-            next_pieces, _ = game_mgr.fn_get_next_state(current_pieces, cur_player_index, action)
+            next_pieces = game_mgr.fn_get_next_state(current_pieces, cur_player_index, action)
             next_player_index = -1 * cur_player_index
 
             current_pieces = next_pieces

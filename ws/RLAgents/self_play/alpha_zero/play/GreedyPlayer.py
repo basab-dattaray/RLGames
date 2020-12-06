@@ -11,7 +11,7 @@ class GreedyPlayer():
         for a in range(self.game_mgr.fn_get_action_size()):
             if valid_moves[a]==0:
                 continue
-            nextPieces, _ = self.game_mgr.fn_get_next_state(pieces, 1, a)
+            nextPieces = self.game_mgr.fn_get_next_state(pieces, 1, a)
             score = self.game_mgr.fn_get_score(nextPieces, 1)
             candidates += [(-score, a)]
         candidates.sort()

@@ -38,8 +38,8 @@ def game_mgt(board_size):
         success, next_pieces = board.fn_execute_flips(pieces, move, player)
         pieces = next_pieces
         if not success:
-            return (pieces, player)
-        return (pieces, -player)
+            return pieces
+        return pieces
 
     def fn_get_valid_moves(pieces, player):
         valid_moves = [0]*fn_get_action_size()
