@@ -22,25 +22,21 @@ def game_mgt(board_size):
     }
 
     def fn_get_init_board():
-        # return initial board_pieces (numpy board_pieces)
-        # b = board_mgt(board_size)
-        # if not EXISTING:
-        #     b = board_mgt(board_size)
         return np.array(board_mgt(board_size).fn_init_board())
 
     def fn_get_board_size():
-        # (a,b) tuple
         return board_size
 
     def fn_get_action_size():
         return board_size * board_size
 
     def fn_get_next_state(pieces, player, action):
-        if action is None: # == board_size*board_size: #??
+        if action is None:
             return (pieces, -player)
-        b = board_mgt(board_size)
+        board = board_mgt(board_size)
         move = (int(action / board_size), action % board_size)
-        success, pieces = copy.deepcopy(b.fn_execute_flips(pieces, move, player))
+        success, next_pieces = board.fn_execute_flips(pieces, move, player)
+        pieces = next_pieces
         if not success:
             return (pieces, player)
         return (pieces, -player)
@@ -62,13 +58,12 @@ def game_mgt(board_size):
         if player is None:
             return fn_game_status(pieces)
 
-        b = board_mgt(board_size)
+        board = board_mgt(board_size)
 
-        if b.fn_are_any_legal_moves_available(pieces, player):
+        if board.fn_are_any_legal_moves_available(pieces, player):
             return 0
-        # if b.fn_are_any_legal_moves_available(pieces, -player):
-        #     return 0
-        if b.fn_get_advantage_count(pieces, player) > 0:
+
+        if board.fn_get_advantage_count(pieces, player) > 0:
             return 1
         return -1
 

@@ -33,8 +33,8 @@ def mcts_mgt(
     node_mgr = node_mgt(
         fn_get_valid_moves,
         fn_get_prediction_info,
-        explore_exploit_ratio,
-        max_num_actions
+        game_mgr.fn_get_next_state,
+        explore_exploit_ratio
     )
 
     fn_get_action_given_state = action_mgt(USE_SMART_PREDICTOR_FOR_ROLLOUT, fn_get_valid_moves, fn_get_prediction_info)
@@ -78,7 +78,8 @@ def mcts_mgt(
             root_node = node_mgr.node(
                 state,
                 parent_node = None,
-                player = 1
+                player = 1,
+                id = ''
             )
 
         selected_node = root_node.fn_select_from_available_leaf_nodes()

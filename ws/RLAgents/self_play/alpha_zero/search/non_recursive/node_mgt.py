@@ -5,15 +5,17 @@ from collections import namedtuple
 def node_mgt(
         fn_get_valid_moves,
         fn_get_prediction_info,
+        fn_get_next_state,
         explore_exploit_ratio,
-        max_num_actions,
 ):
     def node(
             state,
             parent_node,
-            player
+            player,
+            id,
     ):
         node_obj = namedtuple('_', [
+            'id',
             'fn_get_num_visits',
             'fn_get_children_node',
             'fn_get_node_val',
@@ -25,6 +27,7 @@ def node_mgt(
             'fn_get_parent_node'
         ])
 
+        _state = state
         _visits = 0
         _val=0.0
         _children_nodes = {}
@@ -37,7 +40,7 @@ def node_mgt(
             best_child = None
             best_ucb = 0
 
-            policy, state_val, _= fn_get_prediction_info(state, 1)
+            policy, state_val, _= fn_get_prediction_info(_state, 1)
 
             children_nodes = node.fn_get_children_node()
             for action_num, child_node in children_nodes.items():
@@ -64,13 +67,17 @@ def node_mgt(
             return best_child
 
         def _fn_add_children_nodes(parent):
-            valid_nodes = fn_get_valid_moves(state, 1)
+            parent_id = parent.id
+            valid_nodes = fn_get_valid_moves(_state, 1)
             for action, valid in enumerate(valid_nodes):
                 if valid != 0:
+                    new_id = parent_id + '.' + str(action)
+                    new_state = fn_get_next_state(_state, 1, action)
                     child_node = node(
-                        state,
-                        parent_node=parent,
-                        player = player * -1
+                        state = new_state,
+                        parent_node = parent,
+                        player = player * -1,
+                        id = new_id
                     )
                     _children_nodes[action] =  child_node
 
@@ -127,7 +134,7 @@ def node_mgt(
         def fn_get_parent_node():
             return parent_node
 
-
+        node_obj.id = id
         node_obj.fn_get_children_node = fn_get_children_node
         node_obj.fn_get_num_visits = fn_get_num_visits
         node_obj.fn_get_children_nodes = fn_get_children_nodes
