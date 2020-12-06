@@ -1,4 +1,6 @@
 from __future__ import print_function
+
+import copy
 import sys
 from collections import namedtuple
 
@@ -34,11 +36,11 @@ def game_mgt(board_size):
         return board_size * board_size
 
     def fn_get_next_state(pieces, player, action):
-        if action == board_size*board_size:
+        if action is None: # == board_size*board_size: #??
             return (pieces, -player)
         b = board_mgt(board_size)
         move = (int(action / board_size), action % board_size)
-        success, pieces = b.fn_execute_flips(pieces, move, player)
+        success, pieces = copy.deepcopy(b.fn_execute_flips(pieces, move, player))
         if not success:
             return (pieces, player)
         return (pieces, -player)
@@ -76,7 +78,7 @@ def game_mgt(board_size):
         return status
 
     def fn_get_canonical_form(pieces, player):
-        canonical_pieces =  player * pieces
+        canonical_pieces = copy.deepcopy(player * pieces)
         return canonical_pieces
 
     def fn_get_symetric_samples(pieces, policy):
