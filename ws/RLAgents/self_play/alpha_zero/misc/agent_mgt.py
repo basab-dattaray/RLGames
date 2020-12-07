@@ -51,11 +51,13 @@ def agent_mgt(args, file_path):
                 arguments = fn_init_arg_with_default_val(arguments, 'training_mgr', training_mgr)
                 return arguments
 
-            # arguments = dotdict(args.copy())
             arguments = fn_init_arg_with_default_val(args, 'logger', logging.getLogger(__name__))
             demo_folder, demo_name = AppInfo.fn_get_path_and_app_name(file_path)
             arguments = fn_init_arg_with_default_val(arguments, 'demo_folder', demo_folder)
             arguments = fn_init_arg_with_default_val(arguments, 'demo_name', demo_name)
+
+            arguments = fn_init_arg_with_default_val(arguments, 'mcts_ucb_use_log_in_numerator', True)
+            arguments = fn_init_arg_with_default_val(arguments, 'mcts_ucb_use_action_prob_for_exploration', True)
 
             arguments = fn_init_arg_with_default_val(arguments, 'run_recursive_search', AppInfo.fn_arg_as_bool(arguments, 'run_recursive_search'))
             arguments = fn_init_arg_with_default_val(arguments, 'game_mgr', game_mgt(arguments.board_size))
@@ -76,8 +78,6 @@ def agent_mgt(args, file_path):
             arguments = fn_init_arg_with_default_val(arguments, 'old_model_file_path', os.path.join(src_model_folder, 'old_' + arguments.model_name))
             arguments = _fn_init_training_mgr(arguments)
 
-            arguments = fn_init_arg_with_default_val(arguments, 'mcts_ucb_use_log_in_numerator', True)
-            arguments = fn_init_arg_with_default_val(arguments, 'mcts_ucb_use_action_prob_for_exploration', True)
 
             return arguments
 
