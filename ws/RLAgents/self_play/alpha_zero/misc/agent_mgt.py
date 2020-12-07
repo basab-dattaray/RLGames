@@ -27,19 +27,18 @@ from ws.RLUtils.monitoring.tracing.log_mgt import log_mgt
 from ws.RLUtils.monitoring.tracing.tracer import tracer
 
 
-def fn_init_arg_with_default_val(arguments, name, val):
-    arguments = DotDict(arguments.copy())
-    if name not in arguments.keys():
-        arguments[name] = val
-    return arguments
+
 
 def agent_mgt(args, file_path):
    try:
         def _fn_setup(file_path):
-            def _fn_init_training_mgr(arguments):
+            def _fn_init_arg_with_default_val(arguments, name, val):
                 arguments = DotDict(arguments.copy())
-                neural_net_mgr = neural_net_mgt(arguments)
-                arguments = fn_init_arg_with_default_val(arguments, 'neural_net_mgr', neural_net_mgr)
+                # if name not in arguments.keys():
+                arguments[name] = val
+                return arguments
+
+            def _fn_load_the_model(arguments, neural_net_mgr):
                 if arguments.do_load_model:
                     # nn_args.fn_record('Loading rel_model_path "%state/%state"...', nn_args.load_folder_file)
                     if not neural_net_mgr.fn_load_model():
@@ -47,37 +46,48 @@ def agent_mgt(args, file_path):
                     else:
                         arguments.fn_record('!!! loaded model')
 
+            def _fn_init_training_mgr(arguments):
+                arguments = DotDict(arguments.copy())
+                neural_net_mgr = neural_net_mgt(arguments)
+                arguments = _fn_init_arg_with_default_val(arguments, 'neural_net_mgr', neural_net_mgr)
+                _fn_load_the_model(arguments, neural_net_mgr)
+
                 training_mgr = training_mgt(neural_net_mgr, arguments)
-                arguments = fn_init_arg_with_default_val(arguments, 'training_mgr', training_mgr)
+                arguments = _fn_init_arg_with_default_val(arguments, 'training_mgr', training_mgr)
                 return arguments
 
-            arguments = fn_init_arg_with_default_val(args, 'logger', logging.getLogger(__name__))
-            demo_folder, demo_name = AppInfo.fn_get_path_and_app_name(file_path)
-            arguments = fn_init_arg_with_default_val(arguments, 'demo_folder', demo_folder)
-            arguments = fn_init_arg_with_default_val(arguments, 'demo_name', demo_name)
+            def _fn_set_default_args(args_, _fn_init_arg_with_default_val, _fn_init_training_mgr, file_path):
+                args_ = _fn_init_arg_with_default_val(args_, 'logger', logging.getLogger(__name__))
+                demo_folder, demo_name = AppInfo.fn_get_path_and_app_name(file_path)
+                args_ = _fn_init_arg_with_default_val(args_, 'demo_folder', demo_folder)
+                args_ = _fn_init_arg_with_default_val(args_, 'demo_name', demo_name)
+                args_ = _fn_init_arg_with_default_val(args_, 'mcts_ucb_use_log_in_numerator', True)
+                args_ = _fn_init_arg_with_default_val(args_, 'mcts_ucb_use_action_prob_for_exploration', True)
+                args_ = _fn_init_arg_with_default_val(args_, 'num_of_successes_for_model_upgrade', 1)
+                args_ = _fn_init_arg_with_default_val(args_, 'rel_model_path', 'model/')
+                args_ = _fn_init_arg_with_default_val(args_, 'do_load_model', True)
+                args_ = _fn_init_arg_with_default_val(args_, 'do_load_samples', False)
+                args_ = _fn_init_arg_with_default_val(args_, 'model_name', 'model.tar')
+                args_ = _fn_init_arg_with_default_val(args_, 'temp_model_exchange_filename', '_tmp.tar')
+                current_dir = file_path.rsplit('/', 1)[0]
+                archive_dir = current_dir.replace('/Demos/', '/Archives/')
+                args_ = _fn_init_arg_with_default_val(args_, 'archive_dir', archive_dir)
+                args_ = _fn_init_arg_with_default_val(args_, 'fn_record',
+                                                      log_mgt(log_dir=archive_dir, fixed_log_file=True))
+                args_ = _fn_init_arg_with_default_val(args_, 'calltracer', call_trace_mgt(args_.fn_record))
+                src_model_folder = os.path.join(args_.demo_folder, args_.rel_model_path)
+                args_ = _fn_init_arg_with_default_val(args_, 'calltracer', call_trace_mgt(args_.fn_record))
+                args_ = _fn_init_arg_with_default_val(args_, 'src_model_file_path',
+                                                      os.path.join(src_model_folder, args_.model_name))
+                args_ = _fn_init_arg_with_default_val(args_, 'old_model_file_path',
+                                                      os.path.join(src_model_folder, 'old_' + args_.model_name))
+                args_ = _fn_init_arg_with_default_val(args_, 'run_recursive_search',
+                                                      AppInfo.fn_arg_as_bool(args_, 'run_recursive_search'))
+                args_ = _fn_init_arg_with_default_val(args_, 'game_mgr', game_mgt(args_.board_size))
+                args_ = _fn_init_training_mgr(args_)
+                return args_
 
-            arguments = fn_init_arg_with_default_val(arguments, 'mcts_ucb_use_log_in_numerator', True)
-            arguments = fn_init_arg_with_default_val(arguments, 'mcts_ucb_use_action_prob_for_exploration', True)
-
-            arguments = fn_init_arg_with_default_val(arguments, 'run_recursive_search', AppInfo.fn_arg_as_bool(arguments, 'run_recursive_search'))
-            arguments = fn_init_arg_with_default_val(arguments, 'game_mgr', game_mgt(arguments.board_size))
-            arguments = fn_init_arg_with_default_val(arguments, 'num_of_successes_for_model_upgrade', 1)
-            arguments = fn_init_arg_with_default_val(arguments, 'rel_model_path', 'model/')
-            arguments = fn_init_arg_with_default_val(arguments, 'do_load_model', True)
-            arguments = fn_init_arg_with_default_val(arguments, 'do_load_samples', False)
-            arguments = fn_init_arg_with_default_val(arguments, 'model_name', 'model.tar')
-            arguments = fn_init_arg_with_default_val(arguments, 'temp_model_exchange_filename', '_tmp.tar')
-            current_dir = file_path.rsplit('/', 1)[0]
-            archive_dir = current_dir.replace('/Demos/', '/Archives/')
-            arguments = fn_init_arg_with_default_val(arguments, 'archive_dir', archive_dir)
-            arguments = fn_init_arg_with_default_val(arguments, 'fn_record', log_mgt(log_dir=archive_dir, fixed_log_file=True))
-            arguments = fn_init_arg_with_default_val(arguments, 'calltracer', call_trace_mgt(arguments.fn_record))
-            src_model_folder = os.path.join(arguments.demo_folder, arguments.rel_model_path)
-            arguments = fn_init_arg_with_default_val(arguments, 'calltracer', call_trace_mgt(arguments.fn_record))
-            arguments = fn_init_arg_with_default_val(arguments, 'src_model_file_path', os.path.join(src_model_folder, arguments.model_name))
-            arguments = fn_init_arg_with_default_val(arguments, 'old_model_file_path', os.path.join(src_model_folder, 'old_' + arguments.model_name))
-            arguments = _fn_init_training_mgr(arguments)
-
+            arguments = _fn_set_default_args(args, _fn_init_arg_with_default_val, _fn_init_training_mgr, file_path)
 
             return arguments
 
@@ -96,7 +106,6 @@ def agent_mgt(args, file_path):
             exit()
 
         @tracer(args)
-
         def fn_train():
             signal.signal(signal.SIGINT, exit_gracefully)
 
@@ -141,10 +150,10 @@ def agent_mgt(args, file_path):
         def fn_change_args(change_args):
             if change_args is not None:
                 for k,v in change_args.items():
-                    change_args[k] = v
+                    args[k] = v
                     # nn_args.fn_record(f'  nn_args[{k}] = {v}')
-                    args.calltracer.fn_write(f'  args[{k}] = {v}')
-
+                    args.calltracer.fn_write(f'  args_[{k}] = {v}')
+            agent_mgr.args = args
             return agent_mgr
 
         @tracer(args)
@@ -152,7 +161,7 @@ def agent_mgt(args, file_path):
 
             for k,v in args.items():
                 # nn_args.fn_record(f'  nn_args[{k}] = {v}')
-                args.calltracer.fn_write(f'  args[{k}] = {v}')
+                args.calltracer.fn_write(f'  args_[{k}] = {v}')
 
             return agent_mgr
 
@@ -193,7 +202,7 @@ def agent_mgt(args, file_path):
             copy(args.src_model_file_path, args.old_model_file_path)
 
         agent_mgr = namedtuple('_', ['fn_train','fn_test_against_human' ,'fn_test_againt_random' ,'fn_test_against_greedy' ,'fn_change_args' ,'fn_show_args' ,'fn_measure_time_elapsed' ,'fn_archive_log_file',
-                                     'args'])
+                                     'args_'])
 
         agent_mgr.fn_train = fn_train
         agent_mgr.fn_test_against_human = fn_test_against_human
