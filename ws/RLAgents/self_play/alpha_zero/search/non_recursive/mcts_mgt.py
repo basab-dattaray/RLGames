@@ -14,9 +14,6 @@ from ..policy_mgt import policy_mgt
 from ws.RLAgents.self_play.alpha_zero.search.non_recursive.cache2_mgt import cache2_mgt
 
 USE_SMART_PREDICTOR_FOR_ROLLOUT = False
-# LONG_ROLLOUT = True
-# CACHE_RESULTS = False
-# EPS = 1e-8
 
 def mcts_mgt(
         game_mgr,
@@ -26,7 +23,6 @@ def mcts_mgt(
         explore_exploit_ratio,
         max_num_actions
 ):
-
     cache_mgr = cache_mgt()
     fn_get_prediction_info, fn_get_valid_moves = cache2_mgt(game_mgr, cache_mgr, neural_net_mgr)
 
@@ -34,7 +30,8 @@ def mcts_mgt(
         fn_get_valid_moves,
         fn_get_prediction_info,
         game_mgr.fn_get_next_state,
-        explore_exploit_ratio
+        explore_exploit_ratio,
+        first_run__mutable= True
     )
 
     fn_get_action_given_state = action_mgt(USE_SMART_PREDICTOR_FOR_ROLLOUT, fn_get_valid_moves, fn_get_prediction_info)
@@ -70,8 +67,8 @@ def mcts_mgt(
     def fn_execute_search(state):
         nonlocal  root_node
 
-        def fn_rollout(state):
-            result = playground.fn_play_one_game(state, verbose=False)
+        def fn_rollout(node):
+            result = playground.fn_play_one_game(node.state, verbose=False)
             return result
 
         if root_node is None:
@@ -79,7 +76,7 @@ def mcts_mgt(
                 state,
                 parent_node = None,
                 player = 1,
-                id = ''
+                id = '0',
             )
 
         selected_node = root_node.fn_select_from_available_leaf_nodes()
@@ -90,8 +87,8 @@ def mcts_mgt(
                 return None
             pass
 
-        score = selected_node.fn_rollout(state)
-        tree_depth = fn_back_propagate(score)
+        score = fn_rollout(selected_node)
+        tree_depth = selected_node.fn_back_propagate(score)
         pass
 
     mcts_mgr = namedtuple('_', ['fn_get_policy'])
