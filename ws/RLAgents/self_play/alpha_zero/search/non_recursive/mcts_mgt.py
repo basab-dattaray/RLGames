@@ -16,6 +16,7 @@ from ws.RLAgents.self_play.alpha_zero.search.non_recursive.cache2_mgt import cac
 USE_SMART_PREDICTOR_FOR_ROLLOUT = False
 
 def mcts_mgt(
+        args,
         game_mgr,
         neural_net_mgr,
         playground_mgt,

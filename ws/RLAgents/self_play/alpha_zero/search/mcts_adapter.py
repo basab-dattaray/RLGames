@@ -13,6 +13,7 @@ def mcts_adapter(neural_net_mgr, args):
         monte_carlo_tree_search = mcts_r_mgr
 
     mcts = monte_carlo_tree_search(
+        args,
         game_mgr,
         neural_net_mgr,
         playground_mgt,

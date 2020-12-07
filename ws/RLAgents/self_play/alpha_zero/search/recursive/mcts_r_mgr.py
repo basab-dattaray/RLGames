@@ -8,6 +8,7 @@ from ws.RLAgents.self_play.alpha_zero.search.recursive.search_helper import sear
 
 
 def mcts_r_mgr(
+    args,
     game_mgr,
     neural_net_mgr,
     playground_mgt,
@@ -24,6 +25,7 @@ def mcts_r_mgr(
     cache_mgr = cache_mgt()
 
     search_help = search_helper(
+        args,
         cache_mgr.state_action_qval,
         cache_mgr.state_policy,
         state_visits

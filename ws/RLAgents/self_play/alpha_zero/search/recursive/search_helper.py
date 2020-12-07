@@ -21,11 +21,14 @@ def create_normalized_predictor(fn_predict_policies, fn_get_valid_actions):
     return fn_get_prediction_info_3
 
 def search_helper(
+        args,
         state_action_qval,
         state_policy,
         state_visits
 ):
     EPS = 1e-8
+
+
     def fn_update_state_during_backprop(state_key, action, state_val):
         state_action_key = (state_key, action)
         if state_action_qval.fn_does_key_exist(state_action_key):  # UPDATE EXISTING
@@ -49,21 +52,32 @@ def search_helper(
 
         best_ucb = -float('inf')
         best_act = -1
+
+        action_prob_for_exploration = 1
+
         # pick the action with the highest upper confidence bound
         for action in range(max_num_actions):
+
             if valid_moves[action]:
                 policy = state_policy.fn_get_data(state_key)
                 state_action_key = (state_key, action)
 
+                if args.mcts_ucb_use_action_prob_for_exploration:
+                    action_prob_for_exploration = policy[action]
+
                 if state_action_qval.fn_does_key_exist(state_action_key):
-                    # qval = cache_mgr.state_action_qval.fn_get_data(key)  # Qsa[(state_key, action)]
+                    parent_visit_factor = state_visits.fn_get_state_visits(state_key)
+                    if args.mcts_ucb_use_log_in_numerator:
+                        parent_visit_factor = np.log(parent_visit_factor)
+
                     ucb = state_action_qval.fn_get_data(state_action_key) \
-                          + explore_exploit_ratio * policy[action] * math.sqrt(
-                        np.log(state_visits.fn_get_state_visits(state_key)) /
-                              state_visits.fn_get_child_state_visits(state_action_key))
+                          + explore_exploit_ratio * action_prob_for_exploration * math.sqrt\
+                                (
+                                    parent_visit_factor / state_visits.fn_get_child_state_visits(state_action_key)
+                                )
 
                 else:
-                    ucb = explore_exploit_ratio * policy[action] * math.sqrt(
+                    ucb = explore_exploit_ratio * action_prob_for_exploration * math.sqrt(
                         state_visits.fn_get_state_visits(state_key) + EPS)  # Q = 0 ?
                     # u = 0
                 if ucb > best_ucb:

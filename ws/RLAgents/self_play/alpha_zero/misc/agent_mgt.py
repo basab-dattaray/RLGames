@@ -61,7 +61,7 @@ def agent_mgt(args, file_path):
             arguments = fn_init_arg_with_default_val(arguments, 'game_mgr', game_mgt(arguments.board_size))
             arguments = fn_init_arg_with_default_val(arguments, 'num_of_successes_for_model_upgrade', 1)
             arguments = fn_init_arg_with_default_val(arguments, 'rel_model_path', 'model/')
-            arguments = fn_init_arg_with_default_val(arguments, 'do_load_model', False)
+            arguments = fn_init_arg_with_default_val(arguments, 'do_load_model', True)
             arguments = fn_init_arg_with_default_val(arguments, 'do_load_samples', False)
             arguments = fn_init_arg_with_default_val(arguments, 'model_name', 'model.tar')
             arguments = fn_init_arg_with_default_val(arguments, 'temp_model_exchange_filename', '_tmp.tar')
@@ -75,6 +75,9 @@ def agent_mgt(args, file_path):
             arguments = fn_init_arg_with_default_val(arguments, 'src_model_file_path', os.path.join(src_model_folder, arguments.model_name))
             arguments = fn_init_arg_with_default_val(arguments, 'old_model_file_path', os.path.join(src_model_folder, 'old_' + arguments.model_name))
             arguments = _fn_init_training_mgr(arguments)
+
+            arguments = fn_init_arg_with_default_val(arguments, 'mcts_ucb_use_log_in_numerator', True)
+            arguments = fn_init_arg_with_default_val(arguments, 'mcts_ucb_use_action_prob_for_exploration', True)
 
             return arguments
 
