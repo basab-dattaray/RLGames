@@ -14,6 +14,14 @@ from ws.RLUtils.monitoring.tracing.tracer import tracer
 def training_mgt(nn_mgr_N, args):
     nn_mgr_P = copy.deepcopy(nn_mgr_N)
 
+    def _fn_try_to_load_model():
+        if args.do_load_model:
+            if not args.neural_net_mgr.fn_load_model():
+                args.fn_record('*** unable to load model')
+            else:
+                args.fn_record('!!! loaded model')
+
+
     @tracer(args)
     def fn_execute_training_iterations():
         game_mgr = args.game_mgr
@@ -79,6 +87,7 @@ def training_mgt(nn_mgr_N, args):
 
             _fn_interpret_competition_results(iteration, nwins, pwins)
 
+        _fn_try_to_load_model()
         for iteration in range(1, args.num_of_training_iterations + 1):
             fn_run_iteration(iteration)
             if update_count >= args.num_of_successes_for_model_upgrade:

@@ -30,33 +30,27 @@ from ws.RLUtils.monitoring.tracing.tracer import tracer
 
 
 def agent_mgt(args, file_path):
+
    try:
+
+
         def _fn_setup(file_path):
             def _fn_init_arg_with_default_val(arguments, name, val):
                 arguments = DotDict(arguments.copy())
-                # if name not in arguments.keys():
+                # if name not in args_.keys():
                 arguments[name] = val
                 return arguments
 
-            def _fn_load_the_model(arguments, neural_net_mgr):
-                if arguments.do_load_model:
-                    # nn_args.fn_record('Loading rel_model_path "%state/%state"...', nn_args.load_folder_file)
-                    if not neural_net_mgr.fn_load_model():
-                        arguments.fn_record('*** unable to load model')
-                    else:
-                        arguments.fn_record('!!! loaded model')
+            def _fn_init_training_mgr(args_):
+                args_ = DotDict(args_.copy())
+                args_.neural_net_mgr = neural_net_mgt(args_)
+                args_ = _fn_init_arg_with_default_val(args_, 'neural_net_mgr', args_.neural_net_mgr)
 
-            def _fn_init_training_mgr(arguments):
-                arguments = DotDict(arguments.copy())
-                neural_net_mgr = neural_net_mgt(arguments)
-                arguments = _fn_init_arg_with_default_val(arguments, 'neural_net_mgr', neural_net_mgr)
-                _fn_load_the_model(arguments, neural_net_mgr)
+                training_mgr = training_mgt(args_.neural_net_mgr, args_)
+                args_ = _fn_init_arg_with_default_val(args_, 'training_mgr', training_mgr)
+                return args_
 
-                training_mgr = training_mgt(neural_net_mgr, arguments)
-                arguments = _fn_init_arg_with_default_val(arguments, 'training_mgr', training_mgr)
-                return arguments
-
-            def _fn_set_default_args(args_, _fn_init_arg_with_default_val, _fn_init_training_mgr, file_path):
+            def _fn_set_default_args(args_, file_path):
                 args_ = _fn_init_arg_with_default_val(args_, 'logger', logging.getLogger(__name__))
                 demo_folder, demo_name = AppInfo.fn_get_path_and_app_name(file_path)
                 args_ = _fn_init_arg_with_default_val(args_, 'demo_folder', demo_folder)
@@ -87,7 +81,7 @@ def agent_mgt(args, file_path):
                 args_ = _fn_init_training_mgr(args_)
                 return args_
 
-            arguments = _fn_set_default_args(args, _fn_init_arg_with_default_val, _fn_init_training_mgr, file_path)
+            arguments = _fn_set_default_args(args, file_path)
 
             return arguments
 
