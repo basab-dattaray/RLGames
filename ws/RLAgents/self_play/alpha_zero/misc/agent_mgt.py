@@ -37,6 +37,7 @@ def agent_mgt(args, file_path):
    try:
         def _fn_setup(file_path):
             def _fn_init_training_mgr(args_):
+                args_ = fn_init_arg_with_default_val(args_, 'run_recursive_search', True)
                 args_ = fn_init_arg_with_default_val(args_, 'game_mgr', game_mgt(args_.board_size))
                 args_.neural_net_mgr = neural_net_mgt(args_)
                 args_ = fn_init_arg_with_default_val(args_, 'neural_net_mgr', args_.neural_net_mgr)
@@ -49,17 +50,18 @@ def agent_mgt(args, file_path):
                 args_copy = fn_init_arg_with_default_val(args, 'logger', logging.getLogger(__name__))
                 demo_folder, demo_name = AppInfo.fn_get_path_and_app_name(file_path)
                 args_copy = _fn_general_args_init(args_copy, demo_folder, demo_name, file_path)
+                args_copy = _fn_init_training_mgr(args_copy)
                 args_copy = _fn_training_args_setup(args_copy)
                 return args_copy
 
             def _fn_training_args_setup(args_copy):
-                args_copy = fn_init_arg_with_default_val(args_copy, 'run_recursive_search', True)
+
                 args_copy = fn_init_arg_with_default_val(args_copy, 'mcts_ucb_use_log_in_numerator', True)
                 args_copy = fn_init_arg_with_default_val(args_copy, 'mcts_ucb_use_action_prob_for_exploration', True)
                 args_copy = fn_init_arg_with_default_val(args_copy, 'num_of_successes_for_model_upgrade', 1)
                 args_copy = fn_init_arg_with_default_val(args_copy, 'do_load_model', True)
                 args_copy = fn_init_arg_with_default_val(args_copy, 'do_load_samples', False)
-                args_copy = _fn_init_training_mgr(args_copy)
+
                 return args_copy
 
             def _fn_general_args_init(args_copy, demo_folder, demo_name, file_path):
