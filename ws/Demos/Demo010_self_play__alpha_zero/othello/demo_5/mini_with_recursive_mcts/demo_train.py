@@ -11,11 +11,13 @@ if __name__ == "__main__":
     try:
 
         agent_mgt(args, __file__). \
-            fn_train().\
             fn_change_args({
+                'do_load_model': False,
                 'num_of_mc_simulations': 50,
+                'epochs': 5,
             }). \
             fn_show_args(). \
+            fn_train(). \
             fn_test_against_greedy(). \
             fn_test_against_random(). \
             fn_measure_time_elapsed(). \

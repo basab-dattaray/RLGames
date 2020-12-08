@@ -71,26 +71,11 @@ def agent_mgt(args, file_path):
                 args_ = fn_init_arg_with_default_val(args_, 'game_mgr', game_mgt(args_.board_size))
                 return args_
 
-            # def _fn_setup_training_mgr(args_):
-            #     args_ = fn_init_arg_with_default_val(args_, 'num_of_successes_for_model_upgrade', 1)
-            #     args_ = fn_init_arg_with_default_val(args_, 'run_recursive_search', True)
-            #
-            #     args_ = fn_init_arg_with_default_val(args_, 'mcts_ucb_use_log_in_numerator', True)
-            #     args_ = fn_init_arg_with_default_val(args_, 'mcts_ucb_use_action_prob_for_exploration', True)
-            #     args_ = fn_init_arg_with_default_val(args_, 'do_load_model', True)
-            #     args_ = fn_init_arg_with_default_val(args_, 'do_load_samples', False)
-            #
-            #     args_.neural_net_mgr = neural_net_mgt(args_)
-            #     args_ = fn_init_arg_with_default_val(args_, 'neural_net_mgr', args_.neural_net_mgr)
-            #
-            #     args_ = fn_init_arg_with_default_val(args_, 'training_mgr', training_mgt(args_.neural_net_mgr, args_))
-            #     return args_
-
             def _fn_set_default_args(args, file_path):
                 args_copy = fn_init_arg_with_default_val(args, 'logger', logging.getLogger(__name__))
                 demo_folder, demo_name = AppInfo.fn_get_path_and_app_name(file_path)
                 args_copy = _fn_general_args_init(args_copy, demo_folder, demo_name, file_path)
-                args_copy = _fn_setup_training_mgr(args_copy)
+                # args_copy = _fn_setup_training_mgr(args_copy)
                 return args_copy
 
             arguments = _fn_set_default_args(args, file_path)
@@ -112,7 +97,11 @@ def agent_mgt(args, file_path):
 
         @tracer(args)
         def fn_train():
+            nonlocal args
+
             signal.signal(signal.SIGINT, exit_gracefully)
+
+            args = _fn_setup_training_mgr(args)
 
             args.training_mgr.fn_execute_training_iterations()
 
