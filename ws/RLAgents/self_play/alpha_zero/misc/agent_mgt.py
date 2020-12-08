@@ -36,51 +36,49 @@ def agent_mgt(args, file_path):
 
    try:
         def _fn_setup(file_path):
-            def _fn_init_training_mgr(args_):
-
-                args_ = fn_init_arg_with_default_val(args_, 'game_mgr', game_mgt(args_.board_size))
-                args_.neural_net_mgr = neural_net_mgt(args_)
-                args_ = fn_init_arg_with_default_val(args_, 'neural_net_mgr', args_.neural_net_mgr)
-
+            def _fn_setup_training_mgr(args_):
                 args_ = fn_init_arg_with_default_val(args_, 'num_of_successes_for_model_upgrade', 1)
                 args_ = fn_init_arg_with_default_val(args_, 'run_recursive_search', True)
-                training_mgr = training_mgt(args_.neural_net_mgr, args_)
-                args_ = fn_init_arg_with_default_val(args_, 'training_mgr', training_mgr)
+
                 args_ = fn_init_arg_with_default_val(args_, 'mcts_ucb_use_log_in_numerator', True)
                 args_ = fn_init_arg_with_default_val(args_, 'mcts_ucb_use_action_prob_for_exploration', True)
-                # args_copy = fn_init_arg_with_default_val(args_copy, 'num_of_successes_for_model_upgrade', 1)
                 args_ = fn_init_arg_with_default_val(args_, 'do_load_model', True)
                 args_ = fn_init_arg_with_default_val(args_, 'do_load_samples', False)
+
+                args_ = fn_init_arg_with_default_val(args_, 'training_mgr', training_mgt(args_.neural_net_mgr, args_))
                 return args_
 
             def _fn_set_default_args(args, file_path):
                 args_copy = fn_init_arg_with_default_val(args, 'logger', logging.getLogger(__name__))
                 demo_folder, demo_name = AppInfo.fn_get_path_and_app_name(file_path)
                 args_copy = _fn_general_args_init(args_copy, demo_folder, demo_name, file_path)
-                args_copy = _fn_init_training_mgr(args_copy)
+                args_copy = _fn_setup_training_mgr(args_copy)
+                # training_mgr = training_mgt(args_copy.neural_net_mgr, args_copy)
                 return args_copy
 
-
-
-            def _fn_general_args_init(args_copy, demo_folder, demo_name, file_path):
-                args_copy = fn_init_arg_with_default_val(args_copy, 'demo_folder', demo_folder)
-                args_copy = fn_init_arg_with_default_val(args_copy, 'demo_name', demo_name)
-                args_copy = fn_init_arg_with_default_val(args_copy, 'model_name', 'model.tar')
-                args_copy = fn_init_arg_with_default_val(args_copy, 'rel_model_path', 'model/')
-                args_copy = fn_init_arg_with_default_val(args_copy, 'temp_model_exchange_filename', '_tmp.tar')
+            def _fn_general_args_init(args_, demo_folder, demo_name, file_path):
+                args_ = fn_init_arg_with_default_val(args_, 'demo_folder', demo_folder)
+                args_ = fn_init_arg_with_default_val(args_, 'demo_name', demo_name)
+                args_ = fn_init_arg_with_default_val(args_, 'model_name', 'model.tar')
+                args_ = fn_init_arg_with_default_val(args_, 'rel_model_path', 'model/')
+                args_ = fn_init_arg_with_default_val(args_, 'temp_model_exchange_filename', '_tmp.tar')
                 current_dir = file_path.rsplit('/', 1)[0]
                 archive_dir = current_dir.replace('/Demos/', '/Archives/')
-                args_copy = fn_init_arg_with_default_val(args_copy, 'archive_dir', archive_dir)
-                args_copy = fn_init_arg_with_default_val(args_copy, 'fn_record',
-                                                         log_mgt(log_dir=archive_dir, fixed_log_file=True))
-                args_copy = fn_init_arg_with_default_val(args_copy, 'calltracer', call_trace_mgt(args_copy.fn_record))
-                src_model_folder = os.path.join(args_copy.demo_folder, args_copy.rel_model_path)
-                args_copy = fn_init_arg_with_default_val(args_copy, 'src_model_file_path',
-                                                         os.path.join(src_model_folder, args_copy.model_name))
-                args_copy = fn_init_arg_with_default_val(args_copy, 'old_model_file_path',
-                                                         os.path.join(src_model_folder, 'old_' + args_copy.model_name))
-                args_copy = fn_init_arg_with_default_val(args_copy, 'rel_model_path', 'model/')
-                return args_copy
+                args_ = fn_init_arg_with_default_val(args_, 'archive_dir', archive_dir)
+                args_ = fn_init_arg_with_default_val(args_, 'fn_record',
+                                                     log_mgt(log_dir=archive_dir, fixed_log_file=True))
+                args_ = fn_init_arg_with_default_val(args_, 'calltracer', call_trace_mgt(args_.fn_record))
+                src_model_folder = os.path.join(args_.demo_folder, args_.rel_model_path)
+                args_ = fn_init_arg_with_default_val(args_, 'src_model_file_path',
+                                                     os.path.join(src_model_folder, args_.model_name))
+                args_ = fn_init_arg_with_default_val(args_, 'old_model_file_path',
+                                                     os.path.join(src_model_folder, 'old_' + args_.model_name))
+                args_ = fn_init_arg_with_default_val(args_, 'rel_model_path', 'model/')
+
+                args_ = fn_init_arg_with_default_val(args_, 'game_mgr', game_mgt(args_.board_size))
+                args_.neural_net_mgr = neural_net_mgt(args_)
+                args_ = fn_init_arg_with_default_val(args_, 'neural_net_mgr', args_.neural_net_mgr)
+                return args_
 
             arguments = _fn_set_default_args(args, file_path)
 
