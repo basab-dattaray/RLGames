@@ -102,7 +102,6 @@ def agent_mgt(args, file_path):
             signal.signal(signal.SIGINT, exit_gracefully)
 
             args = _fn_setup_training_mgr(args)
-
             args.training_mgr.fn_execute_training_iterations()
 
             return agent_mgr
@@ -110,22 +109,24 @@ def agent_mgt(args, file_path):
         @tracer(args)
         def fn_test_against_human():
             fn_human_player_policy = lambda g: HumanPlayer(g).fn_get_action
-            fn_test(fn_human_player_policy, verbose=True, num_of_test_games=2)
+            fn_test(args, fn_human_player_policy, verbose=True, num_of_test_games=2)
             return agent_mgr
 
         @tracer(args)
         def fn_test_against_random():
             fn_random_player_policy = lambda g: RandomPlayer(g).fn_get_action
-            fn_test(fn_random_player_policy, num_of_test_games=args.num_of_test_games)
+            fn_test(args, fn_random_player_policy, num_of_test_games=args.num_of_test_games)
             return agent_mgr
 
         @tracer(args)
         def fn_test_against_greedy():
             fn_random_player_policy = lambda g: GreedyPlayer(g).fn_get_action
-            fn_test(fn_random_player_policy, num_of_test_games=args.num_of_test_games)
+            fn_test(args, fn_random_player_policy, num_of_test_games=args.num_of_test_games)
             return agent_mgr
 
-        def fn_test(fn_player_policy, verbose=False, num_of_test_games=2):
+        def fn_test(args, fn_player_policy, verbose=False, num_of_test_games=2):
+            args = _fn_setup_training_mgr(args)
+
             signal.signal(signal.SIGINT, exit_gracefully)
             system_nn = neural_net_mgt(args)
             if not system_nn.fn_load_model():
