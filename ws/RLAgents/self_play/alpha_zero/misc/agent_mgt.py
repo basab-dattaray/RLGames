@@ -53,7 +53,7 @@ def agent_mgt(args, file_path):
                 args_copy = fn_init_arg_with_default_val(args, 'logger', logging.getLogger(__name__))
                 demo_folder, demo_name = AppInfo.fn_get_path_and_app_name(file_path)
                 args_copy = _fn_general_args_init(args_copy, demo_folder, demo_name, file_path)
-                args_copy = _fn_setup_training_mgr(args_copy)
+
 
                 return args_copy
 
@@ -86,6 +86,7 @@ def agent_mgt(args, file_path):
             return arguments
 
         args = _fn_setup(file_path)
+        args = _fn_setup_training_mgr(args)
 
         def exit_gracefully(signum, frame):
             #
