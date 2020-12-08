@@ -37,6 +37,7 @@ def agent_mgt(args, file_path):
    try:
         def _fn_setup(file_path):
             def _fn_init_training_mgr(args_):
+                args_ = fn_init_arg_with_default_val(args_, 'num_of_successes_for_model_upgrade', 1)
                 args_ = fn_init_arg_with_default_val(args_, 'run_recursive_search', True)
                 args_ = fn_init_arg_with_default_val(args_, 'game_mgr', game_mgt(args_.board_size))
                 args_.neural_net_mgr = neural_net_mgt(args_)
@@ -44,6 +45,11 @@ def agent_mgt(args, file_path):
 
                 training_mgr = training_mgt(args_.neural_net_mgr, args_)
                 args_ = fn_init_arg_with_default_val(args_, 'training_mgr', training_mgr)
+                args_ = fn_init_arg_with_default_val(args_, 'mcts_ucb_use_log_in_numerator', True)
+                args_ = fn_init_arg_with_default_val(args_, 'mcts_ucb_use_action_prob_for_exploration', True)
+                # args_copy = fn_init_arg_with_default_val(args_copy, 'num_of_successes_for_model_upgrade', 1)
+                args_ = fn_init_arg_with_default_val(args_, 'do_load_model', True)
+                args_ = fn_init_arg_with_default_val(args_, 'do_load_samples', False)
                 return args_
 
             def _fn_set_default_args(args, file_path):
@@ -55,12 +61,11 @@ def agent_mgt(args, file_path):
                 return args_copy
 
             def _fn_training_args_setup(args_copy):
-
-                args_copy = fn_init_arg_with_default_val(args_copy, 'mcts_ucb_use_log_in_numerator', True)
-                args_copy = fn_init_arg_with_default_val(args_copy, 'mcts_ucb_use_action_prob_for_exploration', True)
-                args_copy = fn_init_arg_with_default_val(args_copy, 'num_of_successes_for_model_upgrade', 1)
-                args_copy = fn_init_arg_with_default_val(args_copy, 'do_load_model', True)
-                args_copy = fn_init_arg_with_default_val(args_copy, 'do_load_samples', False)
+                # args_copy = fn_init_arg_with_default_val(args_copy, 'mcts_ucb_use_log_in_numerator', True)
+                # args_copy = fn_init_arg_with_default_val(args_copy, 'mcts_ucb_use_action_prob_for_exploration', True)
+                # # args_copy = fn_init_arg_with_default_val(args_copy, 'num_of_successes_for_model_upgrade', 1)
+                # args_copy = fn_init_arg_with_default_val(args_copy, 'do_load_model', True)
+                # args_copy = fn_init_arg_with_default_val(args_copy, 'do_load_samples', False)
 
                 return args_copy
 
