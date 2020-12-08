@@ -4,24 +4,22 @@ import os
 import signal
 import sys
 from collections import namedtuple
-
+from datetime import datetime as dt
 from shutil import copy, move
 from time import time
-from datetime import datetime as dt
 
 import numpy
 
-from ws.RLUtils.common.DotDict import DotDict
-from ws.RLAgents.self_play.alpha_zero.play.playground_mgt import playground_mgt
+from ws.RLAgents.self_play.alpha_zero.misc.neural_net_mgt import neural_net_mgt
 from ws.RLAgents.self_play.alpha_zero.play.GreedyPlayer import GreedyPlayer
 from ws.RLAgents.self_play.alpha_zero.play.HumanPlayer import HumanPlayer
 from ws.RLAgents.self_play.alpha_zero.play.RandomPlayer import RandomPlayer
+from ws.RLAgents.self_play.alpha_zero.play.playground_mgt import playground_mgt
 from ws.RLAgents.self_play.alpha_zero.search.mcts_adapter import mcts_adapter
-
 from ws.RLAgents.self_play.alpha_zero.train.training_mgt import training_mgt
 from ws.RLEnvironments.self_play_games.othello.game_mgt import game_mgt
-from ws.RLAgents.self_play.alpha_zero.misc.neural_net_mgt import neural_net_mgt
 from ws.RLUtils.common.AppInfo import AppInfo
+from ws.RLUtils.common.DotDict import DotDict
 from ws.RLUtils.monitoring.tracing.call_trace_mgt import call_trace_mgt
 from ws.RLUtils.monitoring.tracing.log_mgt import log_mgt
 from ws.RLUtils.monitoring.tracing.tracer import tracer
@@ -33,14 +31,24 @@ def fn_init_arg_with_default_val(arguments, name, val):
     return arguments
 
 
-
-
 def agent_mgt(args, file_path):
+    try:
+        def _fn_setup_training_mgr(args_):
+            args_ = fn_init_arg_with_default_val(args_, 'num_of_successes_for_model_upgrade', 1)
+            args_ = fn_init_arg_with_default_val(args_, 'run_recursive_search', True)
 
-   try:
+            args_ = fn_init_arg_with_default_val(args_, 'mcts_ucb_use_log_in_numerator', True)
+            args_ = fn_init_arg_with_default_val(args_, 'mcts_ucb_use_action_prob_for_exploration', True)
+            args_ = fn_init_arg_with_default_val(args_, 'do_load_model', True)
+            args_ = fn_init_arg_with_default_val(args_, 'do_load_samples', False)
+
+            args_.neural_net_mgr = neural_net_mgt(args_)
+            args_ = fn_init_arg_with_default_val(args_, 'neural_net_mgr', args_.neural_net_mgr)
+
+            args_ = fn_init_arg_with_default_val(args_, 'training_mgr', training_mgt(args_.neural_net_mgr, args_))
+            return args_
+
         def _fn_setup(file_path):
-
-
             def _fn_general_args_init(args_, demo_folder, demo_name, file_path):
                 args_ = fn_init_arg_with_default_val(args_, 'demo_folder', demo_folder)
                 args_ = fn_init_arg_with_default_val(args_, 'demo_name', demo_name)
@@ -61,24 +69,22 @@ def agent_mgt(args, file_path):
                 args_ = fn_init_arg_with_default_val(args_, 'rel_model_path', 'model/')
 
                 args_ = fn_init_arg_with_default_val(args_, 'game_mgr', game_mgt(args_.board_size))
-                # args_.neural_net_mgr = neural_net_mgt(args_)
-                # args_ = fn_init_arg_with_default_val(args_, 'neural_net_mgr', args_.neural_net_mgr)
                 return args_
 
-            def _fn_setup_training_mgr(args_):
-                args_ = fn_init_arg_with_default_val(args_, 'num_of_successes_for_model_upgrade', 1)
-                args_ = fn_init_arg_with_default_val(args_, 'run_recursive_search', True)
-
-                args_ = fn_init_arg_with_default_val(args_, 'mcts_ucb_use_log_in_numerator', True)
-                args_ = fn_init_arg_with_default_val(args_, 'mcts_ucb_use_action_prob_for_exploration', True)
-                args_ = fn_init_arg_with_default_val(args_, 'do_load_model', True)
-                args_ = fn_init_arg_with_default_val(args_, 'do_load_samples', False)
-
-                args_.neural_net_mgr = neural_net_mgt(args_)
-                args_ = fn_init_arg_with_default_val(args_, 'neural_net_mgr', args_.neural_net_mgr)
-
-                args_ = fn_init_arg_with_default_val(args_, 'training_mgr', training_mgt(args_.neural_net_mgr, args_))
-                return args_
+            # def _fn_setup_training_mgr(args_):
+            #     args_ = fn_init_arg_with_default_val(args_, 'num_of_successes_for_model_upgrade', 1)
+            #     args_ = fn_init_arg_with_default_val(args_, 'run_recursive_search', True)
+            #
+            #     args_ = fn_init_arg_with_default_val(args_, 'mcts_ucb_use_log_in_numerator', True)
+            #     args_ = fn_init_arg_with_default_val(args_, 'mcts_ucb_use_action_prob_for_exploration', True)
+            #     args_ = fn_init_arg_with_default_val(args_, 'do_load_model', True)
+            #     args_ = fn_init_arg_with_default_val(args_, 'do_load_samples', False)
+            #
+            #     args_.neural_net_mgr = neural_net_mgt(args_)
+            #     args_ = fn_init_arg_with_default_val(args_, 'neural_net_mgr', args_.neural_net_mgr)
+            #
+            #     args_ = fn_init_arg_with_default_val(args_, 'training_mgr', training_mgt(args_.neural_net_mgr, args_))
+            #     return args_
 
             def _fn_set_default_args(args, file_path):
                 args_copy = fn_init_arg_with_default_val(args, 'logger', logging.getLogger(__name__))
@@ -91,7 +97,6 @@ def agent_mgt(args, file_path):
             return arguments
 
         args = _fn_setup(file_path)
-
 
         def exit_gracefully(signum, frame):
             #
@@ -116,22 +121,22 @@ def agent_mgt(args, file_path):
         @tracer(args)
         def fn_test_against_human():
             fn_human_player_policy = lambda g: HumanPlayer(g).fn_get_action
-            fn_test(fn_human_player_policy, verbose= True, num_of_test_games= 2)
+            fn_test(fn_human_player_policy, verbose=True, num_of_test_games=2)
             return agent_mgr
 
         @tracer(args)
         def fn_test_against_random():
             fn_random_player_policy = lambda g: RandomPlayer(g).fn_get_action
-            fn_test(fn_random_player_policy, num_of_test_games= args.num_of_test_games)
+            fn_test(fn_random_player_policy, num_of_test_games=args.num_of_test_games)
             return agent_mgr
 
         @tracer(args)
         def fn_test_against_greedy():
             fn_random_player_policy = lambda g: GreedyPlayer(g).fn_get_action
-            fn_test(fn_random_player_policy, num_of_test_games= args.num_of_test_games)
+            fn_test(fn_random_player_policy, num_of_test_games=args.num_of_test_games)
             return agent_mgr
 
-        def fn_test(fn_player_policy, verbose= False, num_of_test_games= 2):
+        def fn_test(fn_player_policy, verbose=False, num_of_test_games=2):
             signal.signal(signal.SIGINT, exit_gracefully)
             system_nn = neural_net_mgt(args)
             if not system_nn.fn_load_model():
@@ -140,8 +145,9 @@ def agent_mgt(args, file_path):
             system_mcts = mcts_adapter(system_nn, args)
             fn_system_policy = lambda state: numpy.argmax(system_mcts.fn_get_policy(state, do_random_selection=False))
             fn_contender_policy = fn_player_policy(args.game_mgr)
-            playground = playground_mgt(fn_system_policy, fn_contender_policy, args.game_mgr, fn_display=game_mgt(args['board_size']).fn_display,
-                          msg_recorder=args.calltracer.fn_write)
+            playground = playground_mgt(fn_system_policy, fn_contender_policy, args.game_mgr,
+                                        fn_display=game_mgt(args['board_size']).fn_display,
+                                        msg_recorder=args.calltracer.fn_write)
             system_wins, system_losses, draws = playground.fn_play_games(num_of_test_games, verbose=verbose)
 
             args.calltracer.fn_write(f'wins:{system_wins} losses:{system_losses} draws:{draws}')
@@ -149,7 +155,7 @@ def agent_mgt(args, file_path):
         @tracer(args)
         def fn_change_args(change_args):
             if change_args is not None:
-                for k,v in change_args.items():
+                for k, v in change_args.items():
                     args[k] = v
                     # nn_args.fn_record(f'  nn_args[{k}] = {v}')
                     args.calltracer.fn_write(f'  args_[{k}] = {v}')
@@ -159,7 +165,7 @@ def agent_mgt(args, file_path):
         @tracer(args)
         def fn_show_args():
 
-            for k,v in args.items():
+            for k, v in args.items():
                 # nn_args.fn_record(f'  nn_args[{k}] = {v}')
                 args.calltracer.fn_write(f'  args_[{k}] = {v}')
 
@@ -174,7 +180,6 @@ def agent_mgt(args, file_path):
             args.calltracer.fn_write(f'Time elapsed:    minutes: {mins}    seconds: {secs}')
 
             return agent_mgr
-
 
         @tracer(args)
         def fn_archive_log_file():
@@ -201,8 +206,10 @@ def agent_mgt(args, file_path):
         if os.path.exists(args.src_model_file_path):
             copy(args.src_model_file_path, args.old_model_file_path)
 
-        agent_mgr = namedtuple('_', ['fn_train','fn_test_against_human' ,'fn_test_againt_random' ,'fn_test_against_greedy' ,'fn_change_args' ,'fn_show_args' ,'fn_measure_time_elapsed' ,'fn_archive_log_file',
-                                     'args_'])
+        agent_mgr = namedtuple('_',
+                               ['fn_train', 'fn_test_against_human', 'fn_test_againt_random', 'fn_test_against_greedy',
+                                'fn_change_args', 'fn_show_args', 'fn_measure_time_elapsed', 'fn_archive_log_file',
+                                'args_'])
 
         agent_mgr.fn_train = fn_train
         agent_mgr.fn_test_against_human = fn_test_against_human
@@ -214,10 +221,9 @@ def agent_mgt(args, file_path):
         agent_mgr.fn_archive_log_file = fn_archive_log_file
         agent_mgr.arguments = args
         return agent_mgr
-   except Exception as e:
-       exc_type, exc_obj, exc_tb = sys.exc_info()
-       fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-       print(exc_type, fname, exc_tb.tb_lineno)
-       raise e
 
-
+    except Exception as e:
+        exc_type, exc_obj, exc_tb = sys.exc_info()
+        fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+        print(exc_type, fname, exc_tb.tb_lineno)
+        raise e
