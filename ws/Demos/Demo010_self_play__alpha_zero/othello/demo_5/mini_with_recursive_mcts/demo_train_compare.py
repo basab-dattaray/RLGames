@@ -12,7 +12,6 @@ if __name__ == "__main__":
 
         agent_mgt(args, __file__). \
             fn_change_args({
-                'run_recursive_search': 1,
                 'do_load_model': False,
                 'mcts_ucb_use_action_prob_for_exploration': True,
             }). \
@@ -26,7 +25,7 @@ if __name__ == "__main__":
             fn_measure_time_elapsed(). \
             \
         fn_change_args({
-            'run_recursive_search': 1,
+#
             'do_load_model': False,
             'mcts_ucb_use_action_prob_for_exploration': False,
         }). \

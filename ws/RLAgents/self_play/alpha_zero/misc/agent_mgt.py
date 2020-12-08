@@ -50,36 +50,43 @@ def agent_mgt(args, file_path):
                 args_ = _fn_init_arg_with_default_val(args_, 'training_mgr', training_mgr)
                 return args_
 
-            def _fn_set_default_args(args_, file_path):
-                args_ = _fn_init_arg_with_default_val(args_, 'logger', logging.getLogger(__name__))
+            def _fn_set_default_args(args, file_path):
+                args_copy = _fn_init_arg_with_default_val(args, 'logger', logging.getLogger(__name__))
                 demo_folder, demo_name = AppInfo.fn_get_path_and_app_name(file_path)
-                args_ = _fn_init_arg_with_default_val(args_, 'demo_folder', demo_folder)
-                args_ = _fn_init_arg_with_default_val(args_, 'demo_name', demo_name)
-                args_ = _fn_init_arg_with_default_val(args_, 'mcts_ucb_use_log_in_numerator', True)
-                args_ = _fn_init_arg_with_default_val(args_, 'mcts_ucb_use_action_prob_for_exploration', True)
-                args_ = _fn_init_arg_with_default_val(args_, 'num_of_successes_for_model_upgrade', 1)
-                args_ = _fn_init_arg_with_default_val(args_, 'rel_model_path', 'model/')
-                args_ = _fn_init_arg_with_default_val(args_, 'do_load_model', True)
-                args_ = _fn_init_arg_with_default_val(args_, 'do_load_samples', False)
-                args_ = _fn_init_arg_with_default_val(args_, 'model_name', 'model.tar')
-                args_ = _fn_init_arg_with_default_val(args_, 'temp_model_exchange_filename', '_tmp.tar')
+                args_copy = _fn_general_args_init(args_copy, demo_folder, demo_name, file_path)
+                args_copy = _fn_training_args_setup(args_copy)
+                return args_copy
+
+            def _fn_training_args_setup(args_copy):
+                args_copy = _fn_init_arg_with_default_val(args_copy, 'run_recursive_search', True)
+                args_copy = _fn_init_arg_with_default_val(args_copy, 'mcts_ucb_use_log_in_numerator', True)
+                args_copy = _fn_init_arg_with_default_val(args_copy, 'mcts_ucb_use_action_prob_for_exploration', True)
+                args_copy = _fn_init_arg_with_default_val(args_copy, 'num_of_successes_for_model_upgrade', 1)
+                args_copy = _fn_init_arg_with_default_val(args_copy, 'do_load_model', True)
+                args_copy = _fn_init_arg_with_default_val(args_copy, 'do_load_samples', False)
+                args_copy = _fn_init_arg_with_default_val(args_copy, 'game_mgr', game_mgt(args_copy.board_size))
+                args_copy = _fn_init_training_mgr(args_copy)
+                return args_copy
+
+            def _fn_general_args_init(args_copy, demo_folder, demo_name, file_path):
+                args_copy = _fn_init_arg_with_default_val(args_copy, 'demo_folder', demo_folder)
+                args_copy = _fn_init_arg_with_default_val(args_copy, 'demo_name', demo_name)
+                args_copy = _fn_init_arg_with_default_val(args_copy, 'model_name', 'model.tar')
+                args_copy = _fn_init_arg_with_default_val(args_copy, 'rel_model_path', 'model/')
+                args_copy = _fn_init_arg_with_default_val(args_copy, 'temp_model_exchange_filename', '_tmp.tar')
                 current_dir = file_path.rsplit('/', 1)[0]
                 archive_dir = current_dir.replace('/Demos/', '/Archives/')
-                args_ = _fn_init_arg_with_default_val(args_, 'archive_dir', archive_dir)
-                args_ = _fn_init_arg_with_default_val(args_, 'fn_record',
-                                                      log_mgt(log_dir=archive_dir, fixed_log_file=True))
-                args_ = _fn_init_arg_with_default_val(args_, 'calltracer', call_trace_mgt(args_.fn_record))
-                src_model_folder = os.path.join(args_.demo_folder, args_.rel_model_path)
-                args_ = _fn_init_arg_with_default_val(args_, 'calltracer', call_trace_mgt(args_.fn_record))
-                args_ = _fn_init_arg_with_default_val(args_, 'src_model_file_path',
-                                                      os.path.join(src_model_folder, args_.model_name))
-                args_ = _fn_init_arg_with_default_val(args_, 'old_model_file_path',
-                                                      os.path.join(src_model_folder, 'old_' + args_.model_name))
-                args_ = _fn_init_arg_with_default_val(args_, 'run_recursive_search',
-                                                      AppInfo.fn_arg_as_bool(args_, 'run_recursive_search'))
-                args_ = _fn_init_arg_with_default_val(args_, 'game_mgr', game_mgt(args_.board_size))
-                args_ = _fn_init_training_mgr(args_)
-                return args_
+                args_copy = _fn_init_arg_with_default_val(args_copy, 'archive_dir', archive_dir)
+                args_copy = _fn_init_arg_with_default_val(args_copy, 'fn_record',
+                                                          log_mgt(log_dir=archive_dir, fixed_log_file=True))
+                args_copy = _fn_init_arg_with_default_val(args_copy, 'calltracer', call_trace_mgt(args_copy.fn_record))
+                src_model_folder = os.path.join(args_copy.demo_folder, args_copy.rel_model_path)
+                args_copy = _fn_init_arg_with_default_val(args_copy, 'src_model_file_path',
+                                                          os.path.join(src_model_folder, args_copy.model_name))
+                args_copy = _fn_init_arg_with_default_val(args_copy, 'old_model_file_path',
+                                                          os.path.join(src_model_folder, 'old_' + args_copy.model_name))
+                args_copy = _fn_init_arg_with_default_val(args_copy, 'rel_model_path', 'model/')
+                return args_copy
 
             arguments = _fn_set_default_args(args, file_path)
 

@@ -11,9 +11,6 @@ if __name__ == "__main__":
     try:
 
         agent_mgt(args, __file__). \
-            fn_change_args({
-                'run_recursive_search': 1,
-            }). \
             fn_train().\
             fn_change_args({
                 'num_of_mc_simulations': 50,
