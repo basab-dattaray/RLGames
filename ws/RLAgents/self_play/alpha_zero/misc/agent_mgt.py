@@ -61,8 +61,8 @@ def agent_mgt(args, file_path):
                 args_ = fn_init_arg_with_default_val(args_, 'rel_model_path', 'model/')
 
                 args_ = fn_init_arg_with_default_val(args_, 'game_mgr', game_mgt(args_.board_size))
-                args_.neural_net_mgr = neural_net_mgt(args_)
-                args_ = fn_init_arg_with_default_val(args_, 'neural_net_mgr', args_.neural_net_mgr)
+                # args_.neural_net_mgr = neural_net_mgt(args_)
+                # args_ = fn_init_arg_with_default_val(args_, 'neural_net_mgr', args_.neural_net_mgr)
                 return args_
 
             def _fn_setup_training_mgr(args_):
@@ -73,6 +73,9 @@ def agent_mgt(args, file_path):
                 args_ = fn_init_arg_with_default_val(args_, 'mcts_ucb_use_action_prob_for_exploration', True)
                 args_ = fn_init_arg_with_default_val(args_, 'do_load_model', True)
                 args_ = fn_init_arg_with_default_val(args_, 'do_load_samples', False)
+
+                args_.neural_net_mgr = neural_net_mgt(args_)
+                args_ = fn_init_arg_with_default_val(args_, 'neural_net_mgr', args_.neural_net_mgr)
 
                 args_ = fn_init_arg_with_default_val(args_, 'training_mgr', training_mgt(args_.neural_net_mgr, args_))
                 return args_

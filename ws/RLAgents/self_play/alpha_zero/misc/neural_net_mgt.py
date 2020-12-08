@@ -17,9 +17,6 @@ import torch.optim as optim
 
 from ws.RLAgents.self_play.alpha_zero._game.othello._ml_lib.pytorch.NeuralNet import NeuralNet
 
-
-
-
 def neural_net_mgt(args):
     nn_args = DotDict({
         'lr': 0.001,
