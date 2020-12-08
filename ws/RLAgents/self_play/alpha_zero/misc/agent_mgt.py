@@ -33,29 +33,13 @@ def fn_init_arg_with_default_val(arguments, name, val):
     return arguments
 
 
-def _fn_setup_training_mgr(args_):
-    args_ = fn_init_arg_with_default_val(args_, 'num_of_successes_for_model_upgrade', 1)
-    args_ = fn_init_arg_with_default_val(args_, 'run_recursive_search', True)
 
-    args_ = fn_init_arg_with_default_val(args_, 'mcts_ucb_use_log_in_numerator', True)
-    args_ = fn_init_arg_with_default_val(args_, 'mcts_ucb_use_action_prob_for_exploration', True)
-    args_ = fn_init_arg_with_default_val(args_, 'do_load_model', True)
-    args_ = fn_init_arg_with_default_val(args_, 'do_load_samples', False)
-
-    args_ = fn_init_arg_with_default_val(args_, 'training_mgr', training_mgt(args_.neural_net_mgr, args_))
-    return args_
 
 def agent_mgt(args, file_path):
 
    try:
         def _fn_setup(file_path):
-            def _fn_set_default_args(args, file_path):
-                args_copy = fn_init_arg_with_default_val(args, 'logger', logging.getLogger(__name__))
-                demo_folder, demo_name = AppInfo.fn_get_path_and_app_name(file_path)
-                args_copy = _fn_general_args_init(args_copy, demo_folder, demo_name, file_path)
 
-
-                return args_copy
 
             def _fn_general_args_init(args_, demo_folder, demo_name, file_path):
                 args_ = fn_init_arg_with_default_val(args_, 'demo_folder', demo_folder)
@@ -81,12 +65,30 @@ def agent_mgt(args, file_path):
                 args_ = fn_init_arg_with_default_val(args_, 'neural_net_mgr', args_.neural_net_mgr)
                 return args_
 
-            arguments = _fn_set_default_args(args, file_path)
+            def _fn_setup_training_mgr(args_):
+                args_ = fn_init_arg_with_default_val(args_, 'num_of_successes_for_model_upgrade', 1)
+                args_ = fn_init_arg_with_default_val(args_, 'run_recursive_search', True)
 
+                args_ = fn_init_arg_with_default_val(args_, 'mcts_ucb_use_log_in_numerator', True)
+                args_ = fn_init_arg_with_default_val(args_, 'mcts_ucb_use_action_prob_for_exploration', True)
+                args_ = fn_init_arg_with_default_val(args_, 'do_load_model', True)
+                args_ = fn_init_arg_with_default_val(args_, 'do_load_samples', False)
+
+                args_ = fn_init_arg_with_default_val(args_, 'training_mgr', training_mgt(args_.neural_net_mgr, args_))
+                return args_
+
+            def _fn_set_default_args(args, file_path):
+                args_copy = fn_init_arg_with_default_val(args, 'logger', logging.getLogger(__name__))
+                demo_folder, demo_name = AppInfo.fn_get_path_and_app_name(file_path)
+                args_copy = _fn_general_args_init(args_copy, demo_folder, demo_name, file_path)
+                args_copy = _fn_setup_training_mgr(args_copy)
+                return args_copy
+
+            arguments = _fn_set_default_args(args, file_path)
             return arguments
 
         args = _fn_setup(file_path)
-        args = _fn_setup_training_mgr(args)
+
 
         def exit_gracefully(signum, frame):
             #
