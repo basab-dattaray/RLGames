@@ -42,7 +42,8 @@ def agent_mgt(args, file_path):
                 return arguments
 
             def _fn_init_training_mgr(args_):
-                args_ = DotDict(args_.copy())
+                # args_ = DotDict(args_.copy())
+                args_ = _fn_init_arg_with_default_val(args_, 'game_mgr', game_mgt(args_.board_size))
                 args_.neural_net_mgr = neural_net_mgt(args_)
                 args_ = _fn_init_arg_with_default_val(args_, 'neural_net_mgr', args_.neural_net_mgr)
 
@@ -64,7 +65,7 @@ def agent_mgt(args, file_path):
                 args_copy = _fn_init_arg_with_default_val(args_copy, 'num_of_successes_for_model_upgrade', 1)
                 args_copy = _fn_init_arg_with_default_val(args_copy, 'do_load_model', True)
                 args_copy = _fn_init_arg_with_default_val(args_copy, 'do_load_samples', False)
-                args_copy = _fn_init_arg_with_default_val(args_copy, 'game_mgr', game_mgt(args_copy.board_size))
+                # args_copy = _fn_init_arg_with_default_val(args_copy, 'game_mgr', game_mgt(args_copy.board_size))
                 args_copy = _fn_init_training_mgr(args_copy)
                 return args_copy
 
