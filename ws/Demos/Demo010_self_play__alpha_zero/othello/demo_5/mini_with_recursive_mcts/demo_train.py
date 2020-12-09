@@ -13,7 +13,6 @@ if __name__ == "__main__":
         agent_mgt(args, __file__). \
             fn_change_args({
                 'do_load_model': False,
-                'num_of_mc_simulations': 50,
                 'epochs': 5,
             }). \
             fn_show_args(). \

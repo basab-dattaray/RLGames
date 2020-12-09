@@ -1,11 +1,12 @@
+import copy
 import logging
 import math
 import os
+import shutil
 import signal
 import sys
 from collections import namedtuple
 from datetime import datetime as dt
-from shutil import copy, move
 from time import time
 
 import numpy
@@ -39,8 +40,7 @@ def agent_mgt(args, file_path):
 
             args_ = fn_init_arg_with_default_val(args_, 'mcts_ucb_use_log_in_numerator', True)
             args_ = fn_init_arg_with_default_val(args_, 'mcts_ucb_use_action_prob_for_exploration', True)
-            args_ = fn_init_arg_with_default_val(args_, 'do_load_model', True)
-            args_ = fn_init_arg_with_default_val(args_, 'do_load_samples', False)
+
 
             args_.neural_net_mgr = neural_net_mgt(args_)
             args_ = fn_init_arg_with_default_val(args_, 'neural_net_mgr', args_.neural_net_mgr)
@@ -67,6 +67,9 @@ def agent_mgt(args, file_path):
                 args_ = fn_init_arg_with_default_val(args_, 'old_model_file_path',
                                                      os.path.join(src_model_folder, 'old_' + args_.model_name))
                 args_ = fn_init_arg_with_default_val(args_, 'rel_model_path', 'model/')
+
+                args_ = fn_init_arg_with_default_val(args_, 'do_load_model', True)
+                args_ = fn_init_arg_with_default_val(args_, 'do_load_samples', False)
 
                 args_ = fn_init_arg_with_default_val(args_, 'game_mgr', game_mgt(args_.board_size))
                 return args_
@@ -156,7 +159,6 @@ def agent_mgt(args, file_path):
         def fn_show_args():
 
             for k, v in args.items():
-                # nn_args.fn_record(f'  nn_args[{k}] = {v}')
                 args.calltracer.fn_write(f'  args_[{k}] = {v}')
 
             return agent_mgr
@@ -180,21 +182,21 @@ def agent_mgt(args, file_path):
             # move log.txt
             src_log_file_name = os.path.join(args.archive_dir, 'log.txt')
             if os.path.exists(src_log_file_name):
-                move(src_log_file_name, dst_full_path)
+                shutil.move(src_log_file_name, dst_full_path)
 
             # move old_model.tar
             if os.path.exists(args.old_model_file_path):
-                copy(args.old_model_file_path, dst_full_path)
+                shutil.copy(args.old_model_file_path, dst_full_path)
 
             # copy model.tar
             if os.path.exists(args.src_model_file_path):
-                copy(args.src_model_file_path, dst_full_path)
+                shutil.copy(args.src_model_file_path, dst_full_path)
 
             return agent_mgr
 
         start_time = time()
         if os.path.exists(args.src_model_file_path):
-            copy(args.src_model_file_path, args.old_model_file_path)
+            shutil.copy(args.src_model_file_path, args.old_model_file_path)
 
         agent_mgr = namedtuple('_',
                                ['fn_train', 'fn_test_against_human', 'fn_test_againt_random', 'fn_test_against_greedy',
