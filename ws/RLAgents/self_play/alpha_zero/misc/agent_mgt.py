@@ -25,10 +25,6 @@ from ws.RLUtils.monitoring.tracing.call_trace_mgt import call_trace_mgt
 from ws.RLUtils.monitoring.tracing.log_mgt import log_mgt
 from ws.RLUtils.monitoring.tracing.tracer import tracer
 
-
-
-
-
 def fn_setup_essential_managers(args_):
     args_.game_mgr = game_mgt(args_.board_size)
     args_.neural_net_mgr = neural_net_mgt(args_)
@@ -102,7 +98,7 @@ def agent_mgt(args, file_path):
 
             signal.signal(signal.SIGINT, exit_gracefully)
 
-            args = fn_setup_essential_managers(args)
+            fn_setup_essential_managers(args)
             args.training_mgr.fn_execute_training_iterations()
 
             return agent_mgr
@@ -126,7 +122,7 @@ def agent_mgt(args, file_path):
             return agent_mgr
 
         def fn_test(args, fn_player_policy, verbose=False, num_of_test_games=2):
-            args = fn_setup_essential_managers(args)
+            fn_setup_essential_managers(args)
 
             signal.signal(signal.SIGINT, exit_gracefully)
             system_nn = neural_net_mgt(args)
@@ -163,11 +159,13 @@ def agent_mgt(args, file_path):
 
         @tracer(args)
         def fn_measure_time_elapsed():
+            nonlocal start_time
             end_time = time()
             time_diff = int(end_time - start_time)
             mins = math.floor(time_diff / 60)
             secs = time_diff % 60
             args.calltracer.fn_write(f'Time elapsed:    minutes: {mins}    seconds: {secs}')
+            start_time = time()
 
             return agent_mgr
 

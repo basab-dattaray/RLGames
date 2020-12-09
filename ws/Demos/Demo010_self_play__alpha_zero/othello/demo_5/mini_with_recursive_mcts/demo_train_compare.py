@@ -13,27 +13,40 @@ if __name__ == "__main__":
         agent_mgt(args, __file__). \
             fn_change_args({
                 'do_load_model': False,
-                'mcts_ucb_use_action_prob_for_exploration': True,
-            }). \
-            fn_train().\
-            fn_change_args({
-                'num_of_mc_simulations': 50,
+                'mcts_ucb_use_action_prob_for_exploration': False,
             }). \
             fn_show_args(). \
+            fn_train(). \
             fn_test_against_greedy(). \
             fn_test_against_random(). \
             fn_measure_time_elapsed(). \
-            \
-        fn_change_args({
-#
-            'do_load_model': False,
-            'mcts_ucb_use_action_prob_for_exploration': False,
-        }). \
-            fn_train(). \
+            fn_archive_log_file(). \
             fn_change_args({
-            'num_of_mc_simulations': 50,
-        }). \
+                'do_load_model': False,
+                'mcts_ucb_use_action_prob_for_exploration': True,
+            }). \
             fn_show_args(). \
+            fn_train(). \
+            fn_test_against_greedy(). \
+            fn_test_against_random(). \
+            fn_measure_time_elapsed(). \
+            fn_archive_log_file(). \
+            fn_change_args({
+                'do_load_model': False,
+                'mcts_ucb_use_action_prob_for_exploration': False,
+            }). \
+            fn_show_args(). \
+            fn_train(). \
+            fn_test_against_greedy(). \
+            fn_test_against_random(). \
+            fn_measure_time_elapsed(). \
+            fn_archive_log_file(). \
+            fn_change_args({
+                'do_load_model': False,
+                'mcts_ucb_use_action_prob_for_exploration': True,
+            }). \
+            fn_show_args(). \
+            fn_train(). \
             fn_test_against_greedy(). \
             fn_test_against_random(). \
             fn_measure_time_elapsed(). \
