@@ -1,6 +1,6 @@
 import pytest
 
-from ws.RLAgents.self_play.alpha_zero.misc.agent_mgt import agent_mgt, fn_init_arg_with_default_val
+from ws.RLAgents.self_play.alpha_zero.misc.agent_mgt import agent_mgt, _fn_init_arg_with_default_val
 from ws.RLAgents.self_play.alpha_zero.search.mcts_adapter import mcts_adapter
 from ws.RLAgents.self_play.alpha_zero.search.non_recursive.mcts_mgt import mcts_mgt
 from ws.RLAgents.self_play.alpha_zero.search.non_recursive.pytests.ARGS import args
@@ -35,7 +35,7 @@ def test_fn_execute_monte_carlo_tree_search(setup):
 
     mcts = mcts_adapter(args.neural_net_mgr, args)
     # fn_get_prediction_info = mcts.fn_get_prediction_info
-    # arguments = fn_init_arg_with_default_val(agent.arguments, 'mcts', mcts)
+    # arguments = _fn_init_arg_with_default_val(agent.arguments, 'mcts', mcts)
 
     mcts_mgr = mcts_mgt(
         mcts.fn_get_prediction_info,

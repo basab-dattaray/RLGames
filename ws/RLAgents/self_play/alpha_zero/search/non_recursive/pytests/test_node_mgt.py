@@ -1,6 +1,6 @@
 import pytest
 
-from ws.RLAgents.self_play.alpha_zero.misc.agent_mgt import agent_mgt, fn_init_arg_with_default_val
+from ws.RLAgents.self_play.alpha_zero.misc.agent_mgt import agent_mgt, _fn_init_arg_with_default_val
 from ws.RLAgents.self_play.alpha_zero.search.mcts_adapter import mcts_adapter
 from ws.RLAgents.self_play.alpha_zero.search.non_recursive.node_mgt import node
 from ws.RLAgents.self_play.alpha_zero.search.non_recursive.pytests.ARGS import args
@@ -17,7 +17,7 @@ def setup():
 
     mcts = mcts_adapter(agent.arguments.neural_net_mgr, agent.arguments)
     fn_get_prediction_info = mcts.fn_get_prediction_info
-    arguments = fn_init_arg_with_default_val(agent.arguments, 'fn_get_prediction_info', fn_get_prediction_info)
+    arguments = _fn_init_arg_with_default_val(agent.arguments, 'fn_get_prediction_info', fn_get_prediction_info)
 
     return arguments
 
