@@ -30,6 +30,12 @@ def training_mgt(nn_mgr_N, args):
         @tracer(args)
 
         def _fn_interpret_competition_results(iteration, nwins, pwins):
+            def _fn_write_result(color, result, update_score):
+                args.calltracer.fn_write(
+                    color + result + ' New Model: update_threshold: {}, update_score: {}'.format(
+                        args.score_based_model_update_threshold,
+                        update_score))
+
             nonlocal update_count
             reject = False
             update_score = 0
@@ -40,26 +46,23 @@ def training_mgt(nn_mgr_N, args):
                 if update_score < args.score_based_model_update_threshold:
                     reject = True
             model_already_exists = nn_mgr_N.fn_is_model_available(rel_folder=args.rel_model_path)
+            if not reject:
+                update_count += 1
+
             if reject and model_already_exists:
-                color = Fore.RED
-                args.calltracer.fn_write(
-                    color + 'REJECTED New Model: update_threshold: {}, update_score: {}'.format(
-                        args.score_based_model_update_threshold,
-                        update_score))
+                _fn_write_result(Fore.RED, 'REJECTED', update_score)
                 nn_mgr_N.fn_load_model(filename=args.temp_model_exchange_filename)
             else:
                 color = Fore.GREEN
                 if reject:  # implies that there is no model on disk yet, hence ACCEPT unacceptable update score for now
                     color = Fore.MAGENTA
-                args.calltracer.fn_write(
-                    color + 'ACCEPTED New Model: update_threshold: {}, update_score: {}'.format(
-                        args.score_based_model_update_threshold,
-                        update_score))
+                _fn_write_result(color, 'ACCEPTED', update_score)
                 nn_mgr_N.fn_save_model(filename=fn_getCheckpointFile(iteration))
                 nn_mgr_N.fn_save_model()
-            if not reject:  # continue update if the GREEN color is forced
-                update_count += 1
+
             args.calltracer.fn_write(Fore.BLACK)
+
+
 
         def fn_run_iteration(iteration):
             nonlocal update_count
