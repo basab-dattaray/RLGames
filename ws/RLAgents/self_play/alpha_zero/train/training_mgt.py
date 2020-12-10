@@ -30,11 +30,16 @@ def training_mgt(nn_mgr_N, args):
         @tracer(args)
 
         def _fn_interpret_competition_results(iteration, nwins, pwins):
-            def _fn_write_result(color, result, update_score):
+            def _fn_write_result(color, result, update_score, do_save):
                 args.calltracer.fn_write(
                     color + result + ' New Model: update_threshold: {}, update_score: {}'.format(
                         args.score_based_model_update_threshold,
                         update_score))
+                if do_save:
+                    nn_mgr_N.fn_save_model(filename=fn_getCheckpointFile(iteration))
+                    nn_mgr_N.fn_save_model()
+                else:
+                    nn_mgr_N.fn_load_model(filename=args.temp_model_exchange_filename)
 
             nonlocal update_count
             reject = False
@@ -49,16 +54,15 @@ def training_mgt(nn_mgr_N, args):
             if not reject:
                 update_count += 1
 
-            if reject and model_already_exists:
-                _fn_write_result(Fore.RED, 'REJECTED', update_score)
-                nn_mgr_N.fn_load_model(filename=args.temp_model_exchange_filename)
+            if reject and not model_already_exists:
+                _fn_write_result(Fore.MAGENTA, 'ACCEPTED', update_score, do_save= True)
+
             else:
-                color = Fore.GREEN
-                if reject:  # implies that there is no model on disk yet, hence ACCEPT unacceptable update score for now
-                    color = Fore.MAGENTA
-                _fn_write_result(color, 'ACCEPTED', update_score)
-                nn_mgr_N.fn_save_model(filename=fn_getCheckpointFile(iteration))
-                nn_mgr_N.fn_save_model()
+                if reject:
+                    _fn_write_result(Fore.RED, 'REJECTED', update_score, do_save= False)
+
+                else:
+                    _fn_write_result(Fore.GREEN, 'ACCEPTED', update_score, do_save= True)
 
             args.calltracer.fn_write(Fore.BLACK)
 
