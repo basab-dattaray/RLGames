@@ -51,22 +51,19 @@ def training_mgt(nn_mgr_N, args):
                 if update_score < args.score_based_model_update_threshold:
                     reject = True
             model_already_exists = nn_mgr_N.fn_is_model_available(rel_folder=args.rel_model_path)
+
             if not reject:
                 update_count += 1
 
-            if reject and not model_already_exists:
+            if reject and not model_already_exists and args.do_load_model:
                 _fn_write_result(Fore.MAGENTA, 'ACCEPTED', update_score, do_save= True)
-
             else:
                 if reject:
                     _fn_write_result(Fore.RED, 'REJECTED', update_score, do_save= False)
-
                 else:
                     _fn_write_result(Fore.GREEN, 'ACCEPTED', update_score, do_save= True)
 
             args.calltracer.fn_write(Fore.BLACK)
-
-
 
         def fn_run_iteration(iteration):
             nonlocal update_count
