@@ -71,7 +71,7 @@ def fn_generate_samples(args, iteration, generation_mcts):
                 samples_for_iteration += episode_result
 
         fn_stop_counting()
-        args.calltracer.fn_write(f'Number of Episodes for sample generation: {args.num_of_training_episodes}')
+        # args.calltracer.fn_write(f'Number of Episodes for sample generation: {args.num_of_training_episodes}')
 
         # save the iteration examples to the history
         return samples_for_iteration

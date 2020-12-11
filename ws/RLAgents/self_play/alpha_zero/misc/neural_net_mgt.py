@@ -83,7 +83,7 @@ def neural_net_mgt(args):
                 total_loss.backward()
                 optimizer.step()
         fn_stop_counting()
-        args.calltracer.fn_write(f'Number of Epochs for training new model: {args.epochs}')
+        # args.calltracer.fn_write(f'Number of Epochs for training new model: {args.epochs}')
 
     def predict(board):
         start = time.time()

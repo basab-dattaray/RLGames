@@ -139,7 +139,7 @@ def agent_mgt(args, file_path):
 
             args.calltracer.fn_write(f'wins:{system_wins} losses:{system_losses} draws:{draws}')
 
-        @tracer(args)
+        @tracer(args, verboscity= 4)
         def fn_change_args(change_args):
             if change_args is not None:
                 for k, v in change_args.items():
