@@ -6,6 +6,7 @@ from ws.RLAgents.self_play.alpha_zero.misc.agent_mgt import agent_mgt
 
 coloredlogs.install(level='INFO')  # Change this to DEBUG to see more info.
 
+
 if __name__ == "__main__":
     try:
 
