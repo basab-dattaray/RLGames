@@ -16,7 +16,6 @@ if __name__ == "__main__":
                 'mcts_ucb_use_action_prob_for_exploration': False,
                 'mcts_ucb_use_log_in_numerator': False,
             }). \
-            fn_show_args(). \
             fn_train(). \
             fn_test_against_greedy(). \
             fn_test_against_random(). \
@@ -27,7 +26,6 @@ if __name__ == "__main__":
                 'mcts_ucb_use_action_prob_for_exploration': True,
                 'mcts_ucb_use_log_in_numerator': True,
             }). \
-            fn_show_args(). \
             fn_train(). \
             fn_test_against_greedy(). \
             fn_test_against_random(). \
@@ -38,7 +36,6 @@ if __name__ == "__main__":
                 'mcts_ucb_use_action_prob_for_exploration': False,
                 'mcts_ucb_use_log_in_numerator': False
             }). \
-            fn_show_args(). \
             fn_train(). \
             fn_test_against_greedy(). \
             fn_test_against_random(). \
@@ -49,7 +46,6 @@ if __name__ == "__main__":
                 'mcts_ucb_use_action_prob_for_exploration': True,
                 'mcts_ucb_use_log_in_numerator': True,
             }). \
-            fn_show_args(). \
             fn_train(). \
             fn_test_against_greedy(). \
             fn_test_against_random(). \
