@@ -12,7 +12,7 @@ if __name__ == "__main__":
 
         agent_mgt(args, __file__). \
             fn_change_args({
-                'do_load_model': False,
+                'do_load_model': True,
                 'num_of_mc_simulations': 50,
                 'epochs': 5,
                 'mcts_ucb_use_action_prob_for_exploration': False,
