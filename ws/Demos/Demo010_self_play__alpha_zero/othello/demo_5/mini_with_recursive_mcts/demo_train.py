@@ -17,7 +17,6 @@ if __name__ == "__main__":
                 'epochs': 5,
                 'mcts_ucb_use_action_prob_for_exploration': False,
             }). \
-            fn_show_args(). \
             fn_train(). \
             fn_test_against_greedy(). \
             fn_test_against_random(). \

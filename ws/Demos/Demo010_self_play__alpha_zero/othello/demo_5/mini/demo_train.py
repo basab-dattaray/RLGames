@@ -21,7 +21,6 @@ if __name__ == "__main__":
         fn_change_args({
             'num_of_mc_simulations': 50,
         }). \
-        fn_show_args(). \
         fn_test_against_greedy(). \
         fn_test_against_random(). \
         fn_measure_time_elapsed(). \
