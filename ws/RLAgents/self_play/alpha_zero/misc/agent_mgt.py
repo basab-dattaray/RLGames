@@ -36,7 +36,8 @@ def agent_mgt(args, file_path):
     try:
         def _fn_init_arg_with_default_val(arguments, name, val):
             arguments = DotDict(arguments.copy())
-            arguments[name] = val
+            if name not in arguments:
+                arguments[name] = val
             return arguments
 
         def _fn_setup(file_path):

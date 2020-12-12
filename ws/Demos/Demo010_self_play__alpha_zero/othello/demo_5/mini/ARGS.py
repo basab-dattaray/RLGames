@@ -22,4 +22,8 @@ args = DotDict({
     'num_of_test_games': 8,
     'mcts_ucb_use_log_in_numerator': True,
     'mcts_ucb_use_action_prob_for_exploration': True,
+
+    'run_recursive_search': False,
+
+
 })

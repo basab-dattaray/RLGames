@@ -23,4 +23,6 @@ args = DotDict({
 
     'mcts_ucb_use_log_in_numerator': True,
     'mcts_ucb_use_action_prob_for_exploration': False,
+
+    'run_recursive_search': False,
 })

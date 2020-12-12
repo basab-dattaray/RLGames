@@ -2,6 +2,9 @@ import copy
 import math
 from collections import namedtuple
 
+import numpy
+
+
 def node_mgt(
         args,
         fn_get_valid_moves,
@@ -56,13 +59,17 @@ def node_mgt(
                 if args.mcts_ucb_use_action_prob_for_exploration:
                     action_prob_for_exploration = action_prob
 
+                parent_visit_factor = _visits
+                if args.mcts_ucb_use_log_in_numerator:
+                    parent_visit_factor = numpy.log(parent_visit_factor)
+
                 child_visits = child_node.fn_get_num_visits()
                 child_value = child_node.fn_get_node_val()
                 if child_visits == 0:
                     return child_node
 
                 exploit_val = child_value / child_visits
-                explore_val = action_prob_for_exploration * math.sqrt(_visits) / (child_visits)
+                explore_val = action_prob_for_exploration * math.sqrt(parent_visit_factor) / (child_visits)
                 ucb = exploit_val + explore_exploit_ratio * explore_val  # Upper Confidence Bound
 
                 if best_child is None:
