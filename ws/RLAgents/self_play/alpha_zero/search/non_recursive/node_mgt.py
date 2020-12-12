@@ -59,7 +59,7 @@ def node_mgt(
                     return child_node
 
                 exploit_val = child_value / child_visits
-                explore_val = action_prob * math.sqrt(_visits) / (child_visits + 1)
+                explore_val = action_prob * math.sqrt(_visits) / (child_visits)
                 ucb = exploit_val + explore_exploit_ratio * explore_val  # Upper Confidence Bound
 
                 if best_child is None:
