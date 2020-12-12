@@ -3,6 +3,7 @@ import math
 from collections import namedtuple
 
 def node_mgt(
+        args,
         fn_get_valid_moves,
         fn_get_prediction_info,
         fn_get_next_state,
@@ -47,11 +48,13 @@ def node_mgt(
             best_ucb = 0
 
             policy, state_val, _= fn_get_prediction_info(_state, 1)
-
+            action_prob_for_exploration = 1
             children_nodes = node.fn_get_children_node()
             for action_num, child_node in children_nodes.items():
 
                 action_prob = policy[action_num]
+                if args.mcts_ucb_use_action_prob_for_exploration:
+                    action_prob_for_exploration = action_prob
 
                 child_visits = child_node.fn_get_num_visits()
                 child_value = child_node.fn_get_node_val()
@@ -59,7 +62,7 @@ def node_mgt(
                     return child_node
 
                 exploit_val = child_value / child_visits
-                explore_val = action_prob * math.sqrt(_visits) / (child_visits)
+                explore_val = action_prob_for_exploration * math.sqrt(_visits) / (child_visits)
                 ucb = exploit_val + explore_exploit_ratio * explore_val  # Upper Confidence Bound
 
                 if best_child is None:

@@ -28,6 +28,7 @@ def mcts_mgt(
     fn_get_prediction_info, fn_get_valid_moves = cache2_mgt(game_mgr, cache_mgr, neural_net_mgr)
 
     node_mgr = node_mgt(
+        args,
         fn_get_valid_moves,
         fn_get_prediction_info,
         game_mgr.fn_get_next_state,
