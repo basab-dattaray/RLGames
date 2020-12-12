@@ -140,6 +140,14 @@ def agent_mgt(args, file_path):
             args.calltracer.fn_write(f'wins:{system_wins} losses:{system_losses} draws:{draws}')
 
         @tracer(args, verboscity= 4)
+        def fn_reset():
+            # model_path = os.path.join(args.archive_dir, args.rel_model_path)
+            if os.path.exists(args.rel_model_path):
+                shutil.rmtree(args.rel_model_path)
+
+            return agent_mgr
+
+        @tracer(args, verboscity= 4)
         def fn_change_args(change_args):
             if change_args is not None:
                 for k, v in change_args.items():
@@ -195,10 +203,10 @@ def agent_mgt(args, file_path):
             shutil.copy(args.src_model_file_path, args.old_model_file_path)
 
         agent_mgr = namedtuple('_',
-                               ['fn_train', 'fn_test_against_human', 'fn_test_againt_random', 'fn_test_against_greedy',
+                               ['fn_reset', 'fn_train', 'fn_test_against_human', 'fn_test_againt_random', 'fn_test_against_greedy',
                                 'fn_change_args', 'fn_show_args', 'fn_measure_time_elapsed', 'fn_archive_log_file',
                                 'args_'])
-
+        agent_mgr.fn_reset = fn_reset
         agent_mgr.fn_train = fn_train
         agent_mgr.fn_test_against_human = fn_test_against_human
         agent_mgr.fn_test_against_random = fn_test_against_random

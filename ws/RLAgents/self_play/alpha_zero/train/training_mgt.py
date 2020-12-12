@@ -55,7 +55,7 @@ def training_mgt(nn_mgr_N, args):
             if not reject:
                 update_count += 1
 
-            if reject and not model_already_exists and args.do_load_model:
+            if reject and not model_already_exists:
                 _fn_write_result(Fore.MAGENTA, 'ACCEPTED', update_score, do_save= True)
             else:
                 if reject:
@@ -67,6 +67,8 @@ def training_mgt(nn_mgr_N, args):
 
         def fn_run_iteration(iteration):
             nonlocal update_count
+            args.calltracer.fn_write('')
+            args.calltracer.fn_write(f'ITERATION NUMBER {iteration} of {args.num_of_training_iterations}', indent=0)
 
             @tracer(args)
             def _fn_play_next_vs_previous(training_samples):
