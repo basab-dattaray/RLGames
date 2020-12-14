@@ -36,7 +36,7 @@ def game_mgt(board_size):
         board = board_mgt(board_size)
         move = (int(action / board_size), action % board_size)
         success, next_pieces = board.fn_execute_flips(pieces, move, player)
-        pieces = next_pieces
+        pieces = copy.deepcopy(next_pieces)
         if not success:
             return pieces
         return pieces
