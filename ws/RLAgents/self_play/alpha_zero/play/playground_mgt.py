@@ -8,7 +8,7 @@ from ws.RLUtils.monitoring.tracing.progress_count_mgt import progress_count_mgt
 
 def playground_mgt(fn_get_action_given_state_player1, fn_get_action_given_state__player2, game_mgr, fn_display=None, msg_recorder = None):
     game_num = 0
-    def fn_play_one_game(pieces, verbose=False):
+    def fn_play_one_game(pieces, turn= 1, verbose=False):
         def _fn_switch_get_action_given_state(cur_player_index):
             fn_get_action_given_state = fn_get_action_given_state_player1 if cur_player_index == 1 else fn_get_action_given_state__player2
             return fn_get_action_given_state
@@ -22,7 +22,7 @@ def playground_mgt(fn_get_action_given_state_player1, fn_get_action_given_state_
 
         nonlocal game_num
 
-        cur_player_index = 1
+        cur_player_index = turn
 
         loop_count = 0
 
