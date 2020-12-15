@@ -44,17 +44,22 @@ def node_mgt(
         value=0.0
         _children_nodes = {}
         _parent_node = copy.deepcopy(parent_node)
-        __ucb = None
+        __ucb = 'Infinity'
         # _player = player
         # _first_time = first_time
 
-        def fn_store_ucb(ucb):
+        def fn_store_ucb(ucb_info):
             nonlocal __ucb
-            __ucb = ucb
+            __ucb = ucb_info
 
         def fn_display_tree(level= 1):
             leading_spaces = ' ' * level * 2
             str = f'{leading_spaces}{_id} ------ visits:{visits},   value:{value},     ucb:{__ucb}'
+
+            if visits > 0:
+                average_value = value/visits
+                str = f'{str}   average value = {average_value} '
+
             print(str)
             for k, v in _children_nodes.items():
                 v.fn_display_tree(level + 1)
@@ -89,8 +94,6 @@ def node_mgt(
                 explore_val = action_prob_for_exploration * math.sqrt(parent_visit_factor) / (child_visits)
                 ucb = exploit_val + explore_exploit_ratio * explore_val  # Upper Confidence Bound
 
-                child_node.fn_store_ucb(ucb)
-
                 if best_child is None:
                     best_child = child_node
                     best_ucb = ucb
@@ -98,6 +101,8 @@ def node_mgt(
                     if ucb > best_ucb:
                         best_ucb = ucb
                         best_child = child_node
+
+                child_node.fn_store_ucb((ucb, 'exploit', exploit_val, 'explore', explore_val))
 
             return best_child
 
