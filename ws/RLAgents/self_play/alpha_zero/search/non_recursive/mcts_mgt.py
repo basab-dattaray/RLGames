@@ -62,6 +62,7 @@ def mcts_mgt(
         for i in range(num_mcts_simulations):
             fn_execute_search(state)
         counts = _fn_get_counts()
+        sum_counts = sum(counts)
         return counts
 
     fn_get_policy = policy_mgt(fn_get_mcts_counts)
@@ -70,7 +71,7 @@ def mcts_mgt(
         nonlocal  root_node
 
         def fn_rollout(node):
-            result = playground.fn_play_one_game(node.state, verbose=False)
+            result = playground.fn_play_one_game(node.state, turn= node.player, verbose=False)
             return result
 
         if root_node is None:
@@ -79,6 +80,7 @@ def mcts_mgt(
                 parent_node = None,
                 player = 1,
                 id = '0',
+                visits= 1,
             )
 
         selected_node = root_node.fn_select_from_available_leaf_nodes()

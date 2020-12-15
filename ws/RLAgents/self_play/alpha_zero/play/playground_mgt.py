@@ -26,8 +26,8 @@ def playground_mgt(fn_get_action_given_state_player1, fn_get_action_given_state_
 
         loop_count = 0
 
-        game_status = game_mgr.fn_get_game_progress_status(pieces, cur_player_index)
-        while game_status == 0:
+        game_continue = game_mgr.fn_get_game_progress_status(pieces, cur_player_index) == 0
+        while game_continue:
             loop_count += 1
             _fn_display_if_verbose(verbose)
 
@@ -47,15 +47,19 @@ def playground_mgt(fn_get_action_given_state_player1, fn_get_action_given_state_
             next_pieces = game_mgr.fn_get_next_state(pieces, cur_player_index, action)
             next_player_index = -1 * cur_player_index
             cur_player_index = next_player_index
+
+            zeros = len(list(filter(lambda n: n == 0, pieces.flatten())))
+            zeros_next = len(list(filter(lambda n: n == 0, next_pieces.flatten())))
+            plus_ones = len(list(filter(lambda n: n == 1, next_pieces.flatten())))
+            minus_ones = len(list(filter(lambda n: n == -1, next_pieces.flatten())))
             pieces = next_pieces
 
-            game_status = game_mgr.fn_get_game_progress_status(pieces, cur_player_index)
+            game_continue = game_mgr.fn_get_game_progress_status(pieces, cur_player_index) == 0
+            pass
 
-        game_status = game_mgr.fn_game_status(pieces)
+        result = game_mgr.fn_game_status(pieces)
 
         _fn_display_if_verbose(verbose)
-
-        result = game_status
         game_num += 1
         return result
 

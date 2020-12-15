@@ -18,6 +18,7 @@ def node_mgt(
             parent_node,
             player,
             id,
+            visits = 0
     ):
         node_obj = namedtuple('_', [
             'fn_get_num_visits',
@@ -30,16 +31,18 @@ def node_mgt(
             'fn_expand_node',
             'fn_get_parent_node',
             'id',
-            'state'
+            'state',
+            'player',
 
         ])
 
         _id = id
         _state = state
-        _visits = 0
+        _visits = visits
         _val=0.0
         _children_nodes = {}
         _parent_node = copy.deepcopy(parent_node)
+        # _player = player
         # _first_time = first_time
 
         def fn_get_children_node():
@@ -169,6 +172,7 @@ def node_mgt(
         node_obj.fn_expand_node = fn_expand_node
         node_obj.id = id
         node_obj.state = state
+        node_obj.player = player
 
         return node_obj
 
