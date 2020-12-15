@@ -35,7 +35,7 @@ def node_mgt(
             'player',
             'children_nodes',
             'fn_display_tree',
-            'fn_store_ucb',
+            'fn_diagnostics',
         ])
 
         _id = id
@@ -44,17 +44,19 @@ def node_mgt(
         value=0.0
         _children_nodes = {}
         _parent_node = copy.deepcopy(parent_node)
-        __ucb = 'Infinity'
+        __ucb_criteria = 'Infinity'
+        __ucb_node = None
         # _player = player
         # _first_time = first_time
 
-        def fn_store_ucb(ucb_info):
-            nonlocal __ucb
-            __ucb = ucb_info
+        def fn_diagnostics(ucb_criteria, ucb_node):
+            nonlocal __ucb_criteria
+            __ucb_criteria = ucb_criteria
+            __ucb_node = ucb_node
 
         def fn_display_tree(level= 1):
             leading_spaces = ' ' * level * 2
-            str = f'{leading_spaces}{_id} ------ visits:{visits},   value:{value},     ucb:{__ucb}'
+            str = f'{leading_spaces}{_id} ------ visits:{visits},   value:{value},     ucb:{__ucb_criteria}'
 
             if visits > 0:
                 average_value = value/visits
@@ -102,7 +104,7 @@ def node_mgt(
                         best_ucb = ucb
                         best_child = child_node
 
-                child_node.fn_store_ucb((ucb, 'exploit', exploit_val, 'explore', explore_val))
+                child_node.fn_diagnostics((ucb, 'exploit', exploit_val, 'explore', explore_val), best_ucb)
 
             return best_child
 
@@ -196,7 +198,7 @@ def node_mgt(
         node_obj.player = player
         node_obj.children_nodes = _children_nodes
         node_obj.fn_display_tree = fn_display_tree
-        node_obj.fn_store_ucb = fn_store_ucb
+        node_obj.fn_diagnostics = fn_diagnostics
         return node_obj
 
     node_mgr = namedtuple('_', ['node'])
