@@ -34,38 +34,45 @@ def node_mgt(
             'state',
             'player',
             'children_nodes',
-            'value',
-            'visits',
-
+            'fn_display_tree',
+            'fn_store_ucb',
         ])
 
         _id = id
         _state = state
-        _visits = visits
-        _val=0.0
+        visits = visits
+        value=0.0
         _children_nodes = {}
         _parent_node = copy.deepcopy(parent_node)
+        __ucb = None
         # _player = player
         # _first_time = first_time
+
+        def fn_store_ucb(ucb):
+            nonlocal __ucb
+            __ucb = ucb
+
+        def fn_display_tree(level= 1):
+            leading_spaces = ' ' * level * 2
+            str = f'{leading_spaces}{_id} ------ visits:{visits},   value:{value},     ucb:{__ucb}'
+            print(str)
+            for k, v in _children_nodes.items():
+                v.fn_display_tree(level + 1)
+
 
         def fn_get_children_node():
             return _children_nodes
 
         def fn_find_best_ucb_child(node):
-            nonlocal _val, _visits, _state, _id
+            nonlocal value, visits, _state, _id
             best_child = None
             best_ucb = 0
 
             policy, state_val, _= fn_get_prediction_info(_state, 1)
-            action_prob_for_exploration = 1
+
             children_nodes = node.fn_get_children_node()
             for action_num, child_node in children_nodes.items():
-
-                action_prob = policy[action_num]
-                if args.mcts_ucb_use_action_prob_for_exploration:
-                    action_prob_for_exploration = action_prob
-
-                parent_visit_factor = _visits
+                parent_visit_factor = visits
                 if args.mcts_ucb_use_log_in_numerator:
                     parent_visit_factor = numpy.log(parent_visit_factor)
 
@@ -74,9 +81,15 @@ def node_mgt(
                 if child_visits == 0:
                     return child_node
 
+                action_prob_for_exploration = 1
+                if args.mcts_ucb_use_action_prob_for_exploration:
+                    action_prob_for_exploration = policy[action_num]
+
                 exploit_val = child_value / child_visits
                 explore_val = action_prob_for_exploration * math.sqrt(parent_visit_factor) / (child_visits)
                 ucb = exploit_val + explore_exploit_ratio * explore_val  # Upper Confidence Bound
+
+                child_node.fn_store_ucb(ucb)
 
                 if best_child is None:
                     best_child = child_node
@@ -89,9 +102,9 @@ def node_mgt(
             return best_child
 
         def _fn_add_children_nodes(parent):
-            nonlocal _val, _visits, _state, _id
+            nonlocal value, visits, _state, _id
             parent_id = parent.id
-            valid_nodes = fn_get_valid_moves(_state, 1)
+            valid_nodes = fn_get_valid_moves(_state, player)
             if valid_nodes is None:
                 return None
             for action, valid in enumerate(valid_nodes):
@@ -116,7 +129,7 @@ def node_mgt(
 
         def fn_select_from_available_leaf_nodes():
             nonlocal first_run__mutable
-            nonlocal _val, _visits, _state, _id
+            nonlocal value, visits, _state, _id
             if first_run__mutable:
                 first_run__mutable = False
                 first_child_node = _fn_add_children_nodes(node_obj)
@@ -129,7 +142,7 @@ def node_mgt(
             return selected_node
 
         def fn_is_already_visited():
-            if _visits > 0:
+            if visits > 0:
                 return True
             else:
                 return False
@@ -140,10 +153,10 @@ def node_mgt(
             return first_child_node
 
         def fn_back_propagate(current_val, depth = 1):
-            nonlocal _val, _visits, _state, _id
+            nonlocal value, visits, _state, _id
 
-            _val = _val + current_val
-            _visits += 1
+            value = value + current_val
+            visits += 1
 
             parent = fn_get_parent_node()
             if parent is None:
@@ -152,13 +165,13 @@ def node_mgt(
                 return parent.fn_back_propagate(current_val, depth + 1)
 
         def fn_get_num_visits():
-            return _visits
+            return visits
 
         def fn_get_children_nodes():
             return _children_nodes
 
         def fn_get_node_val():
-            return _val
+            return value
 
         def fn_get_parent_node():
             return parent_node
@@ -177,8 +190,8 @@ def node_mgt(
         node_obj.state = state
         node_obj.player = player
         node_obj.children_nodes = _children_nodes
-        node_obj.value = _val
-        node_obj.visits = visits
+        node_obj.fn_display_tree = fn_display_tree
+        node_obj.fn_store_ucb = fn_store_ucb
         return node_obj
 
     node_mgr = namedtuple('_', ['node'])

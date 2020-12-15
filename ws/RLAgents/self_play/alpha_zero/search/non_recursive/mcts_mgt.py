@@ -14,6 +14,7 @@ from ..policy_mgt import policy_mgt
 from ws.RLAgents.self_play.alpha_zero.search.non_recursive.cache2_mgt import cache2_mgt
 
 USE_SMART_PREDICTOR_FOR_ROLLOUT = False
+DEBUG = False
 
 def mcts_mgt(
         args,
@@ -48,19 +49,17 @@ def mcts_mgt(
     def fn_get_mcts_counts(state):
 
         def _fn_get_counts():
-
-            if root_node is None:
-                return None
-            else:
-                children_nodes = root_node.fn_get_children_nodes()
-                counts = [0] * max_num_actions
-                for index, current_node in children_nodes.items():
-                    visits = current_node.fn_get_num_visits()
-                    counts[index] = visits
-                return counts
+            children_nodes = root_node.fn_get_children_nodes()
+            counts = [0] * max_num_actions
+            for index, current_node in children_nodes.items():
+                visits = current_node.fn_get_num_visits()
+                counts[index] = visits
+            return counts
 
         for i in range(num_mcts_simulations):
-            fn_execute_search(state)
+            search_val = fn_execute_search(state)
+            if search_val is None:
+                continue
         counts = _fn_get_counts()
         sum_counts = sum(counts)
         return counts
@@ -93,7 +92,16 @@ def mcts_mgt(
 
         score = fn_rollout(selected_node)
         tree_depth = selected_node.fn_back_propagate(score)
-        pass
+
+        if DEBUG:
+            visits = root_node.fn_get_num_visits()
+            val = root_node.fn_get_node_val()
+
+            print()
+            root_node.fn_display_tree()
+            print()
+
+        return score
 
     mcts_mgr = namedtuple('_', ['fn_get_policy'])
     mcts_mgr.fn_get_policy = fn_get_policy
