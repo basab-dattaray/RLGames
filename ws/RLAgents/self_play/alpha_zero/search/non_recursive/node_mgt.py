@@ -20,6 +20,8 @@ def node_mgt(
             id,
             visits = 0
     ):
+        __ucb_id = None
+
         node_obj = namedtuple('_', [
             'fn_get_num_visits',
             'fn_get_children_node',
@@ -45,14 +47,15 @@ def node_mgt(
         _children_nodes = {}
         _parent_node = copy.deepcopy(parent_node)
         __ucb_criteria = 'Infinity'
-        __ucb_node = None
+
         # _player = player
         # _first_time = first_time
 
-        def fn_diagnostics(ucb_criteria, ucb_node):
-            nonlocal __ucb_criteria
+        def fn_diagnostics(ucb_criteria, ucb_id):
+            nonlocal __ucb_criteria, __ucb_id
             __ucb_criteria = ucb_criteria
-            __ucb_node = ucb_node
+            __ucb_id = ucb_id
+            pass
 
         def fn_display_tree(level= 1):
             leading_spaces = ' ' * level * 2
@@ -61,6 +64,9 @@ def node_mgt(
             if visits > 0:
                 average_value = value/visits
                 str = f'{str}   average value = {average_value} '
+
+            if _id == __ucb_id:
+                str =  str + '***'
 
             print(str)
             for k, v in _children_nodes.items():
@@ -104,7 +110,7 @@ def node_mgt(
                         best_ucb = ucb
                         best_child = child_node
 
-                child_node.fn_diagnostics((ucb, 'exploit', exploit_val, 'explore', explore_val), best_ucb)
+                child_node.fn_diagnostics((ucb, 'exploit', exploit_val, 'explore', explore_val), best_child.id)
 
             return best_child
 
