@@ -33,6 +33,9 @@ def node_mgt(
             'id',
             'state',
             'player',
+            'children_nodes',
+            'value',
+            'visits',
 
         ])
 
@@ -173,7 +176,9 @@ def node_mgt(
         node_obj.id = id
         node_obj.state = state
         node_obj.player = player
-
+        node_obj.children_nodes = _children_nodes
+        node_obj.value = _val
+        node_obj.visits = visits
         return node_obj
 
     node_mgr = namedtuple('_', ['node'])

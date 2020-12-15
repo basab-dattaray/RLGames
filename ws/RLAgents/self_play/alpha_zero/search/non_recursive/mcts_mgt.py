@@ -72,7 +72,7 @@ def mcts_mgt(
 
         def fn_rollout(node):
             result = playground.fn_play_one_game(node.state, turn= node.player, verbose=False)
-            return result
+            return result * node.player
 
         if root_node is None:
             root_node = node_mgr.node(
