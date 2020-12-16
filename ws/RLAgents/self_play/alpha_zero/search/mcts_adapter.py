@@ -2,15 +2,14 @@ from collections import namedtuple
 
 # import numpy as np
 from ws.RLAgents.self_play.alpha_zero.play.playground_mgt import playground_mgt
-from ws.RLAgents.self_play.alpha_zero.search.non_recursive.mcts_mgt import mcts_mgt
+# from ws.RLAgents.self_play.alpha_zero.search.non_recursive.mcts_mgt import mcts_mgt
 from ws.RLAgents.self_play.alpha_zero.search.recursive.mcts_r_mgr import mcts_r_mgr
 
 def mcts_adapter(neural_net_mgr, args):
     game_mgr = args.game_mgr
 
-    monte_carlo_tree_search = mcts_mgt
-    if args.run_recursive_search:
-        monte_carlo_tree_search = mcts_r_mgr
+
+    monte_carlo_tree_search = mcts_r_mgr
 
     mcts = monte_carlo_tree_search(
         args,
