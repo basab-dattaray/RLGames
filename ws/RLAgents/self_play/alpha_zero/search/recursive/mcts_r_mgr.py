@@ -37,7 +37,9 @@ def mcts_r_mgr(
 
         s = game_mgr.fn_get_state_key(state)
         counts = [state_visits.fn_get_child_state_visits((s, a)) if state_visits.fn_does_child_state_visits_exist((s, a)) else 0 for a in range(max_num_actions)]
+        zeros_in_state = len(list(filter(lambda n: n == 0, state.flatten())))
         sum_counts = sum(counts)
+
         return counts
 
 

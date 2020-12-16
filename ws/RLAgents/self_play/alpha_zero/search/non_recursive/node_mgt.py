@@ -145,7 +145,7 @@ def node_mgt(
             nonlocal value, visits, _state, _id
             if first_run__mutable:
                 first_run__mutable = False
-                first_child_node = _fn_add_children_nodes(node_obj)
+                # first_child_node = _fn_add_children_nodes(node_obj)
 
             if len(_children_nodes) == 0:  # leaf_node
                 return node_obj

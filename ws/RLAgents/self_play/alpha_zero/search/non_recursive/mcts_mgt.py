@@ -14,7 +14,7 @@ from ..policy_mgt import policy_mgt
 from ws.RLAgents.self_play.alpha_zero.search.non_recursive.cache2_mgt import cache2_mgt
 
 USE_SMART_PREDICTOR_FOR_ROLLOUT = False
-DEBUG = True
+DEBUG = False
 
 def mcts_mgt(
         args,
@@ -57,10 +57,11 @@ def mcts_mgt(
             return counts
 
         for i in range(num_mcts_simulations):
-            search_val, state = fn_execute_search(state)
+            search_val, selected_node = fn_execute_search(state)
             if search_val is None:
                 break
         counts = _fn_get_counts()
+        zeros_in_state = len(list(filter(lambda n: n == 0, state.flatten())))
         sum_counts = sum(counts)
         return counts
 
@@ -84,13 +85,13 @@ def mcts_mgt(
 
         selected_node = root_node.fn_select_from_available_leaf_nodes()
 
-        selected_node_after_exapnsion = None
+        selected_node_after_expansion = None
         if selected_node.fn_is_already_visited():
-            selected_node_after_exapnsion = selected_node.fn_expand_node()
-            if selected_node_after_exapnsion is None:
+            selected_node_after_expansion = selected_node.fn_expand_node()
+            if selected_node_after_expansion is None:
                 return None, selected_node
             else:
-                selected_node = selected_node_after_exapnsion
+                selected_node = selected_node_after_expansion
 
         score = fn_rollout(selected_node)
         tree_depth = selected_node.fn_back_propagate(score)
@@ -98,7 +99,6 @@ def mcts_mgt(
         if DEBUG:
             visits = root_node.fn_get_num_visits()
             val = root_node.fn_get_node_val()
-
 
             print()
             root_node.fn_display_tree()
