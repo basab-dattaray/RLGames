@@ -1,6 +1,5 @@
 import numpy
 
-
 def action_mgt(USE_SMART_PREDICTOR_FOR_ROLLOUT, fn_get_valid_moves, fn_get_prediction_info):
     def _fn_get_possible_actions_from_valid_moves(state):
         valid_moves = fn_get_valid_moves(state, 1)
