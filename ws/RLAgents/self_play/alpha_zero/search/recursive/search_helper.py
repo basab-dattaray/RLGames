@@ -6,7 +6,19 @@ from ws.RLAgents.self_play.alpha_zero.search.cache_mgt import cache_mgt
 from ws.RLAgents.self_play.alpha_zero.search.recursive.state_visit_mgt import state_visit_mgt
 
 
-def create_normalized_predictor(fn_predict_policies, fn_get_valid_actions):
+# def create_normalized_predictor(fn_predict_policies, fn_get_valid_actions):
+
+
+def search_helper(
+        args,
+        fn_predict_policies,
+        fn_get_valid_actions
+):
+    EPS = 1e-8
+    cache_mgr = cache_mgt()
+
+    state_visits = state_visit_mgt()
+
     def fn_get_prediction_info_3(state):
         action_probalities, wrapped_state_val = fn_predict_policies(state)
         valid_actions = fn_get_valid_actions(state)
@@ -21,18 +33,6 @@ def create_normalized_predictor(fn_predict_policies, fn_get_valid_actions):
             action_probalities = action_probalities + valid_actions
             action_probalities /= np.sum(action_probalities)
         return action_probalities, wrapped_state_val[0], valid_actions
-
-    return fn_get_prediction_info_3
-
-def search_helper(
-        args,
-        fn_predict_policies,
-        fn_get_valid_actions
-):
-    EPS = 1e-8
-    cache_mgr = cache_mgt()
-
-    state_visits = state_visit_mgt()
 
     def fn_update_state_during_backprop(state_key, action, state_val):
         state_action_key = (state_key, action)
@@ -91,11 +91,17 @@ def search_helper(
         action = best_act
         return action
 
-    ret_functions = namedtuple('_', ['cache_mgr', 'state_visits', 'fn_get_best_ucb_action', 'fn_update_state_during_backprop'])
+    ret_functions = namedtuple('_', [
+        'cache_mgr',
+        'state_visits',
+        'fn_get_best_ucb_action',
+        'fn_update_state_during_backprop',
+        'fn_get_prediction_info_3'
+    ])
     ret_functions.cache_mgr = cache_mgr
     ret_functions.state_visits = state_visits
     ret_functions.fn_get_best_ucb_action = fn_get_best_ucb_action
     ret_functions.fn_update_state_during_backprop = fn_update_state_during_backprop
-
+    ret_functions.fn_get_prediction_info_3 = fn_get_prediction_info_3
     return ret_functions
 

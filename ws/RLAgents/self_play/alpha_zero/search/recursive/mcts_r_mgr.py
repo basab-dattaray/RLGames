@@ -4,7 +4,7 @@ from ws.RLAgents.self_play.alpha_zero.search.cache_mgt import cache_mgt
 from ws.RLAgents.self_play.alpha_zero.search.policy_mgt import policy_mgt
 
 from ws.RLAgents.self_play.alpha_zero.search.recursive.state_visit_mgt import state_visit_mgt
-from ws.RLAgents.self_play.alpha_zero.search.recursive.search_helper import search_helper, create_normalized_predictor
+from ws.RLAgents.self_play.alpha_zero.search.recursive.search_helper import search_helper
 
 
 def mcts_r_mgr(
@@ -18,7 +18,7 @@ def mcts_r_mgr(
 ):
     fn_terminal_value = lambda pieces: game_mgr.fn_get_game_progress_status(pieces, 1)
     fn_get_valid_actions = lambda board: game_mgr.fn_get_valid_moves(board, 1)
-    fn_get_prediction_info_3 = create_normalized_predictor (neural_net_mgr.predict, fn_get_valid_actions)
+    # fn_get_prediction_info_3 = create_normalized_predictor (neural_net_mgr.predict, fn_get_valid_actions)
 
     # state_visits = state_visit_mgt()
 
@@ -57,7 +57,7 @@ def mcts_r_mgr(
         # ROLLOUT 2 - uses prediction
         if not search_utils.cache_mgr.state_info.fn_does_key_exist(state_key):
             # leaf node
-            policy, state_val, valid_actions = fn_get_prediction_info_3(state)
+            policy, state_val, valid_actions = search_utils.fn_get_prediction_info_3(state)
             if valid_actions is None:
                 return -state_val
             state_info = {
