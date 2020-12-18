@@ -20,14 +20,13 @@ def mcts_r_mgr(
     fn_get_valid_actions = lambda board: game_mgr.fn_get_valid_moves(board, 1)
     fn_get_prediction_info_3 = create_normalized_predictor (neural_net_mgr.predict, fn_get_valid_actions)
 
-    state_visits = state_visit_mgt()
+    # state_visits = state_visit_mgt()
 
     cache_mgr = cache_mgt()
 
     search_help = search_helper(
         args,
-        cache_mgr,
-        state_visits
+        cache_mgr
     )
 
     def fn_get_mcts_counts(state):
@@ -35,7 +34,7 @@ def mcts_r_mgr(
             fn_search(state)
 
         s = game_mgr.fn_get_state_key(state)
-        counts = [state_visits.fn_get_child_state_visits((s, a)) if state_visits.fn_does_child_state_visits_exist((s, a)) else 0 for a in range(max_num_actions)]
+        counts = [search_help.state_visits.fn_get_child_state_visits((s, a)) if search_help.state_visits.fn_does_child_state_visits_exist((s, a)) else 0 for a in range(max_num_actions)]
         zeros_in_state = len(list(filter(lambda n: n == 0, state.flatten())))
         sum_counts = sum(counts)
 
@@ -71,7 +70,7 @@ def mcts_r_mgr(
             cache_mgr.state_valid_moves.fn_set_data(state_key, valid_actions)
 
             # Ns[state_key] = 0
-            state_visits.fn_set_state_visits(state_key, 0)
+            search_help.state_visits.fn_set_state_visits(state_key, 0)
 
             return -state_val
 
