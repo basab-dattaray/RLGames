@@ -26,6 +26,7 @@ def mcts_r_mgr(
 
     search_utils = search_helper(
         args,
+        game_mgr,
         neural_net_mgr.predict,
         fn_get_valid_actions,
     )
@@ -47,37 +48,42 @@ def mcts_r_mgr(
     def fn_search(state):
         state_key = game_mgr.fn_get_state_key(state)
 
-        # ROLLOUT 1 - actual result
-        if not search_utils.cache_mgr.state_results.fn_does_key_exist(state_key):
-            search_utils.cache_mgr.state_results.fn_set_data(state_key, fn_terminal_value(state))
-        if search_utils.cache_mgr.state_results.fn_get_data(state_key) != 0:
-            # terminal node
-            return - search_utils.cache_mgr.state_results.fn_get_data(state_key)
+        state_results = search_utils.fn_get_real_state_value(state)
+        if state_results != 0:
+            return - state_results
 
         # ROLLOUT 2 - uses prediction
-        if not search_utils.cache_mgr.state_info.fn_does_key_exist(state_key):
-            # leaf node
-            policy, state_val, valid_actions = search_utils.fn_get_prediction_info_3(state)
-            if valid_actions is None:
-                return -state_val
-            state_info = {
-                'policy': policy,
-                'state_val': state_val,
-                'valid_actions': valid_actions
-            }
-            search_utils.cache_mgr.state_info.fn_set_data(state_key, state_info)
-            search_utils.cache_mgr.state_policy.fn_set_data(state_key, policy)
-
-            search_utils.cache_mgr.state_valid_moves.fn_set_data(state_key, valid_actions)
-
-            # Ns[state_key] = 0
-            search_utils.state_visits.fn_set_state_visits(state_key, 0)
-
-            return -state_val
+        # if not search_utils.cache_mgr.state_info.fn_does_key_exist(state_key):
+        #     # leaf node
+        #     policy, state_val, valid_actions = search_utils.fn_get_prediction_info_3(state)
+        #     if valid_actions is None:
+        #         return -state_val
+        #     state_info = {
+        #         'policy': policy,
+        #         'state_val': state_val,
+        #         'valid_actions': valid_actions
+        #     }
+        #     search_utils.cache_mgr.state_info.fn_set_data(state_key, state_info)
+        #     search_utils.cache_mgr.state_policy.fn_set_data(state_key, policy)
+        #
+        #     search_utils.cache_mgr.state_valid_moves.fn_set_data(state_key, valid_actions)
+        #
+        #     # Ns[state_key] = 0
+        #     search_utils.state_visits.fn_set_state_visits(state_key, 0)
+        #
+        #     return - state_val
+        prediction_info, is_new_prediction = search_utils.fn_get_predicted_based_state_value(state)
+        if is_new_prediction:
+            return - prediction_info['state_val']
 
         # SELECTION - node already visited so find next best node in the subtree
 
-        best_action = search_utils.fn_get_best_ucb_action(search_utils.cache_mgr, state_key, max_num_actions, explore_exploit_ratio)
+        best_action = search_utils.fn_get_best_ucb_action(
+            search_utils.cache_mgr,
+            state_key, max_num_actions,
+            explore_exploit_ratio
+        )
+
         next_state = game_mgr.fn_get_next_state(state, 1, best_action)
         next_state_canonical = game_mgr.fn_get_canonical_form(next_state, -1)
 
