@@ -26,8 +26,7 @@ def mcts_r_mgr(
 
     search_help = search_helper(
         args,
-        cache_mgr.state_action_qval,
-        cache_mgr.state_policy,
+        cache_mgr,
         state_visits
     )
 

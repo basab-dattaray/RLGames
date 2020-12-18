@@ -22,8 +22,7 @@ def create_normalized_predictor(fn_predict_policies, fn_get_valid_actions):
 
 def search_helper(
         args,
-        state_action_qval,
-        state_policy,
+        cache_mgr,
         state_visits
 ):
     EPS = 1e-8
@@ -31,16 +30,16 @@ def search_helper(
 
     def fn_update_state_during_backprop(state_key, action, state_val):
         state_action_key = (state_key, action)
-        if state_action_qval.fn_does_key_exist(state_action_key):  # UPDATE EXISTING
-            tmp_val = (state_visits.fn_get_child_state_visits(state_action_key) * state_action_qval.fn_get_data(
+        if cache_mgr.state_action_qval.fn_does_key_exist(state_action_key):  # UPDATE EXISTING
+            tmp_val = (state_visits.fn_get_child_state_visits(state_action_key) * cache_mgr.state_action_qval.fn_get_data(
                 state_action_key) + state_val) / (state_visits.fn_get_child_state_visits(state_action_key) + 1)
-            state_action_qval.fn_set_data(state_action_key, tmp_val)
+            cache_mgr.state_action_qval.fn_set_data(state_action_key, tmp_val)
 
             # Nsa[(state_action_key)] += 1
             state_visits.fn_incr_child_state_visits(state_action_key)
 
         else:  # UPDATE FIRST TIME
-            state_action_qval.fn_set_data(state_action_key, state_val)
+            cache_mgr.state_action_qval.fn_set_data(state_action_key, state_val)
 
             # Nsa[(state_action_key)] = 1
             state_visits.fn_set_child_state_visits(state_action_key, 1)
@@ -59,18 +58,18 @@ def search_helper(
         for action in range(max_num_actions):
 
             if valid_moves[action]:
-                policy = state_policy.fn_get_data(state_key)
+                policy = cache_mgr.state_policy.fn_get_data(state_key)
                 state_action_key = (state_key, action)
 
                 if args.mcts_ucb_use_action_prob_for_exploration:
                     action_prob_for_exploration = policy[action]
 
-                if state_action_qval.fn_does_key_exist(state_action_key):
+                if cache_mgr.state_action_qval.fn_does_key_exist(state_action_key):
                     parent_visit_factor = state_visits.fn_get_state_visits(state_key)
                     if args.mcts_ucb_use_log_in_numerator:
                         parent_visit_factor = np.log(parent_visit_factor)
 
-                    ucb = state_action_qval.fn_get_data(state_action_key) \
+                    ucb = cache_mgr.state_action_qval.fn_get_data(state_action_key) \
                           + explore_exploit_ratio * action_prob_for_exploration * math.sqrt\
                                 (
                                     parent_visit_factor / state_visits.fn_get_child_state_visits(state_action_key)
