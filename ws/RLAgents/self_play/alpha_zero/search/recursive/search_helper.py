@@ -12,8 +12,7 @@ from ws.RLAgents.self_play.alpha_zero.search.recursive.state_visit_mgt import st
 def search_helper(
         args,
         game_mgr,
-        fn_predict_policies,
-        fn_get_valid_actions
+        fn_predict_policies
 ):
     EPS = 1e-8
 

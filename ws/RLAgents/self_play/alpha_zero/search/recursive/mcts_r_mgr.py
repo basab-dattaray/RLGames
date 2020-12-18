@@ -16,7 +16,7 @@ def mcts_r_mgr(
     explore_exploit_ratio,
     max_num_actions
 ):
-    fn_terminal_value = lambda pieces: game_mgr.fn_get_game_progress_status(pieces, 1)
+    # fn_terminal_value = lambda pieces: game_mgr.fn_get_game_progress_status(pieces, 1)
     fn_get_valid_actions = lambda board: game_mgr.fn_get_valid_moves(board, 1)
     # fn_get_prediction_info_3 = create_normalized_predictor (neural_net_mgr.predict, fn_get_valid_actions)
 
@@ -27,8 +27,7 @@ def mcts_r_mgr(
     search_utils = search_helper(
         args,
         game_mgr,
-        neural_net_mgr.predict,
-        fn_get_valid_actions,
+        neural_net_mgr.predict
     )
 
     def fn_get_mcts_counts(state):
@@ -76,11 +75,11 @@ def mcts_r_mgr(
         if is_new_prediction:
             return - prediction_info['state_val']
 
-        # SELECTION - node already visited so find next best node in the subtree
-
+        # select best action at this non terminal state
         best_action = search_utils.fn_get_best_ucb_action(
             search_utils.cache_mgr,
-            state_key, max_num_actions,
+            state_key,
+            max_num_actions,
             explore_exploit_ratio
         )
 
