@@ -2,6 +2,7 @@ import math
 from collections import namedtuple
 import numpy as np
 
+from ws.RLAgents.self_play.alpha_zero.search.cache_mgt import cache_mgt
 from ws.RLAgents.self_play.alpha_zero.search.recursive.state_visit_mgt import state_visit_mgt
 
 
@@ -25,9 +26,9 @@ def create_normalized_predictor(fn_predict_policies, fn_get_valid_actions):
 
 def search_helper(
         args,
-        cache_mgr
 ):
     EPS = 1e-8
+    cache_mgr = cache_mgt()
 
     state_visits = state_visit_mgt()
 
@@ -88,7 +89,8 @@ def search_helper(
         action = best_act
         return action
 
-    ret_functions = namedtuple('_', ['state_visits', 'fn_get_best_ucb_action', 'fn_update_state_during_backprop'])
+    ret_functions = namedtuple('_', ['cache_mgr', 'state_visits', 'fn_get_best_ucb_action', 'fn_update_state_during_backprop'])
+    ret_functions.cache_mgr = cache_mgr
     ret_functions.state_visits = state_visits
     ret_functions.fn_get_best_ucb_action = fn_get_best_ucb_action
     ret_functions.fn_update_state_during_backprop = fn_update_state_during_backprop

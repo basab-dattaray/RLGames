@@ -22,11 +22,10 @@ def mcts_r_mgr(
 
     # state_visits = state_visit_mgt()
 
-    cache_mgr = cache_mgt()
+    # cache_mgr = cache_mgt()
 
-    search_help = search_helper(
-        args,
-        cache_mgr
+    search_utils = search_helper(
+        args
     )
 
     def fn_get_mcts_counts(state):
@@ -34,9 +33,9 @@ def mcts_r_mgr(
             fn_search(state)
 
         s = game_mgr.fn_get_state_key(state)
-        counts = [search_help.state_visits.fn_get_child_state_visits((s, a)) if search_help.state_visits.fn_does_child_state_visits_exist((s, a)) else 0 for a in range(max_num_actions)]
-        zeros_in_state = len(list(filter(lambda n: n == 0, state.flatten())))
-        sum_counts = sum(counts)
+        counts = [search_utils.state_visits.fn_get_child_state_visits((s, a)) if search_utils.state_visits.fn_does_child_state_visits_exist((s, a)) else 0 for a in range(max_num_actions)]
+        # zeros_in_state = len(list(filter(lambda n: n == 0, state.flatten())))
+        # sum_counts = sum(counts)
 
         return counts
 
@@ -47,14 +46,14 @@ def mcts_r_mgr(
         state_key = game_mgr.fn_get_state_key(state)
 
         # ROLLOUT 1 - actual result
-        if not cache_mgr.state_results.fn_does_key_exist(state_key):
-            cache_mgr.state_results.fn_set_data(state_key, fn_terminal_value(state))
-        if cache_mgr.state_results.fn_get_data(state_key) != 0:
+        if not search_utils.cache_mgr.state_results.fn_does_key_exist(state_key):
+            search_utils.cache_mgr.state_results.fn_set_data(state_key, fn_terminal_value(state))
+        if search_utils.cache_mgr.state_results.fn_get_data(state_key) != 0:
             # terminal node
-            return -cache_mgr.state_results.fn_get_data(state_key)
+            return - search_utils.cache_mgr.state_results.fn_get_data(state_key)
 
         # ROLLOUT 2 - uses prediction
-        if not cache_mgr.state_info.fn_does_key_exist(state_key):
+        if not search_utils.cache_mgr.state_info.fn_does_key_exist(state_key):
             # leaf node
             policy, state_val, valid_actions = fn_get_prediction_info_3(state)
             if valid_actions is None:
@@ -64,26 +63,26 @@ def mcts_r_mgr(
                 'state_val': state_val,
                 'valid_actions': valid_actions
             }
-            cache_mgr.state_info.fn_set_data(state_key, state_info)
-            cache_mgr.state_policy.fn_set_data(state_key, policy)
+            search_utils.cache_mgr.state_info.fn_set_data(state_key, state_info)
+            search_utils.cache_mgr.state_policy.fn_set_data(state_key, policy)
 
-            cache_mgr.state_valid_moves.fn_set_data(state_key, valid_actions)
+            search_utils.cache_mgr.state_valid_moves.fn_set_data(state_key, valid_actions)
 
             # Ns[state_key] = 0
-            search_help.state_visits.fn_set_state_visits(state_key, 0)
+            search_utils.state_visits.fn_set_state_visits(state_key, 0)
 
             return -state_val
 
         # SELECTION - node already visited so find next best node in the subtree
 
-        best_action = search_help.fn_get_best_ucb_action(cache_mgr, state_key, max_num_actions, explore_exploit_ratio)
+        best_action = search_utils.fn_get_best_ucb_action(search_utils.cache_mgr, state_key, max_num_actions, explore_exploit_ratio)
         next_state = game_mgr.fn_get_next_state(state, 1, best_action)
         next_state_canonical = game_mgr.fn_get_canonical_form(next_state, -1)
 
         # BACKPROP
         state_val = fn_search(next_state_canonical)
 
-        search_help.fn_update_state_during_backprop(state_key, best_action, state_val)
+        search_utils.fn_update_state_during_backprop(state_key, best_action, state_val)
 
         return -state_val
 
