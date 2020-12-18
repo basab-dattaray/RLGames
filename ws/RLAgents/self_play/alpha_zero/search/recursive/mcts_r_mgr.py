@@ -18,7 +18,7 @@ def mcts_r_mgr(
 ):
     # fn_terminal_value = lambda pieces: game_mgr.fn_get_game_progress_status(pieces, 1)
     fn_get_valid_actions = lambda board: game_mgr.fn_get_valid_moves(board, 1)
-    # fn_get_prediction_info_3 = create_normalized_predictor (neural_net_mgr.predict, fn_get_valid_actions)
+    # fn_get_prediction_info_3 = create_normalized_predictor (neural_net_mgr.fn_neural_predict, fn_get_valid_actions)
 
     # state_visits = state_visit_mgt()
 
@@ -27,7 +27,7 @@ def mcts_r_mgr(
     search_utils = search_helper(
         args,
         game_mgr,
-        neural_net_mgr.predict
+        neural_net_mgr
     )
 
     def fn_get_mcts_counts(state):

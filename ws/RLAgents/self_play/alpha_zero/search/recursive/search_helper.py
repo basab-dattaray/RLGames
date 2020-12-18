@@ -12,10 +12,9 @@ from ws.RLAgents.self_play.alpha_zero.search.recursive.state_visit_mgt import st
 def search_helper(
         args,
         game_mgr,
-        fn_predict_policies
+        neural_net_mgr,
 ):
     EPS = 1e-8
-
     fn_terminal_value = lambda pieces: game_mgr.fn_get_game_progress_status(pieces, 1)
     fn_get_valid_actions = lambda board: game_mgr.fn_get_valid_moves(board, 1)
 
@@ -56,7 +55,7 @@ def search_helper(
         return state_info, is_new_prediction
 
     def fn_get_prediction_info_3(state):
-        action_probalities, wrapped_state_val = fn_predict_policies(state)
+        action_probalities, wrapped_state_val = neural_net_mgr.fn_neural_predict(state)
         valid_actions = fn_get_valid_actions(state)
         if valid_actions is None:
             return action_probalities, wrapped_state_val[0], None

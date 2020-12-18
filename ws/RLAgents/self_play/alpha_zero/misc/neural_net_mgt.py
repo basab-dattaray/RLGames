@@ -63,7 +63,7 @@ def neural_net_mgt(args):
                 batch_of_policies = torch.FloatTensor(np.array(batch_of_policies_as_tuple))
                 batch_of_results = torch.FloatTensor(np.array(batch_of_results_as_tuple).astype(np.float64))
 
-                # predict
+                # fn_neural_predict
                 if nn_args.cuda:
                     batch_of_states, batch_of_policies, batch_of_results = batch_of_states.contiguous().cuda(), batch_of_policies.contiguous().cuda(), batch_of_results.contiguous().cuda()
 
@@ -85,7 +85,7 @@ def neural_net_mgt(args):
         fn_stop_counting()
         # args.calltracer.fn_write(f'Number of Epochs for training new model: {args.epochs}')
 
-    def predict(board):
+    def fn_neural_predict(board):
         start = time.time()
 
         # preparing input
@@ -142,7 +142,7 @@ def neural_net_mgt(args):
         'fn_adjust_model_from_examples',
         'fn_load_model' ,
         'fn_save_model',
-        'predict',
+        'fn_neural_predict',
         'fn_is_model_available'
     ])
 
@@ -150,7 +150,7 @@ def neural_net_mgt(args):
     neural_net_mgr.fn_adjust_model_from_examples = fn_adjust_model_from_examples
     neural_net_mgr.fn_load_model = fn_load_model
     neural_net_mgr.fn_save_model = fn_save_model
-    neural_net_mgr.predict = predict
+    neural_net_mgr.fn_neural_predict = fn_neural_predict
     neural_net_mgr.fn_is_model_available = fn_is_model_available
 
     return neural_net_mgr

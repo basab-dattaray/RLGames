@@ -50,7 +50,7 @@ def impl_mgt(app_info, state_size, action_size):
 
         if np.random.rand() <= _epsilon:
             return random.randrange(action_size)
-        act_values = _model.predict(state)
+        act_values = _model.fn_neural_predict(state)
         return np.argmax(act_values[0])
 
     def fnReplay():
