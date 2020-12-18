@@ -25,7 +25,9 @@ def mcts_r_mgr(
     # cache_mgr = cache_mgt()
 
     search_utils = search_helper(
-        args
+        args,
+        neural_net_mgr.predict,
+        fn_get_valid_actions,
     )
 
     def fn_get_mcts_counts(state):

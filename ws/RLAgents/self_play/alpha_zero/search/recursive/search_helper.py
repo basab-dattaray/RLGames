@@ -26,6 +26,8 @@ def create_normalized_predictor(fn_predict_policies, fn_get_valid_actions):
 
 def search_helper(
         args,
+        fn_predict_policies,
+        fn_get_valid_actions
 ):
     EPS = 1e-8
     cache_mgr = cache_mgt()
