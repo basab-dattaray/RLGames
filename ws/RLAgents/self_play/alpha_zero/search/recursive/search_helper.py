@@ -131,15 +131,16 @@ def search_helper(
         'state_visits',
         'fn_get_best_ucb_action',
         'fn_update_state_during_backprop',
-        'fn_get_prediction_info_3',
+        # 'fn_get_prediction_info_3',
 
-        'fn_get_real_state_value'
+        'fn_get_real_state_value',
+        'fn_get_predicted_based_state_value',
     ])
     ret_functions.cache_mgr = cache_mgr
     ret_functions.state_visits = state_visits
     ret_functions.fn_get_best_ucb_action = fn_get_best_ucb_action
     ret_functions.fn_update_state_during_backprop = fn_update_state_during_backprop
-    ret_functions.fn_get_prediction_info_3 = fn_get_prediction_info_3
+    # ret_functions.fn_get_prediction_info_3 = fn_get_prediction_info_3
 
     ret_functions.fn_get_real_state_value = fn_get_real_state_value
     ret_functions.fn_get_predicted_based_state_value = fn_get_predicted_based_state_value

@@ -51,26 +51,6 @@ def mcts_r_mgr(
         if state_results != 0:
             return - state_results
 
-        # ROLLOUT 2 - uses prediction
-        # if not search_utils.cache_mgr.state_info.fn_does_key_exist(state_key):
-        #     # leaf node
-        #     policy, state_val, valid_actions = search_utils.fn_get_prediction_info_3(state)
-        #     if valid_actions is None:
-        #         return -state_val
-        #     state_info = {
-        #         'policy': policy,
-        #         'state_val': state_val,
-        #         'valid_actions': valid_actions
-        #     }
-        #     search_utils.cache_mgr.state_info.fn_set_data(state_key, state_info)
-        #     search_utils.cache_mgr.state_policy.fn_set_data(state_key, policy)
-        #
-        #     search_utils.cache_mgr.state_valid_moves.fn_set_data(state_key, valid_actions)
-        #
-        #     # Ns[state_key] = 0
-        #     search_utils.state_visits.fn_set_state_visits(state_key, 0)
-        #
-        #     return - state_val
         prediction_info, is_new_prediction = search_utils.fn_get_predicted_based_state_value(state)
         if is_new_prediction:
             return - prediction_info['state_val']
