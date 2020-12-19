@@ -35,9 +35,9 @@ def search_helper(
 
     def fn_get_predicted_based_state_value(state):
         state_key = game_mgr.fn_get_state_key(state)
-        is_new_prediction = False
+        mcts_has_been_expanded = False
         if not cache_mgr.state_info.fn_does_key_exist(state_key):
-            is_new_prediction = True
+            mcts_has_been_expanded = True
             # leaf node
             policy, state_val, valid_actions = fn_get_prediction_info_3(state)
             if valid_actions is None:
@@ -53,12 +53,12 @@ def search_helper(
 
             cache_mgr.state_valid_moves.fn_set_data(state_key, valid_actions)
 
-            # Ns[state_key] = 0
+            # this expands MCTS
             state_visits.fn_set_state_visits(state_key, 0)
 
         state_info = cache_mgr.state_info.fn_get_data(state_key)
 
-        return state_info, is_new_prediction
+        return state_info, mcts_has_been_expanded
 
     def fn_get_prediction_info_3(state):
         action_probalities, wrapped_state_val = neural_net_mgr.fn_neural_predict(state)
@@ -82,15 +82,13 @@ def search_helper(
                 state_action_key) + state_val) / (state_visits.fn_get_child_state_visits(state_action_key) + 1)
             cache_mgr.state_action_qval.fn_set_data(state_action_key, tmp_val)
 
-            # Nsa[(state_action_key)] += 1
             state_visits.fn_incr_child_state_visits(state_action_key)
 
-        else:  # UPDATE FIRST TIME
+        else:  # CREATE FOR THE FIRST TIME
             cache_mgr.state_action_qval.fn_set_data(state_action_key, state_val)
 
-            # Nsa[(state_action_key)] = 1
             state_visits.fn_set_child_state_visits(state_action_key, 1)
-        # Ns[state_key] += 1
+
         state_visits.fn_incr_state_visits(state_key)
 
     def fn_get_best_ucb_action(state_key):
