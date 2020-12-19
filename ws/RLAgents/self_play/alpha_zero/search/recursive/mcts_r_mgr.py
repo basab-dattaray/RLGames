@@ -16,13 +16,6 @@ def mcts_r_mgr(
     explore_exploit_ratio,
     max_num_actions
 ):
-    # fn_terminal_value = lambda pieces: game_mgr.fn_get_game_progress_status(pieces, 1)
-    fn_get_valid_actions = lambda board: game_mgr.fn_get_valid_moves(board, 1)
-    # fn_get_prediction_info_3 = create_normalized_predictor (neural_net_mgr.fn_neural_predict, fn_get_valid_actions)
-
-    # state_visits = state_visit_mgt()
-
-    # cache_mgr = cache_mgt()
 
     search_utils = search_helper(
         args,
@@ -34,10 +27,10 @@ def mcts_r_mgr(
         for i in range(num_mcts_simulations):
             fn_search(state)
 
-        s = game_mgr.fn_get_state_key(state)
-        counts = [search_utils.state_visits.fn_get_child_state_visits((s, a)) if search_utils.state_visits.fn_does_child_state_visits_exist((s, a)) else 0 for a in range(max_num_actions)]
-
-        return counts
+        state_key = game_mgr.fn_get_state_key(state)
+        # counts = [search_utils.state_visits.fn_get_child_state_visits((s, a)) if search_utils.state_visits.fn_does_child_state_visits_exist((s, a)) else 0 for a in range(max_num_actions)]
+        visit_counts = search_utils.fn_get_visit_counts(state_key)
+        return visit_counts
 
     def fn_search(state):
         state_key = game_mgr.fn_get_state_key(state)

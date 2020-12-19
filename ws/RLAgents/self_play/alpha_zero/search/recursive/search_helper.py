@@ -22,6 +22,11 @@ def search_helper(
 
     state_visits = state_visit_mgt()
 
+    def fn_get_visit_counts(state_key):
+        counts = [state_visits.fn_get_child_state_visits((state_key, a))
+            if state_visits.fn_does_child_state_visits_exist((state_key, a)) else 0 for a in range(game_mgr.fn_get_action_size())]
+        return counts
+
     def fn_get_real_state_value(state):
         state_key = game_mgr.fn_get_state_key(state)
         if not cache_mgr.state_results.fn_does_key_exist(state_key):
@@ -127,8 +132,8 @@ def search_helper(
         return action
 
     ret_functions = namedtuple('_', [
-        'cache_mgr',
-        'state_visits',
+        # 'cache_mgr',
+        'fn_get_visit_counts',
         'fn_get_best_ucb_action',
         'fn_update_state_during_backprop',
         # 'fn_get_prediction_info_3',
@@ -136,8 +141,8 @@ def search_helper(
         'fn_get_real_state_value',
         'fn_get_predicted_based_state_value',
     ])
-    ret_functions.cache_mgr = cache_mgr
-    ret_functions.state_visits = state_visits
+    # ret_functions.cache_mgr = cache_mgr
+    ret_functions.fn_get_visit_counts = fn_get_visit_counts
     ret_functions.fn_get_best_ucb_action = fn_get_best_ucb_action
     ret_functions.fn_update_state_during_backprop = fn_update_state_during_backprop
     # ret_functions.fn_get_prediction_info_3 = fn_get_prediction_info_3
