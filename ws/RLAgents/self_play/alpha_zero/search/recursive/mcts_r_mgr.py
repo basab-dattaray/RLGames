@@ -26,9 +26,7 @@ def mcts_r_mgr(
     def fn_get_mcts_counts(state):
         for i in range(num_mcts_simulations):
             fn_search(state)
-
         state_key = game_mgr.fn_get_state_key(state)
-        # counts = [search_utils.state_visits.fn_get_child_state_visits((s, a)) if search_utils.state_visits.fn_does_child_state_visits_exist((s, a)) else 0 for a in range(max_num_actions)]
         visit_counts = search_utils.fn_get_visit_counts(state_key)
         return visit_counts
 
@@ -46,7 +44,6 @@ def mcts_r_mgr(
         # select best action at this non terminal state
         best_action = search_utils.fn_get_best_ucb_action(
             state_key,
-            max_num_actions,
             explore_exploit_ratio
         )
 

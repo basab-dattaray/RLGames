@@ -66,9 +66,9 @@ def search_helper(
             return action_probalities, wrapped_state_val[0], None
 
         action_probalities = action_probalities * valid_actions  # masking invalid moves
-        sum_Ps_s = np.sum(action_probalities)
-        if sum_Ps_s > 0:
-            action_probalities /= sum_Ps_s  # renormalize
+        sum_action_probabilities = np.sum(action_probalities)
+        if sum_action_probabilities > 0:
+            action_probalities /= sum_action_probabilities  # renormalize
         else:
             action_probalities = action_probalities + valid_actions
             action_probalities /= np.sum(action_probalities)
@@ -92,7 +92,7 @@ def search_helper(
         # Ns[state_key] += 1
         state_visits.fn_incr_state_visits(state_key)
 
-    def fn_get_best_ucb_action(state_key, max_num_actions, explore_exploit_ratio):
+    def fn_get_best_ucb_action(state_key, explore_exploit_ratio):
         valid_moves = cache_mgr.state_valid_moves.fn_get_data(state_key)
 
         best_ucb = -float('inf')
@@ -101,7 +101,7 @@ def search_helper(
         action_prob_for_exploration = 1
 
         # pick the action with the highest upper confidence bound
-        for action in range(max_num_actions):
+        for action in range(game_mgr.fn_get_action_size()):
 
             if valid_moves[action]:
                 policy = cache_mgr.state_policy.fn_get_data(state_key)
@@ -120,7 +120,6 @@ def search_helper(
                                 (
                                     parent_visit_factor / state_visits.fn_get_child_state_visits(state_action_key)
                                 )
-
                 else:
                     ucb = explore_exploit_ratio * action_prob_for_exploration * math.sqrt(
                         state_visits.fn_get_state_visits(state_key) + EPS)  # Q = 0 ?
