@@ -41,7 +41,8 @@ def search_helper(
             # leaf node
             policy, state_val, valid_actions = fn_get_prediction_info_3(state)
             if valid_actions is None:
-                return -state_val
+                return - state_val
+
             state_info = {
                 'policy': policy,
                 'state_val': state_val,
@@ -92,7 +93,7 @@ def search_helper(
         # Ns[state_key] += 1
         state_visits.fn_incr_state_visits(state_key)
 
-    def fn_get_best_ucb_action(state_key, explore_exploit_ratio):
+    def fn_get_best_ucb_action(state_key):
         valid_moves = cache_mgr.state_valid_moves.fn_get_data(state_key)
 
         best_ucb = -float('inf')
@@ -116,12 +117,12 @@ def search_helper(
                         parent_visit_factor = np.log(parent_visit_factor)
 
                     ucb = cache_mgr.state_action_qval.fn_get_data(state_action_key) \
-                          + explore_exploit_ratio * action_prob_for_exploration * math.sqrt\
+                          + args.cpuct_exploration_exploitation_factor * action_prob_for_exploration * math.sqrt\
                                 (
                                     parent_visit_factor / state_visits.fn_get_child_state_visits(state_action_key)
                                 )
                 else:
-                    ucb = explore_exploit_ratio * action_prob_for_exploration * math.sqrt(
+                    ucb = args.cpuct_exploration_exploitation_factor * action_prob_for_exploration * math.sqrt(
                         state_visits.fn_get_state_visits(state_key) + EPS)  # Q = 0 ?
                     # u = 0
                 if ucb > best_ucb:
@@ -131,11 +132,9 @@ def search_helper(
         return action
 
     ret_functions = namedtuple('_', [
-        # 'cache_mgr',
         'fn_get_visit_counts',
         'fn_get_best_ucb_action',
         'fn_update_state_during_backprop',
-        # 'fn_get_prediction_info_3',
 
         'fn_get_real_state_value',
         'fn_get_predicted_based_state_value',

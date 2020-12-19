@@ -13,7 +13,7 @@ def mcts_r_mgr(
     neural_net_mgr,
     playground_mgt,
     num_mcts_simulations,
-    explore_exploit_ratio,
+    cpuct_exploration_exploitation_factor,
     max_num_actions
 ):
 
@@ -43,14 +43,12 @@ def mcts_r_mgr(
 
         # select best action at this non terminal state
         best_action = search_utils.fn_get_best_ucb_action(
-            state_key,
-            explore_exploit_ratio
+            state_key
         )
 
         next_state = game_mgr.fn_get_next_state(state, 1, best_action)
         next_state_canonical = game_mgr.fn_get_canonical_form(next_state, -1)
 
-        # BACKPROP
         state_val = fn_search(next_state_canonical)
 
         search_utils.fn_update_state_during_backprop(state_key, best_action, state_val)
@@ -64,8 +62,3 @@ def mcts_r_mgr(
 
     return mcts_mgr
 
-# Qsa = {}  # stores Q values for state_key,action (as defined in the paper)
-
-# Ps = {}  # stores initial policy (returned by neural net)
-# Es = {}  # stores game.fn_get_game_progress_status ended for board_pieces state_key
-# Vs = {}  # stores game.fn_get_valid_moves for board_pieces state_key

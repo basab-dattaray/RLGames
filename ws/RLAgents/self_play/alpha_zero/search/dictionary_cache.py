@@ -33,9 +33,9 @@ def dictionary_cache():
 
         def _fn_set_val(dict, key, val):
             if type(val) == dict:
-                revised_dict = dict[key].copy()
-                revised_dict.update(val)
-                dict[key] = revised_dict
+                copy_of_compound_val = dict[key].copy()
+                copy_of_compound_val.update(val)
+                dict[key] = copy_of_compound_val
             else:
                 dict[key] = val
 

@@ -17,7 +17,7 @@ def mcts_adapter(neural_net_mgr, args):
         neural_net_mgr,
         playground_mgt,
         num_mcts_simulations=args.num_of_mc_simulations,
-        explore_exploit_ratio=args.cpuct_exploration_exploitation_factor,
+        cpuct_exploration_exploitation_factor=args.cpuct_exploration_exploitation_factor,
         max_num_actions=game_mgr.fn_get_action_size()
     )
     fn_get_policy = lambda state, do_random_selection: mcts.fn_get_policy(state, do_random_selection)
