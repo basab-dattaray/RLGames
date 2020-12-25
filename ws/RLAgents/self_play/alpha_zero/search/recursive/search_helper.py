@@ -33,11 +33,9 @@ def search_helper(
             cache_mgr.state_results.fn_set_data(state_key, fn_terminal_value(state))
         return cache_mgr.state_results.fn_get_data(state_key)
 
-    def fn_get_predicted_based_state_value(state):
+    def fn_visit_new_state_if_possible(state):
         state_key = game_mgr.fn_get_state_key(state)
-        mcts_has_been_expanded = False
         if not cache_mgr.state_info.fn_does_key_exist(state_key):
-            mcts_has_been_expanded = True
             # leaf node
             policy, state_val, valid_actions = fn_get_prediction_info_3(state)
             if valid_actions is None:
@@ -137,7 +135,7 @@ def search_helper(
         'fn_update_state_during_backprop',
 
         'fn_get_real_state_value',
-        'fn_get_predicted_based_state_value',
+        'fn_visit_new_state_if_possible',
     ])
     # ret_functions.cache_mgr = cache_mgr
     ret_functions.fn_get_visit_counts = fn_get_visit_counts
@@ -146,7 +144,7 @@ def search_helper(
     # ret_functions.fn_get_prediction_info_3 = fn_get_prediction_info_3
 
     ret_functions.fn_get_real_state_value = fn_get_real_state_value
-    ret_functions.fn_get_predicted_based_state_value = fn_get_predicted_based_state_value
+    ret_functions.fn_visit_new_state_if_possible = fn_visit_new_state_if_possible
 
     return ret_functions
 

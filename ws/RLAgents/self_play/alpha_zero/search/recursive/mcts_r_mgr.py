@@ -37,9 +37,9 @@ def mcts_r_mgr(
         if state_results != 0:
             return - state_results
 
-        prediction_info = search_utils.fn_get_predicted_based_state_value(state)
-        if prediction_info is not None:
-            return - prediction_info['state_val']
+        state_info = search_utils.fn_visit_new_state_if_possible(state)
+        if state_info is not None:
+            return - state_info['state_val']
 
         # select best action at this non terminal state
         best_action = search_utils.fn_get_best_ucb_action(
