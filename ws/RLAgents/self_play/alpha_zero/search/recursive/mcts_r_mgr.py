@@ -37,8 +37,8 @@ def mcts_r_mgr(
         if state_results != 0:
             return - state_results
 
-        prediction_info, mcts_has_been_expanded = search_utils.fn_get_predicted_based_state_value(state)
-        if mcts_has_been_expanded:
+        prediction_info = search_utils.fn_get_predicted_based_state_value(state)
+        if prediction_info is not None:
             return - prediction_info['state_val']
 
         # select best action at this non terminal state

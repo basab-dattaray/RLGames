@@ -56,9 +56,11 @@ def search_helper(
             # this expands MCTS
             state_visits.fn_set_state_visits(state_key, 0)
 
-        state_info = cache_mgr.state_info.fn_get_data(state_key)
+            return state_info
 
-        return state_info, mcts_has_been_expanded
+        # state_info = cache_mgr.state_info.fn_get_data(state_key)
+
+        return None
 
     def fn_get_prediction_info_3(state):
         action_probalities, wrapped_state_val = neural_net_mgr.fn_neural_predict(state)
