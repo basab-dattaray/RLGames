@@ -1,12 +1,10 @@
 import math
 from collections import namedtuple
+
 import numpy as np
 
 from ws.RLAgents.self_play.alpha_zero.search.cache_mgt import cache_mgt
 from ws.RLAgents.self_play.alpha_zero.search.recursive.state_visit_mgt import state_visit_mgt
-
-
-# def create_normalized_predictor(fn_predict_policies, fn_get_valid_actions):
 
 
 def search_helper(
@@ -15,8 +13,6 @@ def search_helper(
         neural_net_mgr,
 ):
     EPS = 1e-8
-    fn_terminal_value = lambda state: game_mgr.fn_get_game_progress_status(state, player= 1)
-    # fn_get_allowed_moves = lambda state: game_mgr.fn_get_valid_moves(state, player= 1)
 
     cache_mgr = cache_mgt()
 
@@ -24,22 +20,27 @@ def search_helper(
 
     def fn_get_visit_counts(state_key):
         counts = [state_visits.fn_get_child_state_visits((state_key, a))
-            if state_visits.fn_does_child_state_visits_exist((state_key, a)) else 0 for a in range(game_mgr.fn_get_action_size())]
+                  if state_visits.fn_does_child_state_visits_exist((state_key, a)) else 0 for a in
+                  range(game_mgr.fn_get_action_size())]
         return counts
 
-    def fn_get_allowed_moves(state):
+    def fn_get_cached_allowed_moves(state):
+        fn_get_allowed_moves = lambda s: game_mgr.fn_get_valid_moves(s, player=1)
+
         state_key = game_mgr.fn_get_state_key(state)
         if not cache_mgr.allowed_moves_from_state.fn_does_key_exist(state_key):
-            allowed_moves = game_mgr.fn_get_valid_moves(state, player=1)
+            allowed_moves = fn_get_allowed_moves(state)
             cache_mgr.allowed_moves_from_state.fn_set_data(state_key, allowed_moves)
             return allowed_moves
         else:
             return cache_mgr.allowed_moves_from_state.fn_get_data(state_key)
 
     def fn_get_real_state_value(state):
+        fn_get_terminal_value = lambda s: game_mgr.fn_get_game_progress_status(s, player=1)
+
         state_key = game_mgr.fn_get_state_key(state)
         if not cache_mgr.state_results.fn_does_key_exist(state_key):
-            cache_mgr.state_results.fn_set_data(state_key, fn_terminal_value(state))
+            cache_mgr.state_results.fn_set_data(state_key, fn_get_terminal_value(state))
         return cache_mgr.state_results.fn_get_data(state_key)
 
     def fn_visit_new_state_if_possible(state):
@@ -53,31 +54,27 @@ def search_helper(
             state_info = {
                 'policy': policy,
                 'state_val': state_val,
-                # 'valid_actions': valid_actions
             }
             cache_mgr.state_info.fn_set_data(state_key, state_info)
 
-            # this expands MCTS
             state_visits.fn_set_state_visits(state_key, 0)
 
             return state_info
-
-        # state_info = cache_mgr.state_info.fn_get_data(state_key)
 
         return None
 
     def fn_get_cached_predictions(state):
         action_probalities, wrapped_state_val = neural_net_mgr.fn_neural_predict(state)
-        allowed_moves = fn_get_allowed_moves(state)
+        allowed_moves = fn_get_cached_allowed_moves(state)
         moves_are_allowed = True
         if allowed_moves is None:
             moves_are_allowed = False
             return action_probalities, wrapped_state_val[0], moves_are_allowed
 
-        action_probalities = action_probalities * allowed_moves  # masking invalid moves
+        action_probalities = action_probalities * allowed_moves  # masking disallowed moves
         sum_action_probabilities = np.sum(action_probalities)
         if sum_action_probabilities > 0:
-            action_probalities /= sum_action_probabilities  # renormalize
+            action_probalities /= sum_action_probabilities  # re-normalize
         else:
             action_probalities = action_probalities + allowed_moves
             action_probalities /= np.sum(action_probalities)
@@ -86,7 +83,8 @@ def search_helper(
     def fn_update_state_during_backprop(state_key, action, state_val):
         state_action_key = (state_key, action)
         if cache_mgr.state_action_qval.fn_does_key_exist(state_action_key):  # UPDATE EXISTING
-            tmp_val = (state_visits.fn_get_child_state_visits(state_action_key) * cache_mgr.state_action_qval.fn_get_data(
+            tmp_val = (state_visits.fn_get_child_state_visits(
+                state_action_key) * cache_mgr.state_action_qval.fn_get_data(
                 state_action_key) + state_val) / (state_visits.fn_get_child_state_visits(state_action_key) + 1)
             cache_mgr.state_action_qval.fn_set_data(state_action_key, tmp_val)
 
@@ -112,7 +110,7 @@ def search_helper(
 
             if allowed_moves[action] != 0:
                 state_info = cache_mgr.state_info.fn_get_data(state_key)
-                # policy = cache_mgr.state_policy.fn_get_data(state_key)
+
                 policy = state_info['state_val']
                 state_action_key = (state_key, action)
 
@@ -125,10 +123,10 @@ def search_helper(
                         parent_visit_factor = np.log(parent_visit_factor)
 
                     ucb = cache_mgr.state_action_qval.fn_get_data(state_action_key) \
-                          + args.cpuct_exploration_exploitation_factor * action_prob_for_exploration * math.sqrt\
-                                (
-                                    parent_visit_factor / state_visits.fn_get_child_state_visits(state_action_key)
-                                )
+                          + args.cpuct_exploration_exploitation_factor * action_prob_for_exploration * math.sqrt \
+                                  (
+                                  parent_visit_factor / state_visits.fn_get_child_state_visits(state_action_key)
+                              )
                 else:
                     ucb = args.cpuct_exploration_exploitation_factor * action_prob_for_exploration * math.sqrt(
                         state_visits.fn_get_state_visits(state_key) + EPS)  # Q = 0 ?
@@ -157,4 +155,3 @@ def search_helper(
     ret_functions.fn_visit_new_state_if_possible = fn_visit_new_state_if_possible
 
     return ret_functions
-
