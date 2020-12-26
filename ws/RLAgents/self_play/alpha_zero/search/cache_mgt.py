@@ -6,7 +6,7 @@ from ws.RLAgents.self_play.alpha_zero.search.dictionary_cache import dictionary_
 def cache_mgt():
 
     state_results = dictionary_cache()
-    state_valid_moves = dictionary_cache()
+    allowed_moves_from_state = dictionary_cache()
     state_policy = dictionary_cache()
     state_action_qval = dictionary_cache()
     state_info = dictionary_cache()
@@ -14,7 +14,7 @@ def cache_mgt():
 
     cache_mgr = namedtuple('_', [
         'state_results',
-        'state_valid_moves',
+        'allowed_moves_from_state',
         'state_policy',
         'state_action_qval',
         'state_info',
@@ -22,7 +22,7 @@ def cache_mgt():
 
     ])
     cache_mgr.state_results = state_results
-    cache_mgr.state_valid_moves = state_valid_moves
+    cache_mgr.allowed_moves_from_state = allowed_moves_from_state
     cache_mgr.state_policy = state_policy
     cache_mgr.state_action_qval = state_action_qval
     cache_mgr.state_info = state_info

@@ -29,12 +29,12 @@ def search_helper(
 
     def fn_get_allowed_moves(state):
         state_key = game_mgr.fn_get_state_key(state)
-        if not cache_mgr.state_valid_moves.fn_does_key_exist(state_key):
+        if not cache_mgr.allowed_moves_from_state.fn_does_key_exist(state_key):
             allowed_moves = game_mgr.fn_get_valid_moves(state, player=1)
-            cache_mgr.state_valid_moves.fn_set_data(state_key, allowed_moves)
+            cache_mgr.allowed_moves_from_state.fn_set_data(state_key, allowed_moves)
             return allowed_moves
         else:
-            return cache_mgr.state_valid_moves.fn_get_data(state_key)
+            return cache_mgr.allowed_moves_from_state.fn_get_data(state_key)
 
     def fn_get_real_state_value(state):
         state_key = game_mgr.fn_get_state_key(state)
@@ -56,8 +56,6 @@ def search_helper(
                 # 'valid_actions': valid_actions
             }
             cache_mgr.state_info.fn_set_data(state_key, state_info)
-
-            # cache_mgr.state_valid_moves.fn_set_data(state_key, valid_actions)
 
             # this expands MCTS
             state_visits.fn_set_state_visits(state_key, 0)
@@ -102,19 +100,17 @@ def search_helper(
         state_visits.fn_incr_state_visits(state_key)
 
     def fn_get_best_ucb_action(state_key):
-        # state_info = cache_mgr.state_valid_moves.fn_get_data(state_key)
-        # valid_moves = state_info['valid_actions']
-        valid_moves = cache_mgr.state_valid_moves.fn_get_data(state_key)
+        allowed_moves = cache_mgr.allowed_moves_from_state.fn_get_data(state_key)
 
         best_ucb = -float('inf')
-        best_act = -1
+        best_act = None
 
         action_prob_for_exploration = 1
 
         # pick the action with the highest upper confidence bound
         for action in range(game_mgr.fn_get_action_size()):
 
-            if valid_moves[action] != 0:
+            if allowed_moves[action] != 0:
                 state_info = cache_mgr.state_info.fn_get_data(state_key)
                 # policy = cache_mgr.state_policy.fn_get_data(state_key)
                 policy = state_info['state_val']
