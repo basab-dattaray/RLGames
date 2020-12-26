@@ -88,14 +88,10 @@ def search_helper(
                 state_action_key) + state_val) / (state_visits.fn_get_child_state_visits(state_action_key) + 1)
             cache_mgr.sa_qval.fn_set_data(state_action_key, tmp_val)
 
-            state_visits.fn_incr_child_state_visits(state_action_key)
-
         else:  # CREATE FOR THE FIRST TIME
             cache_mgr.sa_qval.fn_set_data(state_action_key, state_val)
 
-            # state_visits.fn_set_child_state_visits(state_action_key, 1)
-            state_visits.fn_incr_child_state_visits(state_action_key)
-
+        state_visits.fn_incr_child_state_visits(state_action_key)
         state_visits.fn_incr_state_visits(state_key)
 
     def fn_get_best_ucb_action(state_key):
