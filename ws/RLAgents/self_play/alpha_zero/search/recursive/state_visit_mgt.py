@@ -14,15 +14,20 @@ def state_visit_mgt():
 
     def fn_incr_state_visits(state_key):
         nonlocal Ns
+        if state_key not in Ns:
+            Ns[state_key] = 0
         Ns[state_key] += 1
+
+    def fn_incr_child_state_visits(state_action_key):
+        nonlocal Nsa
+        if state_action_key not in Nsa:
+            Nsa[state_action_key] = 0
+        Nsa[state_action_key] += 1
 
     def fn_set_child_state_visits(state_action_key, visits):
         nonlocal Nsa
         Nsa[state_action_key] = visits
 
-    def fn_incr_child_state_visits(state_action_key):
-        nonlocal Nsa
-        Nsa[state_action_key] += 1
 
     ret_functions = namedtuple('_', [
         'fn_get_state_visits',
