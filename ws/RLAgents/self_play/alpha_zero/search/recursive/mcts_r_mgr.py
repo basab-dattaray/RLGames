@@ -1,9 +1,7 @@
 from collections import namedtuple
 
-from ws.RLAgents.self_play.alpha_zero.search.cache_mgt import cache_mgt
 from ws.RLAgents.self_play.alpha_zero.search.policy_mgt import policy_mgt
 
-from ws.RLAgents.self_play.alpha_zero.search.recursive.state_visit_mgt import state_visit_mgt
 from ws.RLAgents.self_play.alpha_zero.search.recursive.search_helper import search_helper
 
 
@@ -46,8 +44,8 @@ def mcts_r_mgr(
             state_key
         )
 
-        next_state = game_mgr.fn_get_next_state(state, 1, best_action)
-        next_state_canonical = game_mgr.fn_get_canonical_form(next_state, -1)
+        next_state = game_mgr.fn_get_next_state(state, player= 1, action= best_action)
+        next_state_canonical = game_mgr.fn_get_canonical_form(next_state, player= -1)
 
         state_val = fn_search(next_state_canonical)
 
