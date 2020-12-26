@@ -28,38 +28,38 @@ def search_helper(
         fn_get_allowed_moves = lambda s: game_mgr.fn_get_valid_moves(s, player=1)
 
         state_key = game_mgr.fn_get_state_key(state)
-        if not cache_mgr.allowed_moves_from_state.fn_does_key_exist(state_key):
+        if not cache_mgr.s_allowed_moves.fn_does_key_exist(state_key):
             allowed_moves = fn_get_allowed_moves(state)
-            cache_mgr.allowed_moves_from_state.fn_set_data(state_key, allowed_moves)
+            cache_mgr.s_allowed_moves.fn_set_data(state_key, allowed_moves)
             return allowed_moves
         else:
-            return cache_mgr.allowed_moves_from_state.fn_get_data(state_key)
+            return cache_mgr.s_allowed_moves.fn_get_data(state_key)
 
     def fn_get_cached_results(state):
         fn_get_progress_status = lambda s: game_mgr.fn_get_game_progress_status(s, player=1)
 
         state_key = game_mgr.fn_get_state_key(state)
-        if not cache_mgr.state_results.fn_does_key_exist(state_key):
-            cache_mgr.state_results.fn_set_data(state_key, fn_get_progress_status(state))
-        return cache_mgr.state_results.fn_get_data(state_key)
+        if not cache_mgr.s_results.fn_does_key_exist(state_key):
+            cache_mgr.s_results.fn_set_data(state_key, fn_get_progress_status(state))
+        return cache_mgr.s_results.fn_get_data(state_key)
 
     def fn_visit_new_state_if_possible(state):
         state_key = game_mgr.fn_get_state_key(state)
-        if not cache_mgr.state_info.fn_does_key_exist(state_key):
+        if not cache_mgr.s_predictions.fn_does_key_exist(state_key):
             # leaf node
             policy, state_val, moves_are_allowed = fn_get_cached_predictions(state)
             if not moves_are_allowed:
                 return - state_val
 
-            state_info = {
+            s_predictions = {
                 'policy': policy,
                 'state_val': state_val,
             }
-            cache_mgr.state_info.fn_set_data(state_key, state_info)
+            cache_mgr.s_predictions.fn_set_data(state_key, s_predictions)
 
             state_visits.fn_set_state_visits(state_key, 0)
 
-            return state_info
+            return s_predictions
 
         return None
 
@@ -82,23 +82,23 @@ def search_helper(
 
     def fn_update_state_during_backprop(state_key, action, state_val):
         state_action_key = (state_key, action)
-        if cache_mgr.state_action_qval.fn_does_key_exist(state_action_key):  # UPDATE EXISTING
+        if cache_mgr.sa_qval.fn_does_key_exist(state_action_key):  # UPDATE EXISTING
             tmp_val = (state_visits.fn_get_child_state_visits(
-                state_action_key) * cache_mgr.state_action_qval.fn_get_data(
+                state_action_key) * cache_mgr.sa_qval.fn_get_data(
                 state_action_key) + state_val) / (state_visits.fn_get_child_state_visits(state_action_key) + 1)
-            cache_mgr.state_action_qval.fn_set_data(state_action_key, tmp_val)
+            cache_mgr.sa_qval.fn_set_data(state_action_key, tmp_val)
 
             state_visits.fn_incr_child_state_visits(state_action_key)
 
         else:  # CREATE FOR THE FIRST TIME
-            cache_mgr.state_action_qval.fn_set_data(state_action_key, state_val)
+            cache_mgr.sa_qval.fn_set_data(state_action_key, state_val)
 
             state_visits.fn_set_child_state_visits(state_action_key, 1)
 
         state_visits.fn_incr_state_visits(state_key)
 
     def fn_get_best_ucb_action(state_key):
-        allowed_moves = cache_mgr.allowed_moves_from_state.fn_get_data(state_key)
+        allowed_moves = cache_mgr.s_allowed_moves.fn_get_data(state_key)
 
         best_ucb = -float('inf')
         best_act = None
@@ -109,20 +109,20 @@ def search_helper(
         for action in range(game_mgr.fn_get_action_size()):
 
             if allowed_moves[action] != 0:
-                state_info = cache_mgr.state_info.fn_get_data(state_key)
+                s_predictions = cache_mgr.s_predictions.fn_get_data(state_key)
 
-                policy = state_info['state_val']
+                policy = s_predictions['state_val']
                 state_action_key = (state_key, action)
 
                 if args.mcts_ucb_use_action_prob_for_exploration:
                     action_prob_for_exploration = policy[action]
 
-                if cache_mgr.state_action_qval.fn_does_key_exist(state_action_key):
+                if cache_mgr.sa_qval.fn_does_key_exist(state_action_key):
                     parent_visit_factor = state_visits.fn_get_state_visits(state_key)
                     if args.mcts_ucb_use_log_in_numerator:
                         parent_visit_factor = np.log(parent_visit_factor)
 
-                    ucb = cache_mgr.state_action_qval.fn_get_data(state_action_key) \
+                    ucb = cache_mgr.sa_qval.fn_get_data(state_action_key) \
                           + args.cpuct_exploration_exploitation_factor * action_prob_for_exploration * math.sqrt \
                                   (
                                   parent_visit_factor / state_visits.fn_get_child_state_visits(state_action_key)

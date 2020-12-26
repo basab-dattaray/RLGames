@@ -36,7 +36,7 @@ def fn_get_state():
 #
 #     pass
 
-    # assert qval == 1 or qval == -1
+    # assert sa_qval == 1 or sa_qval == -1
 
 
 

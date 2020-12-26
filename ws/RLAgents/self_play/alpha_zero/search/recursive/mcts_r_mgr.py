@@ -31,13 +31,13 @@ def mcts_r_mgr(
     def fn_search(state):
         state_key = game_mgr.fn_get_state_key(state)
 
-        state_results = search_utils.fn_get_cached_results(state)
-        if state_results != 0:
-            return - state_results
+        s_results = search_utils.fn_get_cached_results(state)
+        if s_results != 0:
+            return - s_results
 
-        state_info = search_utils.fn_visit_new_state_if_possible(state)
-        if state_info is not None:
-            return - state_info['state_val']
+        s_predictions = search_utils.fn_visit_new_state_if_possible(state)
+        if s_predictions is not None:
+            return - s_predictions['state_val']
 
         # select best action at this non terminal state
         best_action = search_utils.fn_get_best_ucb_action(
