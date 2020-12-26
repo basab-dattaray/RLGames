@@ -4,8 +4,8 @@ from collections import namedtuple
 def state_visit_mgt():
     Nsa = {}  # stores #times edge state_key,action was visited
     Ns = {}  # stores #times board_pieces state_key was visited
-    fn_get_state_visits = lambda s: Ns[s]
-    fn_get_child_state_visits = lambda sa: Nsa[sa]
+    fn_get_state_visits = lambda s: Ns[s] if s in Ns else 0
+    fn_get_child_state_visits = lambda sa: Nsa[sa] if sa in Nsa else 0
     fn_does_child_state_visits_exist = lambda sa: sa in Nsa
 
     def fn_set_state_visits(state_key, visits):
