@@ -15,8 +15,8 @@ def search_helper(
         neural_net_mgr,
 ):
     EPS = 1e-8
-    fn_terminal_value = lambda pieces: game_mgr.fn_get_game_progress_status(pieces, 1)
-    fn_get_valid_actions = lambda board: game_mgr.fn_get_valid_moves(board, 1)
+    fn_terminal_value = lambda state: game_mgr.fn_get_game_progress_status(state, player= 1)
+    # fn_get_allowed_moves = lambda state: game_mgr.fn_get_valid_moves(state, player= 1)
 
     cache_mgr = cache_mgt()
 
@@ -26,6 +26,15 @@ def search_helper(
         counts = [state_visits.fn_get_child_state_visits((state_key, a))
             if state_visits.fn_does_child_state_visits_exist((state_key, a)) else 0 for a in range(game_mgr.fn_get_action_size())]
         return counts
+
+    def fn_get_allowed_moves(state):
+        state_key = game_mgr.fn_get_state_key(state)
+        if not cache_mgr.state_valid_moves.fn_does_key_exist(state_key):
+            allowed_moves = game_mgr.fn_get_valid_moves(state, player=1)
+            cache_mgr.state_valid_moves.fn_set_data(state_key, allowed_moves)
+            return allowed_moves
+        else:
+            return cache_mgr.state_valid_moves.fn_get_data(state_key)
 
     def fn_get_real_state_value(state):
         state_key = game_mgr.fn_get_state_key(state)
@@ -47,8 +56,8 @@ def search_helper(
                 'valid_actions': valid_actions
             }
             cache_mgr.state_info.fn_set_data(state_key, state_info)
-            # cache_mgr.state_policy.fn_set_data(state_key, policy)
-            cache_mgr.state_valid_moves.fn_set_data(state_key, valid_actions)
+
+            # cache_mgr.state_valid_moves.fn_set_data(state_key, valid_actions)
 
             # this expands MCTS
             state_visits.fn_set_state_visits(state_key, 0)
@@ -61,18 +70,18 @@ def search_helper(
 
     def fn_get_prediction_info_3(state):
         action_probalities, wrapped_state_val = neural_net_mgr.fn_neural_predict(state)
-        valid_actions = fn_get_valid_actions(state)
-        if valid_actions is None:
+        allowed_moves = fn_get_allowed_moves(state)
+        if allowed_moves is None:
             return action_probalities, wrapped_state_val[0], None
 
-        action_probalities = action_probalities * valid_actions  # masking invalid moves
+        action_probalities = action_probalities * allowed_moves  # masking invalid moves
         sum_action_probabilities = np.sum(action_probalities)
         if sum_action_probabilities > 0:
             action_probalities /= sum_action_probabilities  # renormalize
         else:
-            action_probalities = action_probalities + valid_actions
+            action_probalities = action_probalities + allowed_moves
             action_probalities /= np.sum(action_probalities)
-        return action_probalities, wrapped_state_val[0], valid_actions
+        return action_probalities, wrapped_state_val[0], allowed_moves
 
     def fn_update_state_during_backprop(state_key, action, state_val):
         state_action_key = (state_key, action)
