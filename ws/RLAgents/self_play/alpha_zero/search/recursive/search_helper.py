@@ -46,14 +46,14 @@ def search_helper(
         state_key = game_mgr.fn_get_state_key(state)
         if not cache_mgr.state_info.fn_does_key_exist(state_key):
             # leaf node
-            policy, state_val, valid_actions = fn_get_prediction_info_3(state)
-            if valid_actions is None:
+            policy, state_val, moves_are_allowed = fn_get_cached_predictions(state)
+            if not moves_are_allowed:
                 return - state_val
 
             state_info = {
                 'policy': policy,
                 'state_val': state_val,
-                'valid_actions': valid_actions
+                # 'valid_actions': valid_actions
             }
             cache_mgr.state_info.fn_set_data(state_key, state_info)
 
@@ -68,11 +68,13 @@ def search_helper(
 
         return None
 
-    def fn_get_prediction_info_3(state):
+    def fn_get_cached_predictions(state):
         action_probalities, wrapped_state_val = neural_net_mgr.fn_neural_predict(state)
         allowed_moves = fn_get_allowed_moves(state)
+        moves_are_allowed = True
         if allowed_moves is None:
-            return action_probalities, wrapped_state_val[0], None
+            moves_are_allowed = False
+            return action_probalities, wrapped_state_val[0], moves_are_allowed
 
         action_probalities = action_probalities * allowed_moves  # masking invalid moves
         sum_action_probabilities = np.sum(action_probalities)
@@ -81,7 +83,7 @@ def search_helper(
         else:
             action_probalities = action_probalities + allowed_moves
             action_probalities /= np.sum(action_probalities)
-        return action_probalities, wrapped_state_val[0], allowed_moves
+        return action_probalities, wrapped_state_val[0], moves_are_allowed
 
     def fn_update_state_during_backprop(state_key, action, state_val):
         state_action_key = (state_key, action)
@@ -134,7 +136,7 @@ def search_helper(
                 else:
                     ucb = args.cpuct_exploration_exploitation_factor * action_prob_for_exploration * math.sqrt(
                         state_visits.fn_get_state_visits(state_key) + EPS)  # Q = 0 ?
-                    # u = 0
+
                 if ucb > best_ucb:
                     best_ucb = ucb
                     best_act = action
@@ -153,7 +155,7 @@ def search_helper(
     ret_functions.fn_get_visit_counts = fn_get_visit_counts
     ret_functions.fn_get_best_ucb_action = fn_get_best_ucb_action
     ret_functions.fn_update_state_during_backprop = fn_update_state_during_backprop
-    # ret_functions.fn_get_prediction_info_3 = fn_get_prediction_info_3
+    # ret_functions.fn_get_cached_predictions = fn_get_cached_predictions
 
     ret_functions.fn_get_real_state_value = fn_get_real_state_value
     ret_functions.fn_visit_new_state_if_possible = fn_visit_new_state_if_possible
