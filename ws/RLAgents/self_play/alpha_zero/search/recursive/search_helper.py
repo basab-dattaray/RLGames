@@ -47,8 +47,7 @@ def search_helper(
                 'valid_actions': valid_actions
             }
             cache_mgr.state_info.fn_set_data(state_key, state_info)
-            cache_mgr.state_policy.fn_set_data(state_key, policy)
-
+            # cache_mgr.state_policy.fn_set_data(state_key, policy)
             cache_mgr.state_valid_moves.fn_set_data(state_key, valid_actions)
 
             # this expands MCTS
@@ -92,7 +91,10 @@ def search_helper(
         state_visits.fn_incr_state_visits(state_key)
 
     def fn_get_best_ucb_action(state_key):
+        # state_info = cache_mgr.state_valid_moves.fn_get_data(state_key)
+        # valid_moves = state_info['valid_actions']
         valid_moves = cache_mgr.state_valid_moves.fn_get_data(state_key)
+
 
         best_ucb = -float('inf')
         best_act = -1
@@ -103,7 +105,9 @@ def search_helper(
         for action in range(game_mgr.fn_get_action_size()):
 
             if valid_moves[action]:
-                policy = cache_mgr.state_policy.fn_get_data(state_key)
+                state_info = cache_mgr.state_info.fn_get_data(state_key)
+                # policy = cache_mgr.state_policy.fn_get_data(state_key)
+                policy = state_info['state_val']
                 state_action_key = (state_key, action)
 
                 if args.mcts_ucb_use_action_prob_for_exploration:
