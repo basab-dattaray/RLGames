@@ -31,7 +31,7 @@ def mcts_r_mgr(
     def fn_search(state):
         state_key = game_mgr.fn_get_state_key(state)
 
-        state_results = search_utils.fn_get_real_state_value(state)
+        state_results = search_utils.fn_get_cached_results(state)
         if state_results != 0:
             return - state_results
 

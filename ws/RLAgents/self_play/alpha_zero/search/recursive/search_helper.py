@@ -35,12 +35,12 @@ def search_helper(
         else:
             return cache_mgr.allowed_moves_from_state.fn_get_data(state_key)
 
-    def fn_get_real_state_value(state):
-        fn_get_terminal_value = lambda s: game_mgr.fn_get_game_progress_status(s, player=1)
+    def fn_get_cached_results(state):
+        fn_get_progress_status = lambda s: game_mgr.fn_get_game_progress_status(s, player=1)
 
         state_key = game_mgr.fn_get_state_key(state)
         if not cache_mgr.state_results.fn_does_key_exist(state_key):
-            cache_mgr.state_results.fn_set_data(state_key, fn_get_terminal_value(state))
+            cache_mgr.state_results.fn_set_data(state_key, fn_get_progress_status(state))
         return cache_mgr.state_results.fn_get_data(state_key)
 
     def fn_visit_new_state_if_possible(state):
@@ -142,7 +142,7 @@ def search_helper(
         'fn_get_best_ucb_action',
         'fn_update_state_during_backprop',
 
-        'fn_get_real_state_value',
+        'fn_get_cached_results',
         'fn_visit_new_state_if_possible',
     ])
     # ret_functions.cache_mgr = cache_mgr
@@ -151,7 +151,7 @@ def search_helper(
     ret_functions.fn_update_state_during_backprop = fn_update_state_during_backprop
     # ret_functions.fn_get_cached_predictions = fn_get_cached_predictions
 
-    ret_functions.fn_get_real_state_value = fn_get_real_state_value
+    ret_functions.fn_get_cached_results = fn_get_cached_results
     ret_functions.fn_visit_new_state_if_possible = fn_visit_new_state_if_possible
 
     return ret_functions
