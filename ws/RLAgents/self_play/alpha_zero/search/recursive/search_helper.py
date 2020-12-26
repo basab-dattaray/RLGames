@@ -95,7 +95,6 @@ def search_helper(
         # valid_moves = state_info['valid_actions']
         valid_moves = cache_mgr.state_valid_moves.fn_get_data(state_key)
 
-
         best_ucb = -float('inf')
         best_act = -1
 
@@ -104,7 +103,7 @@ def search_helper(
         # pick the action with the highest upper confidence bound
         for action in range(game_mgr.fn_get_action_size()):
 
-            if valid_moves[action]:
+            if valid_moves[action] != 0:
                 state_info = cache_mgr.state_info.fn_get_data(state_key)
                 # policy = cache_mgr.state_policy.fn_get_data(state_key)
                 policy = state_info['state_val']

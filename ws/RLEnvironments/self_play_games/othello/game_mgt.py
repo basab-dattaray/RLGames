@@ -47,8 +47,6 @@ def game_mgt(board_size):
 
         legalMoves =  b.fn_find_legal_moves(pieces, player)
         if len(legalMoves)==0:
-            # valid_moves[-1]=1
-            # return np.array(valid_moves)
             return None
         for x, y in legalMoves:
             valid_moves[board_size * x + y]=1
