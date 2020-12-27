@@ -82,14 +82,13 @@ def search_helper(
 
     def fn_update_state_during_backprop(state_key, action, state_val):
         state_action_key = (state_key, action)
-        if cache_mgr.sa_qval.fn_does_key_exist(state_action_key):  # UPDATE EXISTING
+        if not cache_mgr.sa_qval.fn_does_key_exist(state_action_key):  # CREATE NEW STATE-ACTION
+            cache_mgr.sa_qval.fn_set_data(state_action_key, state_val)
+        else:
             tmp_val = (state_visits.fn_get_child_state_visits(
                 state_action_key) * cache_mgr.sa_qval.fn_get_data(
                 state_action_key) + state_val) / (state_visits.fn_get_child_state_visits(state_action_key) + 1)
             cache_mgr.sa_qval.fn_set_data(state_action_key, tmp_val)
-
-        else:  # CREATE FOR THE FIRST TIME
-            cache_mgr.sa_qval.fn_set_data(state_action_key, state_val)
 
         state_visits.fn_incr_child_state_visits(state_action_key)
         state_visits.fn_incr_state_visits(state_key)
