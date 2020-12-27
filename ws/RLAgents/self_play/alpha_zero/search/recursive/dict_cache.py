@@ -1,7 +1,7 @@
 from collections import namedtuple
 
 
-def dictionary_cache():
+def dict_cache():
     dict = {}
     hit_count = 0
     access_count = 0
@@ -28,25 +28,26 @@ def dictionary_cache():
         else:
             return None
 
-
-
     def fn_set_data(key, val):
         nonlocal dict, overwrite_try_count
 
-        def _fn_set_val(dict, key, val):
-            if type(val) == dict:
-                copy_of_compound_val = dict[key].copy()
-                copy_of_compound_val.update(val)
-                dict[key] = copy_of_compound_val
+        def _fn_set_val(dictionary, key, new_val):
+            if type(new_val) == type(dict) and len(dictionary) > 0:
+
+                existing_val = dictionary[key]
+                copy_of_dict = existing_val.copy()
+
+                copy_of_dict.update(new_val)
+                dictionary[key] = copy_of_dict
             else:
-                dict[key] = val
+                dictionary[key] = new_val
 
         if fn_does_key_exist(key):
             overwrite_try_count += 1
             _fn_set_val(dict, key, val)
             return False
         else:
-            dict[key] = val
+            _fn_set_val(dict, key, val)
             return True
 
     def fn_get_stats():

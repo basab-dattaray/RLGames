@@ -3,7 +3,8 @@ from collections import namedtuple
 
 import numpy as np
 
-from ws.RLAgents.self_play.alpha_zero.search.cache_mgt import cache_mgt
+# from ws.RLAgents.self_play.alpha_zero.search.cache_mgt import cache_mgt
+from ws.RLAgents.self_play.alpha_zero.search.recursive.hier_cache_mgt import hier_cache_mgt
 from ws.RLAgents.self_play.alpha_zero.search.recursive.state_visit_mgt import state_visit_mgt
 
 
@@ -14,7 +15,7 @@ def search_helper(
 ):
     EPS = 1e-8
 
-    cache_mgr = cache_mgt()
+    cache_mgr = hier_cache_mgt()
 
     state_visits = state_visit_mgt()
 
