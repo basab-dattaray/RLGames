@@ -49,6 +49,8 @@ def mcts_r_mgr(
 
         state_val = fn_search(next_state_canonical)
 
+        search_utils.fn_expand_if_needed(state_key, best_action, state_val)
+
         search_utils.fn_update_state_during_backprop(state_key, best_action, state_val)
 
         return -state_val

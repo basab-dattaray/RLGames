@@ -80,15 +80,22 @@ def search_helper(
             action_probalities /= np.sum(action_probalities)
         return action_probalities, wrapped_state_val[0], moves_are_allowed
 
-    def fn_update_state_during_backprop(state_key, action, state_val):
+    def fn_expand_if_needed(state_key, action, state_val):
         state_action_key = (state_key, action)
+
         if not cache_mgr.sa_qval.fn_does_key_exist(state_action_key):  # CREATE NEW STATE-ACTION
             cache_mgr.sa_qval.fn_set_data(state_action_key, state_val)
-        else:
-            tmp_val = (state_visits.fn_get_child_state_visits(
-                state_action_key) * cache_mgr.sa_qval.fn_get_data(
-                state_action_key) + state_val) / (state_visits.fn_get_child_state_visits(state_action_key) + 1)
-            cache_mgr.sa_qval.fn_set_data(state_action_key, tmp_val)
+            state_visits.fn_incr_child_state_visits(state_action_key)
+            state_visits.fn_incr_state_visits(state_key)
+
+    def fn_update_state_during_backprop(state_key, action, state_val):
+        state_action_key = (state_key, action)
+
+
+        tmp_val = (state_visits.fn_get_child_state_visits( state_action_key)
+                   * cache_mgr.sa_qval.fn_get_data(state_action_key) + state_val) \
+                  / (state_visits.fn_get_child_state_visits(state_action_key) + 1)
+        cache_mgr.sa_qval.fn_set_data(state_action_key, tmp_val)
 
         state_visits.fn_incr_child_state_visits(state_action_key)
         state_visits.fn_incr_state_visits(state_key)
@@ -120,7 +127,7 @@ def search_helper(
 
                     ucb = cache_mgr.sa_qval.fn_get_data(state_action_key) \
                           + args.cpuct_exploration_exploitation_factor * action_prob_for_exploration * math.sqrt \
-                                  (
+                              (
                                   parent_visit_factor / state_visits.fn_get_child_state_visits(state_action_key)
                               )
                 else:
@@ -140,14 +147,14 @@ def search_helper(
 
         'fn_get_cached_results',
         'fn_visit_new_state_if_possible',
+        'fn_expand_if_needed',
     ])
-    # ret_functions.cache_mgr = cache_mgr
     ret_functions.fn_get_visit_counts = fn_get_visit_counts
     ret_functions.fn_get_best_ucb_action = fn_get_best_ucb_action
     ret_functions.fn_update_state_during_backprop = fn_update_state_during_backprop
-    # ret_functions.fn_get_cached_predictions = fn_get_cached_predictions
 
     ret_functions.fn_get_cached_results = fn_get_cached_results
     ret_functions.fn_visit_new_state_if_possible = fn_visit_new_state_if_possible
+    ret_functions.fn_expand_if_needed = fn_expand_if_needed
 
     return ret_functions
