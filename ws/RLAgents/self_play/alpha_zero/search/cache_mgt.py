@@ -7,13 +7,13 @@ def cache_mgt():
 
     s_results = dictionary_cache()
     s_allowed_moves = dictionary_cache()
-    s_predictions = dictionary_cache()
+    s_info = dictionary_cache()
 
     sa_qval = dictionary_cache()
 
     cache_mgr = namedtuple('_', [
         's_results',
-        's_predictions',
+        's_info',
         's_allowed_moves',
 
         'sa_qval',
@@ -21,7 +21,7 @@ def cache_mgt():
     ])
     cache_mgr.s_results = s_results
     cache_mgr.s_allowed_moves = s_allowed_moves
-    cache_mgr.s_predictions = s_predictions
+    cache_mgr.s_info = s_info
 
     cache_mgr.sa_qval = sa_qval
     return cache_mgr

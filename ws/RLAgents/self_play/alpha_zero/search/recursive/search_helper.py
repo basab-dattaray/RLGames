@@ -46,21 +46,21 @@ def search_helper(
 
     def fn_visit_new_state_if_possible(state):
         state_key = game_mgr.fn_get_state_key(state)
-        if not cache_mgr.s_predictions.fn_does_key_exist(state_key):
+        if not cache_mgr.s_info.fn_does_key_exist(state_key):
             # leaf node
             policy, state_val, moves_are_allowed = fn_get_cached_predictions(state)
             if not moves_are_allowed:
                 return - state_val
 
-            s_predictions = {
+            s_info = {
                 'policy': policy,
                 'state_val': state_val,
             }
-            cache_mgr.s_predictions.fn_set_data(state_key, s_predictions)
+            cache_mgr.s_info.fn_set_data(state_key, s_info)
 
             state_visits.fn_set_state_visits(state_key, 0)
 
-            return s_predictions
+            return s_info
 
         return None
 
@@ -113,9 +113,9 @@ def search_helper(
         for action in range(game_mgr.fn_get_action_size()):
 
             if allowed_moves[action] != 0:
-                s_predictions = cache_mgr.s_predictions.fn_get_data(state_key)
+                s_info = cache_mgr.s_info.fn_get_data(state_key)
 
-                policy = s_predictions['state_val']
+                policy = s_info['state_val']
                 state_action_key = (state_key, action)
 
                 if args.mcts_ucb_use_action_prob_for_exploration:
