@@ -10,6 +10,16 @@ def dict_cache():
     def fn_does_key_exist(key):
         return key in dict
 
+    def fn_does_attr_key_exist(key, attr):
+        if key in dict is False:
+            return False
+
+        val = dict[key]
+        if type(val) == type(dict):
+            return attr in val.keys()
+        else:
+            return True
+
     def fn_get_data(key):
         nonlocal hit_count, access_count
 
@@ -63,7 +73,8 @@ def dict_cache():
         'fn_get_data',
         'fn_get_data_or_none',
         'fn_set_data',
-        'fn_get_stats'
+        'fn_get_stats',
+        'fn_does_attr_key_exist'
     ])
 
     dictionary_cache.fn_does_key_exist = fn_does_key_exist
@@ -71,5 +82,6 @@ def dict_cache():
     dictionary_cache.fn_get_data_or_none = fn_get_data_or_none
     dictionary_cache.fn_set_data = fn_set_data
     dictionary_cache.fn_get_stats = fn_get_stats
+    dictionary_cache.fn_does_attr_key_exist = fn_does_attr_key_exist
 
     return dictionary_cache
