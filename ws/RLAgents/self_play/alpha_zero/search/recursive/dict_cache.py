@@ -1,3 +1,4 @@
+
 from collections import namedtuple
 
 
@@ -77,6 +78,23 @@ def dict_cache():
         entry = {attr: val}
         fn_set_data(key, entry)
 
+    def fn_incr_attr_int(key, attr, strict = False):
+        attr_exists = fn_does_attr_key_exist(key, attr)
+        if not attr_exists:
+            if strict:
+                return False
+            fn_set_attr_data(key, attr, 0)
+        val = fn_get_attr_data(key, attr)
+
+        if not isinstance(val, int):
+            if strict:
+                return False
+            val = 0
+
+        val += 1
+        fn_set_attr_data(key, attr, val)
+        return True
+
     def fn_get_stats():
         return {
             'size': len(dict),
@@ -85,7 +103,7 @@ def dict_cache():
             'overwrite_try_count': overwrite_try_count,
         }
 
-    dictionary_cache = namedtuple('state_cache', [
+    ret_obj = namedtuple('state_cache', [
         'fn_does_key_exist',
         'fn_get_data',
         'fn_get_data_or_none',
@@ -94,14 +112,16 @@ def dict_cache():
         'fn_does_attr_key_exist',
         'fn_get_attr_data',
         'fn_set_attr_data',
+        'fn_incr_attr_int',
     ])
 
-    dictionary_cache.fn_does_key_exist = fn_does_key_exist
-    dictionary_cache.fn_get_data = fn_get_data
-    dictionary_cache.fn_get_data_or_none = fn_get_data_or_none
-    dictionary_cache.fn_set_data = fn_set_data
-    dictionary_cache.fn_get_stats = fn_get_stats
-    dictionary_cache.fn_does_attr_key_exist = fn_does_attr_key_exist
-    dictionary_cache.fn_get_attr_data = fn_get_attr_data
-    dictionary_cache.fn_set_attr_data = fn_set_attr_data
-    return dictionary_cache
+    ret_obj.fn_does_key_exist = fn_does_key_exist
+    ret_obj.fn_get_data = fn_get_data
+    ret_obj.fn_get_data_or_none = fn_get_data_or_none
+    ret_obj.fn_set_data = fn_set_data
+    ret_obj.fn_get_stats = fn_get_stats
+    ret_obj.fn_does_attr_key_exist = fn_does_attr_key_exist
+    ret_obj.fn_get_attr_data = fn_get_attr_data
+    ret_obj.fn_set_attr_data = fn_set_attr_data
+    ret_obj.fn_incr_attr_int = fn_incr_attr_int
+    return ret_obj

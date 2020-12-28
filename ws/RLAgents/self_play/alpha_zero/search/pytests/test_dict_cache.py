@@ -78,6 +78,29 @@ def test_fn_set_attr_data():
 
     val = dict.fn_get_attr_data('k1_not', 'y2_not')
     assert val == None
-
-
     pass
+
+def test_fn_incr_attr_int():
+    dict = dict_cache()
+
+    dict.fn_set_attr_data('k1', 'y1',  1)
+    dict.fn_incr_attr_int('k1', 'y1')
+    val = dict.fn_get_attr_data('k1', 'y1')
+    assert val == 2
+
+    dict.fn_set_attr_data('k1', 'y1',  '1')
+    dict.fn_incr_attr_int('k1', 'y1')
+    val = dict.fn_get_attr_data('k1', 'y1')
+    assert val == 1
+
+    dict.fn_incr_attr_int('k1_not', 'y1')
+    val = dict.fn_get_attr_data('k1_not', 'y1')
+    assert val == 1
+
+    dict.fn_incr_attr_int('k1', 'y1_not')
+    val = dict.fn_get_attr_data('k1_not', 'y1')
+    assert val == 1
+
+    dict.fn_incr_attr_int('k1_not', 'y1_not')
+    val = dict.fn_get_attr_data('k1_not', 'y1')
+    assert val == 1
