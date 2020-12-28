@@ -68,10 +68,10 @@ def dict_cache():
         if fn_does_key_exist(key):
             overwrite_try_count += 1
             _fn_set_val(dict, key, val)
-            return False
+            return dict
         else:
             dict[key] = val
-            return True
+            return dict
 
     def fn_set_attr_data(key, attr, val):
         entry = {attr, val}
