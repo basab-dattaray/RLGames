@@ -18,3 +18,10 @@ def test_fn_get_state_2():
     val = dict.fn_get_data('k1')
     assert val == {'y1': 11, 'y2': 2}
     pass
+
+def test_fn_get_state_3():
+    dict = dict_cache()
+    dict.fn_set_data('k1', 5)
+    val = dict.fn_get_data('k1')
+    assert val == 5
+    pass

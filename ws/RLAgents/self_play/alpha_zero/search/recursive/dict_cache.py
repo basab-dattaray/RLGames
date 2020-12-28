@@ -47,7 +47,7 @@ def dict_cache():
             _fn_set_val(dict, key, val)
             return False
         else:
-            _fn_set_val(dict, key, val)
+            dict[key] = val
             return True
 
     def fn_get_stats():

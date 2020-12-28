@@ -10,7 +10,7 @@ def hier_cache_mgt():
 
     sa_qval = dict_cache()
 
-    cache_mgr = namedtuple('_', [
+    ret_obj = namedtuple('_', [
         's_results',
         's_predictions',
         's_allowed_moves',
@@ -18,9 +18,9 @@ def hier_cache_mgt():
         'sa_qval',
 
     ])
-    cache_mgr.s_results = s_results
-    cache_mgr.s_allowed_moves = s_allowed_moves
-    cache_mgr.s_predictions = s_predictions
+    ret_obj.s_results = s_results
+    ret_obj.s_allowed_moves = s_allowed_moves
+    ret_obj.s_predictions = s_predictions
 
-    cache_mgr.sa_qval = sa_qval
-    return cache_mgr
+    ret_obj.sa_qval = sa_qval
+    return ret_obj
