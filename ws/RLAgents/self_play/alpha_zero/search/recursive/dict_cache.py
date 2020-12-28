@@ -38,6 +38,19 @@ def dict_cache():
         else:
             return None
 
+    def fn_get_attr_data(key, attr):
+        nonlocal hit_count, access_count
+
+        access_count += 1
+        if fn_does_key_exist(key):
+            hit_count += 1
+            val = dict[key]
+            if not attr in val:
+                return None
+            return val[attr]
+        else:
+            return None
+
     def fn_set_data(key, val):
         nonlocal dict, overwrite_try_count
 
@@ -60,6 +73,10 @@ def dict_cache():
             dict[key] = val
             return True
 
+    def fn_set_attr_data(key, attr, val):
+        entry = {attr, val}
+        fn_set_data(key, entry)
+
     def fn_get_stats():
         return {
             'size': len(dict),
@@ -74,7 +91,9 @@ def dict_cache():
         'fn_get_data_or_none',
         'fn_set_data',
         'fn_get_stats',
-        'fn_does_attr_key_exist'
+        'fn_does_attr_key_exist',
+        'fn_get_attr_data',
+        'fn_set_attr_data',
     ])
 
     dictionary_cache.fn_does_key_exist = fn_does_key_exist
@@ -83,5 +102,6 @@ def dict_cache():
     dictionary_cache.fn_set_data = fn_set_data
     dictionary_cache.fn_get_stats = fn_get_stats
     dictionary_cache.fn_does_attr_key_exist = fn_does_attr_key_exist
-
+    dictionary_cache.fn_get_attr_data = fn_get_attr_data
+    dictionary_cache.fn_set_attr_data = fn_set_attr_data
     return dictionary_cache

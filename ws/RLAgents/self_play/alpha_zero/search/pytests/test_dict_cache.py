@@ -39,3 +39,37 @@ def test_fn_does_attr_key_exist():
     attr_exists = dict.fn_does_attr_key_exist('k1_not', 'y1_not')
     assert attr_exists == False
     pass
+
+def test_fn_get_attr_data():
+    dict = dict_cache()
+    dict.fn_set_data('k1', {'y1': 1, 'y2': '2'})
+    val = dict.fn_get_attr_data('k1', 'y1')
+    assert val == 1
+    val = dict.fn_get_attr_data('k1', 'y2')
+    assert val == '2'
+    val = dict.fn_get_attr_data('k1_not', 'y2')
+    assert val ==  None
+    val = dict.fn_get_attr_data('k1', 'y2_not')
+    assert val ==  None
+    val = dict.fn_get_attr_data('k1_not', 'y2_not')
+    assert val ==  None
+    pass
+
+def test_fn_set_attr_data():
+    dict = dict_cache()
+
+    dict.fn_set_attr_data('k1', 'y1',  1)
+    dict.fn_set_attr_data('k1', 'y2',  '2')
+
+    val_1 = dict.fn_get_attr_data('k1', 'y1')
+    assert val_1 == 1
+    val_2 = dict.fn_get_attr_data('k1', 'y2')
+    assert val_2 == '2'
+
+    dict.fn_set_attr_data('k1', 'y2',  -222.97)
+    val_2 = dict.fn_get_attr_data('k1', 'y2')
+    assert val_2 == -222.97
+
+
+
+    pass
