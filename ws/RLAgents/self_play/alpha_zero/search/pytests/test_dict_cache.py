@@ -25,3 +25,17 @@ def test_fn_get_state_3():
     val = dict.fn_get_data('k1')
     assert val == 5
     pass
+
+
+def test_fn_does_attr_key_exist():
+    dict = dict_cache()
+    dict.fn_set_data('k1', {'y1': 1, 'y2': 2})
+    attr_exists = dict.fn_does_attr_key_exist('k1', 'y1')
+    assert attr_exists == True
+    attr_exists = dict.fn_does_attr_key_exist('k1_not', 'y1')
+    assert attr_exists == False
+    attr_exists = dict.fn_does_attr_key_exist('k1', 'y1_not')
+    assert attr_exists == False
+    attr_exists = dict.fn_does_attr_key_exist('k1_not', 'y1_not')
+    assert attr_exists == False
+    pass

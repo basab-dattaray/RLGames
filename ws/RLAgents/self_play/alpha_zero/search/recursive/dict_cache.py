@@ -11,7 +11,7 @@ def dict_cache():
         return key in dict
 
     def fn_does_attr_key_exist(key, attr):
-        if key in dict is False:
+        if not key in dict:
             return False
 
         val = dict[key]
