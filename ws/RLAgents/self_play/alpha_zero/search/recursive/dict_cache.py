@@ -74,7 +74,7 @@ def dict_cache():
             return dict
 
     def fn_set_attr_data(key, attr, val):
-        entry = {attr, val}
+        entry = {attr: val}
         fn_set_data(key, entry)
 
     def fn_get_stats():

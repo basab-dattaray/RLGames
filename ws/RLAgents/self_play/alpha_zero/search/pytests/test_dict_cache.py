@@ -70,6 +70,14 @@ def test_fn_set_attr_data():
     val_2 = dict.fn_get_attr_data('k1', 'y2')
     assert val_2 == -222.97
 
+    val = dict.fn_get_attr_data('k1_not', 'y2')
+    assert val == None
+
+    val = dict.fn_get_attr_data('k1', 'y2_not')
+    assert val == None
+
+    val = dict.fn_get_attr_data('k1_not', 'y2_not')
+    assert val == None
 
 
     pass
