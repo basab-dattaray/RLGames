@@ -29,24 +29,24 @@ def search_helper(
         fn_get_allowed_moves = lambda s: game_mgr.fn_get_valid_moves(s, player=1)
 
         state_key = game_mgr.fn_get_state_key(state)
-        if not cache_mgr.s_allowed_moves.fn_does_key_exist(state_key):
+        if not cache_mgr.s_info.fn_does_attr_key_exist(state_key, 'allowed_moves'):
             allowed_moves = fn_get_allowed_moves(state)
-            cache_mgr.s_allowed_moves.fn_set_data(state_key, allowed_moves)
+            cache_mgr.s_info.fn_set_attr_data(state_key, 'allowed_moves', allowed_moves)
             return allowed_moves
         else:
-            return cache_mgr.s_allowed_moves.fn_get_data(state_key)
+            return cache_mgr.s_info.fn_get_attr_data(state_key, 'allowed_moves')
 
     def fn_get_cached_results(state):
         fn_get_progress_status = lambda s: game_mgr.fn_get_game_progress_status(s, player=1)
 
         state_key = game_mgr.fn_get_state_key(state)
-        if not cache_mgr.s_results.fn_does_key_exist(state_key):
-            cache_mgr.s_results.fn_set_data(state_key, fn_get_progress_status(state))
-        return cache_mgr.s_results.fn_get_data(state_key)
+        if not cache_mgr.s_info.fn_does_attr_key_exist(state_key, 'result'):
+            cache_mgr.s_info.fn_set_attr_data(state_key, 'result', fn_get_progress_status(state))
+        return cache_mgr.s_info.fn_get_attr_data(state_key, 'result')
 
     def fn_visit_new_state_if_possible(state):
         state_key = game_mgr.fn_get_state_key(state)
-        if not cache_mgr.s_info.fn_does_key_exist(state_key):
+        if not cache_mgr.s_info.fn_does_attr_key_exist(state_key, 'policy'):
             # leaf node
             policy, state_val, moves_are_allowed = fn_get_cached_predictions(state)
             if not moves_are_allowed:
@@ -102,7 +102,7 @@ def search_helper(
         state_visits.fn_incr_state_visits(state_key)
 
     def fn_get_best_ucb_action(state_key):
-        allowed_moves = cache_mgr.s_allowed_moves.fn_get_data(state_key)
+        allowed_moves = cache_mgr.s_info.fn_get_attr_data(state_key, 'allowed_moves')
 
         best_ucb = -float('inf')
         best_act = None
