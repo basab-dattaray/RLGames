@@ -97,8 +97,10 @@ def search_helper(
         ## state_visits.fn_incr_Ns(state_key)
         cache.fn_incr_attr_int(state_key, 'Ns')
 
-    def fn_get_best_ucb_action(state_key):
-        allowed_moves = cache.fn_get_attr_data(state_key, 'allowed_moves')
+    def fn_get_best_ucb_action(state):
+        # allowed_moves = cache.fn_get_attr_data(state_key, 'allowed_moves')
+        state_key = game_mgr.fn_get_state_key(state)
+        allowed_moves = fn_get_cached_allowed_moves(state)
 
         best_ucb = -float('inf')
         best_act = None
@@ -113,12 +115,11 @@ def search_helper(
 
                 policy = s_info['policy']
                 state_action_key = (state_key, action)
-                sum_policy = sum(policy)
+
                 if args.mcts_ucb_use_action_prob_for_exploration:
                     action_prob_for_exploration = policy[action]
 
                 if cache.fn_does_attr_key_exist(state_action_key, 'sa_qval'):
-                    ## parent_visit_factor = state_visits.fn_get_Ns(state_key)
                     parent_visit_factor = cache.fn_get_attr_data(state_key, 'Ns')
 
                     if args.mcts_ucb_use_log_in_numerator:
@@ -130,8 +131,6 @@ def search_helper(
                                   parent_visit_factor / cache.fn_get_attr_data(state_action_key, 'Nsa')
                               )
                 else:
-                    ## ucb = args.cpuct_exploration_exploitation_factor * action_prob_for_exploration * math.sqrt(
-                    ##     state_visits.fn_get_Ns(state_key) + EPS)  # Q = 0 ?
                     ucb = args.cpuct_exploration_exploitation_factor * action_prob_for_exploration * math.sqrt(
                         cache.fn_get_attr_data(state_key, 'Ns', 0) + EPS)  # Q = 0 ?
 

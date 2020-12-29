@@ -10,7 +10,7 @@ def cache2_mgt():
             return False
 
         val = cache.fn_get_data(key)
-        if type(val) == type(dict):
+        if isinstance(val, dict):
             return attr in val.keys()
         else:
             return True

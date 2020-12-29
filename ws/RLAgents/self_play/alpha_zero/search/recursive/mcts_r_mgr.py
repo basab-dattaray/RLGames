@@ -41,7 +41,7 @@ def mcts_r_mgr(
 
         # select best action at this non terminal state
         best_action = search_utils.fn_get_best_ucb_action(
-            state_key
+            state
         )
 
         next_state = game_mgr.fn_get_next_state(state, player= 1, action= best_action)
