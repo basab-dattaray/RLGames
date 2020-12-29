@@ -2,7 +2,7 @@
 from collections import namedtuple
 
 
-def dict_cache():
+def cache_mgt():
     dict = {}
     hit_count = 0
     access_count = 0

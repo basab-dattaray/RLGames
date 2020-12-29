@@ -1,17 +1,17 @@
 import pytest
 
-from ws.RLAgents.self_play.alpha_zero.search.recursive.dict_cache import dict_cache
+from ws.RLAgents.self_play.alpha_zero.search.recursive.cache_mgt import cache_mgt
 
 
 def test_fn_get_state():
-    dict = dict_cache()
+    dict = cache_mgt()
     dict.fn_set_data('k1', {'y1': 1, 'y2': 2})
     val = dict.fn_get_data('k1')
     assert val == {'y1': 1, 'y2': 2}
     pass
 
 def test_fn_get_state_2():
-    dict = dict_cache()
+    dict = cache_mgt()
     dict.fn_set_data('k1', {'y1': 1, 'y2': 2})
 
     dict.fn_set_data('k1', {'y1': 11})
@@ -20,7 +20,7 @@ def test_fn_get_state_2():
     pass
 
 def test_fn_get_state_3():
-    dict = dict_cache()
+    dict = cache_mgt()
     dict.fn_set_data('k1', 5)
     val = dict.fn_get_data('k1')
     assert val == 5
@@ -28,7 +28,7 @@ def test_fn_get_state_3():
 
 
 def test_fn_does_attr_key_exist():
-    dict = dict_cache()
+    dict = cache_mgt()
     dict.fn_set_data('k1', {'y1': 1, 'y2': 2})
     attr_exists = dict.fn_does_attr_key_exist('k1', 'y1')
     assert attr_exists == True
@@ -41,7 +41,7 @@ def test_fn_does_attr_key_exist():
     pass
 
 def test_fn_get_attr_data():
-    dict = dict_cache()
+    dict = cache_mgt()
     dict.fn_set_data('k1', {'y1': 1, 'y2': '2'})
     val = dict.fn_get_attr_data('k1', 'y1')
     assert val == 1
@@ -56,7 +56,7 @@ def test_fn_get_attr_data():
     pass
 
 def test_fn_set_attr_data():
-    dict = dict_cache()
+    dict = cache_mgt()
 
     dict.fn_set_attr_data('k1', 'y1',  1)
     dict.fn_set_attr_data('k1', 'y2',  '2')
@@ -81,7 +81,7 @@ def test_fn_set_attr_data():
     pass
 
 def test_fn_incr_attr_int():
-    dict = dict_cache()
+    dict = cache_mgt()
 
     dict.fn_set_attr_data('k1', 'y1',  1)
     dict.fn_incr_attr_int('k1', 'y1')

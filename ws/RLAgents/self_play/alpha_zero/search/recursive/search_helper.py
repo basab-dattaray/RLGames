@@ -3,7 +3,7 @@ from collections import namedtuple
 
 import numpy as np
 
-from ws.RLAgents.self_play.alpha_zero.search.recursive.dict_cache import dict_cache
+from ws.RLAgents.self_play.alpha_zero.search.recursive.cache_mgt import cache_mgt
 
 def search_helper(
         args,
@@ -12,7 +12,7 @@ def search_helper(
 ):
     EPS = 1e-8
 
-    cache = dict_cache()
+    cache = cache_mgt()
 
     def fn_get_visit_counts(state_key):
         counts = [cache.fn_get_attr_data((state_key, a), 'Nsa')
