@@ -39,7 +39,7 @@ def dict_cache():
         else:
             return None
 
-    def fn_get_attr_data(key, attr):
+    def fn_get_attr_data(key, attr, default= None):
         nonlocal hit_count, access_count
 
         access_count += 1
@@ -47,10 +47,10 @@ def dict_cache():
             hit_count += 1
             val = dict[key]
             if not attr in val:
-                return None
+                return default
             return val[attr]
         else:
-            return None
+            return default
 
     def fn_set_data(key, val):
         nonlocal dict, overwrite_try_count
