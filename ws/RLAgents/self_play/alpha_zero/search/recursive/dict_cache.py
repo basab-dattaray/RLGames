@@ -11,46 +11,12 @@ def dict_cache():
     def fn_does_key_exist(key):
         return key in dict
 
-    def fn_does_attr_key_exist(key, attr):
-        if not key in dict:
-            return False
-
-        val = dict[key]
-        if type(val) == type(dict):
-            return attr in val.keys()
-        else:
-            return True
-
     def fn_get_data(key):
         nonlocal hit_count, access_count
 
         access_count += 1
         hit_count += 1
         return dict[key]
-
-
-    # def fn_get_data_or_none(key):
-    #     nonlocal hit_count, access_count
-    #
-    #     access_count += 1
-    #     if fn_does_key_exist(key):
-    #         hit_count += 1
-    #         return dict[key]
-    #     else:
-    #         return None
-
-    def fn_get_attr_data(key, attr, default= None):
-        nonlocal hit_count, access_count
-
-        access_count += 1
-        if fn_does_key_exist(key):
-            hit_count += 1
-            val = dict[key]
-            if not attr in val:
-                return default
-            return val[attr]
-        else:
-            return default
 
     def fn_set_data(key, val):
         nonlocal dict, overwrite_try_count
@@ -74,9 +40,27 @@ def dict_cache():
             dict[key] = val
             return dict
 
+    def fn_does_attr_key_exist(key, attr):
+        if not fn_does_key_exist(key):
+            return False
+
+        val = fn_get_data(key)
+        if type(val) == type(dict):
+            return attr in val.keys()
+        else:
+            return True
+
+    def fn_get_attr_data(key, attr, default= None):
+        if fn_does_key_exist(key):
+            val = fn_get_data(key)
+            if not attr in val:
+                return default
+            return val[attr]
+        else:
+            return default
+
     def fn_set_attr_data(key, attr, val):
-        entry = {attr: val}
-        fn_set_data(key, entry)
+        fn_set_data(key, {attr: val})
 
     def fn_incr_attr_int(key, attr, strict = False):
         attr_exists = fn_does_attr_key_exist(key, attr)
