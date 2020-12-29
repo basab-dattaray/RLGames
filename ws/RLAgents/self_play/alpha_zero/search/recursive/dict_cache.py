@@ -29,15 +29,15 @@ def dict_cache():
         return dict[key]
 
 
-    def fn_get_data_or_none(key):
-        nonlocal hit_count, access_count
-
-        access_count += 1
-        if fn_does_key_exist(key):
-            hit_count += 1
-            return dict[key]
-        else:
-            return None
+    # def fn_get_data_or_none(key):
+    #     nonlocal hit_count, access_count
+    #
+    #     access_count += 1
+    #     if fn_does_key_exist(key):
+    #         hit_count += 1
+    #         return dict[key]
+    #     else:
+    #         return None
 
     def fn_get_attr_data(key, attr, default= None):
         nonlocal hit_count, access_count
@@ -106,22 +106,25 @@ def dict_cache():
     ret_obj = namedtuple('state_cache', [
         'fn_does_key_exist',
         'fn_get_data',
-        'fn_get_data_or_none',
         'fn_set_data',
-        'fn_get_stats',
+
         'fn_does_attr_key_exist',
         'fn_get_attr_data',
         'fn_set_attr_data',
         'fn_incr_attr_int',
+
+        'fn_get_stats',
     ])
 
     ret_obj.fn_does_key_exist = fn_does_key_exist
     ret_obj.fn_get_data = fn_get_data
-    ret_obj.fn_get_data_or_none = fn_get_data_or_none
     ret_obj.fn_set_data = fn_set_data
-    ret_obj.fn_get_stats = fn_get_stats
+
     ret_obj.fn_does_attr_key_exist = fn_does_attr_key_exist
     ret_obj.fn_get_attr_data = fn_get_attr_data
     ret_obj.fn_set_attr_data = fn_set_attr_data
     ret_obj.fn_incr_attr_int = fn_incr_attr_int
+
+    ret_obj.fn_get_stats = fn_get_stats
+
     return ret_obj

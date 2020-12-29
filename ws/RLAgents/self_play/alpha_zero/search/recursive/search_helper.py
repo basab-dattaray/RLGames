@@ -110,9 +110,9 @@ def search_helper(
             if allowed_moves[action] != 0:
                 s_info = cache.fn_get_data(state_key)
 
-                policy = s_info['state_val']
+                policy = s_info['policy']
                 state_action_key = (state_key, action)
-
+                sum_policy = sum(policy)
                 if args.mcts_ucb_use_action_prob_for_exploration:
                     action_prob_for_exploration = policy[action]
 

@@ -13,7 +13,7 @@ if __name__ == "__main__":
             'do_load_model': True,
             'num_of_mc_simulations': 50,
             'epochs': 5,
-            'mcts_ucb_use_action_prob_for_exploration': False,
+            'mcts_ucb_use_action_prob_for_exploration': True,
         }). \
         fn_train(). \
         fn_test_against_greedy(). \
