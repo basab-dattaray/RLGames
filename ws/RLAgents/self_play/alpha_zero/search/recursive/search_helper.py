@@ -14,8 +14,6 @@ def search_helper(
 
     cache = dict_cache()
 
-    # state_visits = state_visit_mgt()
-
     def fn_get_visit_counts(state_key):
         counts = [cache.fn_get_attr_data((state_key, a), 'Nsa')
                   if cache.fn_does_attr_key_exist((state_key, a), 'Nsa') else 0 for a in
@@ -49,16 +47,15 @@ def search_helper(
             if not moves_are_allowed:
                 return - state_val
 
-            s_info = {
-                'policy': policy,
-                'state_val': state_val,
-                'Na': 0,
-            }
-            cache.fn_set_data(state_key, s_info)
+            cache.fn_set_data(
+                state_key,
+                {
+                    'policy': policy,
+                    'state_val': state_val,
+                    'Na': 0,
+                })
 
-            ## state_visits.fn_set_Ns(state_key, 0)
-
-            return s_info
+            return state_val
 
         return None
 
