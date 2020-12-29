@@ -3,7 +3,7 @@ from collections import namedtuple
 
 import numpy as np
 
-from ws.RLAgents.self_play.alpha_zero.search.recursive.hier_cache_mgt import hier_cache_mgt
+from ws.RLAgents.self_play.alpha_zero.search.recursive.dict_cache import dict_cache
 
 def search_helper(
         args,
@@ -12,13 +12,13 @@ def search_helper(
 ):
     EPS = 1e-8
 
-    cache_mgr = hier_cache_mgt()
+    cache = dict_cache()
 
     # state_visits = state_visit_mgt()
 
     def fn_get_visit_counts(state_key):
-        counts = [cache_mgr.s_info.fn_get_attr_data((state_key, a), 'Nsa')
-                  if cache_mgr.s_info.fn_does_attr_key_exist((state_key, a), 'Nsa') else 0 for a in
+        counts = [cache.fn_get_attr_data((state_key, a), 'Nsa')
+                  if cache.fn_does_attr_key_exist((state_key, a), 'Nsa') else 0 for a in
                   range(game_mgr.fn_get_action_size())]
         return counts
 
@@ -26,24 +26,24 @@ def search_helper(
         fn_get_allowed_moves = lambda s: game_mgr.fn_get_valid_moves(s, player=1)
 
         state_key = game_mgr.fn_get_state_key(state)
-        if not cache_mgr.s_info.fn_does_attr_key_exist(state_key, 'allowed_moves'):
+        if not cache.fn_does_attr_key_exist(state_key, 'allowed_moves'):
             allowed_moves = fn_get_allowed_moves(state)
-            cache_mgr.s_info.fn_set_attr_data(state_key, 'allowed_moves', allowed_moves)
+            cache.fn_set_attr_data(state_key, 'allowed_moves', allowed_moves)
             return allowed_moves
         else:
-            return cache_mgr.s_info.fn_get_attr_data(state_key, 'allowed_moves')
+            return cache.fn_get_attr_data(state_key, 'allowed_moves')
 
     def fn_get_cached_results(state):
         fn_get_progress_status = lambda s: game_mgr.fn_get_game_progress_status(s, player=1)
 
         state_key = game_mgr.fn_get_state_key(state)
-        if not cache_mgr.s_info.fn_does_attr_key_exist(state_key, 'result'):
-            cache_mgr.s_info.fn_set_attr_data(state_key, 'result', fn_get_progress_status(state))
-        return cache_mgr.s_info.fn_get_attr_data(state_key, 'result')
+        if not cache.fn_does_attr_key_exist(state_key, 'result'):
+            cache.fn_set_attr_data(state_key, 'result', fn_get_progress_status(state))
+        return cache.fn_get_attr_data(state_key, 'result')
 
     def fn_visit_new_state_if_possible(state):
         state_key = game_mgr.fn_get_state_key(state)
-        if not cache_mgr.s_info.fn_does_attr_key_exist(state_key, 'policy'):
+        if not cache.fn_does_attr_key_exist(state_key, 'policy'):
             # leaf node
             policy, state_val, moves_are_allowed = fn_get_cached_predictions(state)
             if not moves_are_allowed:
@@ -54,7 +54,7 @@ def search_helper(
                 'state_val': state_val,
                 'Na': 0,
             }
-            cache_mgr.s_info.fn_set_data(state_key, s_info)
+            cache.fn_set_data(state_key, s_info)
 
             ## state_visits.fn_set_Ns(state_key, 0)
 
@@ -82,25 +82,25 @@ def search_helper(
     def fn_expand_if_needed(state_key, action, state_val):
         state_action_key = (state_key, action)
 
-        if not cache_mgr.s_info.fn_does_attr_key_exist(state_action_key, 'sa_qval'):  # CREATE NEW STATE-ACTION
-            cache_mgr.s_info.fn_set_attr_data(state_action_key, 'sa_qval',  state_val)
-            cache_mgr.s_info.fn_incr_attr_int(state_action_key, 'Nsa')
+        if not cache.fn_does_attr_key_exist(state_action_key, 'sa_qval'):  # CREATE NEW STATE-ACTION
+            cache.fn_set_attr_data(state_action_key, 'sa_qval',  state_val)
+            cache.fn_incr_attr_int(state_action_key, 'Nsa')
             ## state_visits.fn_incr_Ns(state_key)
-            cache_mgr.s_info.fn_incr_attr_int(state_key, 'Ns')
+            cache.fn_incr_attr_int(state_key, 'Ns')
 
     def fn_update_state_during_backprop(state_key, action, state_val):
         state_action_key = (state_key, action)
 
-        sa_visits = cache_mgr.s_info.fn_get_attr_data( state_action_key, 'Nsa')
-        tmp_val = (sa_visits * cache_mgr.s_info.fn_get_attr_data(state_action_key, 'sa_qval') + state_val) / (sa_visits + 1)
-        cache_mgr.s_info.fn_set_attr_data(state_action_key, 'sa_qval', tmp_val)
+        sa_visits = cache.fn_get_attr_data( state_action_key, 'Nsa')
+        tmp_val = (sa_visits * cache.fn_get_attr_data(state_action_key, 'sa_qval') + state_val) / (sa_visits + 1)
+        cache.fn_set_attr_data(state_action_key, 'sa_qval', tmp_val)
 
-        cache_mgr.s_info.fn_incr_attr_int(state_action_key, 'Nsa')
+        cache.fn_incr_attr_int(state_action_key, 'Nsa')
         ## state_visits.fn_incr_Ns(state_key)
-        cache_mgr.s_info.fn_incr_attr_int(state_key, 'Ns')
+        cache.fn_incr_attr_int(state_key, 'Ns')
 
     def fn_get_best_ucb_action(state_key):
-        allowed_moves = cache_mgr.s_info.fn_get_attr_data(state_key, 'allowed_moves')
+        allowed_moves = cache.fn_get_attr_data(state_key, 'allowed_moves')
 
         best_ucb = -float('inf')
         best_act = None
@@ -111,7 +111,7 @@ def search_helper(
         for action in range(game_mgr.fn_get_action_size()):
 
             if allowed_moves[action] != 0:
-                s_info = cache_mgr.s_info.fn_get_data(state_key)
+                s_info = cache.fn_get_data(state_key)
 
                 policy = s_info['state_val']
                 state_action_key = (state_key, action)
@@ -119,23 +119,23 @@ def search_helper(
                 if args.mcts_ucb_use_action_prob_for_exploration:
                     action_prob_for_exploration = policy[action]
 
-                if cache_mgr.s_info.fn_does_attr_key_exist(state_action_key, 'sa_qval'):
+                if cache.fn_does_attr_key_exist(state_action_key, 'sa_qval'):
                     ## parent_visit_factor = state_visits.fn_get_Ns(state_key)
-                    parent_visit_factor = cache_mgr.s_info.fn_get_attr_data(state_key, 'Ns')
+                    parent_visit_factor = cache.fn_get_attr_data(state_key, 'Ns')
 
                     if args.mcts_ucb_use_log_in_numerator:
                         parent_visit_factor = np.log(parent_visit_factor)
 
-                    ucb = cache_mgr.s_info.fn_get_attr_data(state_action_key, 'sa_qval') \
+                    ucb = cache.fn_get_attr_data(state_action_key, 'sa_qval') \
                           + args.cpuct_exploration_exploitation_factor * action_prob_for_exploration * math.sqrt \
                               (
-                                  parent_visit_factor / cache_mgr.s_info.fn_get_attr_data(state_action_key, 'Nsa')
+                                  parent_visit_factor / cache.fn_get_attr_data(state_action_key, 'Nsa')
                               )
                 else:
                     ## ucb = args.cpuct_exploration_exploitation_factor * action_prob_for_exploration * math.sqrt(
                     ##     state_visits.fn_get_Ns(state_key) + EPS)  # Q = 0 ?
                     ucb = args.cpuct_exploration_exploitation_factor * action_prob_for_exploration * math.sqrt(
-                        cache_mgr.s_info.fn_get_attr_data(state_key, 'Ns', 0) + EPS)  # Q = 0 ?
+                        cache.fn_get_attr_data(state_key, 'Ns', 0) + EPS)  # Q = 0 ?
 
                 if ucb > best_ucb:
                     best_ucb = ucb
