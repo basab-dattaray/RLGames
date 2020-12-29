@@ -3,10 +3,7 @@ from collections import namedtuple
 
 import numpy as np
 
-# from ws.RLAgents.self_play.alpha_zero.search.cache_mgt import cache_mgt
 from ws.RLAgents.self_play.alpha_zero.search.recursive.hier_cache_mgt import hier_cache_mgt
-from ws.RLAgents.self_play.alpha_zero.search.recursive.state_visit_mgt import state_visit_mgt
-
 
 def search_helper(
         args,
