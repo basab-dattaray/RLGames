@@ -28,7 +28,6 @@ def state_visit_mgt():
         nonlocal Nsa
         Nsa[state_action_key] = visits
 
-
     ret_obj = namedtuple('_', [
         'fn_get_Ns',
         'fn_get_Nsa',
