@@ -22,5 +22,5 @@ args = DotDict({
     'num_of_test_games': 300,
 
     'mcts_ucb_use_log_in_numerator': True,
-    'mcts_ucb_use_action_prob_for_exploration': False,
+    'mcts_ucb_use_action_prob_for_exploration': True,
 })
