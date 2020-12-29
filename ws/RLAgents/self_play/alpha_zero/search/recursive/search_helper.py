@@ -20,8 +20,8 @@ def search_helper(
     state_visits = state_visit_mgt()
 
     def fn_get_visit_counts(state_key):
-        counts = [state_visits.fn_get_child_state_visits((state_key, a))
-                  if state_visits.fn_does_child_state_visits_exist((state_key, a)) else 0 for a in
+        counts = [state_visits.fn_get_Nsa((state_key, a))
+                  if state_visits.fn_does_key_exist_in_Nsa((state_key, a)) else 0 for a in
                   range(game_mgr.fn_get_action_size())]
         return counts
 
@@ -58,7 +58,7 @@ def search_helper(
             }
             cache_mgr.s_info.fn_set_data(state_key, s_info)
 
-            state_visits.fn_set_state_visits(state_key, 0)
+            state_visits.fn_set_Ns(state_key, 0)
 
             return s_info
 
@@ -86,20 +86,20 @@ def search_helper(
 
         if not cache_mgr.sa_qval.fn_does_key_exist(state_action_key):  # CREATE NEW STATE-ACTION
             cache_mgr.sa_qval.fn_set_data(state_action_key, state_val)
-            state_visits.fn_incr_child_state_visits(state_action_key)
-            state_visits.fn_incr_state_visits(state_key)
+            state_visits.fn_incr_Nsa(state_action_key)
+            state_visits.fn_incr_Ns(state_key)
 
     def fn_update_state_during_backprop(state_key, action, state_val):
         state_action_key = (state_key, action)
 
 
-        tmp_val = (state_visits.fn_get_child_state_visits( state_action_key)
+        tmp_val = (state_visits.fn_get_Nsa( state_action_key)
                    * cache_mgr.sa_qval.fn_get_data(state_action_key) + state_val) \
-                  / (state_visits.fn_get_child_state_visits(state_action_key) + 1)
+                  / (state_visits.fn_get_Nsa(state_action_key) + 1)
         cache_mgr.sa_qval.fn_set_data(state_action_key, tmp_val)
 
-        state_visits.fn_incr_child_state_visits(state_action_key)
-        state_visits.fn_incr_state_visits(state_key)
+        state_visits.fn_incr_Nsa(state_action_key)
+        state_visits.fn_incr_Ns(state_key)
 
     def fn_get_best_ucb_action(state_key):
         allowed_moves = cache_mgr.s_info.fn_get_attr_data(state_key, 'allowed_moves')
@@ -122,18 +122,18 @@ def search_helper(
                     action_prob_for_exploration = policy[action]
 
                 if cache_mgr.sa_qval.fn_does_key_exist(state_action_key):
-                    parent_visit_factor = state_visits.fn_get_state_visits(state_key)
+                    parent_visit_factor = state_visits.fn_get_Ns(state_key)
                     if args.mcts_ucb_use_log_in_numerator:
                         parent_visit_factor = np.log(parent_visit_factor)
 
                     ucb = cache_mgr.sa_qval.fn_get_data(state_action_key) \
                           + args.cpuct_exploration_exploitation_factor * action_prob_for_exploration * math.sqrt \
                               (
-                                  parent_visit_factor / state_visits.fn_get_child_state_visits(state_action_key)
+                                  parent_visit_factor / state_visits.fn_get_Nsa(state_action_key)
                               )
                 else:
                     ucb = args.cpuct_exploration_exploitation_factor * action_prob_for_exploration * math.sqrt(
-                        state_visits.fn_get_state_visits(state_key) + EPS)  # Q = 0 ?
+                        state_visits.fn_get_Ns(state_key) + EPS)  # Q = 0 ?
 
                 if ucb > best_ucb:
                     best_ucb = ucb
