@@ -82,8 +82,8 @@ def search_helper(
     def fn_expand_if_needed(state_key, action, state_val):
         state_action_key = (state_key, action)
 
-        if not cache_mgr.sa_qval.fn_does_key_exist(state_action_key):  # CREATE NEW STATE-ACTION
-            cache_mgr.sa_qval.fn_set_data(state_action_key, state_val)
+        if not cache_mgr.s_info.fn_does_attr_key_exist(state_action_key, 'sa_qval'):  # CREATE NEW STATE-ACTION
+            cache_mgr.s_info.fn_set_attr_data(state_action_key, 'sa_qval',  state_val)
             cache_mgr.s_info.fn_incr_attr_int(state_action_key, 'Nsa')
             ## state_visits.fn_incr_Ns(state_key)
             cache_mgr.s_info.fn_incr_attr_int(state_key, 'Ns')
@@ -92,8 +92,8 @@ def search_helper(
         state_action_key = (state_key, action)
 
         sa_visits = cache_mgr.s_info.fn_get_attr_data( state_action_key, 'Nsa')
-        tmp_val = (sa_visits * cache_mgr.sa_qval.fn_get_data(state_action_key) + state_val) / (sa_visits + 1)
-        cache_mgr.sa_qval.fn_set_data(state_action_key, tmp_val)
+        tmp_val = (sa_visits * cache_mgr.s_info.fn_get_attr_data(state_action_key, 'sa_qval') + state_val) / (sa_visits + 1)
+        cache_mgr.s_info.fn_set_attr_data(state_action_key, 'sa_qval', tmp_val)
 
         cache_mgr.s_info.fn_incr_attr_int(state_action_key, 'Nsa')
         ## state_visits.fn_incr_Ns(state_key)
@@ -119,14 +119,14 @@ def search_helper(
                 if args.mcts_ucb_use_action_prob_for_exploration:
                     action_prob_for_exploration = policy[action]
 
-                if cache_mgr.sa_qval.fn_does_key_exist(state_action_key):
+                if cache_mgr.s_info.fn_does_attr_key_exist(state_action_key, 'sa_qval'):
                     ## parent_visit_factor = state_visits.fn_get_Ns(state_key)
                     parent_visit_factor = cache_mgr.s_info.fn_get_attr_data(state_key, 'Ns')
 
                     if args.mcts_ucb_use_log_in_numerator:
                         parent_visit_factor = np.log(parent_visit_factor)
 
-                    ucb = cache_mgr.sa_qval.fn_get_data(state_action_key) \
+                    ucb = cache_mgr.s_info.fn_get_attr_data(state_action_key, 'sa_qval') \
                           + args.cpuct_exploration_exploitation_factor * action_prob_for_exploration * math.sqrt \
                               (
                                   parent_visit_factor / cache_mgr.s_info.fn_get_attr_data(state_action_key, 'Nsa')
