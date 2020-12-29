@@ -94,10 +94,8 @@ def search_helper(
     def fn_update_state_during_backprop(state_key, action, state_val):
         state_action_key = (state_key, action)
 
-
-        tmp_val = (state_visits.fn_get_Nsa( state_action_key)
-                   * cache_mgr.sa_qval.fn_get_data(state_action_key) + state_val) \
-                  / (state_visits.fn_get_Nsa(state_action_key) + 1)
+        sa_visits = state_visits.fn_get_Nsa( state_action_key)
+        tmp_val = (sa_visits * cache_mgr.sa_qval.fn_get_data(state_action_key) + state_val) / (sa_visits + 1)
         cache_mgr.sa_qval.fn_set_data(state_action_key, tmp_val)
 
         state_visits.fn_incr_Nsa(state_action_key)
