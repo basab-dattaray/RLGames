@@ -45,7 +45,7 @@ def search_helper(
             # leaf node
             policy, state_val, moves_are_allowed = fn_get_cached_predictions(state)
             if not moves_are_allowed:
-                return - state_val
+                return 0
 
             cache.fn_set_data(
                 state_key,

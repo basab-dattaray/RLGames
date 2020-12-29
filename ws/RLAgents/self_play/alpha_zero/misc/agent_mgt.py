@@ -93,7 +93,7 @@ def agent_mgt(args, file_path):
             # services.fn_log(f'Total Time Taken = {time() - start_time} seconds')
             exit()
 
-        @tracer(args)
+        @tracer(args, verboscity= 4)
         def fn_train():
             nonlocal args
 
@@ -110,13 +110,13 @@ def agent_mgt(args, file_path):
             fn_test(args, fn_human_player_policy, verbose=True, num_of_test_games=2)
             return agent_mgr
 
-        @tracer(args)
+        @tracer(args, verboscity= 4)
         def fn_test_against_random():
             fn_random_player_policy = lambda g: RandomPlayer(g).fn_get_action
             fn_test(args, fn_random_player_policy, num_of_test_games=args.num_of_test_games)
             return agent_mgr
 
-        @tracer(args)
+        @tracer(args, verboscity= 4)
         def fn_test_against_greedy():
             fn_random_player_policy = lambda g: GreedyPlayer(g).fn_get_action
             fn_test(args, fn_random_player_policy, num_of_test_games=args.num_of_test_games)
@@ -158,7 +158,7 @@ def agent_mgt(args, file_path):
             agent_mgr.args = args
             return agent_mgr
 
-        @tracer(args)
+        @tracer(args, verboscity= 4)
         def fn_show_args():
 
             for k, v in args.items():
@@ -166,7 +166,7 @@ def agent_mgt(args, file_path):
 
             return agent_mgr
 
-        @tracer(args)
+        @tracer(args, verboscity= 4)
         def fn_measure_time_elapsed():
             nonlocal start_time
             end_time = time()
@@ -178,7 +178,7 @@ def agent_mgt(args, file_path):
 
             return agent_mgr
 
-        @tracer(args)
+        @tracer(args, verboscity= 4)
         def fn_archive_log_file():
             dst_subfolder_rel_path = dt.now().strftime("%Y_%m_%d_%H_%M_%S")
             dst_full_path = os.path.join(args.archive_dir, dst_subfolder_rel_path)
