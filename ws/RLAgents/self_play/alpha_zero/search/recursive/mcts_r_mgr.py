@@ -35,7 +35,7 @@ def mcts_r_mgr(
         if s_results != 0:
             return - s_results
 
-        state_val = search_utils.fn_visit_new_state_if_possible(state)
+        state_val = search_utils.fn_visit_new_state_as_warrented(state)
         if state_val is not None:
             return -state_val
 

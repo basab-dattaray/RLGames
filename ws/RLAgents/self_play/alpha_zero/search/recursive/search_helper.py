@@ -46,7 +46,7 @@ def search_helper(
             cache.fn_set_attr_data(state_key, 'result', fn_get_progress_status(state))
         return cache.fn_get_attr_data(state_key, 'result')
 
-    def fn_visit_new_state_if_possible(state):
+    def fn_visit_new_state_as_warrented(state):
         state_key = game_mgr.fn_get_state_key(state)
         if not cache.fn_does_attr_key_exist(state_key, 'policy'):
             # leaf node
@@ -152,7 +152,7 @@ def search_helper(
         'fn_update_state_during_backprop',
 
         'fn_get_cached_results',
-        'fn_visit_new_state_if_possible',
+        'fn_visit_new_state_as_warrented',
         'fn_expand_if_needed',
     ])
     ret_functions.fn_get_visit_counts = fn_get_visit_counts
@@ -160,7 +160,7 @@ def search_helper(
     ret_functions.fn_update_state_during_backprop = fn_update_state_during_backprop
 
     ret_functions.fn_get_cached_results = fn_get_cached_results
-    ret_functions.fn_visit_new_state_if_possible = fn_visit_new_state_if_possible
+    ret_functions.fn_visit_new_state_as_warrented = fn_visit_new_state_as_warrented
     ret_functions.fn_expand_if_needed = fn_expand_if_needed
 
     return ret_functions
