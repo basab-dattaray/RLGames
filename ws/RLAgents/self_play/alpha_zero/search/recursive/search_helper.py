@@ -1,10 +1,13 @@
+import importlib
 import math
 from collections import namedtuple
 
 import numpy as np
 
 from ws.RLAgents.self_play.alpha_zero.search.recursive.cache2_mgt import cache2_mgt
+from ws.RLAgents.self_play.alpha_zero.search.recursive.cache2a_mgt import cache2a_mgt
 
+CACHE_MGT = 'cache2_mgt'
 
 def search_helper(
         args,
@@ -13,7 +16,10 @@ def search_helper(
 ):
     EPS = 1e-8
 
-    cache = cache2_mgt()
+    # cache = importlib.import_module(CACHE_MGT, CACHE_MGT)
+    cache = cache2a_mgt()
+    # 'ws.RLAgents.model_based.planning.policy_iterator'
+    # cache2 = load_function(function_name="agent_mgt", module_tag="agent_mgt", subpackage_tag=subpackage_name)
 
     def fn_get_visit_counts(state_key):
         counts = [cache.fn_get_attr_data((state_key, a), 'Nsa')
