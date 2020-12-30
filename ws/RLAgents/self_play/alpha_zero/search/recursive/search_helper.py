@@ -89,7 +89,6 @@ def search_helper(
         if not cache.fn_does_attr_key_exist(state_action_key, 'sa_qval'):  # CREATE NEW STATE-ACTION
             cache.fn_set_attr_data(state_action_key, 'sa_qval',  state_val)
             cache.fn_incr_attr_int(state_action_key, 'Nsa')
-            ## state_visits.fn_incr_Ns(state_key)
             cache.fn_incr_attr_int(state_key, 'Ns')
 
     def fn_update_state_during_backprop(state_key, action, state_val):

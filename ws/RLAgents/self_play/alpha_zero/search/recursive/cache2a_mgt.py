@@ -33,6 +33,8 @@ def cache2a_mgt():
             if strict:
                 return False
             fn_set_attr_data(key, attr, 0)
+            return True
+
         val = fn_get_attr_data(key, attr)
 
         if not isinstance(val, int):
