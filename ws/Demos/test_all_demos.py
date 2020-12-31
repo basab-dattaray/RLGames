@@ -10,5 +10,8 @@ def _fn_run_file(rel_dir):
 def test_fn_get_state():
     _fn_run_file('Demo001_policy_iterator')
     _fn_run_file('Demo002_value_iterator')
+    _fn_run_file('Demo003_monte_carlo')
+    _fn_run_file('Demo004_sarsa')
+    _fn_run_file('Demo005_qlearn')
 
 
