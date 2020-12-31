@@ -4,7 +4,7 @@ import tkinter as tk
 import time
 from PIL import ImageTk, Image
 from .DISPLAY_INFO import *
-from ws.RLEnvironments.gridworld.grid_board.qwaste_mgt import qwaste_mgt
+# from ws.RLEnvironments.gridworld.grid_board.qwaste_mgt import qwaste_mgt
 from ws.RLUtils.common.misc_functions import calc_pixels
 from ..logic.SETUP_INFO import ACTION_MOVE_STATE_RULES
 
@@ -21,7 +21,7 @@ class Display:
         self._height = app_fn_display_info["HEIGHT"]
         self._board_blockers = app_fn_display_info["BOARD_BLOCKERS"]
         self._board_goal = app_fn_display_info["BOARD_GOAL"]
-        self._fnQWasteDestructiveGet, self._fnQWastePushIfEmpty = qwaste_mgt()
+        # self._fnQWasteDestructiveGet, self._fnQWastePushIfEmpty = qwaste_mgt()
         self._right_margin = 5
         self._bottom_margin = 80
         self._tk.title(app_info["display"]["APP_NAME"])
