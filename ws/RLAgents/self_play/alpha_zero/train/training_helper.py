@@ -33,8 +33,6 @@ def fn_load_train_examples(args):
 
 
 def fn_log_iteration_results(args, draws, iteration, nwins, pwins):
-    # args.calltracer.fn_write(f'-- Iter {iteration} of {args.num_of_training_iterations}', indent=0)
     update_threshold = 'update threshold: {}'.format(args.score_based_model_update_threshold)
-    # args.calltracer.fn_write(update_threshold)
     score = f'nwins:{nwins} pwins:{pwins} draws:{draws} {update_threshold}'
     args.calltracer.fn_write(score)

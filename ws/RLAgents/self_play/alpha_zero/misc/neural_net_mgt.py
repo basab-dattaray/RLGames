@@ -109,7 +109,6 @@ def neural_net_mgt(args):
     def fn_save_model(filename= args['model_name']):
         folder = os.path.join(args.demo_folder, args.rel_model_path)
         filepath = os.path.join(folder, filename)
-        filepath_abs = os.path.abspath(filepath)
         if not os.path.exists(folder):
             os.mkdir(folder)
 

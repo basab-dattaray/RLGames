@@ -1,5 +1,4 @@
 import matplotlib.pyplot as plt
-import datetime as dt
 
 from ws.RLUtils.monitoring.graphing.subplot_mgt import subplot_mgt
 
