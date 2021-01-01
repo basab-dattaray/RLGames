@@ -37,10 +37,10 @@ def impl_mgt(env, app_info):
         episode_num = 0
         while True:
             episode_num += 1
-            episode_status = runEpisode(_fn_display_controller.fnMoveCursor, _fn_display_controller.fnShowQValue)
+            episode_status = runEpisode(_fn_display_controller.fn_move_cursor, _fn_display_controller.fn_show_qvalue)
             print('episode number: {}   status = {}'.format(episode_num, episode_status))
 
-    def runEpisode(fnMoveCursor, fnShowQValue):
+    def runEpisode(fn_move_cursor, fn_show_qvalue):
         new_state = None
 
         state = _env.fnReset()
@@ -51,11 +51,11 @@ def impl_mgt(env, app_info):
             new_state, reward, episode_status, _ = _env.fnStep(action)
 
             # _env[envMgr__fnSetState](new_state)
-            if fnShowQValue is not None:
+            if fn_show_qvalue is not None:
                 q_actions = fn_get_q_actions(state)
-                fnShowQValue(state, q_actions)
-            if fnMoveCursor is not None:
-                fnMoveCursor(state, new_state)
+                fn_show_qvalue(state, q_actions)
+            if fn_move_cursor is not None:
+                fn_move_cursor(state, new_state)
 
             new_action = fn_get_max_q_actions(new_state, app_info["EPSILON"])
             fnUpdateKnowledge(state, action, reward, new_state, new_action)
@@ -63,8 +63,8 @@ def impl_mgt(env, app_info):
             action = new_action
             state = new_state
 
-        if fnMoveCursor is not None:
-            fnMoveCursor(new_state)
+        if fn_move_cursor is not None:
+            fn_move_cursor(new_state)
 
         return episode.fn_get_episode_status()
 

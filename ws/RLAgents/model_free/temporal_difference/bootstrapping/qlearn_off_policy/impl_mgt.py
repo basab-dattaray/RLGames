@@ -28,7 +28,7 @@ def impl_mgt(env, app_info):
 
     def runEpisode():
         state = _env.fnReset()
-        update_ui(_fn_display_controller.fnShowQValue, state)
+        update_ui(_fn_display_controller.fn_show_qvalue, state)
 
         episode = app_info[OBJ_EPISODE]
         while episode.fn_should_episode_continue():
@@ -39,21 +39,21 @@ def impl_mgt(env, app_info):
 
             fnUpdateKnowledge(state, action, reward, new_state)
 
-            update_ui(_fn_display_controller.fnShowQValue, state)
+            update_ui(_fn_display_controller.fn_show_qvalue, state)
 
-            if _fn_display_controller.fnMoveCursor is not None:
-                _fn_display_controller.fnMoveCursor(state, new_state)
+            if _fn_display_controller.fn_move_cursor is not None:
+                _fn_display_controller.fn_move_cursor(state, new_state)
 
             state = new_state
 
-        if _fn_display_controller.fnMoveCursor is not None:
-            _fn_display_controller.fnMoveCursor(state)
+        if _fn_display_controller.fn_move_cursor is not None:
+            _fn_display_controller.fn_move_cursor(state)
 
         return episode.fn_get_episode_status()
 
-    def update_ui(fnShowQValue, state):
-        if fnShowQValue is not None:
+    def update_ui(fn_show_qvalue, state):
+        if fn_show_qvalue is not None:
             q_actions = fn_get_q_actions(state)
-            fnShowQValue(state, q_actions)
+            fn_show_qvalue(state, q_actions)
 
     return fn_bind_fn_display_actions, fnQLearn
