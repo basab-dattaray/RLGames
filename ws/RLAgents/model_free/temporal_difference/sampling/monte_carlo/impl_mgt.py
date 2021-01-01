@@ -1,5 +1,5 @@
 from ws.RLInterfaces.PARAM_KEY_NAMES import OBJ_EPISODE, NUM_EPISODES
-from ws.RLEnvironments.gridworld.grid_board.Display import Display
+from ws.RLEnvironments.gridworld.grid_board.display_mgt import display_mgt
 
 from .details_mgt import details_mgt
 
@@ -7,7 +7,7 @@ from .details_mgt import details_mgt
 def impl_mgt(env, app_info):
     _env = env
 
-    _fn_display_controller = Display(app_info)
+    _fn_display_controller = display_mgt(app_info)
     fnClearTrace, fnGetEpsilonGreedyAction, fnTraceInteraction, fnUpdateValueTableFromTrace = details_mgt(_env,
                                                                                                           app_info)
 

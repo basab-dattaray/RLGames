@@ -1,5 +1,5 @@
 from ws.RLInterfaces.PARAM_KEY_NAMES import OBJ_EPISODE, LEARNING_RATE, DISCOUNT_FACTOR
-from ws.RLEnvironments.gridworld.grid_board.Display import Display
+from ws.RLEnvironments.gridworld.grid_board.display_mgt import display_mgt
 from ws.RLEnvironments.gridworld.logic.qtable_mgt import qtable_mgt
 
 
@@ -8,7 +8,7 @@ from ws.RLEnvironments.gridworld.logic.qtable_mgt import qtable_mgt
 def impl_mgt(env, app_info):
     _env = env
 
-    _fn_display_controller = Display(app_info)
+    _fn_display_controller = display_mgt(app_info)
 
     _epsilon = app_info["EPSILON"]
     _discount_factor = app_info["DISCOUNT_FACTOR"]

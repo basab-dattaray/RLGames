@@ -15,7 +15,7 @@ COORD_RIGHT = (77, 42)  # right
 COORD_UP = (42, 5)  # up
 COORD_DOWN = (42, 77)  # down
 
-class Display:
+class display_mgt:
     def __init__(self, app_info):
         self._tk = tk.Tk()
         self._cursor = None

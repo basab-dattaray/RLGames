@@ -1,11 +1,11 @@
 from ws.RLInterfaces.PARAM_KEY_NAMES import OBJ_EPISODE, EPSILON, DISCOUNT_FACTOR, LEARNING_RATE
-from ws.RLEnvironments.gridworld.grid_board.Display import Display
+from ws.RLEnvironments.gridworld.grid_board.display_mgt import display_mgt
 from ws.RLEnvironments.gridworld.logic.qtable_mgt import qtable_mgt
 
 
 def impl_mgt(env, app_info):
     _env = env
-    _fn_display_controller = Display(app_info)
+    _fn_display_controller = display_mgt(app_info)
 
     fn_get_qval, fn_set_qval, fn_get_q_actions, fn_get_max_q_actions = qtable_mgt()
 
