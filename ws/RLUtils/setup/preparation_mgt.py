@@ -17,8 +17,8 @@ def fn_load_app(file_path):
     app_info, env = preparation_mgt(file_path)
     subpackage_name = 'ws.RLAgents.{}'.format(app_info[STRATEGY])
     agent_mgt = load_function(function_name="agent_mgt", module_tag="agent_mgt", subpackage_tag=subpackage_name)
-    fnInit = agent_mgt(app_info, env)
-    fnInit()
+    fn_init = agent_mgt(app_info, env)
+    fn_init()
 
 def preparation_mgt(calling_filepath, verbose=False):
     filepathname_parts = calling_filepath.rsplit('/', 1)

@@ -12,7 +12,7 @@ def impl_mgt(env, app_info):
                                                                                                           app_info)
 
     def fn_bind_fn_display_actions(acton_dictionary):
-        _fn_display_controller.fnInit(acton_dictionary)
+        _fn_display_controller.fn_init(acton_dictionary)
 
     def fnRunMonteCarlo():
         fnClearTrace()

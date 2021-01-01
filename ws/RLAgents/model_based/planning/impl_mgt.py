@@ -12,7 +12,7 @@ def impl_mgt(env, app_info):
 
     def fn_bind_fn_display_actions(acton_dictionary):
 
-        _fn_display_controller.fnInit(acton_dictionary)
+        _fn_display_controller.fn_init(acton_dictionary)
 
     def fnNextGetAction(state):
         random_pick = random.randrange(100) / 100

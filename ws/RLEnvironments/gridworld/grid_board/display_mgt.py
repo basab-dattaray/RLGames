@@ -27,7 +27,6 @@ def display_mgt(app_info):
     _height = app_fn_display_info["HEIGHT"]
     _board_blockers = app_fn_display_info["BOARD_BLOCKERS"]
     _board_goal = app_fn_display_info["BOARD_GOAL"]
-    # _fnQWasteDestructiveGet, _fnQWastePushIfEmpty = qwaste_mgt()
     _right_margin = 5
     _bottom_margin = 80
     _tk.title(app_info["display"]["APP_NAME"])
@@ -151,7 +150,7 @@ def display_mgt(app_info):
             _tk.arrows.append(_tk.canvas.create_image(origin_x, origin_y,
                                                                 image=_tk.right))
 
-    def fnInit(acton_dictionary):
+    def fn_init(acton_dictionary):
         _tk.geometry('{0}x{1}'.format(_width * _unit + _right_margin,
                                       _height * _unit + _bottom_margin))
         _tk.texts = []
@@ -229,7 +228,7 @@ def display_mgt(app_info):
         return new_x, new_y
 
     ret_obj = namedtuple('_', [
-        'fnInit',
+        'fn_init',
         'fn_move_cursor',
         'fn_show_policy_arrows',
         'fn_show_state_values',
@@ -240,7 +239,7 @@ def display_mgt(app_info):
         'fn_run_next_move',
     ])
 
-    ret_obj.fnInit = fnInit
+    ret_obj.fn_init = fn_init
     ret_obj.fn_move_cursor = fn_move_cursor
     ret_obj.fn_show_policy_arrows = fn_show_policy_arrows
     ret_obj.fn_show_state_values = fn_show_state_values

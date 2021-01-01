@@ -17,7 +17,7 @@ def impl_mgt(env, app_info):
         fn_set_qval(state, action, new_val)
 
     def fn_bind_fn_display_actions(acton_dictionary):
-        _fn_display_controller.fnInit(acton_dictionary)
+        _fn_display_controller.fn_init(acton_dictionary)
 
     def fnQLearn():
         episode_num = 0
