@@ -17,11 +17,7 @@
     "BOARD_GOAL": {"x":2,"y":2, "reward": 100},
     "UNIT": 100,
     "WIDTH": 6,
-    "HEIGHT": 5,
-    "BUTTON0": {
-      "LABEL": "",
-      "FN": ""
-    }
+    "HEIGHT": 5
   }
 }
 
