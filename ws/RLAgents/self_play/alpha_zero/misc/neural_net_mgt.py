@@ -5,6 +5,7 @@ from collections import namedtuple
 
 import numpy as np
 
+from ws.RLAgents.self_play.alpha_zero._game.othello._ml_lib.pytorch.NeuralNet import NeuralNet
 from ws.RLAgents.self_play.alpha_zero.misc.AverageMeter import AverageMeter
 from ws.RLUtils.monitoring.tracing.progress_count_mgt import progress_count_mgt
 
