@@ -2,7 +2,7 @@ import signal
 
 from time import sleep
 
-from ws.RLInterfaces.PARAM_KEY_NAMES import *
+# from ws.RLInterfaces.PARAM_KEY_NAMES import *
 from ws.RLAgents.model_free.policy_gradient.progress_mgt import progress_mgt
 from ws.RLUtils.common.config_mgt import config_mgt
 
@@ -12,25 +12,25 @@ from ws.RLUtils.modelling.archive_mgt import archive_mgt
 
 def agent_mgt(app_info, env, arg_dict=None):
     fn_get_key_as_bool, fn_get_key_as_int, _ = config_mgt(app_info)
-    is_single_episode_result = fn_get_key_as_bool(REWARD_CALCULATED_FROM_SINGLE_EPISODES)
+    is_single_episode_result = fn_get_key_as_bool('REWARD_CALCULATED_FROM_SINGLE_EPISODES')
     app_info['ENV'] = env
-    impl_mgt = load_function('impl_mgt', 'impl_mgt', app_info[AGENT_FOLDER_PATH])
+    impl_mgt = load_function('impl_mgt', 'impl_mgt', app_info['AGENT_FOLDER_PATH'])
 
     fn_act, fn_add_transition, fn_save_to_neural_net, fn_load_from_neural_net, fn_should_update_network = impl_mgt(app_info)
 
     refobj_archive_mgt = archive_mgt(
         fn_save_to_neural_net,
         fn_load_from_neural_net,
-        app_info[RESULTS_ARCHIVE_PATH],
-        app_info[RESULTS_CURRENT_PATH],
-        app_info[MAX_RESULT_COUNT]
+        app_info['RESULTS_ARCHIVE_PATH'],
+        app_info['RESULTS_CURRENT_PATH'],
+        app_info['MAX_RESULT_COUNT']
     )
 
     chart, fn_show_training_progress, fn_has_reached_goal = progress_mgt(app_info)
 
     _episode_num = 0
 
-    fn_log = app_info[FN_RECORD]
+    fn_log = app_info['FN_RECORD']
 
     def exit_gracefully(signum, frame):
         fn_log('!!! TERMINATING EARLY!!!')
@@ -54,7 +54,7 @@ def agent_mgt(app_info, env, arg_dict=None):
         signal.signal(signal.SIGINT, exit_gracefully)
         _episode_num = 1
         done = False
-        while _episode_num <= app_info[NUM_EPISODES] and not done:
+        while _episode_num <= app_info['NUM_EPISODES'] and not done:
             running_reward, num_steps = fn_run_episode(fn_should_update_network=fn_should_update_network)
             fn_show_training_progress(_episode_num, running_reward, num_steps)
 
@@ -69,7 +69,7 @@ def agent_mgt(app_info, env, arg_dict=None):
         reward = 0
         step = 0
         done = False
-        while step < app_info[MAX_STEPS_PER_EPISODE] and not done:
+        while step < app_info['MAX_STEPS_PER_EPISODE'] and not done:
             step += 1
 
             if do_render:

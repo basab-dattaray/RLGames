@@ -2,7 +2,7 @@ from ws.RLEnvironments.gridworld.logic.SETUP_INFO import POSSIBLE_ACTIONS
 
 from .logic.Episode import Episode
 
-from ws.RLInterfaces.PARAM_KEY_NAMES import OBJ_EPISODE
+# from ws.RLInterfaces.PARAM_KEY_NAMES import OBJ_EPISODE
 
 
 class Env:
@@ -25,7 +25,7 @@ class Env:
 
     def fnReset(self):
         self._episode = Episode()
-        self._app_info[OBJ_EPISODE] = self._episode
+        self._app_info['OBJ_EPISODE'] = self._episode
 
         self._reward = [[0] * self._width for _ in range(self._height)]
         self._possible_actions = POSSIBLE_ACTIONS

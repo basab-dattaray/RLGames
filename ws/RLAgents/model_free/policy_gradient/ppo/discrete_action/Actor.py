@@ -2,7 +2,7 @@ import torch
 from torch import nn
 
 # device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-from ws.RLInterfaces.PARAM_KEY_NAMES import STATE_DIMENSIONS, ACTION_DIMENSIONS, ACTOR_HIDDEN_LAYER_NODES
+# from ws.RLInterfaces.PARAM_KEY_NAMES import STATE_DIMENSIONS, ACTION_DIMENSIONS, ACTOR_HIDDEN_LAYER_NODES
 import torch.nn.functional as F
 
 from ws.RLUtils.modelling.hidden_layer_model_mgt import hidden_layer_model_mgt
@@ -12,7 +12,7 @@ class Actor(nn.Module):
     def __init__(self, app_info):
         super(Actor, self).__init__()
 
-        self._hidden_layer_dims = app_info[ACTOR_HIDDEN_LAYER_NODES]
+        self._hidden_layer_dims = app_info['ACTOR_HIDDEN_LAYER_NODES']
         fn_hidden_layers_input_proc, self.fn_hidden_layers_forward_proc = hidden_layer_model_mgt(self)
 
         env = app_info['ENV']

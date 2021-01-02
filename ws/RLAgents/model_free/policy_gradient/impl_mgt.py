@@ -6,8 +6,8 @@ from .misc import _fn_calculate_montecarlo_normalized_rewards
 
 from ..policy_gradient.Buffer import Buffer
 
-from ws.RLInterfaces.PARAM_KEY_NAMES import GAMMA, NUM_EPOCHS, LEARNING_RATE, AGENT_FOLDER_PATH, UPDATE_STEP_INTERVAL, \
-    GPU_DEVICE
+# Bufferfrom ws.RLInterfaces.PARAM_KEY_NAMES import GAMMA, NUM_EPOCHS, LEARNING_RATE, AGENT_FOLDER_PATH, UPDATE_STEP_INTERVAL, \
+#     GPU_DEVICE
 
 from ws.RLUtils.common.module_loader import load_function
 
@@ -17,21 +17,21 @@ def impl_mgt(app_info):
     MODEL_CRITIC_NAME = 'Model_Critic.pth'
     # CURRENT_MODEL_FOLDER = 'Current'
 
-    _gamma = app_info[GAMMA]
+    _gamma = app_info['GAMMA']
 
-    target_pkgpath = app_info[AGENT_FOLDER_PATH]
+    target_pkgpath = app_info['AGENT_FOLDER_PATH']
 
     detail_mgt = load_function('detail_mgt', 'detail_mgt', target_pkgpath)
     fn_actor_loss_eval, fn_pick_action, fn_evaluate = detail_mgt(app_info)
 
-    device = app_info[GPU_DEVICE]
+    device = app_info['GPU_DEVICE']
 
-    target_pkgpath = app_info[AGENT_FOLDER_PATH]
+    target_pkgpath = app_info['AGENT_FOLDER_PATH']
     Actor = load_function('Actor', 'Actor', target_pkgpath)
     _model_actor = Actor(app_info).to(device)
     _model_critic = Critic(app_info).to(device)
 
-    _optimizer = torch.optim.Adam(_model_actor.parameters(), lr=app_info[LEARNING_RATE], betas=(0.9, 0.999))
+    _optimizer = torch.optim.Adam(_model_actor.parameters(), lr=app_info['LEARNING_RATE'], betas=(0.9, 0.999))
 
     _model_old_critic = Critic(app_info).to(device)
     _model_old_actor = Actor(app_info).to(device)
@@ -72,7 +72,7 @@ def impl_mgt(app_info):
     def fn_should_update_network(done):
         nonlocal _update_interval_count
         _update_interval_count += 1
-        if _update_interval_count % app_info[UPDATE_STEP_INTERVAL] == 0:
+        if _update_interval_count % app_info['UPDATE_STEP_INTERVAL'] == 0:
             fn_update()
 
     def fn_update():
@@ -86,7 +86,7 @@ def impl_mgt(app_info):
         old_actions = torch.stack(_buffer.actions).to(device).detach()
         old_logprobs = torch.stack(_buffer.logprobs).to(device).detach()
 
-        for _ in range(app_info[NUM_EPOCHS]):
+        for _ in range(app_info['NUM_EPOCHS']):
             # Evaluating old actions and values :
             logprobs, state_values, dist_entropy = fn_evaluate(_model_actor, _model_critic, old_states, old_actions)
             loss = fn_actor_loss_eval(app_info, logprobs, old_logprobs, rewards, state_values)

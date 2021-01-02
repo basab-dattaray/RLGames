@@ -1,4 +1,4 @@
-from ws.RLInterfaces.PARAM_KEY_NAMES import OBJ_EPISODE, LEARNING_RATE, DISCOUNT_FACTOR
+# from ws.RLInterfaces.PARAM_KEY_NAMES import OBJ_EPISODE, LEARNING_RATE, DISCOUNT_FACTOR
 from ws.RLEnvironments.gridworld.grid_board.display_mgt import display_mgt
 from ws.RLEnvironments.gridworld.logic.qtable_mgt import qtable_mgt
 
@@ -26,8 +26,8 @@ def impl_mgt(env, app_info):
     def fnUpdateKnowledge(state, action, reward, next_state, next_action):
         current_q = fn_get_qval(state, action)
         next_state_q = fn_get_qval(next_state, next_action)
-        new_q = (current_q + app_info[LEARNING_RATE] *
-                 (reward + app_info[DISCOUNT_FACTOR] * next_state_q - current_q))
+        new_q = (current_q + app_info['LEARNING_RATE'] *
+                 (reward + app_info['DISCOUNT_FACTOR'] * next_state_q - current_q))
         fn_set_qval(state, action, new_q)
 
     def fn_bind_fn_display_actions(acton_dictionary):
@@ -46,7 +46,7 @@ def impl_mgt(env, app_info):
         state = _env.fnReset()
         action = fn_get_max_q_actions(state, app_info["EPSILON"])
 
-        episode = app_info[OBJ_EPISODE]
+        episode = app_info['OBJ_EPISODE']
         while episode.fn_should_episode_continue():
             new_state, reward, episode_status, _ = _env.fnStep(action)
 

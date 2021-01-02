@@ -1,12 +1,12 @@
 import torch
 
-from ws.RLInterfaces.PARAM_KEY_NAMES import CLIPPING_LOSS_RATIO, GPU_DEVICE
+# from ws.RLInterfaces.PARAM_KEY_NAMES import CLIPPING_LOSS_RATIO, GPU_DEVICE
 from torch.distributions import Categorical
 
 
 def detail_mgt(app_info):
     def fn_actor_loss_eval(app_info, logprobs, old_logprobs, rewards, state_values):
-        clipping_loss_ratio = app_info[CLIPPING_LOSS_RATIO]
+        clipping_loss_ratio = app_info['CLIPPING_LOSS_RATIO']
         # same as (pi_theta / pi_theta__old):
         ratios = torch.exp(logprobs - old_logprobs.detach())
         # surrogate losses:
@@ -17,7 +17,7 @@ def detail_mgt(app_info):
         return loss
 
     def fn_pick_action(state, buffer, policy_old_actor):
-        state = torch.from_numpy(state).float().to(app_info[GPU_DEVICE])
+        state = torch.from_numpy(state).float().to(app_info['GPU_DEVICE'])
         policy = policy_old_actor.forward(state)
 
         dist = Categorical(policy)

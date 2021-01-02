@@ -1,4 +1,4 @@
-from ws.RLInterfaces.PARAM_KEY_NAMES import OBJ_EPISODE, NUM_EPISODES
+# from ws.RLInterfaces.PARAM_KEY_NAMES import OBJ_EPISODE, NUM_EPISODES
 from ws.RLEnvironments.gridworld.grid_board.display_mgt import display_mgt
 
 from .details_mgt import details_mgt
@@ -16,7 +16,7 @@ def impl_mgt(env, app_info):
 
     def fnRunMonteCarlo():
         fnClearTrace()
-        for episode in range(app_info[NUM_EPISODES]):
+        for episode in range(app_info['NUM_EPISODES']):
             value_table, episode_status = runEpisode(_fn_display_controller.fn_move_cursor)
             if _fn_display_controller.fn_show_state_values is not None:
                 _fn_display_controller.fn_show_state_values(value_table)
@@ -26,7 +26,7 @@ def impl_mgt(env, app_info):
         state = _env.fnReset()
         action = fnGetEpsilonGreedyAction(state)
 
-        episode = app_info[OBJ_EPISODE]
+        episode = app_info['OBJ_EPISODE']
         while episode.fn_should_episode_continue():
             new_state, reward, episode_status, _ = _env.fnStep(action)
 

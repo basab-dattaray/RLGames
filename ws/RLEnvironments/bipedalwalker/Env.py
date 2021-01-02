@@ -1,11 +1,11 @@
 import gym
 
-from ws.RLInterfaces.PARAM_KEY_NAMES import ENV_NAME
+# from ws.RLInterfaces.PARAM_KEY_NAMES import ENV_NAME
 
 
 class Env:
     def __init__(self, app_info):
-        self._env = gym.make(app_info[ENV_NAME])
+        self._env = gym.make(app_info['ENV_NAME'])
         self._state_size = self._env.observation_space.shape[0]
         self._action_size = self._env.action_space.shape[0]
 

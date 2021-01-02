@@ -1,4 +1,4 @@
-from ws.RLInterfaces.PARAM_KEY_NAMES import STRATEGY
+# from ws.RLInterfaces.PARAM_KEY_NAMES import STRATEGY
 from ws.RLAgents.model_free.function_approximation.dqn.agent_mgt import agent_mgt
 from ws.RLUtils.setup.preparation_mgt import preparation_mgt
 # from ws.RLUtils.common.module_loader import load_function
@@ -7,7 +7,7 @@ import os
 
 if __name__ == "__main__":
     app_info, env = preparation_mgt(__file__)
-    subpackage_name = 'ws.RLAgents.{}'.format(app_info[STRATEGY])
+    subpackage_name = 'ws.RLAgents.{}'.format(app_info['STRATEGY'])
 
     # agent_mgt = load_function(function_name="agent_mgt", module_tag="agent_mgt", subpackage_tag=subpackage_name)
 

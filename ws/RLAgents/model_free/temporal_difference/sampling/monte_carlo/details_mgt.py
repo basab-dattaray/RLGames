@@ -1,7 +1,7 @@
 
 import numpy as np
 
-from ws.RLInterfaces.PARAM_KEY_NAMES import EPSILON, DISCOUNT_FACTOR, LEARNING_RATE
+# from ws.RLInterfaces.PARAM_KEY_NAMES import EPSILON, DISCOUNT_FACTOR, LEARNING_RATE
 from ws.RLEnvironments.gridworld.logic.SETUP_INFO import ACTION_MOVE_STATE_RULES
 from ws.RLEnvironments.gridworld.logic.value_table_mgt import value_table_mgt
 from ws.RLUtils.common.misc_functions import arg_max
@@ -24,7 +24,7 @@ def details_mgt(env, app_info):
 
     def fnGetEpsilonGreedyAction(state):
         rn = np.random.rand()
-        if rn < app_info[EPSILON]:
+        if rn < app_info['EPSILON']:
             selected_action = np.random.choice(len(ACTION_MOVE_STATE_RULES))
         else:
             actions = fn_value_table_possible_actions(state)
@@ -43,9 +43,9 @@ def details_mgt(env, app_info):
             if state not in visit_state:
                 visit_state.append(state)
                 reward = trace[1]
-                G_t = app_info[DISCOUNT_FACTOR] * (reward + G_t)
+                G_t = app_info['DISCOUNT_FACTOR'] * (reward + G_t)
                 value = fn_get_value_table_item(state)
-                new_val = (value + app_info[LEARNING_RATE] * (G_t - value))
+                new_val = (value + app_info['LEARNING_RATE'] * (G_t - value))
                 fn_set_value_table_item(state, new_val)
                 continue
         val_table = fn_get_value_table()

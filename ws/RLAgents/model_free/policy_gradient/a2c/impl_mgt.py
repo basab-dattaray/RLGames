@@ -7,18 +7,18 @@ from ..Buffer import Buffer
 from .ActorCritic import ActorCritic
 from .detail_mgt import detail_mgt
 
-from ws.RLInterfaces.PARAM_KEY_NAMES import GAMMA, NUM_EPOCHS, LEARNING_RATE, UPDATE_STEP_INTERVAL, GPU_DEVICE
+# from ws.RLInterfaces.PARAM_KEY_NAMES import GAMMA, NUM_EPOCHS, LEARNING_RATE, UPDATE_STEP_INTERVAL, GPU_DEVICE
 
 
 def impl_mgt(app_info):
     MODEL_NAME = 'Model_ActorCritic.pth'
 
-    _gamma = app_info[GAMMA]
+    _gamma = app_info['GAMMA']
     fn_actor_loss_eval, fn_pick_action, fn_evaluate = detail_mgt(app_info)
 
-    _model_actor_critic = ActorCritic(app_info).to(app_info[GPU_DEVICE])
+    _model_actor_critic = ActorCritic(app_info).to(app_info['GPU_DEVICE'])
 
-    _optimizer = torch.optim.Adam(_model_actor_critic.parameters(), lr=app_info[LEARNING_RATE], betas=(0.9, 0.999))
+    _optimizer = torch.optim.Adam(_model_actor_critic.parameters(), lr=app_info['LEARNING_RATE'], betas=(0.9, 0.999))
 
     _buffer = Buffer()
     _update_interval_count = 0
@@ -59,7 +59,7 @@ def impl_mgt(app_info):
     def fn_should_update_network(done):
         nonlocal _update_interval_count
         _update_interval_count += 1
-        if _update_interval_count % app_info[UPDATE_STEP_INTERVAL] == 0:
+        if _update_interval_count % app_info['UPDATE_STEP_INTERVAL'] == 0:
             fn_update()
 
     def fn_update():
@@ -68,7 +68,7 @@ def impl_mgt(app_info):
         # Monte Carlo rewards estimate:
         rewards = _fn_calculate_montecarlo_normalized_rewards(app_info, _buffer, _gamma)
 
-        for _ in range(app_info[NUM_EPOCHS]):
+        for _ in range(app_info['NUM_EPOCHS']):
             # Evaluating old actions and values :
             logprobs, state_values = fn_evaluate(_buffer)
             loss = fn_actor_loss_eval(logprobs, rewards, state_values)

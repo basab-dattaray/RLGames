@@ -1,6 +1,6 @@
 import torch
 
-from ws.RLInterfaces.PARAM_KEY_NAMES import GPU_DEVICE
+# from ws.RLInterfaces.PARAM_KEY_NAMES import GPU_DEVICE
 from torch.distributions import Categorical
 import torch.nn.functional as F
 
@@ -15,7 +15,7 @@ def detail_mgt(app_info):
         return cummulative_loss
 
     def fn_pick_action(state, buffer, model):
-        state = torch.from_numpy(state).float().to(app_info[GPU_DEVICE])
+        state = torch.from_numpy(state).float().to(app_info['GPU_DEVICE'])
         action_prob = model.forward(state)
         state_value = model.get_state_value()
         buffer.state_values.append(state_value)

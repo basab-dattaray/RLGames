@@ -1,31 +1,23 @@
-# from tensorflow.python.keras.optimizers import adam
-# from tensorflow.python.keras.optimizers import adam
+
 from tensorflow.python.keras import Sequential
 from tensorflow.python.keras.activations import relu, linear
 from tensorflow.python.keras.layers import Dense
-from tensorflow.python.keras.optimizer_v2.adagrad import Adagrad
 from tensorflow.python.keras.optimizer_v2.adam import Adam
 
-from ws.RLInterfaces.PARAM_KEY_NAMES import *
 from .replay_mgt import fn_replay_mgt
 
 import random
-# from keras import Sequential
-#
-# from keras.layers import Dense
-#
-# from keras.activations import relu, linear
 import numpy as np
 import os
 
 
 def impl_mgt(app_info, state_size, action_size):
-    _epsilon = app_info[EPSILON]
-    _gamma = app_info[GAMMA]
-    _batch_size = app_info[BATCH_SIZE]
-    _epsilon_min = app_info[EPSILON_MIN]
-    _learning_rate = app_info[LEARNING_RATE]
-    _epsilon_decay = app_info[EPSILON_DECAY]
+    _epsilon = app_info['EPSILON']
+    _gamma = app_info['GAMMA']
+    _batch_size = app_info['BATCH_SIZE']
+    _epsilon_min = app_info['EPSILON_MIN']
+    _learning_rate = app_info['LEARNING_RATE']
+    _epsilon_decay = app_info['EPSILON_DECAY']
     # _memory = None
     _model = None
 
@@ -50,7 +42,7 @@ def impl_mgt(app_info, state_size, action_size):
 
         if np.random.rand() <= _epsilon:
             return random.randrange(action_size)
-        act_values = _model.fn_neural_predict(state)
+        act_values = _model.predict(state)
         return np.argmax(act_values[0])
 
     def fnReplay():

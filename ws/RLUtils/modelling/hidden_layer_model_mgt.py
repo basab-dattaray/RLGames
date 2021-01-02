@@ -2,8 +2,8 @@ import importlib
 import traceback
 
 import torch.nn as nn
-from ws.RLInterfaces.PARAM_KEY_NAMES import NUM_NODES, ACTIVATION_FN, LAYER_TYPE, IN_CHANNELS, OUT_CHANNELS, KERNEL_SIZE, \
-    STRIDE, PADDING, NUM_FEATURES
+# from ws.RLInterfaces.PARAM_KEY_NAMES import NUM_NODES, ACTIVATION_FN, LAYER_TYPE, IN_CHANNELS, OUT_CHANNELS, KERNEL_SIZE, \
+    # STRIDE, PADDING, NUM_FEATURES
 
 
 def hidden_layer_model_mgt(model_instance, verbose=True):
@@ -16,24 +16,24 @@ def hidden_layer_model_mgt(model_instance, verbose=True):
         layer_count = 1
         for current_hidden_layer in model_instance._hidden_layer_dims:
             layer_name = 'hidden' + str(layer_count)
-            if (current_hidden_layer[LAYER_TYPE]) == 'LINEAR':
-                current_hidden_layer_dim = current_hidden_layer[NUM_NODES]
+            if (current_hidden_layer['LAYER_TYPE']) == 'LINEAR':
+                current_hidden_layer_dim = current_hidden_layer['NUM_NODES']
                 model_instance.__setattr__(layer_name, nn.Linear(prev_hidden_layer_dim, current_hidden_layer_dim))
-            elif (current_hidden_layer[LAYER_TYPE]) == 'CONV':
-                stride = 1 if STRIDE not in current_hidden_layer.keys() else current_hidden_layer[STRIDE]
-                padding = 0 if PADDING not in current_hidden_layer.keys() else current_hidden_layer[PADDING]
+            elif (current_hidden_layer['LAYER_TYPE']) == 'CONV':
+                stride = 1 if 'STRIDE' not in current_hidden_layer.keys() else current_hidden_layer['STRIDE']
+                padding = 0 if 'PADDING' not in current_hidden_layer.keys() else current_hidden_layer['PADDING']
                 model_instance.__setattr__(layer_name, nn.Conv2d(
-                    current_hidden_layer[IN_CHANNELS],
-                    current_hidden_layer[OUT_CHANNELS],
-                    current_hidden_layer[KERNEL_SIZE],
+                    current_hidden_layer['IN_CHANNELS'],
+                    current_hidden_layer['OUT_CHANNELS'],
+                    current_hidden_layer['KERNEL_SIZE'],
                     stride=stride,
                     padding=padding
                 ))
-            elif (current_hidden_layer[LAYER_TYPE]) == 'BATCHNORM1D':
-                model_instance.__setattr__(layer_name, nn.BatchNorm1d(current_hidden_layer[NUM_FEATURES]
+            elif (current_hidden_layer['LAYER_TYPE']) == 'BATCHNORM1D':
+                model_instance.__setattr__(layer_name, nn.BatchNorm1d(current_hidden_layer['NUM_FEATURES']
                                                                       ))
-            elif (current_hidden_layer[LAYER_TYPE]) == 'BATCHNORM2D':
-                model_instance.__setattr__(layer_name, nn.BatchNorm2d(current_hidden_layer[NUM_FEATURES]
+            elif (current_hidden_layer['LAYER_TYPE']) == 'BATCHNORM2D':
+                model_instance.__setattr__(layer_name, nn.BatchNorm2d(current_hidden_layer['NUM_FEATURES']
                                                                       ))
             else:
                 exit()
@@ -47,8 +47,8 @@ def hidden_layer_model_mgt(model_instance, verbose=True):
             for current_hidden_layer in model_instance._hidden_layer_dims:
                 # activation_function = default_activation_fn
                 activation_function = None
-                if ACTIVATION_FN in current_hidden_layer.keys():
-                    activation_function_name = current_hidden_layer[ACTIVATION_FN]
+                if 'ACTIVATION_FN' in current_hidden_layer.keys():
+                    activation_function_name = current_hidden_layer['ACTIVATION_FN']
                     if activation_function_name is not None:
                         activation_function = getattr(activation_module, activation_function_name)
 

@@ -1,4 +1,4 @@
-from ws.RLInterfaces.PARAM_KEY_NAMES import NUM_EPISODES, MAX_STEPS_PER_EPISODE
+# from ws.RLInterfaces.PARAM_KEY_NAMES import NUM_EPISODES, MAX_STEPS_PER_EPISODE
 
 import numpy as np
 
@@ -14,7 +14,7 @@ def agent_mgt(app_info, env):
     def fnTrain():
         # nonlocal fn_remember
 
-        num_episodes = app_info[NUM_EPISODES]
+        num_episodes = app_info['NUM_EPISODES']
         loss = []
         for e in range(num_episodes):
             state = env.fnReset()
@@ -22,7 +22,7 @@ def agent_mgt(app_info, env):
             score = 0
 
             num_steps = 0
-            for i in range(app_info[MAX_STEPS_PER_EPISODE]):
+            for i in range(app_info['MAX_STEPS_PER_EPISODE']):
                 num_steps += 1
                 action = fnAct(state)
                 env.fnDoRender()
@@ -32,7 +32,7 @@ def agent_mgt(app_info, env):
                 fn_remember(state, action, reward, next_state, done)
                 state = next_state
                 fnReplay()
-                if done or (i == app_info[MAX_STEPS_PER_EPISODE] - 1):
+                if done or (i == app_info['MAX_STEPS_PER_EPISODE'] - 1):
                     print("episode: {}/{}, num of steps: {}, score: {}".format(e, num_episodes, num_steps, score))
                     break
             loss.append(score)

@@ -3,7 +3,7 @@ import shutil
 from collections import namedtuple
 from datetime import datetime as dt
 
-from ws.RLInterfaces.PARAM_KEY_NAMES import APP_INFO_SOURCE, RESULTS_CURRENT_PATH
+# from ws.RLInterfaces.PARAM_KEY_NAMES import APP_INFO_SOURCE, RESULTS_CURRENT_PATH
 
 def archive_mgt(fn_save_to_neural_net, fn_load_from_neural_net, archive_folder_path, current_folder_path,
                 max_result_count):
@@ -63,22 +63,22 @@ def archive_mgt(fn_save_to_neural_net, fn_load_from_neural_net, archive_folder_p
 
 
             # remove JSON files from results_current_path
-            if os.path.exists(app_info[RESULTS_CURRENT_PATH]):
-                files_in_results_path = os.listdir(app_info[RESULTS_CURRENT_PATH])
+            if os.path.exists(app_info['RESULTS_CURRENT_PATH']):
+                files_in_results_path = os.listdir(app_info['RESULTS_CURRENT_PATH'])
                 # json_files = []
                 for file_name in files_in_results_path:
 
                     if file_name.rsplit('.', 1)[1] == 'JSON':
-                        file_path = os.path.join(app_info[RESULTS_CURRENT_PATH], file_name)
+                        file_path = os.path.join(app_info['RESULTS_CURRENT_PATH'], file_name)
                         os.remove(file_path)
 
-            shutil.copy(app_info[APP_INFO_SOURCE], app_info[RESULTS_CURRENT_PATH])
+            shutil.copy(app_info['APP_INFO_SOURCE'], app_info['RESULTS_CURRENT_PATH'])
 
             # Copy to Archive
             number_of_archive_folders_to_remove = _fn_prune_archive_per_depth()
             archive_folder = _fn_get_another_archive_path()
             if archive_folder is not None:
-                shutil.copytree(app_info[RESULTS_CURRENT_PATH], archive_folder, symlinks=False, ignore=None)
+                shutil.copytree(app_info['RESULTS_CURRENT_PATH'], archive_folder, symlinks=False, ignore=None)
 
             return "INFO:: Sucessfully Archived at {}".format(archive_folder)
 
