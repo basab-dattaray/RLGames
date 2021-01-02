@@ -1,4 +1,3 @@
-# import gym
 from collections import namedtuple
 
 import gym
@@ -13,7 +12,6 @@ def env_mgt(app_info):
         return _env.reset()
 
     def fn_take_step(action):
-        # nonlocal _state
         next_state, reward, done, _ = _env.step(action)
         return next_state, reward, done, None
 

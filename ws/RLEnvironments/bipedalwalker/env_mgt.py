@@ -1,33 +1,47 @@
+from collections import namedtuple
+
 import gym
 
-# from ws.RLInterfaces.PARAM_KEY_NAMES import ENV_NAME
+def env_mgt(app_info):
 
+    _env = gym.make(app_info['ENV_NAME'])
+    _state_size = _env.observation_space.shape[0]
+    _action_size = _env.action_space.shape[0]
 
-class env_mgt:
-    def __init__(self, app_info):
-        self._env = gym.make(app_info['ENV_NAME'])
-        self._state_size = self._env.observation_space.shape[0]
-        self._action_size = self._env.action_space.shape[0]
+    def fn_reset_env():
+        return _env.reset()
 
-    def fn_reset_env(self):
-        return self._env.reset()
-
-    def fn_take_step(self, action):
+    def fn_take_step(action):
         # nonlocal _state
-        next_state, reward, done, _ = self._env.step(action)
+        next_state, reward, done, _ = _env.step(action)
         return next_state, reward, done, None
 
-    def fn_render(self):
-        self._env.render()
+    def fn_render():
+        _env.render()
 
-    def fn_get_state_size(self):
-        return self._state_size
+    def fn_get_state_size():
+        return _state_size
 
-    def fn_get_action_size(self):
-        return self._action_size
+    def fn_get_action_size():
+        return _action_size
 
-    def fnInnerEnv(self):
-        return self._env
+    def fn_close():
+        _env.close()
 
-    def fn_close(self):
-        self._env.close()
+    ret_obj = namedtuple('_', [
+        'fn_reset_env',
+        'fn_take_step',
+        'fn_render',
+        'fn_get_state_size',
+        'fn_get_action_size',
+        'fn_close',
+    ])
+
+    ret_obj.fn_reset_env = fn_reset_env
+    ret_obj.fn_take_step = fn_take_step
+    ret_obj.fn_render = fn_render
+    ret_obj.fn_get_state_size = fn_get_state_size
+    ret_obj.fn_get_action_size = fn_get_action_size
+    ret_obj.fn_close = fn_close
+
+    return ret_obj

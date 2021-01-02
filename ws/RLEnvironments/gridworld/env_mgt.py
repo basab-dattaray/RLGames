@@ -1,3 +1,5 @@
+from collections import namedtuple
+
 from ws.RLEnvironments.gridworld.logic.SETUP_INFO import POSSIBLE_ACTIONS
 
 from .logic.Episode import Episode
@@ -84,9 +86,6 @@ class env_mgt:
 
         return next_state, reward, self._episode.fn_get_episode_status(), None
 
-    # def fnDisplayDevice(self):
-    #     return self._fn_display_device
-
     def fn_render(self):
         pass
 
@@ -97,9 +96,23 @@ class env_mgt:
     def fn_get_action_size():
         return [2]
 
-    @staticmethod
-    def fnInnerEnv():
-        return None
-
     def fn_close(self):
         pass
+    
+    ret_obj = namedtuple('_', [
+        'fn_reset_env',
+        'fn_take_step',
+        'fn_render',
+        'fn_get_state_size',
+        'fn_get_action_size',
+        'fn_close',
+    ])
+
+    ret_obj.fn_reset_env = fn_reset_env
+    ret_obj.fn_take_step = fn_take_step
+    ret_obj.fn_render = fn_render
+    ret_obj.fn_get_state_size = fn_get_state_size
+    ret_obj.fn_get_action_size = fn_get_action_size
+    ret_obj.fn_close = fn_close
+
+    # return ret_obj
