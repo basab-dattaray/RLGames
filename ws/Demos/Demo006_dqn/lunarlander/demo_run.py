@@ -19,5 +19,5 @@ if __name__ == "__main__":
     fnTrain()
 
     fnSaveWeights(model_dir)
-    env.fnClose()
+    env.fn_close()
 

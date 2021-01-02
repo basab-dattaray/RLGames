@@ -43,12 +43,12 @@ def impl_mgt(env, app_info):
     def runEpisode(fn_move_cursor, fn_show_qvalue):
         new_state = None
 
-        state = _env.fnReset()
+        state = _env.fn_reset_env()
         action = fn_get_max_q_actions(state, app_info["EPSILON"])
 
         episode = app_info['OBJ_EPISODE']
         while episode.fn_should_episode_continue():
-            new_state, reward, episode_status, _ = _env.fnStep(action)
+            new_state, reward, episode_status, _ = _env.fn_take_step(action)
 
             # _env[envMgr__fnSetState](new_state)
             if fn_show_qvalue is not None:

@@ -23,12 +23,12 @@ def impl_mgt(env, app_info):
 
     def runEpisode(fn_move_cursor):
         new_state = None
-        state = _env.fnReset()
+        state = _env.fn_reset_env()
         action = fnGetEpsilonGreedyAction(state)
 
         episode = app_info['OBJ_EPISODE']
         while episode.fn_should_episode_continue():
-            new_state, reward, episode_status, _ = _env.fnStep(action)
+            new_state, reward, episode_status, _ = _env.fn_take_step(action)
 
             fnTraceInteraction(new_state, reward, episode_status)
             if fn_move_cursor is not None:

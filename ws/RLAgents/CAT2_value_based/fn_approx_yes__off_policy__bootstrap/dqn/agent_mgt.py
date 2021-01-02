@@ -7,10 +7,10 @@ from ws.RLAgents.CAT2_value_based.fn_approx_yes__off_policy__bootstrap.dqn.impl_
 
 
 def agent_mgt(app_info, env):
-    _action_size = env.fnGetActionDimensions()
-    _state_size = env.fnGetStateDimensions()
+    _action_size = env.fn_get_action_size()
+    _state_size = env.fn_get_state_size()
 
-    fnReset, fn_remember, fnAct, fnReplay, fnSaveWeights, fnLoadWeights = impl_mgt(app_info, _state_size, _action_size)
+    fn_reset_env, fn_remember, fnAct, fnReplay, fnSaveWeights, fnLoadWeights = impl_mgt(app_info, _state_size, _action_size)
 
     def fnTrain():
         # nonlocal fn_remember
@@ -18,7 +18,7 @@ def agent_mgt(app_info, env):
         num_episodes = app_info['NUM_EPISODES']
         loss = []
         for e in range(num_episodes):
-            state = env.fnReset()
+            state = env.fn_reset_env()
             state = np.reshape(state, (1, _state_size))
             score = 0
 
@@ -26,8 +26,8 @@ def agent_mgt(app_info, env):
             for i in range(app_info['MAX_STEPS_PER_EPISODE']):
                 num_steps += 1
                 action = fnAct(state)
-                env.fnDoRender()
-                next_state, reward, done, _ = env.fnStep(action)
+                env.fn_render()
+                next_state, reward, done, _ = env.fn_take_step(action)
                 score += reward
                 next_state = np.reshape(next_state, (1, _state_size))
                 fn_remember(state, action, reward, next_state, done)

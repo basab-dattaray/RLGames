@@ -24,7 +24,7 @@ def impl_mgt(app_info, state_size, action_size):
     fn_remember_for_replay = None
     fn_get_mini_batch = None
 
-    def fnReset():
+    def fn_reset_env():
         nonlocal _model, fn_remember_for_replay, fn_get_mini_batch
 
         fn_remember_for_replay, fn_get_mini_batch = fn_replay_mgt()
@@ -85,6 +85,6 @@ def impl_mgt(app_info, state_size, action_size):
             _model.load_weights(path)
         j1 = 1
 
-    fnReset()
+    fn_reset_env()
 
-    return fnReset, fn_remember_for_replay, fnAct, fnReplay, fnSaveWeights, fnLoadWeights
+    return fn_reset_env, fn_remember_for_replay, fnAct, fnReplay, fnSaveWeights, fnLoadWeights

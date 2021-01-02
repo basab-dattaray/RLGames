@@ -27,7 +27,7 @@ def impl_mgt(env, app_info):
             print('episode number: {}   status = {}'.format(episode_num, episode_status))
 
     def runEpisode():
-        state = _env.fnReset()
+        state = _env.fn_reset_env()
         update_ui(_fn_display_controller.fn_show_qvalue, state)
 
         episode = app_info['OBJ_EPISODE']
@@ -35,7 +35,7 @@ def impl_mgt(env, app_info):
 
             action = fn_get_max_q_actions(state, app_info['EPSILON'])
 
-            new_state, reward, episode_status, _ = _env.fnStep(action)
+            new_state, reward, episode_status, _ = _env.fn_take_step(action)
 
             fnUpdateKnowledge(state, action, reward, new_state)
 

@@ -39,7 +39,7 @@ def planning_mgt(env, app_info):
 
             value = 0.0
             for action in _env.fn_value_table_possible_actions():
-                next_state, reward, _, _= _env.fnStep(action, planning_mode = True)
+                next_state, reward, _, _= _env.fn_take_step(action, planning_mode = True)
 
                 next_value = fn_get_value_table_item(next_state)
                 value = value + fnGetValueFromPolicy(state)[action] * (reward + _discount_factor * next_value)
@@ -60,7 +60,7 @@ def planning_mgt(env, app_info):
             value_list = []
 
             for action in _env.fn_value_table_possible_actions():
-                next_state, reward, _, _= _env.fnStep(action, planning_mode = True)
+                next_state, reward, _, _= _env.fn_take_step(action, planning_mode = True)
                 next_value = fn_get_value_table_item(next_state)
                 value_list.append((reward + _discount_factor * next_value))
 
@@ -77,7 +77,7 @@ def planning_mgt(env, app_info):
             max_index = []
 
             for index, action in enumerate(_env.fn_value_table_possible_actions()):
-                next_state, reward, _, _ = _env.fnStep(action, planning_mode = True)
+                next_state, reward, _, _ = _env.fn_take_step(action, planning_mode = True)
                 next_value = fn_get_value_table_item(next_state)
                 total_reward = reward + _discount_factor * next_value
 

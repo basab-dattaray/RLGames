@@ -78,13 +78,13 @@ def preparation_mgt(calling_filepath, verbose=False):
         if subpackage_name is None:
             return _app_info, None
 
-        Env = load_function(function_name="Env", module_tag="Env", subpackage_tag=subpackage_name)
+        env_mgt = load_function(function_name="env_mgt", module_tag="env_mgt", subpackage_tag=subpackage_name)
 
         env = None
-        if Env is not None:
-            env = Env(_app_info)
-            _app_info['ACTION_DIMENSIONS'] = env.fnGetActionDimensions()
-            _app_info['STATE_DIMENSIONS'] = env.fnGetStateDimensions()
+        if env_mgt is not None:
+            env = env_mgt(_app_info)
+            _app_info['ACTION_DIMENSIONS'] = env.fn_get_action_size()
+            _app_info['STATE_DIMENSIONS'] = env.fn_get_state_size()
 
         return env
 

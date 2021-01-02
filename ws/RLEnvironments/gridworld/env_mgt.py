@@ -5,7 +5,7 @@ from .logic.Episode import Episode
 # from ws.RLInterfaces.PARAM_KEY_NAMES import OBJ_EPISODE
 
 
-class Env:
+class env_mgt:
 
     def __init__(self, app_info):
         self._app_info = app_info
@@ -21,9 +21,9 @@ class Env:
         self._all_states = None
         self._state = None
 
-        self.fnReset()
+        self.fn_reset_env()
 
-    def fnReset(self):
+    def fn_reset_env(self):
         self._episode = Episode()
         self._app_info['OBJ_EPISODE'] = self._episode
 
@@ -73,7 +73,7 @@ class Env:
 
         return next_state_x, next_state_y
 
-    def fnStep(self, action, planning_mode=False):
+    def fn_take_step(self, action, planning_mode=False):
         next_state = self.step(action)
         reward = self._reward[next_state[1]][next_state[0]]
 
@@ -87,19 +87,19 @@ class Env:
     # def fnDisplayDevice(self):
     #     return self._fn_display_device
 
-    def fnDoRender(self):
+    def fn_render(self):
         pass
 
-    def fnGetStateDimensions(self):
+    def fn_get_state_size(self):
         return [self._width, self._height]
 
     @staticmethod
-    def fnGetActionDimensions():
+    def fn_get_action_size():
         return [2]
 
     @staticmethod
     def fnInnerEnv():
         return None
 
-    def fnClose(self):
+    def fn_close(self):
         pass

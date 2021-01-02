@@ -9,8 +9,8 @@ class ActorCritic(nn.Module):
 
         super(ActorCritic, self).__init__()
         env = app_info['ENV']
-        action_size = env.fnGetActionDimensions() # app_info[ACTION_DIMENSIONS][0]
-        state_size = env.fnGetStateDimensions() # app_info[STATE_DIMENSIONS][0]
+        action_size = env.fn_get_action_size() # app_info[ACTION_DIMENSIONS][0]
+        state_size = env.fn_get_state_size() # app_info[STATE_DIMENSIONS][0]
         hidden_layer_size = 256
 
         self._app_info = app_info

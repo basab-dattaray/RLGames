@@ -38,7 +38,7 @@ def agent_mgt(app_info, env, arg_dict=None):
 
         chart.fn_close()
         fn_log(msg)
-        env.fnClose()
+        env.fn_close()
         exit()
 
     def fn_run(fn_show_training_progress,
@@ -64,7 +64,7 @@ def agent_mgt(app_info, env, arg_dict=None):
 
     def fn_run_episode(fn_should_update_network=None, do_render=False):
 
-        state = env.fnReset()
+        state = env.fn_reset_env()
         running_reward = 0
         reward = 0
         step = 0
@@ -73,11 +73,11 @@ def agent_mgt(app_info, env, arg_dict=None):
             step += 1
 
             if do_render:
-                env.fnDoRender()
+                env.fn_render()
                 sleep(.01)
 
             action = fn_act(state)
-            state, reward, done, _ = env.fnStep(action)
+            state, reward, done, _ = env.fn_take_step(action)
 
             fn_add_transition(reward, done)
 
@@ -86,7 +86,7 @@ def agent_mgt(app_info, env, arg_dict=None):
 
             running_reward += reward
 
-        env.fnClose()
+        env.fn_close()
 
         val = reward if is_single_episode_result else running_reward
         return val, step

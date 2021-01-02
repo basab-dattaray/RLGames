@@ -49,7 +49,7 @@ def cache_mgt():
             'overwrite_try_count': overwrite_try_count,
         }
 
-    ret_obj = namedtuple('state_cache', [
+    ret_obj = namedtuple('_', [
         'fn_does_key_exist',
         'fn_get_data',
         'fn_set_data',

@@ -1,51 +1,47 @@
-# import gym
 import gym
 
 # from ws.RLInterfaces.PARAM_KEY_NAMES import ENV_NAME
 
 
-class Env:
+class env_mgt:
     def __init__(self, app_info):
         self._env = gym.make(app_info['ENV_NAME'])
-        # self._env = gym.make('lunarlander-v2')
-
         self._state_size = self._env.observation_space.shape[0]
         self._action_size = self._env.action_space.n
-        pass
 
-    def fnReset(self):
+    def fn_reset_env(self):
         return self._env.reset()
 
-    def fnStep(self, action):
+    def fn_take_step(self, action):
         # nonlocal _state
         next_state, reward, done, _ = self._env.step(action)
         return next_state, reward, done, None
 
-    def fnDoRender(self):
+    def fn_render(self):
         self._env.render()
 
-    def fnGetStateDimensions(self):
+    def fn_get_state_size(self):
         return [self._state_size][0]
 
-    def fnGetActionDimensions(self):
+    def fn_get_action_size(self):
         return [self._action_size][0]
 
-    def fnInnerEnv(self):
-        return self._env
+    # def fnInnerEnv(self):
+    #     return self._env
 
-    def fnClose(self):
+    def fn_close(self):
         self._env.close()
 
     # def fnGetDisplayController():
     #     return None
 
     # return {
-    #     envMgr__fnReset: fnReset,
-    #     envMgr__fnStep: fnStep,
-    #     envMgr__fnDisplay: fnDoRender,
-    #     envMgr__fnGetStateDimensions: fnGetStateDimensions,
-    #     envMgr__fnGetActionDimensions: fnGetActionDimensions,
+    #     envMgr__fnReset: fn_reset_env,
+    #     envMgr__fnStep: fn_take_step,
+    #     envMgr__fnDisplay: fn_render,
+    #     envMgr__fnGetStateDimensions: fn_get_state_size,
+    #     envMgr__fnGetActionDimensions: fn_get_action_size,
     #     envMgr__fnInnerEnv: fnInnerEnv,
-    #     envMgr__fnClose: fnClose,
+    #     envMgr__fnClose: fn_close,
     #     envMgr__fnGetDisplayController: fnGetDisplayController
     # }
