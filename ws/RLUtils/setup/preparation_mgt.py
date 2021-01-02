@@ -1,10 +1,5 @@
 import os
 
-# from ws.RLInterfaces.PARAM_KEY_NAMES import AGENT_FOLDER_PATH, ENV_NAME, ENV_REPO, DEMO_PATH, STATE_DIMENSIONS, \
-#     ACTION_DIMENSIONS, \
-#     RESULTS_BASE_PATH, \
-#     STRATEGY, RESULTS_CURRENT_PATH, RESULTS_ARCHIVE_PATH, GPU_DEVICE, ARCHIVE_SUB_FOLDER, FN_RECORD, \
-#     DEBUG_MODE, APP_INFO_SOURCE, ARCHIVES
 from ws.RLUtils.common.config_mgt import config_mgt
 from ws.RLUtils.common.fileops import get_json_data
 from ws.RLUtils.common.module_loader import load_function

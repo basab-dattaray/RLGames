@@ -1,5 +1,5 @@
 {
-  "STRATEGY": "model_free.temporal_difference.sampling.monte_carlo",
+  "STRATEGY": "CAT2_value_based.fn_approx_no__on_policy__sampling.monte_carlo",
 
   "NUM_EPISODES": 500,
   "BATCH_SIZE": 64,

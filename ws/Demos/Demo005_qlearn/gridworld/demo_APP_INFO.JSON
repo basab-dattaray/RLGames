@@ -1,5 +1,5 @@
 {
-  "STRATEGY": "model_free.temporal_difference.bootstrapping.qlearn_off_policy",
+  "STRATEGY": "CAT2_value_based.fn_approx_no__off_policy__bootstrap.qlearn",
 
   "NUM_EPISODES": 500,
   "BATCH_SIZE": 64,

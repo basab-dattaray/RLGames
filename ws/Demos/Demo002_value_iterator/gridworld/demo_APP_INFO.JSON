@@ -1,5 +1,5 @@
 {
-  "STRATEGY": "model_based.planning.value_iterator",
+  "STRATEGY": "CAT1_model_based.planning.value_iterator",
 
   "NUM_EPISODES": 1,
   "BATCH_SIZE": 64,

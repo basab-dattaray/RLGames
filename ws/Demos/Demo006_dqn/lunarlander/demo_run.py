@@ -1,5 +1,5 @@
 # from ws.RLInterfaces.PARAM_KEY_NAMES import STRATEGY
-from ws.RLAgents.model_free.function_approximation.dqn.agent_mgt import agent_mgt
+from ws.RLAgents.CAT2_value_based.fn_approx_yes__off_policy__bootstrap.dqn.agent_mgt import agent_mgt
 from ws.RLUtils.setup.preparation_mgt import preparation_mgt
 # from ws.RLUtils.common.module_loader import load_function
 

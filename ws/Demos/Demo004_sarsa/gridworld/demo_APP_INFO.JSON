@@ -1,5 +1,5 @@
 {
-  "STRATEGY": "model_free.temporal_difference.bootstrapping.sarsa_on_policy",
+  "STRATEGY": "CAT2_value_based.fn_approx_no__on_policy__bootstrap.sarsa",
 
   "NUM_EPISODES": 500,
   "BATCH_SIZE": 64,

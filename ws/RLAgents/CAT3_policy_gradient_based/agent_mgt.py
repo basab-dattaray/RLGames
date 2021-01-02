@@ -3,7 +3,7 @@ import signal
 from time import sleep
 
 # from ws.RLInterfaces.PARAM_KEY_NAMES import *
-from ws.RLAgents.model_free.policy_gradient.progress_mgt import progress_mgt
+from ws.RLAgents.CAT3_policy_gradient_based.progress_mgt import progress_mgt
 from ws.RLUtils.common.config_mgt import config_mgt
 
 from ws.RLUtils.common.module_loader import load_function

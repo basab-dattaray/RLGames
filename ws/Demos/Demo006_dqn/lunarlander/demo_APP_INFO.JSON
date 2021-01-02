@@ -1,5 +1,5 @@
 {
-    "STRATEGY": "model_free.function_approximation.dqn",
+    "STRATEGY": "CAT2_value_based.fn_approx_yes__off_policy__bootstrap.dqn",
 
     "NUM_EPISODES": 20,
     "BATCH_SIZE": 64,

@@ -1,9 +1,11 @@
 import random
 
-from ws.RLAgents.model_based.planning.planning_mgt import planning_mgt
+
 
 
 # from ws.RLEnvironments.gridworld.logic.SETUP_INFO import ACTION_MOVE_STATE_RULES
+from ws.RLAgents.CAT1_model_based.planning.planning_mgt import planning_mgt
+
 
 def impl_mgt(env, app_info):
     _env = env

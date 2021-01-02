@@ -4,18 +4,13 @@ import torch
 from .Critic import Critic
 from .misc import _fn_calculate_montecarlo_normalized_rewards
 
-from ..policy_gradient.Buffer import Buffer
-
-# Bufferfrom ws.RLInterfaces.PARAM_KEY_NAMES import GAMMA, NUM_EPOCHS, LEARNING_RATE, AGENT_FOLDER_PATH, UPDATE_STEP_INTERVAL, \
-#     GPU_DEVICE
-
+from ws.RLAgents.CAT3_policy_gradient_based.Buffer import Buffer
 from ws.RLUtils.common.module_loader import load_function
 
 
 def impl_mgt(app_info):
     MODEL_ACTOR_NAME = 'Model_Actor.pth'
     MODEL_CRITIC_NAME = 'Model_Critic.pth'
-    # CURRENT_MODEL_FOLDER = 'Current'
 
     _gamma = app_info['GAMMA']
 

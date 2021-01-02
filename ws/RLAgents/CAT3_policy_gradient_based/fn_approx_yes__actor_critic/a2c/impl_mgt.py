@@ -2,13 +2,10 @@ import os
 
 import torch
 
-from ..misc import _fn_calculate_montecarlo_normalized_rewards
-from ..Buffer import Buffer
+from ws.RLAgents.CAT3_policy_gradient_based.misc import _fn_calculate_montecarlo_normalized_rewards
+from ws.RLAgents.CAT3_policy_gradient_based.Buffer import Buffer
 from .ActorCritic import ActorCritic
 from .detail_mgt import detail_mgt
-
-# from ws.RLInterfaces.PARAM_KEY_NAMES import GAMMA, NUM_EPOCHS, LEARNING_RATE, UPDATE_STEP_INTERVAL, GPU_DEVICE
-
 
 def impl_mgt(app_info):
     MODEL_NAME = 'Model_ActorCritic.pth'
