@@ -1,6 +1,4 @@
-
-from ws.RLAgents.model_free.policy_gradient.agent_mgt import agent_mgt
-
+from ws.RLAgents.CAT3_policy_gradient_based.agent_mgt import agent_mgt
 from ws.RLUtils.setup.preparation_mgt import preparation_mgt
 
 if __name__ == '__main__':

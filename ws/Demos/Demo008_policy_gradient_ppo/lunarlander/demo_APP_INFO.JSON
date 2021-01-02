@@ -1,5 +1,5 @@
 {
-    "STRATEGY": "model_free.policy_gradient.ppo.discrete_action",
+    "STRATEGY": "CAT3_policy_gradient_based.fn_approx_yes__proximal_policy_approx.discrete_action",
 
     "NUM_EPOCHS": 4,
     "NUM_EPISODES": 20000,
@@ -40,7 +40,7 @@
     ],
 
     "LOG_SKIP_INTERVAL": 1,
-    "REWARD_GOAL": 290,
+    "REWARD_GOAL": 270,
     "REWARD_CALCULATED_FROM_SINGLE_EPISODES": 0,
     "CONSECUTIVE_GOAL_HITS": 3,
     "LOG_MEAN_INTERVAL": 5,

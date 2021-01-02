@@ -11,13 +11,13 @@ from time import time
 
 import numpy
 
-from ws.RLAgents.self_play.alpha_zero.misc.neural_net_mgt import neural_net_mgt
-from ws.RLAgents.self_play.alpha_zero.play.GreedyPlayer import GreedyPlayer
-from ws.RLAgents.self_play.alpha_zero.play.HumanPlayer import HumanPlayer
-from ws.RLAgents.self_play.alpha_zero.play.RandomPlayer import RandomPlayer
-from ws.RLAgents.self_play.alpha_zero.play.playground_mgt import playground_mgt
-from ws.RLAgents.self_play.alpha_zero.search.mcts_adapter import mcts_adapter
-from ws.RLAgents.self_play.alpha_zero.train.training_mgt import training_mgt
+from ws.RLAgents.CAT4_self_play.alpha_zero.misc.neural_net_mgt import neural_net_mgt
+from ws.RLAgents.CAT4_self_play.alpha_zero.play.GreedyPlayer import GreedyPlayer
+from ws.RLAgents.CAT4_self_play.alpha_zero.play.HumanPlayer import HumanPlayer
+from ws.RLAgents.CAT4_self_play.alpha_zero.play.RandomPlayer import RandomPlayer
+from ws.RLAgents.CAT4_self_play.alpha_zero.play.playground_mgt import playground_mgt
+from ws.RLAgents.CAT4_self_play.alpha_zero.search.mcts_adapter import mcts_adapter
+from ws.RLAgents.CAT4_self_play.alpha_zero.train.training_mgt import training_mgt
 from ws.RLEnvironments.self_play_games.othello.game_mgt import game_mgt
 from ws.RLUtils.common.AppInfo import AppInfo
 from ws.RLUtils.common.DotDict import DotDict

@@ -1,5 +1,5 @@
 {
-    "STRATEGY": "model_free.policy_gradient.ppo.discrete_action",
+    "STRATEGY": "CAT3_policy_gradient_based.fn_approx_yes__proximal_policy_approx.discrete_action",
 
     "NUM_EPOCHS": 4,
     "NUM_EPISODES": 1200,

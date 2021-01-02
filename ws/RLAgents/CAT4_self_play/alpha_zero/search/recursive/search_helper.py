@@ -4,8 +4,7 @@ from collections import namedtuple
 
 import numpy as np
 
-from ws.RLAgents.self_play.alpha_zero.search.recursive.cache2_mgt import cache2_mgt
-from ws.RLAgents.self_play.alpha_zero.search.recursive.cache2a_mgt import cache2a_mgt
+from ws.RLAgents.CAT4_self_play.alpha_zero.search.recursive.cache2a_mgt import cache2a_mgt
 
 CACHE_MGT = 'cache2_mgt'
 

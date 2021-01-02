@@ -1,5 +1,5 @@
 {
-    "STRATEGY": "model_free.policy_gradient.a2c",
+    "STRATEGY": "CAT3_policy_gradient_based.fn_approx_yes__actor_critic.a2c",
 
     "NUM_EPOCHS": 1,
     "NUM_EPISODES": 12000,

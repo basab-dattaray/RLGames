@@ -1,8 +1,7 @@
 from collections import namedtuple
 
-from ws.RLAgents.self_play.alpha_zero.search.policy_mgt import policy_mgt
-
-from ws.RLAgents.self_play.alpha_zero.search.recursive.search_helper import search_helper
+from ws.RLAgents.CAT4_self_play.alpha_zero.search.policy_mgt import policy_mgt
+from ws.RLAgents.CAT4_self_play.alpha_zero.search.recursive.search_helper import search_helper
 
 
 def mcts_r_mgr(
