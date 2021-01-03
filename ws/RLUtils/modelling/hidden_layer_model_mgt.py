@@ -42,26 +42,22 @@ def hidden_layer_model_mgt(model_instance, verbose=True):
         return prev_hidden_layer_dim
 
     def fn_hidden_layers_forward_proc(layer_data):
-        try:
-            layer_count = 1
-            for current_hidden_layer in model_instance._hidden_layer_dims:
-                # activation_function = default_activation_fn
-                activation_function = None
-                if 'ACTIVATION_FN' in current_hidden_layer.keys():
-                    activation_function_name = current_hidden_layer['ACTIVATION_FN']
-                    if activation_function_name is not None:
-                        activation_function = getattr(activation_module, activation_function_name)
 
-                layer_attr_ref = model_instance.__getattr__('hidden' + str(layer_count))
-                layer_attr = layer_attr_ref(layer_data)
-                if activation_function is not None:
-                    layer_data = activation_function(layer_attr)
-                layer_count += 1
-        except Exception as x:
-            if verbose:
-                print(x)
-                print(traceback.format_exc())
-            exit()
+        layer_count = 1
+        for current_hidden_layer in model_instance._hidden_layer_dims:
+            # activation_function = default_activation_fn
+            activation_function = None
+            if 'ACTIVATION_FN' in current_hidden_layer.keys():
+                activation_function_name = current_hidden_layer['ACTIVATION_FN']
+                if activation_function_name is not None:
+                    activation_function = getattr(activation_module, activation_function_name)
+
+            layer_attr_ref = model_instance.__getattr__('hidden' + str(layer_count))
+            layer_attr = layer_attr_ref(layer_data)
+            if activation_function is not None:
+                layer_data = activation_function(layer_attr)
+            layer_count += 1
+
         return layer_data
 
     return fn_hidden_layers_input_proc, fn_hidden_layers_forward_proc
