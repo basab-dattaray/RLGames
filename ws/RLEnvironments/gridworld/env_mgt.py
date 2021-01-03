@@ -15,12 +15,12 @@ def env_mgt(app_info):
     _height = app_info["display"]["HEIGHT"]
 
     _reward = None
-    _possible_actions = None
+    # _possible_actions = None
     _all_states = None
     _state = []
 
     def fn_reset_env():
-        nonlocal  _reward, _possible_actions, _all_states, _state
+        nonlocal  _reward,  _all_states, _state
 
         app_info['OBJ_EPISODE'] = episode_mgt()
 
@@ -95,7 +95,7 @@ def env_mgt(app_info):
         return _all_states
 
     def fn_value_table_possible_actions():
-        return _possible_actions
+        return POSSIBLE_ACTIONS
 
     fn_reset_env()
     ret_obj = namedtuple('_', [
