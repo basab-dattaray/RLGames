@@ -28,9 +28,9 @@ def planning_mgt(env, app_info):
 
     def applyPolicyIteration():
 
-        for state in _env.fnGetAllStates():
+        for state in _env.fn_get_all_states():
 
-            _env.fnSetState(state)
+            _env.fn_update_state(state)
 
 
             if fn_value_table_reached_target(state):
@@ -47,7 +47,7 @@ def planning_mgt(env, app_info):
             fn_set_value_table_item(state, value)
 
     def applyValueIteration():
-        all_states = _env.fnGetAllStates()
+        all_states = _env.fn_get_all_states()
 
         for state in all_states:
 
@@ -55,7 +55,7 @@ def planning_mgt(env, app_info):
                 fn_set_value_table_item(state, 0)
                 continue
 
-            _env.fnSetState(state)
+            _env.fn_update_state(state)
 
             value_list = []
 
@@ -67,11 +67,11 @@ def planning_mgt(env, app_info):
             fn_set_value_table_item(state, round(max(value_list), 2))
 
     def improvePolicy():
-        for state in _env.fnGetAllStates():
+        for state in _env.fn_get_all_states():
             if fn_value_table_reached_target(state):
                 continue
 
-            _env.fnSetState(state)
+            _env.fn_update_state(state)
 
             value = LOW_NUMBER
             max_index = []

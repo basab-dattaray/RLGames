@@ -46,10 +46,10 @@ class env_mgt:
         self._state = [0, 0]
         return self._state
 
-    def fnSetState(self, state):
+    def fn_update_state(self, state):
         self._state = state
 
-    def fnGetAllStates(self):
+    def fn_get_all_states(self):
         return self._all_states
 
     def fn_value_table_possible_actions(self):
