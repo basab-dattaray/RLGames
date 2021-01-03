@@ -7,7 +7,7 @@ from .logic.episode_mgt import episode_mgt
 def env_mgt(app_info):
 
     # _app_info = app_info
-    _episode = episode_mgt()
+    app_info['OBJ_EPISODE'] = episode_mgt()
 
     _board_blockers = app_info["display"]["BOARD_BLOCKERS"]
     _board_goal = app_info["display"]["BOARD_GOAL"]
@@ -20,10 +20,9 @@ def env_mgt(app_info):
     _state = []
 
     def fn_reset_env():
-        nonlocal _episode, _reward, _possible_actions, _all_states, _state
+        nonlocal  _reward, _possible_actions, _all_states, _state
 
-        _episode = episode_mgt()
-        app_info['OBJ_EPISODE'] = _episode
+        app_info['OBJ_EPISODE'] = episode_mgt()
 
         _reward = [[0] * _width for _ in range(_height)]
         _possible_actions = POSSIBLE_ACTIONS
@@ -69,12 +68,12 @@ def env_mgt(app_info):
         next_state = _fn_env_step(action)
         reward = _reward[next_state[1]][next_state[0]]
 
-        _episode.fn_update_episode(_reward[next_state[1]][next_state[0]])
+        app_info['OBJ_EPISODE'].fn_update_episode(_reward[next_state[1]][next_state[0]])
 
         if not planning_mode:
             _state = next_state
 
-        return next_state, reward, _episode.fn_get_episode_status(), None
+        return next_state, reward, app_info['OBJ_EPISODE'].fn_get_episode_status(), None
 
     def fn_render():
         pass
