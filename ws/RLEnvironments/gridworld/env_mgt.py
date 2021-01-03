@@ -7,7 +7,7 @@ from .logic.Episode import Episode
 def env_mgt(app_info):
 
     # _app_info = app_info
-    _episode = None
+    _episode = Episode()
 
     _board_blockers = app_info["display"]["BOARD_BLOCKERS"]
     _board_goal = app_info["display"]["BOARD_GOAL"]
@@ -64,7 +64,7 @@ def env_mgt(app_info):
         return next_state_x, next_state_y
 
     def fn_take_step(action, planning_mode=False):
-        nonlocal _episode, _state
+        nonlocal  _state
 
         next_state = _fn_env_step(action)
         reward = _reward[next_state[1]][next_state[0]]
