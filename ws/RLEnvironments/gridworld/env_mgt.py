@@ -4,101 +4,101 @@ from ws.RLEnvironments.gridworld.logic.SETUP_INFO import POSSIBLE_ACTIONS
 
 from .logic.Episode import Episode
 
-# from ws.RLInterfaces.PARAM_KEY_NAMES import OBJ_EPISODE
+def env_mgt(app_info):
 
+    # _app_info = app_info
+    _episode = None
 
-class env_mgt:
+    _board_blockers = app_info["display"]["BOARD_BLOCKERS"]
+    _board_goal = app_info["display"]["BOARD_GOAL"]
+    _width = app_info["display"]["WIDTH"]
+    _height = app_info["display"]["HEIGHT"]
 
-    def __init__(self, app_info):
-        self._app_info = app_info
-        self._episode = None
+    _reward = None
+    _possible_actions = None
+    _all_states = None
+    _state = []
 
-        self._board_blockers = app_info["display"]["BOARD_BLOCKERS"]
-        self._board_goal = app_info["display"]["BOARD_GOAL"]
-        self._width = app_info["display"]["WIDTH"]
-        self._height = app_info["display"]["HEIGHT"]
+    def fn_reset_env():
+        nonlocal _episode, _reward, _possible_actions, _all_states, _state
 
-        self._reward = None
-        self._possible_actions = None
-        self._all_states = None
-        self._state = None
+        _episode = Episode()
+        app_info['OBJ_EPISODE'] = _episode
 
-        self.fn_reset_env()
+        _reward = [[0] * _width for _ in range(_height)]
+        _possible_actions = POSSIBLE_ACTIONS
 
-    def fn_reset_env(self):
-        self._episode = Episode()
-        self._app_info['OBJ_EPISODE'] = self._episode
+        for blocker in _board_blockers:
+            _reward[blocker['y']][blocker['x']] = blocker['reward']  # for square
 
-        self._reward = [[0] * self._width for _ in range(self._height)]
-        self._possible_actions = POSSIBLE_ACTIONS
+        _reward[_board_goal['y']][_board_goal['x']] = _board_goal['reward']  # for triangle
+        _all_states = []
 
-        for blocker in self._board_blockers:
-            self._reward[blocker['y']][blocker['x']] = blocker['reward']  # for square
-
-        self._reward[self._board_goal['y']][self._board_goal['x']] = self._board_goal['reward']  # for triangle
-        self._all_states = []
-
-        for x in range(self._width):
-            for y in range(self._height):
+        for x in range(_width):
+            for y in range(_height):
                 state = [x, y]
-                self._all_states.append(state)
+                _all_states.append(state)
 
-        self._state = [0, 0]
-        return self._state
+        _state = [0, 0]
+        return _state
 
-    def fn_update_state(self, state):
-        self._state = state
-
-    def fn_get_all_states(self):
-        return self._all_states
-
-    def fn_value_table_possible_actions(self):
-        return self._possible_actions
-
-    def step(self, action):
+    def _fn_env_step(action):
+        nonlocal _state
         one = 1
-        next_state_x = self._state[0]
-        next_state_y = self._state[1]
+        next_state_x = _state[0]
+        next_state_y = _state[1]
 
         if action == 0:  # up
-            if self._state[1] >= one:
+            if _state[1] >= one:
                 next_state_y -= one
         elif action == 1:  # down
-            if self._state[1] < (self._height - 1) * one:
+            if _state[1] < (_height - 1) * one:
                 next_state_y += one
         elif action == 2:  # left
-            if self._state[0] >= one:
+            if _state[0] >= one:
                 next_state_x -= one
         elif action == 3:  # right
-            if self._state[0] < (self._width - 1) * one:
+            if _state[0] < (_width - 1) * one:
                 next_state_x += one
 
         return next_state_x, next_state_y
 
-    def fn_take_step(self, action, planning_mode=False):
-        next_state = self.step(action)
-        reward = self._reward[next_state[1]][next_state[0]]
+    def fn_take_step(action, planning_mode=False):
+        nonlocal _episode, _state
 
-        self._episode.fn_update_episode(reward)
+        next_state = _fn_env_step(action)
+        reward = _reward[next_state[1]][next_state[0]]
+
+        _episode.fn_update_episode(_reward[next_state[1]][next_state[0]])
 
         if not planning_mode:
-            self._state = next_state
+            _state = next_state
 
-        return next_state, reward, self._episode.fn_get_episode_status(), None
+        return next_state, reward, _episode.fn_get_episode_status(), None
 
-    def fn_render(self):
+    def fn_render():
         pass
 
-    def fn_get_state_size(self):
-        return [self._width, self._height]
+    def fn_get_state_size():
+        return [_width, _height]
 
-    @staticmethod
     def fn_get_action_size():
         return [2]
 
-    def fn_close(self):
+    def fn_close():
         pass
-    
+
+    def fn_update_state(state):
+        nonlocal _state
+        _state = state
+
+    def fn_get_all_states():
+        return _all_states
+
+    def fn_value_table_possible_actions():
+        return _possible_actions
+
+    fn_reset_env()
     ret_obj = namedtuple('_', [
         'fn_reset_env',
         'fn_take_step',
@@ -106,6 +106,10 @@ class env_mgt:
         'fn_get_state_size',
         'fn_get_action_size',
         'fn_close',
+
+        'fn_update_state',
+        'fn_get_all_states',
+        'fn_value_table_possible_actions',
     ])
 
     ret_obj.fn_reset_env = fn_reset_env
@@ -115,4 +119,8 @@ class env_mgt:
     ret_obj.fn_get_action_size = fn_get_action_size
     ret_obj.fn_close = fn_close
 
-    # return ret_obj
+    ret_obj.fn_update_state = fn_update_state
+    ret_obj.fn_get_all_states = fn_get_all_states
+    ret_obj.fn_value_table_possible_actions = fn_value_table_possible_actions
+
+    return ret_obj
