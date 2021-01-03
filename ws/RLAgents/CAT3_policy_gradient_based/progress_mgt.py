@@ -23,7 +23,7 @@ def progress_mgt(app_info):
     _reward_goal = app_info['REWARD_GOAL']
 
     def fn_title_update_callback(progress_info):
-        msg = 'Episode: {}/{}'.format(
+        msg = 'episode_mgt: {}/{}'.format(
 
             progress_info['episode_num'], progress_info['max_episode_num']
         )
