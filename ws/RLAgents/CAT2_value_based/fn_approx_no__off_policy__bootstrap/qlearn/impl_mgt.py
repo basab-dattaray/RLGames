@@ -30,14 +30,16 @@ def impl_mgt(env, app_info):
         state = _env.fn_reset_env()
         update_ui(_fn_display_controller.fn_show_qvalue, state)
 
-        episode = app_info['OBJ_EPISODE']
-        while episode.fn_should_episode_continue():
+        # episode = app_info['OBJ_EPISODE']
+        continue_running = True
+        while continue_running:
 
             action = fn_get_max_q_actions(state, app_info['EPSILON'])
 
             new_state, reward, episode_status, _ = _env.fn_take_step(action)
 
             fnUpdateKnowledge(state, action, reward, new_state)
+            continue_running = reward == 0
 
             update_ui(_fn_display_controller.fn_show_qvalue, state)
 
@@ -49,7 +51,7 @@ def impl_mgt(env, app_info):
         if _fn_display_controller.fn_move_cursor is not None:
             _fn_display_controller.fn_move_cursor(state)
 
-        return episode.fn_get_episode_status()
+        return continue_running
 
     def update_ui(fn_show_qvalue, state):
         if fn_show_qvalue is not None:
