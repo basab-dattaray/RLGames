@@ -1,3 +1,4 @@
+
 POSSIBLE_ACTIONS = [0, 1, 2, 3]  # up, down, left, right
 INITIAL_ACTION_PROBABILITIES = [.25, .25, .25, .25]
 INITIAL_ACTION_VALUES = [0, 0, 0, 0.0]

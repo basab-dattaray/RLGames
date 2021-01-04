@@ -1,10 +1,6 @@
-# from ws.RLInterfaces.PARAM_KEY_NAMES import NUM_EPISODES, MAX_STEPS_PER_EPISODE
-
 import numpy as np
 
-# from ws.RLAgents.model_free.function_approximation.dqn.impl_mgt import impl_mgt
 from ws.RLAgents.CAT2_value_based.fn_approx_yes__off_policy__bootstrap.dqn.impl_mgt import impl_mgt
-
 
 def agent_mgt(app_info, env):
     _action_size = env.fn_get_action_size()

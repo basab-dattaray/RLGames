@@ -1,5 +1,7 @@
 {
   "STRATEGY": "CAT2_value_based.fn_approx_no__on_policy__sampling.monte_carlo",
+  "ENV_NAME": "Gridworld-v1",
+  "AGENT_CONFIG": "gridwell_1",
 
   "NUM_EPISODES": 500,
   "BATCH_SIZE": 64,
@@ -9,7 +11,6 @@
   "RHO": 0.99,
   "DISCOUNT_FACTOR": 0.9,
 
-  "ENV_NAME": "Gridworld-v1",
   "ENV_DISPLAY_ON": 1,
 
 

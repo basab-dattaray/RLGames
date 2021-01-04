@@ -1,5 +1,5 @@
 import numpy as np
-from ws.RLAgents.algo_lib.data.gridwell.SETUP_INFO import ACTION_MOVE_STATE_RULES
+from ws.RLAgents.algo_lib.data.gridwell_1.AGENT_CONFIG import ACTION_MOVE_STATE_RULES
 from ws.RLAgents.algo_lib.logic.value_table_mgt import value_table_mgt
 from ws.RLUtils.common.misc_functions import arg_max
 

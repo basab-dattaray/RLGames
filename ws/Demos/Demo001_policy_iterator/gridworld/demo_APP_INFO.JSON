@@ -1,5 +1,7 @@
 {
   "STRATEGY": "CAT1_model_based.planning.policy_iterator",
+  "ENV_NAME": "Gridworld-v1",
+  "AGENT_CONFIG": "gridwell_1",
 
   "NUM_EPISODES": 1,
   "BATCH_SIZE": 64,
@@ -8,8 +10,6 @@
   "EPSILON": 0.1,
   "RHO": 0.99,
   "DISCOUNT_FACTOR": 0.9,
-
-  "ENV_NAME": "Gridworld-v1",
 
   "display": {
     "APP_NAME": "Policy Iterator",

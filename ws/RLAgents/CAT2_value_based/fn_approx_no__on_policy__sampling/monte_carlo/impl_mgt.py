@@ -16,7 +16,7 @@ def impl_mgt(env, app_info):
 
     def fnRunMonteCarlo():
         fnClearTrace()
-        for episode in range(app_info['NUM_EPISODES']):
+        for episode in range(app_info.NUM_EPISODES):
             value_table, episode_status = runEpisode(_fn_display_controller.fn_move_cursor)
             if _fn_display_controller.fn_show_state_values is not None:
                 _fn_display_controller.fn_show_state_values(value_table)

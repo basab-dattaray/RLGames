@@ -7,6 +7,12 @@ from ws.RLUtils.monitoring.tracing.log_mgt import log_mgt
 
 from ws.RLUtils.platform_libs.pytorch.device_selection import get_device
 
+def fn_load_app(file_path):
+    app_info, env = preparation_mgt(file_path)
+    subpackage_name = 'ws.RLAgents.{}'.format(app_info['STRATEGY'])
+    agent_mgt = load_function(function_name="agent_mgt", module_tag="agent_mgt", subpackage_tag=subpackage_name)
+    fn_init = agent_mgt(app_info, env)
+    fn_init()
 
 def fn_load_app(file_path):
     app_info, env = preparation_mgt(file_path)
@@ -23,10 +29,8 @@ def preparation_mgt(calling_filepath, verbose=False):
     demo_name = filename_parts[0]
     app_info_file = demo_name + '_APP_INFO.JSON'
 
-    # cwd, app_info_file = APP_INFO_FILE
     _app_info_path = os.path.join(cwd, app_info_file)
     _app_info = get_json_data(_app_info_path)
-
 
     def _fn_setup_for_results():
         _app_info['DEMO_PATH'] = cwd
@@ -96,6 +100,10 @@ def preparation_mgt(calling_filepath, verbose=False):
         _app_info['GPU_DEVICE'] = get_device(_app_info)
         if verbose:
             print('DEVICE: {}'.format(_app_info['GPU_DEVICE']))
+
+        agent_config = _app_info['AGENT_CONFIG']
+            # load_function(function_name="agent_mgt", module_tag="agent_mgt", subpackage_tag=subpackage_name)
+        pass
 
     _fn_setup_for_results()
     _fn_setup_paths_in_app_info()
