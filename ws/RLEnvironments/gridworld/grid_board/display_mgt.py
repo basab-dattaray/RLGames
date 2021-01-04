@@ -8,7 +8,7 @@ from PIL import ImageTk, Image
 
 from ws.RLUtils.common.misc_functions import calc_pixels
 
-from ws.RLAgents.logic.SETUP_INFO import ACTION_MOVE_STATE_RULES
+from ws.RLAgents.algo_lib.data.gridwell.SETUP_INFO import ACTION_MOVE_STATE_RULES
 PhotoImage = ImageTk.PhotoImage
 
 COORD_LEFT = (7, 42)  # left

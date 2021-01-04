@@ -1,6 +1,6 @@
-from ws.RLAgents.logic.policy_table_mgt import policy_table_mgt
-from ws.RLAgents.logic.value_table_mgt import value_table_mgt
-from ws.RLAgents.logic.SETUP_INFO import INITIAL_ACTION_VALUES
+from ws.RLAgents.algo_lib.logic.policy_table_mgt import policy_table_mgt
+from ws.RLAgents.algo_lib.logic.value_table_mgt import value_table_mgt
+from ws.RLAgents.algo_lib.data.gridwell.SETUP_INFO import INITIAL_ACTION_VALUES
 
 def planning_mgt(env, app_info):
     LOW_NUMBER = -9999999999

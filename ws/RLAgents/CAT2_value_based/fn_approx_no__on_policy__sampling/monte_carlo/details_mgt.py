@@ -1,6 +1,6 @@
 import numpy as np
-from ws.RLAgents.logic.SETUP_INFO import ACTION_MOVE_STATE_RULES
-from ws.RLAgents.logic.value_table_mgt import value_table_mgt
+from ws.RLAgents.algo_lib.data.gridwell.SETUP_INFO import ACTION_MOVE_STATE_RULES
+from ws.RLAgents.algo_lib.logic.value_table_mgt import value_table_mgt
 from ws.RLUtils.common.misc_functions import arg_max
 
 def details_mgt(env, app_info):

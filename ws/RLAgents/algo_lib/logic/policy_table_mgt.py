@@ -1,4 +1,4 @@
-from ws.RLAgents.logic.SETUP_INFO import INITIAL_ACTION_PROBABILITIES
+from ws.RLAgents.algo_lib.data.gridwell.SETUP_INFO import INITIAL_ACTION_PROBABILITIES
 
 def policy_table_mgt(app_info):
     LOW_NUMBER = -999999

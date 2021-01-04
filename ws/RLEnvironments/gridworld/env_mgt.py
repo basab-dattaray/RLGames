@@ -1,5 +1,5 @@
 from collections import namedtuple
-from ws.RLAgents.logic.SETUP_INFO import POSSIBLE_ACTIONS
+from ws.RLAgents.algo_lib.data.gridwell.SETUP_INFO import POSSIBLE_ACTIONS
 
 def env_mgt(app_info):
 

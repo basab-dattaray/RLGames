@@ -1,5 +1,5 @@
 import copy
-from ws.RLAgents.logic.SETUP_INFO import ACTION_MOVE_STATE_RULES
+from ws.RLAgents.algo_lib.data.gridwell.SETUP_INFO import ACTION_MOVE_STATE_RULES
 
 def value_table_mgt(app_info):
     LOW_NUMBER = -999999
