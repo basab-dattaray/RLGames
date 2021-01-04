@@ -26,21 +26,23 @@ def impl_mgt(env, app_info):
         state = _env.fn_reset_env()
         action = fnGetEpsilonGreedyAction(state)
 
-        episode = app_info['OBJ_EPISODE']
-        while episode.fn_should_episode_continue():
+        # episode = app_info['OBJ_EPISODE']
+        continue_running = True
+        while continue_running:
             new_state, reward, episode_status, _ = _env.fn_take_step(action)
-
-            fnTraceInteraction(new_state, reward, episode_status)
+            continue_running = reward == 0
+            fnTraceInteraction(new_state, reward, continue_running)
             if fn_move_cursor is not None:
                 fn_move_cursor(state, new_state)
 
             action = fnGetEpsilonGreedyAction(new_state)
 
             state = new_state
+
         if fn_move_cursor is not None:
             fn_move_cursor(new_state)
         value_table = fnUpdateValueTableFromTrace()
 
-        return value_table, episode.fn_get_episode_status()
+        return value_table, continue_running
 
     return fn_bind_fn_display_actions, fnRunMonteCarlo

@@ -68,12 +68,12 @@ def env_mgt(app_info):
         next_state = _fn_env_step(action)
         reward = _reward[next_state[1]][next_state[0]]
 
-        app_info['OBJ_EPISODE'].fn_update_episode(_reward[next_state[1]][next_state[0]])
+        # app_info['OBJ_EPISODE'].fn_update_episode(_reward[next_state[1]][next_state[0]])
 
         if not planning_mode:
             _state = next_state
 
-        return next_state, reward, app_info['OBJ_EPISODE'].fn_get_episode_status(), None
+        return next_state, reward, None, None
 
     def fn_render():
         pass
