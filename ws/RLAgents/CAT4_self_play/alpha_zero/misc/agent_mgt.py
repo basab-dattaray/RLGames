@@ -1,4 +1,4 @@
-import copy
+
 import logging
 import math
 import os
@@ -12,11 +12,11 @@ from time import time
 import numpy
 
 from ws.RLAgents.CAT4_self_play.alpha_zero.misc.neural_net_mgt import neural_net_mgt
-from ws.RLAgents.CAT4_self_play.alpha_zero.play.GreedyPlayer import GreedyPlayer
-from ws.RLAgents.CAT4_self_play.alpha_zero.play.HumanPlayer import HumanPlayer
-from ws.RLAgents.CAT4_self_play.alpha_zero.play.RandomPlayer import RandomPlayer
+from ws.RLAgents.CAT4_self_play.alpha_zero.play.greedy_player_mgt import greedy_player_mgt
+from ws.RLAgents.CAT4_self_play.alpha_zero.play.animated_player_mgt import animated_player_mgt
+from ws.RLAgents.CAT4_self_play.alpha_zero.play.random_player_mgt import random_player_mgt
 from ws.RLAgents.CAT4_self_play.alpha_zero.play.playground_mgt import playground_mgt
-from ws.RLAgents.CAT4_self_play.alpha_zero.search.mcts_adapter import mcts_adapter
+from ws.RLAgents.CAT4_self_play.alpha_zero.search.monte_carlo_tree_search_mgt import monte_carlo_tree_search_mgt
 from ws.RLAgents.CAT4_self_play.alpha_zero.train.training_mgt import training_mgt
 from ws.RLEnvironments.self_play_games.othello.game_mgt import game_mgt
 from ws.RLUtils.common.AppInfo import AppInfo
@@ -106,19 +106,19 @@ def agent_mgt(args, file_path):
 
         @tracer(args)
         def fn_test_against_human():
-            fn_human_player_policy = lambda g: HumanPlayer(g).fn_get_action
+            fn_human_player_policy = lambda g: animated_player_mgt(g)
             fn_test(args, fn_human_player_policy, verbose=True, num_of_test_games=2)
             return agent_mgr
 
         @tracer(args, verboscity= 4)
         def fn_test_against_random():
-            fn_random_player_policy = lambda g: RandomPlayer(g).fn_get_action
+            fn_random_player_policy = lambda g: random_player_mgt(g)
             fn_test(args, fn_random_player_policy, num_of_test_games=args.num_of_test_games)
             return agent_mgr
 
         @tracer(args, verboscity= 4)
         def fn_test_against_greedy():
-            fn_random_player_policy = lambda g: GreedyPlayer(g).fn_get_action
+            fn_random_player_policy = lambda g: greedy_player_mgt(g)
             fn_test(args, fn_random_player_policy, num_of_test_games=args.num_of_test_games)
             return agent_mgr
 
@@ -130,7 +130,7 @@ def agent_mgt(args, file_path):
             if not system_nn.fn_load_model():
                 return
 
-            system_mcts = mcts_adapter(system_nn, args)
+            system_mcts = monte_carlo_tree_search_mgt(args.game_mgr, system_nn, args)
             fn_system_policy = lambda state: numpy.argmax(system_mcts.fn_get_policy(state, do_random_selection=False))
             fn_contender_policy = fn_player_policy(args.game_mgr)
             playground = playground_mgt(fn_system_policy, fn_contender_policy, args.game_mgr,

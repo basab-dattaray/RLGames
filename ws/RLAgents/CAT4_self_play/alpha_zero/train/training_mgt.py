@@ -6,7 +6,8 @@ import numpy as np
 from pip._vendor.colorama import Fore
 
 from ws.RLAgents.CAT4_self_play.alpha_zero.play.playground_mgt import playground_mgt
-from ws.RLAgents.CAT4_self_play.alpha_zero.search.mcts_adapter import mcts_adapter
+# from ws.RLAgents.CAT4_self_play.alpha_zero.search.mcts_adapter import mcts_adapter
+from ws.RLAgents.CAT4_self_play.alpha_zero.search.monte_carlo_tree_search_mgt import monte_carlo_tree_search_mgt
 from ws.RLAgents.CAT4_self_play.alpha_zero.train.sample_generator import fn_generate_samples
 from ws.RLAgents.CAT4_self_play.alpha_zero.train.training_helper import fn_getCheckpointFile, fn_log_iteration_results
 from ws.RLUtils.monitoring.tracing.tracer import tracer
@@ -73,9 +74,9 @@ def training_mgt(nn_mgr_N, args):
             def _fn_play_next_vs_previous(training_samples):
                 nn_mgr_N.fn_save_model(filename=args.temp_model_exchange_filename)
                 nn_mgr_P.fn_load_model(filename=args.temp_model_exchange_filename)
-                pmcts = mcts_adapter(nn_mgr_P, args)
+                pmcts = monte_carlo_tree_search_mgt(args.game_mgr, nn_mgr_P, args)
                 nn_mgr_N.fn_adjust_model_from_examples(training_samples)
-                nmcts = mcts_adapter(nn_mgr_N, args)
+                nmcts = monte_carlo_tree_search_mgt(args.game_mgr, nn_mgr_N, args)
                 playground = playground_mgt(
                     lambda state: np.argmax(pmcts.fn_get_policy(state, do_random_selection= False)),
                     lambda state: np.argmax(nmcts.fn_get_policy(state, do_random_selection= False)),
@@ -86,7 +87,7 @@ def training_mgt(nn_mgr_N, args):
                 args.fn_record()
                 return draws, nwins, pwins
 
-            training_samples = fn_generate_samples(args, iteration,  mcts_adapter(nn_mgr_N, args))
+            training_samples = fn_generate_samples(args, iteration,  monte_carlo_tree_search_mgt(args.game_mgr, nn_mgr_N, args))
             draws, nwins, pwins = _fn_play_next_vs_previous(training_samples)
             fn_log_iteration_results(args, draws, iteration, nwins, pwins)
 

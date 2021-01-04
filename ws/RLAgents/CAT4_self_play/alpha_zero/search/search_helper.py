@@ -4,7 +4,7 @@ from collections import namedtuple
 
 import numpy as np
 
-from ws.RLAgents.CAT4_self_play.alpha_zero.search.support.cache2_mgt import cache2_mgt
+from ws.RLAgents.CAT4_self_play.alpha_zero.search.cache2_mgt import cache2_mgt
 
 
 def search_helper(

@@ -1,5 +1,4 @@
-class AverageMeter(object):
-    """From https://github.com/pytorch/examples/blob/master/imagenet/main.py"""
+class AverageCalculator(object):
 
     def __init__(self):
         self.val = 0
