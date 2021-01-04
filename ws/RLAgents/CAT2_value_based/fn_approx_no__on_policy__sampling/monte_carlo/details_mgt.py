@@ -1,11 +1,7 @@
-
 import numpy as np
-
-# from ws.RLInterfaces.PARAM_KEY_NAMES import EPSILON, DISCOUNT_FACTOR, LEARNING_RATE
-from ws.RLEnvironments.gridworld.logic.SETUP_INFO import ACTION_MOVE_STATE_RULES
-from ws.RLEnvironments.gridworld.logic.value_table_mgt import value_table_mgt
+from ws.RLAgents.logic.SETUP_INFO import ACTION_MOVE_STATE_RULES
+from ws.RLAgents.logic.value_table_mgt import value_table_mgt
 from ws.RLUtils.common.misc_functions import arg_max
-
 
 def details_mgt(env, app_info):
     _env = env

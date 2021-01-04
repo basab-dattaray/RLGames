@@ -1,9 +1,4 @@
 import random
-
-
-
-
-# from ws.RLEnvironments.gridworld.logic.SETUP_INFO import ACTION_MOVE_STATE_RULES
 from ws.RLAgents.CAT1_model_based.planning.planning_mgt import planning_mgt
 from ws.RLEnvironments.gridworld.grid_board.display_mgt import display_mgt
 

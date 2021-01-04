@@ -1,5 +1,5 @@
 from ws.RLEnvironments.gridworld.grid_board.display_mgt import display_mgt
-from ws.RLEnvironments.gridworld.logic.qtable_mgt import qtable_mgt
+from ws.RLAgents.logic.qtable_mgt import qtable_mgt
 
 def impl_mgt(env, app_info):
     _env = env
