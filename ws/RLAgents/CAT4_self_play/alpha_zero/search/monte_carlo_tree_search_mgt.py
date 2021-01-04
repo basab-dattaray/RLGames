@@ -1,17 +1,13 @@
 from collections import namedtuple
 
-from ws.RLAgents.CAT4_self_play.alpha_zero.search.policy_mgt import policy_mgt
-from ws.RLAgents.CAT4_self_play.alpha_zero.search.recursive.search_helper import search_helper
+from ws.RLAgents.CAT4_self_play.alpha_zero.search.support.policy_mgt import policy_mgt
+from ws.RLAgents.CAT4_self_play.alpha_zero.search.support.search_helper import search_helper
 
 
-def mcts_r_mgr(
-    args,
+def monte_carlo_tree_search_mgt(
     game_mgr,
     neural_net_mgr,
-    playground_mgt,
-    num_mcts_simulations,
-    cpuct_exploration_exploitation_factor,
-    max_num_actions
+    args,
 ):
 
     search_utils = search_helper(
@@ -21,7 +17,7 @@ def mcts_r_mgr(
     )
 
     def fn_get_mcts_counts(state):
-        for i in range(num_mcts_simulations):
+        for i in range(args.num_of_mc_simulations):
             fn_search(state)
         state_key = game_mgr.fn_get_state_key(state)
         visit_counts = search_utils.fn_get_visit_counts(state_key)
