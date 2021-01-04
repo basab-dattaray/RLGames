@@ -47,9 +47,10 @@ def impl_mgt(env, app_info):
         action = fn_get_max_q_actions(state, app_info["EPSILON"])
 
         episode = app_info['OBJ_EPISODE']
-        while episode.fn_should_episode_continue():
+        continue_running  = True
+        while continue_running:
             new_state, reward, episode_status, _ = _env.fn_take_step(action)
-
+            continue_running = reward == 0
             # _env[envMgr__fnSetState](new_state)
             if fn_show_qvalue is not None:
                 q_actions = fn_get_q_actions(state)
@@ -66,6 +67,6 @@ def impl_mgt(env, app_info):
         if fn_move_cursor is not None:
             fn_move_cursor(new_state)
 
-        return episode.fn_get_episode_status()
+        return continue_running
 
     return fn_bind_fn_display_actions, fnRunSarsa
