@@ -1,7 +1,7 @@
 def qwaste_mgt():
     _dict_waste = {}
 
-    def fnDestructiveGet(key):
+    def fn_pop(key):
         nonlocal _dict_waste
 
         if key in _dict_waste:
@@ -10,7 +10,7 @@ def qwaste_mgt():
         else:
             return None
 
-    def fnPushIfEmpty(key, val):
+    def fn_push(key, val):
         nonlocal _dict_waste
 
         if key in _dict_waste:
@@ -19,4 +19,4 @@ def qwaste_mgt():
             _dict_waste[key] = val
             return True
 
-    return fnDestructiveGet, fnPushIfEmpty
+    return fn_pop, fn_push
