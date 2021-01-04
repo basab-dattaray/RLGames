@@ -5,12 +5,14 @@ import random
 
 # from ws.RLEnvironments.gridworld.logic.SETUP_INFO import ACTION_MOVE_STATE_RULES
 from ws.RLAgents.CAT1_model_based.planning.planning_mgt import planning_mgt
+from ws.RLEnvironments.gridworld.grid_board.display_mgt import display_mgt
 
 
 def impl_mgt(env, app_info):
     _env = env
 
-    _fn_display_controller, fnPolicyIterater, fnValueIterater, fnGetValueFromPolicy = planning_mgt(env, app_info)
+    fnPolicyIterater, fnValueIterater, fnGetValueFromPolicy = planning_mgt(env, app_info)
+    _fn_display_controller = display_mgt(app_info)
 
     def fn_bind_fn_display_actions(acton_dictionary):
 

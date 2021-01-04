@@ -1,16 +1,10 @@
-
-
-from ws.RLEnvironments.gridworld.grid_board.display_mgt import display_mgt
 from ws.RLEnvironments.gridworld.logic.policy_table_mgt import policy_table_mgt
 from ws.RLEnvironments.gridworld.logic.value_table_mgt import value_table_mgt
 from ws.RLEnvironments.gridworld.logic.SETUP_INFO import INITIAL_ACTION_VALUES
 
-
 def planning_mgt(env, app_info):
     LOW_NUMBER = -9999999999
     _env = env
-
-    _fn_display_controller = display_mgt(app_info)
 
     _discount_factor = app_info["DISCOUNT_FACTOR"]
 
@@ -115,4 +109,4 @@ def planning_mgt(env, app_info):
         return repeatEvalAndImprove(applyValueIteration)
 
 
-    return _fn_display_controller, fnPolicyIterater, fnValueIterater, fnGetValueFromPolicy
+    return fnPolicyIterater, fnValueIterater, fnGetValueFromPolicy
