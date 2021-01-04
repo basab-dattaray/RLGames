@@ -7,10 +7,8 @@ from collections import namedtuple
 from PIL import ImageTk, Image
 
 from ws.RLUtils.common.misc_functions import calc_pixels
-from .canvas_text_mgt import canvas_text_mgt
-from ..logic.SETUP_INFO import ACTION_MOVE_STATE_RULES
-# from ws.RLEnvironments.gridworld.grid_board.qwaste_mgt import qwaste_mgt
 
+from ..logic.SETUP_INFO import ACTION_MOVE_STATE_RULES
 PhotoImage = ImageTk.PhotoImage
 
 COORD_LEFT = (7, 42)  # left
@@ -32,14 +30,29 @@ def display_mgt(app_info):
 
     _cursor = None
 
-
     _board_blockers = app_fn_display_info["BOARD_BLOCKERS"]
     _board_goal = app_fn_display_info["BOARD_GOAL"]
     _right_margin = 5
     _bottom_margin = 80
     _tk.title(app_info["display"]["APP_NAME"])
-    # fn_pop, fnPushIfEmpty = qwaste_mgt()
+
+    def canvas_text_mgt(canvas):
+        _dict = {}
+
+        def fn_push(key, val):
+            nonlocal _dict
+
+            if key in _dict:
+                lst_of_refs = _dict.pop(key)
+                for ref in lst_of_refs:
+                    canvas.delete(ref)
+            _dict[key] = val
+
+        return fn_push
+
     _fn_filter_canvas_text = canvas_text_mgt(_canvas)
+
+
 
     def _fn_calculate_step(state, newState):
         stepX, stepY = newState[0] - state[0], newState[1] - state[1]
@@ -69,14 +82,11 @@ def display_mgt(app_info):
         _tk.texts.append(text)
 
     def _fn_render_on_canvas():
-
-
         time.sleep(0.1)
         _tk.canvas.tag_raise(_cursor)
         _tk.update()
 
     def _fn_create_button(canvas, button_x_offset, button_name, button_action):
-
         bound_button = tkinter.Button(bg="gray",
                                  text=button_name,
                                  command=button_action)
@@ -86,8 +96,6 @@ def display_mgt(app_info):
 
     def _fn_build_canvas(acton_dictionary):
         nonlocal _cursor
-
-
         button_x_offset = .10
         for label, fn in acton_dictionary.items():
             _fn_create_button(_canvas, button_x_offset, label, fn)
@@ -198,12 +206,6 @@ def display_mgt(app_info):
 
     def fn_show_qvalue(state, q_actions):
         stateStr = str(state)
-        # wasteVal = fn_pop(stateStr)
-        # if wasteVal is not None:
-        #     for i in wasteVal:
-        #         _tk.canvas.delete(i)
-        # else:
-        #     pass
 
         q_action_list = list(q_actions)
         refs = [_fn_show_qvalue_directions(state, q_action_list[0], COORD_UP),
@@ -211,10 +213,6 @@ def display_mgt(app_info):
                 _fn_show_qvalue_directions(state, q_action_list[2], COORD_LEFT),
                 _fn_show_qvalue_directions(state, q_action_list[3], COORD_RIGHT)]
 
-        # success = fnPushIfEmpty(stateStr, refs)
-        # if not success:
-        #     for i in refs:
-        #         _tk.canvas.delete(i)
         _fn_filter_canvas_text(stateStr, refs)
         _fn_append_rewards_to_canvas()
         _fn_render_on_canvas()
