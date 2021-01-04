@@ -1,13 +1,7 @@
 from collections import namedtuple
-
 from ws.RLEnvironments.gridworld.logic.SETUP_INFO import POSSIBLE_ACTIONS
 
-from .logic.episode_mgt import episode_mgt
-
 def env_mgt(app_info):
-
-    # _app_info = app_info
-    app_info['OBJ_EPISODE'] = episode_mgt()
 
     _board_blockers = app_info["display"]["BOARD_BLOCKERS"]
     _board_goal = app_info["display"]["BOARD_GOAL"]
@@ -21,8 +15,6 @@ def env_mgt(app_info):
 
     def fn_reset_env():
         nonlocal  _reward,  _all_states, _state
-
-        app_info['OBJ_EPISODE'] = episode_mgt()
 
         _reward = [[0] * _width for _ in range(_height)]
         _possible_actions = POSSIBLE_ACTIONS
@@ -67,8 +59,6 @@ def env_mgt(app_info):
 
         next_state = _fn_env_step(action)
         reward = _reward[next_state[1]][next_state[0]]
-
-        # app_info['OBJ_EPISODE'].fn_update_episode(_reward[next_state[1]][next_state[0]])
 
         if not planning_mode:
             _state = next_state

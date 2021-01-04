@@ -12,8 +12,8 @@ def env_mgt(app_info):
         return _env.reset()
 
     def fn_take_step(action):
-        next_state, reward, done, _ = _env.step(action)
-        return next_state, reward, done, None
+        next_state, reward, done, info = _env.step(action)
+        return next_state, reward, done, info
 
     def fn_render():
         _env.render()

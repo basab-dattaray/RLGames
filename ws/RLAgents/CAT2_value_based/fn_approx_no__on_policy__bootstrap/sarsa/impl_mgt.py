@@ -1,9 +1,5 @@
-# from ws.RLInterfaces.PARAM_KEY_NAMES import OBJ_EPISODE, LEARNING_RATE, DISCOUNT_FACTOR
 from ws.RLEnvironments.gridworld.grid_board.display_mgt import display_mgt
 from ws.RLEnvironments.gridworld.logic.qtable_mgt import qtable_mgt
-
-
-# from .details_mgt import details_mgt
 
 def impl_mgt(env, app_info):
     _env = env
@@ -46,12 +42,10 @@ def impl_mgt(env, app_info):
         state = _env.fn_reset_env()
         action = fn_get_max_q_actions(state, app_info["EPSILON"])
 
-        episode = app_info['OBJ_EPISODE']
         continue_running  = True
         while continue_running:
-            new_state, reward, episode_status, _ = _env.fn_take_step(action)
+            new_state, reward, done, _ = _env.fn_take_step(action)
             continue_running = reward == 0
-            # _env[envMgr__fnSetState](new_state)
             if fn_show_qvalue is not None:
                 q_actions = fn_get_q_actions(state)
                 fn_show_qvalue(state, q_actions)

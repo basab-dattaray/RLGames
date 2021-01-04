@@ -1,4 +1,4 @@
-# from ws.RLInterfaces.PARAM_KEY_NAMES import OBJ_EPISODE, NUM_EPISODES
+
 from ws.RLEnvironments.gridworld.grid_board.display_mgt import display_mgt
 
 from .details_mgt import details_mgt
@@ -26,10 +26,9 @@ def impl_mgt(env, app_info):
         state = _env.fn_reset_env()
         action = fnGetEpsilonGreedyAction(state)
 
-        # episode = app_info['OBJ_EPISODE']
         continue_running = True
         while continue_running:
-            new_state, reward, episode_status, _ = _env.fn_take_step(action)
+            new_state, reward, done, info = _env.fn_take_step(action)
             continue_running = reward == 0
             fnTraceInteraction(new_state, reward, continue_running)
             if fn_move_cursor is not None:
