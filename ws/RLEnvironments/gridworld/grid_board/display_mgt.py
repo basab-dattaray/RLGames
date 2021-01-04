@@ -9,7 +9,7 @@ from PIL import ImageTk, Image
 from ws.RLUtils.common.misc_functions import calc_pixels
 from .canvas_text_mgt import canvas_text_mgt
 from ..logic.SETUP_INFO import ACTION_MOVE_STATE_RULES
-from ws.RLEnvironments.gridworld.grid_board.qwaste_mgt import qwaste_mgt
+# from ws.RLEnvironments.gridworld.grid_board.qwaste_mgt import qwaste_mgt
 
 PhotoImage = ImageTk.PhotoImage
 
@@ -215,6 +215,7 @@ def display_mgt(app_info):
         # if not success:
         #     for i in refs:
         #         _tk.canvas.delete(i)
+        _fn_filter_canvas_text(stateStr, refs)
         _fn_append_rewards_to_canvas()
         _fn_render_on_canvas()
 
