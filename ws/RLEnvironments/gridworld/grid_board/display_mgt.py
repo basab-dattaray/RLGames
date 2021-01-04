@@ -1,5 +1,5 @@
 import os
-import tkinter as tk
+import tkinter
 
 import time
 from collections import namedtuple
@@ -19,12 +19,19 @@ COORD_DOWN = (42, 77)  # down
 
 def display_mgt(app_info):
 
-    _tk = tk.Tk()
-    _cursor = None
+    _tk = tkinter.Tk()
+
     app_fn_display_info = app_info["display"]
     _unit = app_fn_display_info["UNIT"]
     _width = app_fn_display_info["WIDTH"]
     _height = app_fn_display_info["HEIGHT"]
+    _canvas = tkinter.Canvas(
+        height=_height * _unit,
+        width=_width * _unit)
+
+    _cursor = None
+
+
     _board_blockers = app_fn_display_info["BOARD_BLOCKERS"]
     _board_goal = app_fn_display_info["BOARD_GOAL"]
     _right_margin = 5
@@ -68,7 +75,7 @@ def display_mgt(app_info):
 
     def _fn_create_button(canvas, button_x_offset, button_name, button_action):
 
-        bound_button = tk.Button(bg="gray",
+        bound_button = tkinter.Button(bg="gray",
                                  text=button_name,
                                  command=button_action)
         bound_button.configure(width=10, height=2)
@@ -78,32 +85,30 @@ def display_mgt(app_info):
     def _fn_build_canvas(acton_dictionary):
         nonlocal _cursor
 
-        canvas = tk.Canvas(
-            height=_height * _unit,
-            width=_width * _unit)
+
         button_x_offset = .10
         for label, fn in acton_dictionary.items():
-            _fn_create_button(canvas, button_x_offset, label, fn)
+            _fn_create_button(_canvas, button_x_offset, label, fn)
             button_x_offset += .20
 
         # create lines
         for col in range(0, (_width + 1) * _unit, _unit):  # 0~400 by 80
             x0, y0, x1, y1 = col, 0, col, _height * _unit
-            canvas.create_line(x0, y0, x1, y1)
+            _canvas.create_line(x0, y0, x1, y1)
 
         for row in range(0, (_height + 1) * _unit, _unit):  # 0~400 by 80
             x0, y0, x1, y1 = 0, row, _width * _unit, row
-            canvas.create_line(x0, y0, x1, y1)
+            _canvas.create_line(x0, y0, x1, y1)
 
-        _cursor = canvas.create_image(_unit / 2, _unit / 2, image=_tk.shapes[2])
+        _cursor = _canvas.create_image(_unit / 2, _unit / 2, image=_tk.shapes[2])
         for blocker in _board_blockers:
             pix_x, pix_y = calc_pixels(_unit, blocker['x'], blocker['y'])
-            canvas.create_image(pix_x, pix_y, image=_tk.shapes[0])
+            _canvas.create_image(pix_x, pix_y, image=_tk.shapes[0])
 
         pix_x, pix_y = calc_pixels(_unit, _board_goal['x'], _board_goal['y'])
-        canvas.create_image(pix_x, pix_y, image=_tk.shapes[1])
-        canvas.pack()
-        return canvas
+        _canvas.create_image(pix_x, pix_y, image=_tk.shapes[1])
+        _canvas.pack()
+        return _canvas
 
     
     def _fn_load_images():
