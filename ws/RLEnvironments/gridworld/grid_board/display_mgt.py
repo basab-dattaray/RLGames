@@ -7,6 +7,7 @@ from collections import namedtuple
 from PIL import ImageTk, Image
 
 from ws.RLUtils.common.misc_functions import calc_pixels
+from .canvas_text_mgt import canvas_text_mgt
 from ..logic.SETUP_INFO import ACTION_MOVE_STATE_RULES
 from ws.RLEnvironments.gridworld.grid_board.qwaste_mgt import qwaste_mgt
 
@@ -37,7 +38,8 @@ def display_mgt(app_info):
     _right_margin = 5
     _bottom_margin = 80
     _tk.title(app_info["display"]["APP_NAME"])
-    fn_pop, fnPushIfEmpty = qwaste_mgt()
+    # fn_pop, fnPushIfEmpty = qwaste_mgt()
+    _fn_filter_canvas_text = canvas_text_mgt(_canvas)
 
     def _fn_calculate_step(state, newState):
         stepX, stepY = newState[0] - state[0], newState[1] - state[1]
@@ -196,12 +198,12 @@ def display_mgt(app_info):
 
     def fn_show_qvalue(state, q_actions):
         stateStr = str(state)
-        wasteVal = fn_pop(stateStr)
-        if wasteVal is not None:
-            for i in wasteVal:
-                _tk.canvas.delete(i)
-        else:
-            pass
+        # wasteVal = fn_pop(stateStr)
+        # if wasteVal is not None:
+        #     for i in wasteVal:
+        #         _tk.canvas.delete(i)
+        # else:
+        #     pass
 
         q_action_list = list(q_actions)
         refs = [_fn_show_qvalue_directions(state, q_action_list[0], COORD_UP),
@@ -209,10 +211,10 @@ def display_mgt(app_info):
                 _fn_show_qvalue_directions(state, q_action_list[2], COORD_LEFT),
                 _fn_show_qvalue_directions(state, q_action_list[3], COORD_RIGHT)]
 
-        success = fnPushIfEmpty(stateStr, refs)
-        if not success:
-            for i in refs:
-                _tk.canvas.delete(i)
+        # success = fnPushIfEmpty(stateStr, refs)
+        # if not success:
+        #     for i in refs:
+        #         _tk.canvas.delete(i)
         _fn_append_rewards_to_canvas()
         _fn_render_on_canvas()
 
