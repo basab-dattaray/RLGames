@@ -7,7 +7,7 @@ from pip._vendor.colorama import Fore
 
 from ws.RLAgents.CAT4_self_play.alpha_zero.play.playground_mgt import playground_mgt
 # from ws.RLAgents.CAT4_self_play.alpha_zero.search.mcts_adapter import mcts_adapter
-from ws.RLAgents.CAT4_self_play.alpha_zero.search.monte_carlo_tree_search_mgt import monte_carlo_tree_search_mgt
+from ws.RLAgents.algo_lib.logic.search.monte_carlo_tree_search_mgt import monte_carlo_tree_search_mgt
 from ws.RLAgents.CAT4_self_play.alpha_zero.train.sample_generator import fn_generate_samples
 from ws.RLAgents.CAT4_self_play.alpha_zero.train.training_helper import fn_getCheckpointFile, fn_log_iteration_results
 from ws.RLUtils.monitoring.tracing.tracer import tracer
