@@ -1,5 +1,4 @@
 import copy
-from ws.RLAgents.algo_lib.data.gridwell_1.AGENT_CONFIG import ACTION_MOVE_STATE_RULES
 
 def value_table_mgt(app_info):
     LOW_NUMBER = -999999
@@ -48,7 +47,7 @@ def value_table_mgt(app_info):
     def fn_value_table_possible_actions(state):
 
         row, col = state
-        possible_actions = [LOW_NUMBER] * len(ACTION_MOVE_STATE_RULES)
+        possible_actions = [LOW_NUMBER] * len(app_info['ACTION_MOVE_STATE_RULES'] )
 
         vt = _value_table
 

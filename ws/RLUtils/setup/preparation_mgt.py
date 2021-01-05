@@ -1,5 +1,6 @@
 import os
 
+from ws.RLAgents.algo_lib.logic.support.agent_config_mgt import agent_config_mgt
 from ws.RLUtils.common.config_mgt import config_mgt
 from ws.RLUtils.common.fileops import get_json_data
 from ws.RLUtils.common.module_loader import load_function
@@ -7,19 +8,24 @@ from ws.RLUtils.monitoring.tracing.log_mgt import log_mgt
 
 from ws.RLUtils.platform_libs.pytorch.device_selection import get_device
 
+ROOT_DOT_PATH = 'ws.RLAgents'
 def fn_load_app(file_path):
+
     app_info, env = preparation_mgt(file_path)
+
+    agent_config_mgt(app_info)
+
     subpackage_name = 'ws.RLAgents.{}'.format(app_info['STRATEGY'])
     agent_mgt = load_function(function_name="agent_mgt", module_tag="agent_mgt", subpackage_tag=subpackage_name)
     fn_init = agent_mgt(app_info, env)
     fn_init()
 
-def fn_load_app(file_path):
-    app_info, env = preparation_mgt(file_path)
-    subpackage_name = 'ws.RLAgents.{}'.format(app_info['STRATEGY'])
-    agent_mgt = load_function(function_name="agent_mgt", module_tag="agent_mgt", subpackage_tag=subpackage_name)
-    fn_init = agent_mgt(app_info, env)
-    fn_init()
+# def fn_load_app(file_path):
+#     app_info, env = preparation_mgt(file_path)
+#     subpackage_name = 'ws.RLAgents.{}'.format(app_info['STRATEGY'])
+#     agent_mgt = load_function(function_name="agent_mgt", module_tag="agent_mgt", subpackage_tag=subpackage_name)
+#     fn_init = agent_mgt(app_info, env)
+#     fn_init()
 
 def preparation_mgt(calling_filepath, verbose=False):
     filepathname_parts = calling_filepath.rsplit('/', 1)
@@ -47,7 +53,7 @@ def preparation_mgt(calling_filepath, verbose=False):
             print(env_folder)
 
     def _fn_setup_paths_in_app_info():
-        _app_info['AGENT_FOLDER_PATH'] = 'ws.RLAgents.{}'.format(_app_info['STRATEGY'])
+        _app_info['AGENT_FOLDER_PATH'] = ROOT_DOT_PATH + '.{}'.format(_app_info['STRATEGY'])
         _app_info['ARCHIVE_SUB_FOLDER'] = demo_name # fn_get_archive_name()
 
         base_path = _app_info['RESULTS_BASE_PATH']

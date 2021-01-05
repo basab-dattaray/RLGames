@@ -8,7 +8,6 @@ from PIL import ImageTk, Image
 
 from ws.RLUtils.common.misc_functions import calc_pixels
 
-from ws.RLAgents.algo_lib.data.gridwell_1.AGENT_CONFIG import ACTION_MOVE_STATE_RULES
 PhotoImage = ImageTk.PhotoImage
 
 COORD_LEFT = (7, 42)  # left
@@ -230,7 +229,7 @@ def display_mgt(app_info):
         if action < 0:
             return None
 
-        next_state = ACTION_MOVE_STATE_RULES[action]
+        next_state = app_info['ACTION_MOVE_STATE_RULES'][action]
         new_x = state[0] + next_state[0]
         new_y = state[1] + next_state[1]
         return new_x, new_y

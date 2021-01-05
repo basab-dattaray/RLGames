@@ -1,6 +1,5 @@
-from ws.RLAgents.algo_lib.logic.policy_table_mgt import policy_table_mgt
-from ws.RLAgents.algo_lib.logic.value_table_mgt import value_table_mgt
-from ws.RLAgents.algo_lib.data.gridwell_1.AGENT_CONFIG import INITIAL_ACTION_VALUES
+from ws.RLAgents.algo_lib.logic.common.policy_table_mgt import policy_table_mgt
+from ws.RLAgents.algo_lib.logic.common.value_table_mgt import value_table_mgt
 
 def planning_mgt(env, app_info):
     LOW_NUMBER = -9999999999
@@ -84,7 +83,7 @@ def planning_mgt(env, app_info):
 
             prob = 1 / len(max_index)
 
-            result = INITIAL_ACTION_VALUES.copy()
+            result = app_info['INITIAL_ACTION_VALUES'] .copy()
             for index in max_index:
                 result[index] = prob
             fn_set_policy_state_value(state, result)

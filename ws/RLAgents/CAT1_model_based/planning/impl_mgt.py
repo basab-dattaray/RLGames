@@ -1,5 +1,5 @@
 import random
-from ws.RLAgents.algo_lib.logic.planning_mgt import planning_mgt
+from ws.RLAgents.algo_lib.logic.common.planning_mgt import planning_mgt
 from ws.RLEnvironments.gridworld.grid_board.display_mgt import display_mgt
 
 

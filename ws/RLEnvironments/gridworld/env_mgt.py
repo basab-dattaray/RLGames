@@ -1,5 +1,5 @@
 from collections import namedtuple
-from ws.RLAgents.algo_lib.data.gridwell_1.AGENT_CONFIG import POSSIBLE_ACTIONS
+# from ws.RLAgents.algo_lib.data.gridwell_1.AGENT_CONFIG import POSSIBLE_ACTIONS
 
 def env_mgt(app_info):
 
@@ -17,7 +17,7 @@ def env_mgt(app_info):
         nonlocal  _reward,  _all_states, _state
 
         _reward = [[0] * _width for _ in range(_height)]
-        _possible_actions = POSSIBLE_ACTIONS
+        # _possible_actions = app_info['POSSIBLE_ACTIONS']
 
         for blocker in _board_blockers:
             _reward[blocker['y']][blocker['x']] = blocker['reward']  # for square
@@ -85,7 +85,7 @@ def env_mgt(app_info):
         return _all_states
 
     def fn_value_table_possible_actions():
-        return POSSIBLE_ACTIONS
+        return app_info['POSSIBLE_ACTIONS']
 
     fn_reset_env()
     ret_obj = namedtuple('_', [
