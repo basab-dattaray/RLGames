@@ -9,7 +9,7 @@ from ws.RLUtils.monitoring.tracing.log_mgt import log_mgt
 
 from ws.RLUtils.platform_libs.pytorch.device_selection import get_device
 
-ROOT_DOT_PATH = 'ws.RLAgents'
+# ROOT_DOT_PATH = 'ws.RLAgents'
 def fn_load_app(file_path):
     app_info, env = preparation_mgt(file_path)
     agent_config_mgt(app_info)
@@ -19,10 +19,10 @@ def fn_load_app(file_path):
     fn_init()
 
 def fn_set_app_info_paths(_app_info, calling_root_path):
-    package_root_path = str(Path(calling_root_path).parent.parent)
+    package_root_path = str(Path(calling_root_path).parent.parent.parent)
     base_container_path = str(Path(package_root_path).parent.parent)
     relative_package_path = package_root_path.replace(base_container_path, '')
-    root_dot_path = relative_package_path.replace('/', '.')
+    root_dot_path = relative_package_path.replace('/', '.')[1:]
     _app_info['ROOT_DOT_PATH'] = root_dot_path
 
 def fn_gpu_setup(_app_info, verbose= False):
@@ -34,7 +34,7 @@ def fn_gpu_setup(_app_info, verbose= False):
 
 def fn_setup_for_results(_app_info, verbose= False):
 
-    # _app_info['GPU_DEVICE'] = get_device(_app_info)
+    # app_info['GPU_DEVICE'] = get_device(app_info)
     results_folder = os.path.join(_app_info['DEMO_PATH'], "Results")
     if os.path.exists(results_folder) is False:
         os.makedirs(results_folder)
@@ -79,17 +79,18 @@ def fn_get_env(app_info, verbose= False):
 
     return env
 
-def fn_setup_paths_in_app_info(_app_info, verbose= False):
-    _app_info['AGENT_FOLDER_PATH'] = ROOT_DOT_PATH + '.{}'.format(_app_info['STRATEGY'])
+def fn_setup_paths_in_app_info(app_info, cwd,  verbose= False):
+    fn_set_app_info_paths(app_info, cwd)
+    app_info['AGENT_FOLDER_PATH'] =app_info['ROOT_DOT_PATH']  + '.{}'.format(app_info['STRATEGY'])
 
-    base_path = _app_info['RESULTS_BASE_PATH']
-    if _app_info['ARCHIVE_SUB_FOLDER'] is not None:
-        base_path = os.path.join(base_path, _app_info['ARCHIVE_SUB_FOLDER'])
+    base_path = app_info['RESULTS_BASE_PATH']
+    if app_info['ARCHIVE_SUB_FOLDER'] is not None:
+        base_path = os.path.join(base_path, app_info['ARCHIVE_SUB_FOLDER'])
 
-    _app_info['RESULTS_CURRENT_PATH'] = os.path.join(base_path, 'Current')
-    _app_info['RESULTS_ARCHIVE_PATH'] = os.path.join(_app_info['DEMO_PATH'].replace('Demos', 'ARCHIVES'), _app_info['ARCHIVE_SUB_FOLDER'])
+    app_info['RESULTS_CURRENT_PATH'] = os.path.join(base_path, 'Current')
+    app_info['RESULTS_ARCHIVE_PATH'] = os.path.join(app_info['DEMO_PATH'].replace('Demos', 'ARCHIVES'), app_info['ARCHIVE_SUB_FOLDER'])
     if verbose:
-        print(_app_info['ARCHIVE_SUB_FOLDER'])
+        print(app_info['ARCHIVE_SUB_FOLDER'])
 
 def preparation_mgt(calling_filepath, verbose=False):
     filepathname_parts = calling_filepath.rsplit('/', 1)
@@ -107,7 +108,7 @@ def preparation_mgt(calling_filepath, verbose=False):
     _app_info['ARCHIVE_SUB_FOLDER'] = filename_parts[0]
 
     fn_setup_for_results(_app_info)
-    fn_setup_paths_in_app_info(_app_info)
+    fn_setup_paths_in_app_info(_app_info, cwd)
     fn_setup_logging(_app_info)
     fn_gpu_setup(_app_info)
     env = fn_get_env(_app_info)

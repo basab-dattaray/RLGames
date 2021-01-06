@@ -35,8 +35,8 @@ class Actor(nn.Module):
 # class Actor(nn.Module):
 #     def __init__(self, app_info):
 #         self.action_var = torch.full((self.max_num_actions,), self.action_std * self.action_std).to(
-#             self._app_info[GPU_DEVICE])
-#         self._app_info = app_info
+#             self.app_info[GPU_DEVICE])
+#         self.app_info = app_info
 #         super(Actor, self).__init__()
 #
 #         self._hidden_layer_dims = app_info[ACTOR_HIDDEN_LAYER_NODES]
