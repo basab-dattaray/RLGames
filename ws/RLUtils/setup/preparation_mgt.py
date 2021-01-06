@@ -35,6 +35,7 @@ def preparation_mgt(calling_filepath, verbose=False):
 
     _app_info_path = os.path.join(cwd, app_info_file)
     _app_info = get_json_data(_app_info_path)
+    _app_info['APP_INFO_SOURCE'] = _app_info_path
 
     def _fn_setup_for_results():
         _app_info['DEMO_PATH'] = cwd
@@ -96,10 +97,7 @@ def preparation_mgt(calling_filepath, verbose=False):
 
         return env
 
-    def _fn_misc_setup():
-        # APP_INFO source
-        _app_info['APP_INFO_SOURCE'] = _app_info_path
-
+    def fn_misc_setup(_app_info):
         # GPU
         _app_info['GPU_DEVICE'] = get_device(_app_info)
         if verbose:
@@ -112,7 +110,7 @@ def preparation_mgt(calling_filepath, verbose=False):
     _fn_setup_for_results()
     _fn_setup_paths_in_app_info()
     _fn_setup_logging()
-    _fn_misc_setup()
+    fn_misc_setup(_app_info)
 
     env = _fn_get_env()
 
