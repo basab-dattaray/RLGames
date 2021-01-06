@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 
 from ws.RLAgents.algo_lib.logic.support.agent_config_mgt import agent_config_mgt
 from ws.RLUtils.common.config_mgt import config_mgt
@@ -10,22 +11,19 @@ from ws.RLUtils.platform_libs.pytorch.device_selection import get_device
 
 ROOT_DOT_PATH = 'ws.RLAgents'
 def fn_load_app(file_path):
-
     app_info, env = preparation_mgt(file_path)
-
     agent_config_mgt(app_info)
-
     subpackage_name = 'ws.RLAgents.{}'.format(app_info['STRATEGY'])
     agent_mgt = load_function(function_name="agent_mgt", module_tag="agent_mgt", subpackage_tag=subpackage_name)
     fn_init = agent_mgt(app_info, env)
     fn_init()
 
-# def fn_load_app(file_path):
-#     app_info, env = preparation_mgt(file_path)
-#     subpackage_name = 'ws.RLAgents.{}'.format(app_info['STRATEGY'])
-#     agent_mgt = load_function(function_name="agent_mgt", module_tag="agent_mgt", subpackage_tag=subpackage_name)
-#     fn_init = agent_mgt(app_info, env)
-#     fn_init()
+def fn_set_app_info_paths(_app_info, calling_root_path):
+    package_root_path = str(Path(calling_root_path).parent.parent)
+    base_container_path = str(Path(package_root_path).parent.parent)
+    relative_package_path = package_root_path.replace(base_container_path, '')
+    root_dot_path = relative_package_path.replace('/', '.')
+    _app_info['ROOT_DOT_PATH'] = root_dot_path
 
 def preparation_mgt(calling_filepath, verbose=False):
     filepathname_parts = calling_filepath.rsplit('/', 1)

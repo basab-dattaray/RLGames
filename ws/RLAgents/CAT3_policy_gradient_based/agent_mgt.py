@@ -109,7 +109,7 @@ def agent_mgt(app_info, env, arg_dict=None):
             return
 
         if not refobj_archive_mgt.fn_load_model():
-            fn_log("ERROR:: Loading Model: model data missing")
+            fn_log("ERROR:: Loading Model: model agent_configs missing")
             return
 
         fn_run(fn_show_training_progress, supress_graph=True, consecutive_goal_hits_needed_for_success=1)
