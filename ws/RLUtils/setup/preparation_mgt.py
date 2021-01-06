@@ -79,6 +79,17 @@ def fn_get_env(app_info, verbose= False):
 
     return env
 
+def fn_setup_paths_in_app_info(_app_info, verbose= False):
+    _app_info['AGENT_FOLDER_PATH'] = ROOT_DOT_PATH + '.{}'.format(_app_info['STRATEGY'])
+
+    base_path = _app_info['RESULTS_BASE_PATH']
+    if _app_info['ARCHIVE_SUB_FOLDER'] is not None:
+        base_path = os.path.join(base_path, _app_info['ARCHIVE_SUB_FOLDER'])
+
+    _app_info['RESULTS_CURRENT_PATH'] = os.path.join(base_path, 'Current')
+    _app_info['RESULTS_ARCHIVE_PATH'] = os.path.join(_app_info['DEMO_PATH'].replace('Demos', 'ARCHIVES'), _app_info['ARCHIVE_SUB_FOLDER'])
+    if verbose:
+        print(_app_info['ARCHIVE_SUB_FOLDER'])
 
 def preparation_mgt(calling_filepath, verbose=False):
     filepathname_parts = calling_filepath.rsplit('/', 1)
@@ -93,33 +104,12 @@ def preparation_mgt(calling_filepath, verbose=False):
     _app_info = get_json_data(_app_info_path)
     _app_info['APP_INFO_SOURCE'] = _app_info_path
     _app_info['DEMO_PATH'] = cwd
-
-
-
-
-
-    def _fn_setup_paths_in_app_info():
-        _app_info['AGENT_FOLDER_PATH'] = ROOT_DOT_PATH + '.{}'.format(_app_info['STRATEGY'])
-        _app_info['ARCHIVE_SUB_FOLDER'] = demo_name # fn_get_archive_name()
-
-        base_path = _app_info['RESULTS_BASE_PATH']
-        if _app_info['ARCHIVE_SUB_FOLDER'] is not None:
-            base_path = os.path.join(base_path, _app_info['ARCHIVE_SUB_FOLDER'])
-
-        _app_info['RESULTS_CURRENT_PATH'] = os.path.join(base_path, 'Current')
-        _app_info['RESULTS_ARCHIVE_PATH'] = os.path.join(_app_info['DEMO_PATH'].replace('Demos', 'ARCHIVES'), demo_name)
-        if verbose:
-            print(_app_info['ARCHIVE_SUB_FOLDER'])
-
-
-
+    _app_info['ARCHIVE_SUB_FOLDER'] = demo_name
 
     fn_setup_for_results(_app_info)
-    _fn_setup_paths_in_app_info()
+    fn_setup_paths_in_app_info(_app_info)
     fn_setup_logging(_app_info)
     fn_gpu_setup(_app_info)
-
     env = fn_get_env(_app_info)
-
     return _app_info, env
 
