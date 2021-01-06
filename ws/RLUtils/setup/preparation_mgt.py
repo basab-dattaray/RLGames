@@ -30,14 +30,35 @@ def fn_gpu_setup(_app_info, verbose= False):
     _app_info['GPU_DEVICE'] = get_device(_app_info)
     if verbose:
         print('DEVICE: {}'.format(_app_info['GPU_DEVICE']))
-
-    agent_config = _app_info['AGENT_CONFIG']
-        # load_function(function_name="agent_mgt", module_tag="agent_mgt", subpackage_tag=subpackage_name)
     pass
+
+def fn_setup_for_results(_app_info, verbose= False):
+
+    # _app_info['GPU_DEVICE'] = get_device(_app_info)
+    results_folder = os.path.join(_app_info['DEMO_PATH'], "Results")
+    if os.path.exists(results_folder) is False:
+        os.makedirs(results_folder)
+
+    env_folder = os.path.join(results_folder, _app_info['ENV_NAME'])
+    if os.path.exists(env_folder) is False:
+        os.makedirs(env_folder)
+    _app_info['RESULTS_BASE_PATH'] = env_folder
+    if verbose:
+        print(env_folder)
+
+def fn_setup_logging(app_info):
+    fn_get_key_as_bool, fn_get_key_as_int, fn_get_key_as_str = config_mgt(app_info)
+    debug_mode = fn_get_key_as_bool('DEBUG_MODE')
+    session_repo = app_info['RESULTS_CURRENT_PATH']
+    fn_log = log_mgt(log_dir= session_repo, show_debug=debug_mode)
+    app_info['FN_RECORD'] = fn_log
+    pass
+
 
 def preparation_mgt(calling_filepath, verbose=False):
     filepathname_parts = calling_filepath.rsplit('/', 1)
     cwd = filepathname_parts[0]
+
     filename = filepathname_parts[1]
     filename_parts = filename.rsplit('_', 1)
     demo_name = filename_parts[0]
@@ -46,22 +67,11 @@ def preparation_mgt(calling_filepath, verbose=False):
     _app_info_path = os.path.join(cwd, app_info_file)
     _app_info = get_json_data(_app_info_path)
     _app_info['APP_INFO_SOURCE'] = _app_info_path
+    _app_info['DEMO_PATH'] = cwd
 
 
 
-    def _fn_setup_for_results():
-        _app_info['DEMO_PATH'] = cwd
-        _app_info['GPU_DEVICE'] = get_device(_app_info)
-        results_folder = os.path.join(_app_info['DEMO_PATH'], "Results")
-        if os.path.exists(results_folder) is False:
-            os.makedirs(results_folder)
 
-        env_folder = os.path.join(results_folder, _app_info['ENV_NAME'])
-        if os.path.exists(env_folder) is False:
-            os.makedirs(env_folder)
-        _app_info['RESULTS_BASE_PATH'] = env_folder
-        if verbose:
-            print(env_folder)
 
     def _fn_setup_paths_in_app_info():
         _app_info['AGENT_FOLDER_PATH'] = ROOT_DOT_PATH + '.{}'.format(_app_info['STRATEGY'])
@@ -77,13 +87,7 @@ def preparation_mgt(calling_filepath, verbose=False):
             print(_app_info['ARCHIVE_SUB_FOLDER'])
 
 
-    def _fn_setup_logging():
-        fn_get_key_as_bool, fn_get_key_as_int, fn_get_key_as_str = config_mgt(_app_info)
-        debug_mode = fn_get_key_as_bool('DEBUG_MODE')
-        session_repo = _app_info['RESULTS_CURRENT_PATH']
-        fn_log = log_mgt(log_dir= session_repo, show_debug=debug_mode)
-        _app_info['FN_RECORD'] = fn_log
-        pass
+
 
     def _fn_get_env():
         subpackage_name = None
@@ -109,9 +113,9 @@ def preparation_mgt(calling_filepath, verbose=False):
 
         return env
 
-    _fn_setup_for_results()
+    fn_setup_for_results(_app_info)
     _fn_setup_paths_in_app_info()
-    _fn_setup_logging()
+    fn_setup_logging(_app_info)
     fn_gpu_setup(_app_info)
 
     env = _fn_get_env()
