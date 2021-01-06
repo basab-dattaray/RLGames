@@ -45,7 +45,7 @@
     ],
 
     "LOG_SKIP_INTERVAL": 1,
-    "REWARD_GOAL": 130,
+    "REWARD_GOAL": 125,
     "LOG_MEAN_INTERVAL": 20,
     "MAX_RESULT_COUNT": 3,
 
