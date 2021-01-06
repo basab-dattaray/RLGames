@@ -13,17 +13,18 @@ from ws.RLUtils.platform_libs.pytorch.device_selection import get_device
 def fn_load_app(file_path):
     app_info, env = preparation_mgt(file_path)
     agent_config_mgt(app_info)
-    subpackage_name = 'ws.RLAgents.{}'.format(app_info['STRATEGY'])
+    subpackage_name = app_info['AGENTS_DOT_PATH'] + '.{}'.format(app_info['STRATEGY'])
     agent_mgt = load_function(function_name="agent_mgt", module_tag="agent_mgt", subpackage_tag=subpackage_name)
     fn_init = agent_mgt(app_info, env)
     fn_init()
 
-def fn_set_app_info_paths(_app_info, calling_root_path):
+def fn_set_agent_path_in_app_info(_app_info, calling_root_path):
     package_root_path = str(Path(calling_root_path).parent.parent.parent)
-    base_container_path = str(Path(package_root_path).parent.parent)
+    base_container_path = str(Path(package_root_path).parent)
     relative_package_path = package_root_path.replace(base_container_path, '')
     root_dot_path = relative_package_path.replace('/', '.')[1:]
     _app_info['ROOT_DOT_PATH'] = root_dot_path
+    _app_info['AGENTS_DOT_PATH'] = root_dot_path + '.RLAgents'
 
 def fn_gpu_setup(_app_info, verbose= False):
     # GPU
@@ -80,8 +81,8 @@ def fn_get_env(app_info, verbose= False):
     return env
 
 def fn_setup_paths_in_app_info(app_info, cwd,  verbose= False):
-    fn_set_app_info_paths(app_info, cwd)
-    app_info['AGENT_FOLDER_PATH'] =app_info['ROOT_DOT_PATH']  + '.{}'.format(app_info['STRATEGY'])
+    fn_set_agent_path_in_app_info(app_info, cwd)
+    app_info['AGENT_FOLDER_PATH'] =app_info['AGENTS_DOT_PATH']  + '.{}'.format(app_info['STRATEGY'])
 
     base_path = app_info['RESULTS_BASE_PATH']
     if app_info['ARCHIVE_SUB_FOLDER'] is not None:
