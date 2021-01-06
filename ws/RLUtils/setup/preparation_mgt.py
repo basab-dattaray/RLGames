@@ -55,6 +55,31 @@ def fn_setup_logging(app_info):
     pass
 
 
+def fn_get_env(app_info, verbose= False):
+    subpackage_name = None
+    if 'ENV_NAME' not in app_info.keys():
+        if verbose:
+            print("ENV_NAME is missing")
+        pass
+    else:
+        repo_name_parts = app_info['ENV_NAME'].lower().rsplit('-', 1)
+        app_info['ENV_REPO'] = repo_name_parts[0]
+        subpackage_name = 'ws.RLEnvironments.' + app_info['ENV_REPO']
+
+    if subpackage_name is None:
+        return app_info, None
+
+    env_mgt = load_function(function_name="env_mgt", module_tag="env_mgt", subpackage_tag=subpackage_name)
+
+    env = None
+    if env_mgt is not None:
+        env = env_mgt(app_info)
+        app_info['ACTION_DIMENSIONS'] = env.fn_get_action_size()
+        app_info['STATE_DIMENSIONS'] = env.fn_get_state_size()
+
+    return env
+
+
 def preparation_mgt(calling_filepath, verbose=False):
     filepathname_parts = calling_filepath.rsplit('/', 1)
     cwd = filepathname_parts[0]
@@ -89,36 +114,12 @@ def preparation_mgt(calling_filepath, verbose=False):
 
 
 
-    def _fn_get_env():
-        subpackage_name = None
-        if 'ENV_NAME' not in _app_info.keys():
-            if verbose:
-                print("ENV_NAME is missing")
-            pass
-        else:
-            repo_name_parts = _app_info['ENV_NAME'].lower().rsplit('-', 1)
-            _app_info['ENV_REPO'] = repo_name_parts[0]
-            subpackage_name = 'ws.RLEnvironments.' + _app_info['ENV_REPO']
-
-        if subpackage_name is None:
-            return _app_info, None
-
-        env_mgt = load_function(function_name="env_mgt", module_tag="env_mgt", subpackage_tag=subpackage_name)
-
-        env = None
-        if env_mgt is not None:
-            env = env_mgt(_app_info)
-            _app_info['ACTION_DIMENSIONS'] = env.fn_get_action_size()
-            _app_info['STATE_DIMENSIONS'] = env.fn_get_state_size()
-
-        return env
-
     fn_setup_for_results(_app_info)
     _fn_setup_paths_in_app_info()
     fn_setup_logging(_app_info)
     fn_gpu_setup(_app_info)
 
-    env = _fn_get_env()
+    env = fn_get_env(_app_info)
 
     return _app_info, env
 
