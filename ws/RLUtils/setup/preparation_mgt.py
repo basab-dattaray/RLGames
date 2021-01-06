@@ -25,6 +25,7 @@ def fn_set_agent_path_in_app_info(_app_info, calling_root_path):
     root_dot_path = relative_package_path.replace('/', '.')[1:]
     _app_info['ROOT_DOT_PATH'] = root_dot_path
     _app_info['AGENTS_DOT_PATH'] = root_dot_path + '.RLAgents'
+    _app_info['AGENTS_CONFIG_DOT_PATH'] = root_dot_path + '.RLAgents' + '.agent_configs'
 
 def fn_gpu_setup(_app_info, verbose= False):
     # GPU

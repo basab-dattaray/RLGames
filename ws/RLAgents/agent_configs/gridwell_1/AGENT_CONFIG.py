@@ -9,7 +9,7 @@ args = DotDict(
     }
 )
 
-def add_configs(api_info):
+def fn_add_configs(api_info):
     for k, v in args.items():
         api_info[k] = v
 
