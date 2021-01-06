@@ -75,11 +75,10 @@ def neural_net_mgt(args):
                 total_loss = loss_policies + loss_values
 
                 # record loss
-                pi_losses.update(loss_policies.item(), batch_of_states.size(0))
-                v_losses.update(loss_values.item(), batch_of_states.size(0))
-                # t.set_postfix(Loss_pi=pi_losses, Loss_v=v_losses)
+                pi_losses.fn_update(loss_policies.item(), batch_of_states.size(0))
+                v_losses.fn_update(loss_values.item(), batch_of_states.size(0))
 
-                # compute gradient and do SGD step
+                # compute gradient and execute Stochastic Gradient Decent
                 optimizer.zero_grad()
                 total_loss.backward()
                 optimizer.step()

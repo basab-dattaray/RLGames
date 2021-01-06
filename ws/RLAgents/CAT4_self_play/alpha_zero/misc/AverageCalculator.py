@@ -1,16 +1,23 @@
-class AverageCalculator(object):
+from collections import namedtuple
 
-    def __init__(self):
-        self.val = 0
-        self.avg = 0
-        self.sum = 0
-        self.count = 0
 
-    def __repr__(self):
-        return f'{self.avg:.2e}'
+def AverageCalculator():
 
-    def update(self, val, n=1):
-        self.val = val
-        self.sum += val * n
-        self.count += n
-        self.avg = self.sum / self.count
+    _sum = 0
+    _count = 0
+
+    def fn_update(val, n=1):
+        nonlocal _count, _sum
+        val = val
+        _sum += val * n
+        _count += n
+        average = _sum / _count
+        return average
+
+    ret_obj = namedtuple('_', [
+        'fn_update',
+    ])
+
+    ret_obj.fn_update = fn_update
+
+    return ret_obj

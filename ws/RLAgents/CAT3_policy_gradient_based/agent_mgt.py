@@ -54,7 +54,7 @@ def agent_mgt(app_info, env, arg_dict=None):
         signal.signal(signal.SIGINT, exit_gracefully)
         _episode_num = 1
         done = False
-        while _episode_num <= app_info.NUM_EPISODES and not done:
+        while _episode_num <= app_info['NUM_EPISODES'] and not done:
             running_reward, num_steps = fn_run_episode(fn_should_update_network=fn_should_update_network)
             fn_show_training_progress(_episode_num, running_reward, num_steps)
 
