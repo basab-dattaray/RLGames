@@ -9,7 +9,6 @@ from ws.RLUtils.monitoring.tracing.log_mgt import log_mgt
 
 from ws.RLUtils.platform_libs.pytorch.device_selection import get_device
 
-# ROOT_DOT_PATH = 'ws.RLAgents'
 def fn_load_app(file_path):
     app_info, env = preparation_mgt(file_path)
     agent_config_mgt(app_info)
