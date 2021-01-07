@@ -3,11 +3,12 @@ import os
 
 from ws.RLUtils.common.AppInfo import AppInfo
 from ws.RLUtils.common.DotDict import DotDict
+from ws.RLUtils.common.module_loader import load_function
 from ws.RLUtils.monitoring.tracing.call_trace_mgt import call_trace_mgt
 from ws.RLUtils.monitoring.tracing.log_mgt import log_mgt
 
 
-def args_mgt(args, file_path):
+def args_mgt(args= None, file_path= None):
     def _fn_init_arg_with_default_val(args, name, val):
         args = DotDict(args.copy())
         if name not in args:
@@ -46,6 +47,11 @@ def args_mgt(args, file_path):
 
     demo_folder, demo_name = AppInfo.fn_get_path_and_app_name(file_path)
     # args = None
+    if args == None:
+        demo_folder = 'ws.Demos.Demo010_self_play__alpha_zero.othello.demo_5.mini_with_recursive_mcts'
+        fn_get_args = load_function(function_name="fn_get_args", module_tag="ARGS", subpackage_tag=demo_folder)
+        args = fn_get_args()
+        pass
 
     args_copy = _fn_arg_defaults(args, demo_folder, demo_name, file_path)
 
