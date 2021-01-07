@@ -1,4 +1,3 @@
-
 from ws.RLAgents.CAT4_self_play.alpha_zero.misc.agent_mgt import agent_mgt
 
 if __name__ == "__main__":
