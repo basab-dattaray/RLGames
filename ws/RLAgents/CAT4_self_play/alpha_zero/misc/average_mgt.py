@@ -1,7 +1,7 @@
 from collections import namedtuple
 
 
-def AverageCalculator():
+def average_mgt():
 
     _sum = 0
     _count = 0

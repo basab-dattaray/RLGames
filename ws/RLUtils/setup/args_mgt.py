@@ -45,6 +45,8 @@ def args_mgt(args, file_path):
         return args
 
     demo_folder, demo_name = AppInfo.fn_get_path_and_app_name(file_path)
+    # args = None
+
     args_copy = _fn_arg_defaults(args, demo_folder, demo_name, file_path)
 
     return args_copy

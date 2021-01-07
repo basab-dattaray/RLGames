@@ -6,7 +6,7 @@ from collections import namedtuple
 import numpy as np
 
 from ws.RLAgents.CAT4_self_play.alpha_zero._game.othello._ml_lib.pytorch.NeuralNet import NeuralNet
-from ws.RLAgents.CAT4_self_play.alpha_zero.misc.AverageCalculator import AverageCalculator
+from ws.RLAgents.CAT4_self_play.alpha_zero.misc.average_mgt import average_mgt
 from ws.RLUtils.monitoring.tracing.progress_count_mgt import progress_count_mgt
 
 sys.path.append('../../')
@@ -52,8 +52,8 @@ def neural_net_mgt(args):
             fn_count_event()
 
             nnet.train()
-            pi_losses = AverageCalculator()
-            v_losses = AverageCalculator()
+            pi_losses = average_mgt()
+            v_losses = average_mgt()
 
             batch_count = int(len(examples) / nn_args.batch_size)
 
