@@ -31,10 +31,10 @@ def fn_setup_essential_managers(args_):
     args_.training_mgr = training_mgt(args_.neural_net_mgr, args_)
     return args_
 
-def agent_mgt(args, file_path):
+def agent_mgt(file_path):
     try:
 
-        args = args_mgt(args, file_path)
+        args = args_mgt(None, file_path)
 
         def exit_gracefully(signum, frame):
             #
