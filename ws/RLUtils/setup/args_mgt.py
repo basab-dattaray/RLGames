@@ -1,5 +1,6 @@
 import logging
 import os
+from pathlib import Path
 
 from ws.RLUtils.common.AppInfo import AppInfo
 from ws.RLUtils.common.DotDict import DotDict
@@ -48,8 +49,12 @@ def args_mgt(args= None, file_path= None):
     demo_folder, demo_name = AppInfo.fn_get_path_and_app_name(file_path)
     # args = None
     if args == None:
-        demo_folder = 'ws.Demos.Demo010_self_play__alpha_zero.othello.demo_5.mini_with_recursive_mcts'
-        fn_get_args = load_function(function_name="fn_get_args", module_tag="ARGS", subpackage_tag=demo_folder)
+        base_folder = str(Path(demo_folder).parent.parent.parent.parent.parent.parent)
+        # demo_dot_path1 = 'ws.Demos.Demo010_self_play__alpha_zero.othello.demo_5.mini_with_recursive_mcts'
+        relative_demo_path = demo_folder.replace(base_folder, '')
+        demo_dot_path = relative_demo_path.replace('/', '.')[1:]
+
+        fn_get_args = load_function(function_name="fn_get_args", module_tag="ARGS", subpackage_tag=demo_dot_path)
         args = fn_get_args()
         pass
 
