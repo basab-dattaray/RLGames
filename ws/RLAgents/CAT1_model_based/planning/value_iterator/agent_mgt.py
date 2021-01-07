@@ -10,6 +10,6 @@ def agent_mgt(app_info, env):
         actions["plan"] = fn_apply_value_iteration
         actions["move"] = fn_move_per_policy
 
-        fn_bind_fn_display_actions(actions) #{"plan": fn_apply_value_iteration, "move": fn_move_per_policy})
+        fn_bind_fn_display_actions(actions)
 
     return fn_init
