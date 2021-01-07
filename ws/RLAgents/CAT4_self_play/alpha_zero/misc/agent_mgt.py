@@ -34,7 +34,7 @@ def fn_setup_essential_managers(args_):
 def agent_mgt(args, file_path):
     try:
 
-        args = args_mgt(None, file_path)
+        args = args_mgt(args, file_path)
 
         def exit_gracefully(signum, frame):
             #

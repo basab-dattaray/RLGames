@@ -24,3 +24,6 @@ args = DotDict({
     'mcts_ucb_use_log_in_numerator': True,
     'mcts_ucb_use_action_prob_for_exploration': True,
 })
+
+def fn_get_args():
+    return args
