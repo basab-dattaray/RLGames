@@ -34,13 +34,15 @@ def fn_setup_essential_managers(args_):
 
 def agent_mgt(args, file_path):
     try:
-        def _fn_init_arg_with_default_val(arguments, name, val):
-            arguments = DotDict(arguments.copy())
-            if name not in arguments:
-                arguments[name] = val
-            return arguments
 
-        def _fn_setup(file_path):
+
+        def fn_setup(file_path):
+            def _fn_init_arg_with_default_val(arguments, name, val):
+                arguments = DotDict(arguments.copy())
+                if name not in arguments:
+                    arguments[name] = val
+                return arguments
+
             def _fn_arg_defaults(args_, demo_folder, demo_name, file_path):
                 args_ = _fn_init_arg_with_default_val(args_, 'logger', logging.getLogger(__name__))
                 args_ = _fn_init_arg_with_default_val(args_, 'demo_folder', demo_folder)
@@ -79,7 +81,7 @@ def agent_mgt(args, file_path):
 
             return args_copy
 
-        args = _fn_setup(file_path)
+        args = fn_setup(file_path)
 
         def exit_gracefully(signum, frame):
             #
