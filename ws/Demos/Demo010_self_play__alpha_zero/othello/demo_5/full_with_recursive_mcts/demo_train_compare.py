@@ -6,7 +6,7 @@ coloredlogs.install(level='INFO')  # Change this to DEBUG to see more info.
 
 
 if __name__ == "__main__":
-    agent_mgt(args= None, file_path= __file__). \
+    agent_mgt(file_path= __file__). \
         \
         fn_reset(). \
         fn_change_args({

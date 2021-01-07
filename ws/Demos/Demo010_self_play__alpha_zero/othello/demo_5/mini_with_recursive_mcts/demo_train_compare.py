@@ -5,7 +5,7 @@ from ws.RLAgents.CAT4_self_play.alpha_zero.misc.agent_mgt import agent_mgt
 coloredlogs.install(level='INFO')
 
 if __name__ == "__main__":
-    agent_mgt(args= None, file_path= __file__). \
+    agent_mgt(file_path= __file__). \
         \
         fn_reset(). \
         fn_change_args({
