@@ -47,10 +47,16 @@ def args_mgt(file_path= None):
 
     demo_folder, demo_name = AppInfo.fn_get_path_and_app_name(file_path)
 
-    base_folder = str(Path(demo_folder).parent.parent.parent.parent.parent.parent)
+    FLAG = False
+    if FLAG:
+        base_folder = str(Path(demo_folder).parent.parent.parent.parent.parent.parent)
 
-    relative_demo_path = demo_folder.replace(base_folder, '')
-    demo_dot_path = relative_demo_path.replace('/', '.')[1:]
+        relative_demo_path = demo_folder.replace(base_folder, '')
+        demo_dot_path = relative_demo_path.replace('/', '.')[1:]
+    else:
+        index = demo_folder.find('/ws/')
+        relative_demo_path = demo_folder[index:]
+        demo_dot_path = relative_demo_path.replace('/', '.')[1:]
 
     fn_get_args = load_function(function_name="fn_get_args", module_tag="ARGS", subpackage_tag=demo_dot_path)
     args = fn_get_args()
