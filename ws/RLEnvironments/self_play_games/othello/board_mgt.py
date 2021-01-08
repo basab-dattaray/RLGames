@@ -6,30 +6,30 @@ import numpy
 from ws.RLEnvironments.self_play_games.othello.flip_mgt import flip_mgt
 
 
-def board_mgt(board_size):
+def board_mgt(BOARD_SIZE):
 
-    board_size = board_size
+    BOARD_SIZE = BOARD_SIZE
     # Create the empty board_pieces array.
     # board_pieces =  fn_init_board()
 
-    flip_mgr = flip_mgt(board_size)
+    flip_mgr = flip_mgt(BOARD_SIZE)
 
     def fn_init_board():
-        pieces = [None] * board_size
-        for i in range(board_size):
-            pieces[i] = [0] * board_size
+        pieces = [None] * BOARD_SIZE
+        for i in range(BOARD_SIZE):
+            pieces[i] = [0] * BOARD_SIZE
         # Set up the initial 4 board_pieces.
-        pieces[int(board_size / 2) - 1][int(board_size / 2)] = 1
-        pieces[int(board_size / 2)][int(board_size / 2) - 1] = 1
-        pieces[int(board_size / 2) - 1][int(board_size / 2) - 1] = -1;
-        pieces[int(board_size / 2)][int(board_size / 2)] = -1;
+        pieces[int(BOARD_SIZE / 2) - 1][int(BOARD_SIZE / 2)] = 1
+        pieces[int(BOARD_SIZE / 2)][int(BOARD_SIZE / 2) - 1] = 1
+        pieces[int(BOARD_SIZE / 2) - 1][int(BOARD_SIZE / 2) - 1] = -1;
+        pieces[int(BOARD_SIZE / 2)][int(BOARD_SIZE / 2)] = -1;
         return pieces
 
     def fn_get_advantage_count(pieces, color):
-        board_size = len(pieces[0])
+        BOARD_SIZE = len(pieces[0])
         count = 0
-        for y in range(board_size):
-            for x in range(board_size):
+        for y in range(BOARD_SIZE):
+            for x in range(BOARD_SIZE):
                 if pieces[x][y]==color:
                     count += 1
                 if pieces[x][y]==-color:

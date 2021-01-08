@@ -1,28 +1,28 @@
 from ws.RLUtils.common.DotDict import DotDict
 
 args = DotDict({
-    'num_of_training_iterations': 5,
-    'num_of_training_episodes': 50,              # Number of complete self-play games to simulate during a new iteration.
-    'probability_spread_threshold': 0,        #
-    'score_based_model_update_threshold': 0.6,     # During arena playoff, new neural net will be accepted if threshold or more of games are won.
-    'sample_buffer_size': 200000,    # Number of game examples to train the neural networks.
-    'num_of_mc_simulations': 25,          # Number of games moves for MCTS to simulate.
-    'number_of_games_for_model_comarison': 40,         # Number of games to play during arena play to determine if new net will be accepted.
-    'cpuct_exploration_exploitation_factor': 1,
+    'NUM_TRAINING_ITERATIONS': 5,
+    'NUM_TRAINING_EPISODES': 50,              # Number of complete self-play games to simulate during a new iteration.
+    'PROBABILITY_SPREAD_THRESHOLD': 0,        #
+    'SCORE_BASED_MODEL_UPDATE_THRESHOLD': 0.6,     # During arena playoff, new neural net will be accepted if threshold or more of games are won.
+    'SAMPLE_BUFFER_SIZE': 200000,    # Number of game examples to train the neural networks.
+    'NUM_MC_SIMULATIONS': 25,          # Number of games moves for MCTS to simulate.
+    'NUM_GAMES_FOR_MODEL_COMPARISON': 40,         # Number of games to play during arena play to determine if new net will be accepted.
+    'EXPLORE_EXPLOIT_FACTOR': 1,
 
-    'do_load_model': True,
-    # 'rel_model_path': 'tmp/',
-    # 'do_load_samples': False,
-    # 'model_name':'model.tar',
-    # 'load_folder_file': ('tmp/','model.tar'),
-    'sample_history_buffer_size': 20,
+    'DO_LOAD_MODEL': True,
+    # 'REL_MODEL_PATH': 'tmp/',
+    # 'DO_LOAD_SAMPLES': False,
+    # 'MODEL_NAME':'model.tar',
+    # 'LOAD_FOLDER_FILE': ('tmp/','model.tar'),
+    'SAMPLE_HISTORY_BUFFER_SIZE': 20,
 
-    'epochs': 20,
-    'board_size': 5,
-    'num_of_test_games': 300,
+    'NUM_EPOCHS': 20,
+    'BOARD_SIZE': 5,
+    'NUM_TEST_GAMES': 300,
 
-    'mcts_ucb_use_log_in_numerator': True,
-    'mcts_ucb_use_action_prob_for_exploration': True,
+    'UCB_USE_LOG_IN_NUMERATOR': True,
+    'UCB_USE_POLICY_FOR_EXPLORATION': True,
 })
 
 def fn_get_args():

@@ -2,7 +2,6 @@ import os
 from pathlib import Path
 
 from ws.RLUtils.common.config_mgt import config_mgt
-from ws.RLUtils.common.fileops import get_json_data
 from ws.RLUtils.common.module_loader import load_function
 from ws.RLUtils.monitoring.tracing.log_mgt import log_mgt
 
@@ -95,9 +94,6 @@ def startup_mgt(calling_filepath, verbose=False):
     filename = filepathname_parts[1]
     filename_parts = filename.rsplit('_', 1)
 
-    # app_info_file = 'ARGS.JSON'
-    # _app_info_path = os.path.join(cwd, app_info_file)
-    # _app_info['APP_INFO_SOURCE'] = _app_info_path
     _app_info['DEMO_PATH'] = cwd
     _app_info['ARCHIVE_SUB_FOLDER'] = filename_parts[0]
 

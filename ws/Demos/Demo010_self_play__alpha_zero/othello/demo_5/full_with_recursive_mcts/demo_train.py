@@ -10,7 +10,7 @@ if __name__ == "__main__":
         }). \
         fn_train().\
         fn_change_args({
-            'num_of_mc_simulations': 50,
+            'NUM_MC_SIMULATIONS': 50,
         }). \
         fn_test_against_greedy(). \
         fn_test_against_random(). \

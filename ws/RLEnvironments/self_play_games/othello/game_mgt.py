@@ -13,7 +13,7 @@ import numpy as np
 
 EXISTING = True
 
-def game_mgt(board_size):
+def game_mgt(BOARD_SIZE):
 
     square_content = {
         -1: "X",
@@ -22,19 +22,19 @@ def game_mgt(board_size):
     }
 
     def fn_get_init_board():
-        return np.array(board_mgt(board_size).fn_init_board())
+        return np.array(board_mgt(BOARD_SIZE).fn_init_board())
 
     def fn_get_board_size():
-        return board_size
+        return BOARD_SIZE
 
     def fn_get_action_size():
-        return board_size * board_size
+        return BOARD_SIZE * BOARD_SIZE
 
     def fn_get_next_state(pieces, player, action):
         if action is None:
             return None
-        board = board_mgt(board_size)
-        move = (int(action / board_size), action % board_size)
+        board = board_mgt(BOARD_SIZE)
+        move = (int(action / BOARD_SIZE), action % BOARD_SIZE)
         success, next_pieces = board.fn_execute_flips(pieces, move, player)
         pieces = next_pieces
         if not success:
@@ -43,20 +43,20 @@ def game_mgt(board_size):
 
     def fn_get_valid_moves(pieces, player):
         valid_moves = [0]*fn_get_action_size()
-        b = board_mgt(board_size)
+        b = board_mgt(BOARD_SIZE)
 
         legalMoves =  b.fn_find_legal_moves(pieces, player)
         if len(legalMoves)==0:
             return None
         for x, y in legalMoves:
-            valid_moves[board_size * x + y]=1
+            valid_moves[BOARD_SIZE * x + y]=1
         return np.array(valid_moves)
 
     def fn_get_game_progress_status(pieces, player):
         if player is None:
             return fn_game_status(pieces)
 
-        board = board_mgt(board_size)
+        board = board_mgt(BOARD_SIZE)
 
         if board.fn_are_any_legal_moves_available(pieces, player):
             return 0
@@ -75,7 +75,7 @@ def game_mgt(board_size):
         return canonical_pieces
 
     def fn_get_symetric_samples(pieces, policy):
-        pi_board = np.reshape(policy, (board_size, board_size))
+        pi_board = np.reshape(policy, (BOARD_SIZE, BOARD_SIZE))
         list_of_symetries = []
 
         for i in range(1, 5):
@@ -91,7 +91,7 @@ def game_mgt(board_size):
         return pieces.tostring()
 
     def fn_get_score(pieces, player):
-        b = board_mgt(board_size)
+        b = board_mgt(BOARD_SIZE)
         return b.fn_get_advantage_count(pieces, player)
 
     def fn_display(pieces):

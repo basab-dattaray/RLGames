@@ -18,10 +18,10 @@ def setup():
     return game
 
 def fn_get_state():
-    board_size = GAME_SIZE ** 2
-    pieces = [None] * board_size
-    for i in range(board_size):
-        pieces[i] = [0] * board_size
+    BOARD_SIZE = GAME_SIZE ** 2
+    pieces = [None] * BOARD_SIZE
+    for i in range(BOARD_SIZE):
+        pieces[i] = [0] * BOARD_SIZE
     return pieces
 
 # def test_fn_next_state_given_action():

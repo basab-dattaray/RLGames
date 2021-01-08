@@ -29,7 +29,7 @@ def fn_generate_samples(args, iteration, generation_mcts):
             samples_from_episodes = []
             canonical_board_pieces = game_mgr.fn_get_canonical_form(current_pieces, cur_player_index)
             policy = generation_mcts.fn_get_policy(
-                canonical_board_pieces, do_random_selection=int(episode_step < args.probability_spread_threshold))
+                canonical_board_pieces, do_random_selection=int(episode_step < args.PROBABILITY_SPREAD_THRESHOLD))
 
             if policy is None:
                 return None
@@ -61,10 +61,10 @@ def fn_generate_samples(args, iteration, generation_mcts):
 
     @tracer(args)
     def _fn_generate_all_samples():
-        samples_for_iteration = deque([], maxlen=args.sample_buffer_size)
-        fn_count_event, fn_stop_counting = progress_count_mgt('Episodes', args.num_of_training_episodes)
+        samples_for_iteration = deque([], maxlen=args.SAMPLE_BUFFER_SIZE)
+        fn_count_event, fn_stop_counting = progress_count_mgt('Episodes', args.NUM_TRAINING_EPISODES)
 
-        for episode_num in range(1, args.num_of_training_episodes + 1):
+        for episode_num in range(1, args.NUM_TRAINING_EPISODES + 1):
             fn_count_event()
             episode_result = _fn_generate_samples_for_an_iteration()
             if episode_result is not None:
@@ -76,7 +76,7 @@ def fn_generate_samples(args, iteration, generation_mcts):
     all_samples = _fn_generate_all_samples()
     training_samples_buffer.append(all_samples)
 
-    if len(training_samples_buffer) > args.sample_history_buffer_size:
+    if len(training_samples_buffer) > args.SAMPLE_HISTORY_BUFFER_SIZE:
         args.logger.warning(
             f"Removing the oldest entry in training_samples. len(training_samples_buffer) = {len(training_samples_buffer)}")
         training_samples_buffer.pop(0)

@@ -15,7 +15,7 @@ def training_mgt(nn_mgr_N, args):
     nn_mgr_P = copy.deepcopy(nn_mgr_N)
 
     def _fn_try_to_load_model():
-        if args.do_load_model:
+        if args.DO_LOAD_MODEL:
             if not args.neural_net_mgr.fn_load_model():
                 args.fn_record('*** unable to load model')
             else:
@@ -33,7 +33,7 @@ def training_mgt(nn_mgr_N, args):
             def _fn_write_result(color, result, update_score, do_save):
                 args.calltracer.fn_write(
                     color + result + ' New Model: update_threshold: {}, update_score: {}'.format(
-                        args.score_based_model_update_threshold,
+                        args.SCORE_BASED_MODEL_UPDATE_THRESHOLD,
                         update_score))
                 if do_save:
                     nn_mgr_N.fn_save_model(filename=fn_getCheckpointFile(iteration))
@@ -48,9 +48,9 @@ def training_mgt(nn_mgr_N, args):
                 reject = True
             else:
                 update_score = float(nwins) / (pwins + nwins)
-                if update_score < args.score_based_model_update_threshold:
+                if update_score < args.SCORE_BASED_MODEL_UPDATE_THRESHOLD:
                     reject = True
-            model_already_exists = nn_mgr_N.fn_is_model_available(rel_folder=args.rel_model_path)
+            model_already_exists = nn_mgr_N.fn_is_model_available(rel_folder=args.REL_MODEL_PATH)
 
             if not reject:
                 update_count += 1
@@ -68,7 +68,7 @@ def training_mgt(nn_mgr_N, args):
         def fn_run_iteration(iteration):
             nonlocal update_count
             args.calltracer.fn_write('')
-            args.calltracer.fn_write(f'ITERATION NUMBER {iteration} of {args.num_of_training_iterations}', indent=0)
+            args.calltracer.fn_write(f'ITERATION NUMBER {iteration} of {args.NUM_TRAINING_ITERATIONS}', indent=0)
 
             @tracer(args)
             def _fn_play_next_vs_previous(training_samples):
@@ -83,7 +83,7 @@ def training_mgt(nn_mgr_N, args):
                     game_mgr,
                     msg_recorder=args.calltracer.fn_write
                 )
-                pwins, nwins, draws = playground.fn_play_games(args.number_of_games_for_model_comarison)
+                pwins, nwins, draws = playground.fn_play_games(args.NUM_GAMES_FOR_MODEL_COMPARISON)
                 args.fn_record()
                 return draws, nwins, pwins
 
@@ -94,7 +94,7 @@ def training_mgt(nn_mgr_N, args):
             _fn_interpret_competition_results(iteration, nwins, pwins)
 
         _fn_try_to_load_model()
-        for iteration in range(1, args.num_of_training_iterations + 1):
+        for iteration in range(1, args.NUM_TRAINING_ITERATIONS + 1):
             fn_run_iteration(iteration)
             if update_count >= args.num_of_successes_for_model_upgrade:
                 break

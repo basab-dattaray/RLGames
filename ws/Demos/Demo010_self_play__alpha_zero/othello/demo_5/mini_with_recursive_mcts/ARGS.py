@@ -1,28 +1,28 @@
 from ws.RLUtils.common.DotDict import DotDict
 
 args = DotDict({
-    'num_of_training_iterations': 3,
-    'num_of_training_episodes': 3,              # Number of complete self-play games to simulate during a new iteration.
-    'probability_spread_threshold': 15,        #
-    'score_based_model_update_threshold': 0.5,     # During arena playoff, new neural net will be accepted if threshold or more of games are won.
-    'sample_buffer_size': 200000,    # Number of game examples to train the neural networks.
-    'num_of_mc_simulations': 27,          # Number of games moves for MCTS to simulate.
-    'number_of_games_for_model_comarison': 4,         # Number of games to play during arena play to determine if new net will be accepted.
-    'cpuct_exploration_exploitation_factor': 1,
+    'NUM_TRAINING_ITERATIONS': 3,
+    'NUM_TRAINING_EPISODES': 3,              # Number of complete self-play games to simulate during a new iteration.
+    'PROBABILITY_SPREAD_THRESHOLD': 15,        #
+    'SCORE_BASED_MODEL_UPDATE_THRESHOLD': 0.5,     # During arena playoff, new neural net will be accepted if threshold or more of games are won.
+    'SAMPLE_BUFFER_SIZE': 200000,    # Number of game examples to train the neural networks.
+    'NUM_MC_SIMULATIONS': 27,          # Number of games moves for MCTS to simulate.
+    'NUM_GAMES_FOR_MODEL_COMPARISON': 4,         # Number of games to play during arena play to determine if new net will be accepted.
+    'EXPLORE_EXPLOIT_FACTOR': 1,
 
-    'do_load_model': True,
-    # 'rel_model_path': 'tmp/',
-    # 'do_load_samples': False,
-    # 'model_name':'model.tar',
-    # 'load_folder_file': ('tmp/','model.tar'),
-    'sample_history_buffer_size': 20,
+    'DO_LOAD_MODEL': True,
+    # 'REL_MODEL_PATH': 'tmp/',
+    # 'DO_LOAD_SAMPLES': False,
+    # 'MODEL_NAME':'model.tar',
+    # 'LOAD_FOLDER_FILE': ('tmp/','model.tar'),
+    'SAMPLE_HISTORY_BUFFER_SIZE': 20,
 
-    'epochs': 4,
-    'board_size': 5,
-    'num_of_test_games': 8,
+    'NUM_EPOCHS': 4,
+    'BOARD_SIZE': 5,
+    'NUM_TEST_GAMES': 8,
 
-    'mcts_ucb_use_log_in_numerator': True,
-    'mcts_ucb_use_action_prob_for_exploration': True,
+    'UCB_USE_LOG_IN_NUMERATOR': True,
+    'UCB_USE_POLICY_FOR_EXPLORATION': True,
 
 })
 

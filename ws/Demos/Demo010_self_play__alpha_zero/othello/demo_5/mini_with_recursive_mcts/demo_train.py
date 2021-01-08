@@ -7,10 +7,10 @@ coloredlogs.install(level='INFO')  # Change this to DEBUG to see more info.
 if __name__ == "__main__":
     agent_mgt(file_path= __file__). \
         fn_change_args({
-            'do_load_model': True,
-            'num_of_mc_simulations': 50,
-            'epochs': 5,
-            # 'mcts_ucb_use_action_prob_for_exploration': True,
+            'DO_LOAD_MODEL': True,
+            'NUM_MC_SIMULATIONS': 50,
+            'NUM_EPOCHS': 5,
+            # 'UCB_USE_POLICY_FOR_EXPLORATION': True,
         }). \
         fn_train(). \
         fn_test_against_greedy(). \

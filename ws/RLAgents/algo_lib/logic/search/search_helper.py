@@ -115,22 +115,22 @@ def search_helper(
                 policy = s_info['policy']
                 state_action_key = (state_key, action)
 
-                if args.mcts_ucb_use_action_prob_for_exploration:
+                if args.UCB_USE_POLICY_FOR_EXPLORATION:
                     action_prob_for_exploration = policy[action]
 
                 if cache.fn_does_attr_key_exist(state_action_key, 'sa_qval'):
                     parent_visit_factor = cache.fn_get_attr_data(state_key, 'Ns')
 
-                    if args.mcts_ucb_use_log_in_numerator:
+                    if args.UCB_USE_LOG_IN_NUMERATOR:
                         parent_visit_factor = np.log(parent_visit_factor)
 
                     ucb = cache.fn_get_attr_data(state_action_key, 'sa_qval') \
-                          + args.cpuct_exploration_exploitation_factor * action_prob_for_exploration * math.sqrt \
+                          + args.EXPLORE_EXPLOIT_FACTOR * action_prob_for_exploration * math.sqrt \
                               (
                                   parent_visit_factor / cache.fn_get_attr_data(state_action_key, 'Nsa')
                               )
                 else:
-                    ucb = args.cpuct_exploration_exploitation_factor * action_prob_for_exploration * math.sqrt(
+                    ucb = args.EXPLORE_EXPLOIT_FACTOR * action_prob_for_exploration * math.sqrt(
                         cache.fn_get_attr_data(state_key, 'Ns', 0) + EPS)  # Q = 0 ?
 
                 if ucb > best_ucb:

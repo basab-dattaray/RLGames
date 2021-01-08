@@ -9,9 +9,9 @@ if __name__ == "__main__":
         \
         fn_reset(). \
         fn_change_args({
-            'do_load_model': False,
-            'mcts_ucb_use_action_prob_for_exploration': False,
-            'mcts_ucb_use_log_in_numerator': False,
+            'DO_LOAD_MODEL': False,
+            'UCB_USE_POLICY_FOR_EXPLORATION': False,
+            'UCB_USE_LOG_IN_NUMERATOR': False,
         }). \
         fn_train(). \
         fn_test_against_greedy(). \
@@ -20,9 +20,9 @@ if __name__ == "__main__":
         \
         fn_reset(). \
         fn_change_args({
-            'do_load_model': False,
-            'mcts_ucb_use_action_prob_for_exploration': True,
-            'mcts_ucb_use_log_in_numerator': True,
+            'DO_LOAD_MODEL': False,
+            'UCB_USE_POLICY_FOR_EXPLORATION': True,
+            'UCB_USE_LOG_IN_NUMERATOR': True,
         }). \
         fn_train(). \
         fn_test_against_greedy(). \

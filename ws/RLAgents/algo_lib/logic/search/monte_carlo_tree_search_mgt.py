@@ -17,7 +17,7 @@ def monte_carlo_tree_search_mgt(
     )
 
     def fn_get_mcts_counts(state):
-        for i in range(args.num_of_mc_simulations):
+        for i in range(args.NUM_MC_SIMULATIONS):
             fn_search(state)
         state_key = game_mgr.fn_get_state_key(state)
         visit_counts = search_utils.fn_get_visit_counts(state_key)

@@ -22,7 +22,7 @@ def neural_net_mgt(args):
     nn_args = DotDict({
         'lr': 0.001,
         'dropout': 0.3,
-        # 'epochs': 2,
+        # 'NUM_EPOCHS': 2,
         'batch_size': 64,
         'cuda': torch.cuda.is_available(),
         'num_channels': 512,
@@ -37,7 +37,7 @@ def neural_net_mgt(args):
         return untrained_nn
 
     nnet = fn_get_untrained_model(args)
-    board_x, board_y = args.board_size, args.board_size
+    board_x, board_y = args.BOARD_SIZE, args.BOARD_SIZE
     action_size = args.game_mgr.fn_get_action_size()
 
     # @tracer(nn_args)
@@ -46,9 +46,9 @@ def neural_net_mgt(args):
         examples: list of examples, each example is of form (board_pieces, policy, v)
         """
         optimizer = optim.Adam(nnet.parameters())
-        fn_count_event, fn_stop_counting = progress_count_mgt('Epochs', args.epochs)
-        for epoch in range(args.epochs):
-            # nn_args.calltracer.fn_write(f'Epoch {epoch + 1} of {nn_args.epochs}')
+        fn_count_event, fn_stop_counting = progress_count_mgt('Epochs', args.NUM_EPOCHS)
+        for epoch in range(args.NUM_EPOCHS):
+            # nn_args.calltracer.fn_write(f'Epoch {epoch + 1} of {nn_args.NUM_EPOCHS}')
             fn_count_event()
 
             nnet.train()
@@ -83,7 +83,7 @@ def neural_net_mgt(args):
                 total_loss.backward()
                 optimizer.step()
         fn_stop_counting()
-        # args.calltracer.fn_write(f'Number of Epochs for training new model: {args.epochs}')
+        # args.calltracer.fn_write(f'Number of Epochs for training new model: {args.NUM_EPOCHS}')
 
     def fn_neural_predict(board):
         start = time.time()
@@ -106,8 +106,8 @@ def neural_net_mgt(args):
         loss = torch.sum((actual_results - predicted_results.view(-1)) ** 2) / actual_results.size()[0]
         return loss
 
-    def fn_save_model(filename= args['model_name']):
-        folder = os.path.join(args.demo_folder, args.rel_model_path)
+    def fn_save_model(filename= args['MODEL_NAME']):
+        folder = os.path.join(args.demo_folder, args.REL_MODEL_PATH)
         filepath = os.path.join(folder, filename)
         if not os.path.exists(folder):
             os.mkdir(folder)
@@ -116,8 +116,8 @@ def neural_net_mgt(args):
             'state_dict': nnet.state_dict(),
         }, filepath)
 
-    def fn_load_model(filename= args['model_name']):
-        folder = os.path.join(args.demo_folder, args.rel_model_path)
+    def fn_load_model(filename= args['MODEL_NAME']):
+        folder = os.path.join(args.demo_folder, args.REL_MODEL_PATH)
         filepath = os.path.join(folder, filename)
 
         if not os.path.exists(filepath):
@@ -130,7 +130,7 @@ def neural_net_mgt(args):
 
     def fn_is_model_available(rel_folder):
         folder = os.path.join(args.demo_folder, rel_folder)
-        filepath = os.path.join(folder, args.model_name)
+        filepath = os.path.join(folder, args.MODEL_NAME)
         if  os.path.exists(filepath):
             return True
         else:

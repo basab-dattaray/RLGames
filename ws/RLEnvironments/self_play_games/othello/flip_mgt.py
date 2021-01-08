@@ -5,13 +5,13 @@ import numpy as np
 
 
 
-def flip_mgt(board_size):
+def flip_mgt(BOARD_SIZE):
     directionS = [(1, 1), (1, 0), (1, -1), (0, -1), (-1, -1), (-1, 0), (-1, 1), (0, 1)]
-    # board_size = len(pieceS[0])
+    # BOARD_SIZE = len(pieceS[0])
 
     def _fn_get_next_valid_position(direction, pos):
         def fn_pos_valid(pos___):
-            return ((pos___[0] >= 0) and (pos___[0] < board_size) and (pos___[1] >= 0) and (pos___[1] < board_size))
+            return ((pos___[0] >= 0) and (pos___[0] < BOARD_SIZE) and (pos___[1] >= 0) and (pos___[1] < BOARD_SIZE))
 
         def fn_get_next_position(pos___):
             new_pos = pos___[0] + direction[0], pos___[1] + direction[1]
@@ -78,8 +78,8 @@ def flip_mgt(board_size):
 
         def fn_get_list_of_starting_coordinates():
             coord_list = []
-            for row in range(board_size):
-                for col in range(board_size):
+            for row in range(BOARD_SIZE):
+                for col in range(BOARD_SIZE):
                     if pieceS[row][col] == color:
                         coord_list.append((row, col))
 
@@ -151,9 +151,9 @@ def flip_mgt(board_size):
 
 def fn_scaffold_create_flip_trails_testing_pieces_flip_2():
     global pieces
-    pieces = [None] * board_size
-    for i in range(board_size):
-        pieces[i] = [0] * board_size
+    pieces = [None] * BOARD_SIZE
+    for i in range(BOARD_SIZE):
+        pieces[i] = [0] * BOARD_SIZE
     pieces[0][0] = pieces[1][0] = pieces[2][0] = pieces[1][1] = -1
     pieces[1][2] = pieces[2][1] = pieces[2][2] = pieces[2][3] = pieces[3][1] = 1
 
@@ -161,38 +161,38 @@ def fn_scaffold_create_flip_trails_testing_pieces_flip_2():
 
 def fn_scaffold_create_flip_trails_testing_pieces_flip_4():
     global pieces
-    pieces = [None] * board_size
-    for i in range(board_size):
-        pieces[i] = [0] * board_size
+    pieces = [None] * BOARD_SIZE
+    for i in range(BOARD_SIZE):
+        pieces[i] = [0] * BOARD_SIZE
     pieces[0][0]  = -1
     pieces[1][1] = pieces[2][2] = pieces[3][3]  = 1
 
     return np.array(pieces)
 
 
-def fn_scaffold_init_pieces(board_size):
+def fn_scaffold_init_pieces(BOARD_SIZE):
     # Create the empty board_pieces array.
 
-    pieces = [None] * board_size
-    for i in range(board_size):
-        pieces[i] = [0] * board_size
+    pieces = [None] * BOARD_SIZE
+    for i in range(BOARD_SIZE):
+        pieces[i] = [0] * BOARD_SIZE
 
     # Set up the initial 4 board_pieces.
-    pieces[int(board_size / 2) - 1][int(board_size / 2)] = 1
-    pieces[int(board_size / 2)][int(board_size / 2) - 1] = 1
-    pieces[int(board_size / 2) - 1][int(board_size / 2) - 1] = -1
-    pieces[int(board_size / 2)][int(board_size / 2)] = -1
+    pieces[int(BOARD_SIZE / 2) - 1][int(BOARD_SIZE / 2)] = 1
+    pieces[int(BOARD_SIZE / 2)][int(BOARD_SIZE / 2) - 1] = 1
+    pieces[int(BOARD_SIZE / 2) - 1][int(BOARD_SIZE / 2) - 1] = -1
+    pieces[int(BOARD_SIZE / 2)][int(BOARD_SIZE / 2)] = -1
     return np.array(pieces)
 
-def fn_scaffold_display_board(pieceS, board_size):
-    for i in range(0, board_size):
+def fn_scaffold_display_board(pieceS, BOARD_SIZE):
+    for i in range(0, BOARD_SIZE):
         print(pieceS[i])
 if __name__ == '__main__':
-    board_size = 5
+    BOARD_SIZE = 5
     pieces = fn_scaffold_init_pieces(5)
-    flip_mgr = flip_mgt(board_size)
+    flip_mgr = flip_mgt(BOARD_SIZE)
 
-    fn_scaffold_display_board(pieces, board_size)
+    fn_scaffold_display_board(pieces, BOARD_SIZE)
 
     #--------------------1
     # origin = (1, 2)
@@ -235,7 +235,7 @@ if __name__ == '__main__':
 ###################
     pieces = fn_scaffold_create_flip_trails_testing_pieces_flip_2()
 
-    fn_scaffold_display_board(pieces, board_size)
+    fn_scaffold_display_board(pieces, BOARD_SIZE)
     target = (4,2)
     color = -1
     flip_trails = flip_mgr.fn_get_flippables(pieces, color, target)
@@ -247,10 +247,10 @@ if __name__ == '__main__':
 ###################
     pieces = fn_scaffold_create_flip_trails_testing_pieces_flip_4()
 
-    fn_scaffold_display_board(pieces, board_size)
+    fn_scaffold_display_board(pieces, BOARD_SIZE)
     target = (4,4)
     color = -1
-    flip_trails = flip_mgt(board_size).fn_get_flippables(pieces, color, target)
+    flip_trails = flip_mgt(BOARD_SIZE).fn_get_flippables(pieces, color, target)
     assert flip_trails == [(1, 1), (2, 2), (3, 3), (4, 4)]
     print()
     print('flip_trails: {}'.format(flip_trails))

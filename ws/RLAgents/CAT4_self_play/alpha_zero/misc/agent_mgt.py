@@ -23,7 +23,7 @@ from ws.RLUtils.setup.args_mgt import args_mgt
 
 
 def fn_setup_essential_managers(args_):
-    args_.game_mgr = game_mgt(args_.board_size)
+    args_.game_mgr = game_mgt(args_.BOARD_SIZE)
     args_.neural_net_mgr = neural_net_mgt(args_)
 
     args_.training_mgr = training_mgt(args_.neural_net_mgr, args_)
@@ -59,22 +59,22 @@ def agent_mgt(file_path):
         @tracer(args)
         def fn_test_against_human():
             fn_human_player_policy = lambda g: animated_player_mgt(g)
-            fn_test(args, fn_human_player_policy, verbose=True, num_of_test_games=2)
+            fn_test(args, fn_human_player_policy, verbose=True, NUM_TEST_GAMES=2)
             return agent_mgr
 
         @tracer(args, verboscity= 4)
         def fn_test_against_random():
             fn_random_player_policy = lambda g: random_player_mgt(g)
-            fn_test(args, fn_random_player_policy, num_of_test_games=args.num_of_test_games)
+            fn_test(args, fn_random_player_policy, NUM_TEST_GAMES=args.NUM_TEST_GAMES)
             return agent_mgr
 
         @tracer(args, verboscity= 4)
         def fn_test_against_greedy():
             fn_random_player_policy = lambda g: greedy_player_mgt(g)
-            fn_test(args, fn_random_player_policy, num_of_test_games=args.num_of_test_games)
+            fn_test(args, fn_random_player_policy, NUM_TEST_GAMES=args.NUM_TEST_GAMES)
             return agent_mgr
 
-        def fn_test(args, fn_player_policy, verbose=False, num_of_test_games=2):
+        def fn_test(args, fn_player_policy, verbose=False, NUM_TEST_GAMES=2):
             fn_setup_essential_managers(args)
 
             signal.signal(signal.SIGINT, exit_gracefully)
@@ -86,17 +86,17 @@ def agent_mgt(file_path):
             fn_system_policy = lambda state: numpy.argmax(system_mcts.fn_get_policy(state, do_random_selection=False))
             fn_contender_policy = fn_player_policy(args.game_mgr)
             playground = playground_mgt(fn_system_policy, fn_contender_policy, args.game_mgr,
-                                        fn_display=game_mgt(args['board_size']).fn_display,
+                                        fn_display=game_mgt(args['BOARD_SIZE']).fn_display,
                                         msg_recorder=args.calltracer.fn_write)
-            system_wins, system_losses, draws = playground.fn_play_games(num_of_test_games, verbose=verbose)
+            system_wins, system_losses, draws = playground.fn_play_games(NUM_TEST_GAMES, verbose=verbose)
 
             args.calltracer.fn_write(f'wins:{system_wins} losses:{system_losses} draws:{draws}')
 
         @tracer(args, verboscity= 4)
         def fn_reset():
-            # model_path = os.path.join(args.archive_dir, args.rel_model_path)
-            if os.path.exists(args.rel_model_path):
-                shutil.rmtree(args.rel_model_path)
+            # model_path = os.path.join(args.archive_dir, args.REL_MODEL_PATH)
+            if os.path.exists(args.REL_MODEL_PATH):
+                shutil.rmtree(args.REL_MODEL_PATH)
 
             return agent_mgr
 
