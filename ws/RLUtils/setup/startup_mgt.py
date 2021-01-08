@@ -75,9 +75,9 @@ def fn_get_env(app_info, verbose= False):
 
 def fn_setup_paths_in_app_info(app_info, cwd,  verbose= False):
     fn_set_agent_path_in_app_info(app_info, cwd)
-    app_info['AGENT_FOLDER_PATH'] =app_info['AGENTS_DOT_PATH']  + '.{}'.format(app_info['STRATEGY'])
+    app_info.AGENT_FOLDER_PATH =app_info.AGENTS_DOT_PATH  + '.{}'.format(app_info['STRATEGY'])
 
-    base_path = app_info['RESULTS_BASE_PATH']
+    base_path = app_info.RESULTS_BASE_PATH
     if app_info['ARCHIVE_SUB_FOLDER'] is not None:
         base_path = os.path.join(base_path, app_info['ARCHIVE_SUB_FOLDER'])
 
