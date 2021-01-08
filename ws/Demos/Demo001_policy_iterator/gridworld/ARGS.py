@@ -5,12 +5,6 @@ args = DotDict({
     "ENV_NAME": "Gridworld-v1",
     "AGENT_CONFIG": "gridwell_1",
 
-    "NUM_EPISODES": 1,
-    "BATCH_SIZE": 64,
-    "GAMMA": 0.99,
-    "LEARNING_RATE": 0.01,
-    "EPSILON": 0.1,
-    "RHO": 0.99,
     "DISCOUNT_FACTOR": 0.9,
 
     "display": {
