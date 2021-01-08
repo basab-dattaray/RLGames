@@ -66,7 +66,7 @@ def impl_mgt(app_info, state_size, action_size):
         ind = np.array([i for i in range(_batch_size)])
         targets_full[[ind], [actions]] = targets
 
-        _model.fit(states, targets_full, NUM_EPOCHS=1, verbose=0)
+        _model.fit(states, targets_full, epochs=1, verbose=0)
         if _epsilon > _epsilon_min:
             _epsilon *= _epsilon_decay
 
