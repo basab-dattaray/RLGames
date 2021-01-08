@@ -47,16 +47,7 @@ def args_mgt(file_path= None):
 
     demo_folder, demo_name = AppInfo.fn_get_path_and_app_name(file_path)
 
-    FLAG = False
-    if FLAG:
-        base_folder = str(Path(demo_folder).parent.parent.parent.parent.parent.parent)
-
-        relative_demo_path = demo_folder.replace(base_folder, '')
-        demo_dot_path = relative_demo_path.replace('/', '.')[1:]
-    else:
-        index = demo_folder.find('/ws/')
-        relative_demo_path = demo_folder[index:]
-        demo_dot_path = relative_demo_path.replace('/', '.')[1:]
+    demo_dot_path = fn_get_rel_dot_folder_path(demo_folder, '/ws/')
 
     fn_get_args = load_function(function_name="fn_get_args", module_tag="ARGS", subpackage_tag=demo_dot_path)
     args = fn_get_args()
@@ -64,3 +55,10 @@ def args_mgt(file_path= None):
     args_copy = _fn_arg_defaults(args, demo_folder, demo_name, file_path)
 
     return args_copy
+
+
+def fn_get_rel_dot_folder_path(demo_folder, start_pattern):
+    index = demo_folder.find(start_pattern)
+    relative_demo_path = demo_folder[index:]
+    demo_dot_path = relative_demo_path.replace('/', '.')[1:]
+    return demo_dot_path
