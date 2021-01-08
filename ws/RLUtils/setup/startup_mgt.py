@@ -86,7 +86,7 @@ def fn_setup_paths_in_app_info(app_info, cwd,  verbose= False):
     if verbose:
         print(app_info['ARCHIVE_SUB_FOLDER'])
 
-def startup_mgt(calling_filepath, verbose=False):
+def startup_mgt(calling_filepath):
     _app_info = args_mgt(calling_filepath)
     filepathname_parts = calling_filepath.rsplit('/', 1)
     cwd = filepathname_parts[0]
