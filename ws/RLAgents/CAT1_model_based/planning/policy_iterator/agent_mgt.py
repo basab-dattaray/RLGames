@@ -9,14 +9,17 @@ from ws.RLUtils.setup.preparation_mgt import preparation_mgt
 def agent_mgt(file_path):
     app_info, env = preparation_mgt(file_path)
     agent_config_mgt(app_info)
+    fn_bind_fn_display_actions, fn_move_per_policy, fn_apply_policy_iteration, fn_apply_value_iteration = impl_mgt(env,
+                                                                                                                   app_info)
 
     def fn_init():
-        fn_bind_fn_display_actions, fn_move_per_policy, fn_apply_policy_iteration, fn_apply_value_iteration = impl_mgt(env, app_info)
         actions = OrderedDict()
         actions["plan"] = fn_apply_policy_iteration
         actions["move"] = fn_move_per_policy
 
         fn_bind_fn_display_actions(actions)
+        return
+
 
     agent_mgr = namedtuple('_',
                                 [
