@@ -94,12 +94,10 @@ def startup_mgt(calling_filepath, verbose=False):
     #
     filename = filepathname_parts[1]
     filename_parts = filename.rsplit('_', 1)
-    #
-    app_info_file = 'ARGS.JSON'
-    #
-    _app_info_path = os.path.join(cwd, app_info_file)
-    # _app_info = get_json_data(_app_info_path)
-    _app_info['APP_INFO_SOURCE'] = _app_info_path
+
+    # app_info_file = 'ARGS.JSON'
+    # _app_info_path = os.path.join(cwd, app_info_file)
+    # _app_info['APP_INFO_SOURCE'] = _app_info_path
     _app_info['DEMO_PATH'] = cwd
     _app_info['ARCHIVE_SUB_FOLDER'] = filename_parts[0]
 
