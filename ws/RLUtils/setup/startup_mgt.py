@@ -7,6 +7,7 @@ from ws.RLUtils.common.module_loader import load_function
 from ws.RLUtils.monitoring.tracing.log_mgt import log_mgt
 
 from ws.RLUtils.platform_libs.pytorch.device_selection import get_device
+from ws.RLUtils.setup.args_mgt import args_mgt
 
 
 def fn_set_agent_path_in_app_info(_app_info, calling_root_path):
@@ -87,6 +88,7 @@ def fn_setup_paths_in_app_info(app_info, cwd,  verbose= False):
         print(app_info['ARCHIVE_SUB_FOLDER'])
 
 def startup_mgt(calling_filepath, verbose=False):
+    args = args_mgt(calling_filepath)
     filepathname_parts = calling_filepath.rsplit('/', 1)
     cwd = filepathname_parts[0]
 
