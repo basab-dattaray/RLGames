@@ -88,17 +88,17 @@ def fn_setup_paths_in_app_info(app_info, cwd,  verbose= False):
         print(app_info['ARCHIVE_SUB_FOLDER'])
 
 def startup_mgt(calling_filepath, verbose=False):
-    args = args_mgt(calling_filepath)
+    _app_info = args_mgt(calling_filepath)
     filepathname_parts = calling_filepath.rsplit('/', 1)
     cwd = filepathname_parts[0]
-
+    #
     filename = filepathname_parts[1]
     filename_parts = filename.rsplit('_', 1)
-
+    #
     app_info_file = 'ARGS.JSON'
-
+    #
     _app_info_path = os.path.join(cwd, app_info_file)
-    _app_info = get_json_data(_app_info_path)
+    # _app_info = get_json_data(_app_info_path)
     _app_info['APP_INFO_SOURCE'] = _app_info_path
     _app_info['DEMO_PATH'] = cwd
     _app_info['ARCHIVE_SUB_FOLDER'] = filename_parts[0]
