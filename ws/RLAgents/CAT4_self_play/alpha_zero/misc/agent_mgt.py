@@ -94,7 +94,6 @@ def agent_mgt(file_path):
 
         @tracer(args, verboscity= 4)
         def fn_reset():
-            # model_path = os.path.join(args.archive_dir, args.REL_MODEL_PATH)
             if os.path.exists(args.REL_MODEL_PATH):
                 shutil.rmtree(args.REL_MODEL_PATH)
 
@@ -105,7 +104,6 @@ def agent_mgt(file_path):
             if change_args is not None:
                 for k, v in change_args.items():
                     args[k] = v
-                    # nn_args.fn_record(f'  nn_args[{k}] = {v}')
                     args.calltracer.fn_write(f'  args_[{k}] = {v}')
             agent_mgr.args = args
             return agent_mgr
