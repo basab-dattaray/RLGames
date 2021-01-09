@@ -1,7 +1,7 @@
 from ws.RLEnvironments.gridworld.grid_board.display_mgt import display_mgt
 from ws.RLAgents.algo_lib.logic.common.qtable_mgt import qtable_mgt
 
-def impl_mgt(env, app_info):
+def impl_mgt(app_info):
     _env = app_info.ENV
 
     _fn_display_controller = display_mgt(app_info)
@@ -15,7 +15,6 @@ def impl_mgt(env, app_info):
     _height = app_fn_display_info["HEIGHT"]
     _board_blockers = app_fn_display_info["BOARD_BLOCKERS"]
     _board_goal = app_fn_display_info["BOARD_GOAL"]
-    # fn_get_q_actions, fnUpdateKnowledge, fn_get_max_q_actions = details_mgt(app_info)
 
     fn_get_qval, fn_set_qval, fn_get_q_actions, fn_get_max_q_actions = qtable_mgt()
 

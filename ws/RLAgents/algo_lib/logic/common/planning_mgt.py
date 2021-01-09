@@ -1,7 +1,7 @@
 from ws.RLAgents.algo_lib.logic.common.policy_table_mgt import policy_table_mgt
 from ws.RLAgents.algo_lib.logic.common.value_table_mgt import value_table_mgt
 
-def planning_mgt(env, app_info):
+def planning_mgt(app_info):
     LOW_NUMBER = -9999999999
     _env = app_info.ENV
 

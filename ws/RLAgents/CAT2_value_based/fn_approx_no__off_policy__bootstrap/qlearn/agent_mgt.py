@@ -8,7 +8,7 @@ from ws.RLUtils.setup.startup_mgt import startup_mgt
 def agent_mgt(file_path):
     app_info, env = startup_mgt(file_path)
     agent_config_mgt(app_info)
-    fn_bind_fn_display_actions, fnRun = impl_mgt(env, app_info)
+    fn_bind_fn_display_actions, fnRun = impl_mgt(app_info)
     def fn_init():
         actions = OrderedDict()
         actions["run"] = fnRun

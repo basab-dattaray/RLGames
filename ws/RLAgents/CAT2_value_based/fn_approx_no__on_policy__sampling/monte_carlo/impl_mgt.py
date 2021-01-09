@@ -4,7 +4,7 @@ from ws.RLEnvironments.gridworld.grid_board.display_mgt import display_mgt
 from .details_mgt import details_mgt
 
 
-def impl_mgt(env, app_info):
+def impl_mgt(app_info):
     _env = app_info.ENV
 
     _fn_display_controller = display_mgt(app_info)
