@@ -11,10 +11,10 @@ from ws.RLUtils.setup.args_mgt import args_mgt
 
 
 def fn_set_agent_path_in_app_info(_app_info, calling_root_path):
-    package_root_path = str(Path(calling_root_path).parent.parent.parent)
-    base_container_path = str(Path(package_root_path).parent)
-    relative_package_path = package_root_path.replace(base_container_path, '')
-    root_dot_path = relative_package_path.replace('/', '.')[1:]
+    # package_root_path = str(Path(calling_root_path).parent.parent.parent)
+    # base_container_path = str(Path(package_root_path).parent)
+    # relative_package_path = package_root_path.replace(base_container_path, '')
+    root_dot_path = 'ws' # relative_package_path.replace('/', '.')[1:]
     _app_info['ROOT_DOT_PATH'] = root_dot_path
     _app_info['AGENTS_DOT_PATH'] = root_dot_path + '.RLAgents'
     _app_info['AGENTS_CONFIG_DOT_PATH'] = root_dot_path + '.RLAgents' + '.agent_configs'
