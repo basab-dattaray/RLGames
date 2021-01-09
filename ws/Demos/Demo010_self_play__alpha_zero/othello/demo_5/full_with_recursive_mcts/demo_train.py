@@ -1,6 +1,6 @@
 import coloredlogs
 
-from ws.RLAgents.CAT4_self_play.alpha_zero.misc.agent_mgt import agent_mgt
+from ws.RLAgents.CAT4_self_play.alpha_zero.agent_mgt import agent_mgt
 
 coloredlogs.install(level='INFO')  # Change this to DEBUG to see more info.
 

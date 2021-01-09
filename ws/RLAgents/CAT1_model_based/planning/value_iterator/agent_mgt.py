@@ -6,7 +6,7 @@ from ws.RLUtils.setup.startup_mgt import startup_mgt
 
 
 def agent_mgt(file_path):
-    app_info, env = startup_mgt(file_path)
+    app_info = startup_mgt(file_path)
     agent_config_mgt(app_info)
     fn_bind_fn_display_actions, fn_move_per_policy, fn_apply_policy_iteration, fn_apply_value_iteration = impl_mgt(app_info)
 
