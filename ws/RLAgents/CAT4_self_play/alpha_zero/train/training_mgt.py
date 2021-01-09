@@ -31,7 +31,7 @@ def training_mgt(nn_mgr_N, args):
 
         def _fn_interpret_competition_results(iteration, nwins, pwins):
             def _fn_write_result(color, result, update_score, do_save):
-                args.calltracer.fn_write(
+                args.CALL_TRACER_.fn_write(
                     color + result + ' New Model: update_threshold: {}, update_score: {}'.format(
                         args.SCORE_BASED_MODEL_UPDATE_THRESHOLD,
                         update_score))
@@ -39,7 +39,7 @@ def training_mgt(nn_mgr_N, args):
                     nn_mgr_N.fn_save_model(filename=fn_getCheckpointFile(iteration))
                     nn_mgr_N.fn_save_model()
                 else:
-                    nn_mgr_N.fn_load_model(filename=args.temp_model_exchange_filename)
+                    nn_mgr_N.fn_load_model(filename=args.TMP_MODEL_FILENAME_)
 
             nonlocal update_count
             reject = False
@@ -50,7 +50,7 @@ def training_mgt(nn_mgr_N, args):
                 update_score = float(nwins) / (pwins + nwins)
                 if update_score < args.SCORE_BASED_MODEL_UPDATE_THRESHOLD:
                     reject = True
-            model_already_exists = nn_mgr_N.fn_is_model_available(rel_folder=args.REL_MODEL_PATH)
+            model_already_exists = nn_mgr_N.fn_is_model_available(rel_folder=args.REL_MODEL_PATH_)
 
             if not reject:
                 update_count += 1
@@ -63,17 +63,17 @@ def training_mgt(nn_mgr_N, args):
                 else:
                     _fn_write_result(Fore.GREEN, 'ACCEPTED', update_score, do_save= True)
 
-            args.calltracer.fn_write(Fore.BLACK)
+            args.CALL_TRACER_.fn_write(Fore.BLACK)
 
         def fn_run_iteration(iteration):
             nonlocal update_count
-            args.calltracer.fn_write('')
-            args.calltracer.fn_write(f'ITERATION NUMBER {iteration} of {args.NUM_TRAINING_ITERATIONS}', indent=0)
+            args.CALL_TRACER_.fn_write('')
+            args.CALL_TRACER_.fn_write(f'ITERATION NUMBER {iteration} of {args.NUM_TRAINING_ITERATIONS}', indent=0)
 
             @tracer(args)
             def _fn_play_next_vs_previous(training_samples):
-                nn_mgr_N.fn_save_model(filename=args.temp_model_exchange_filename)
-                nn_mgr_P.fn_load_model(filename=args.temp_model_exchange_filename)
+                nn_mgr_N.fn_save_model(filename=args.TMP_MODEL_FILENAME_)
+                nn_mgr_P.fn_load_model(filename=args.TMP_MODEL_FILENAME_)
                 pmcts = monte_carlo_tree_search_mgt(args.game_mgr, nn_mgr_P, args)
                 nn_mgr_N.fn_adjust_model_from_examples(training_samples)
                 nmcts = monte_carlo_tree_search_mgt(args.game_mgr, nn_mgr_N, args)
@@ -81,7 +81,7 @@ def training_mgt(nn_mgr_N, args):
                     lambda state: np.argmax(pmcts.fn_get_policy(state, do_random_selection= False)),
                     lambda state: np.argmax(nmcts.fn_get_policy(state, do_random_selection= False)),
                     game_mgr,
-                    msg_recorder=args.calltracer.fn_write
+                    msg_recorder=args.CALL_TRACER_.fn_write
                 )
                 pwins, nwins, draws = playground.fn_play_games(args.NUM_GAMES_FOR_MODEL_COMPARISON)
                 args.fn_record()

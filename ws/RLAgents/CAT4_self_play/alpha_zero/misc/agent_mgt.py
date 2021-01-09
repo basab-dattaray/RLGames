@@ -87,15 +87,15 @@ def agent_mgt(file_path):
             fn_contender_policy = fn_player_policy(args.game_mgr)
             playground = playground_mgt(fn_system_policy, fn_contender_policy, args.game_mgr,
                                         fn_display=game_mgt(args['BOARD_SIZE']).fn_display,
-                                        msg_recorder=args.calltracer.fn_write)
+                                        msg_recorder=args.CALL_TRACER_.fn_write)
             system_wins, system_losses, draws = playground.fn_play_games(NUM_TEST_GAMES, verbose=verbose)
 
-            args.calltracer.fn_write(f'wins:{system_wins} losses:{system_losses} draws:{draws}')
+            args.CALL_TRACER_.fn_write(f'wins:{system_wins} losses:{system_losses} draws:{draws}')
 
         @tracer(args, verboscity= 4)
         def fn_reset():
-            if os.path.exists(args.REL_MODEL_PATH):
-                shutil.rmtree(args.REL_MODEL_PATH)
+            if os.path.exists(args.REL_MODEL_PATH_):
+                shutil.rmtree(args.REL_MODEL_PATH_)
 
             return agent_mgr
 
@@ -104,7 +104,7 @@ def agent_mgt(file_path):
             if change_args is not None:
                 for k, v in change_args.items():
                     args[k] = v
-                    args.calltracer.fn_write(f'  args_[{k}] = {v}')
+                    args.CALL_TRACER_.fn_write(f'  args_[{k}] = {v}')
             agent_mgr.args = args
             return agent_mgr
 
@@ -112,7 +112,7 @@ def agent_mgt(file_path):
         def fn_show_args():
 
             for k, v in args.items():
-                args.calltracer.fn_write(f'  args_[{k}] = {v}')
+                args.CALL_TRACER_.fn_write(f'  args_[{k}] = {v}')
 
             return agent_mgr
 
@@ -123,7 +123,7 @@ def agent_mgt(file_path):
             time_diff = int(end_time - start_time)
             mins = math.floor(time_diff / 60)
             secs = time_diff % 60
-            args.calltracer.fn_write(f'Time elapsed:    minutes: {mins}    seconds: {secs}')
+            args.CALL_TRACER_.fn_write(f'Time elapsed:    minutes: {mins}    seconds: {secs}')
             start_time = time()
 
             return agent_mgr
@@ -131,27 +131,27 @@ def agent_mgt(file_path):
         @tracer(args, verboscity= 4)
         def fn_archive_log_file():
             dst_subfolder_rel_path = dt.now().strftime("%Y_%m_%d_%H_%M_%S")
-            dst_full_path = os.path.join(args.archive_dir, dst_subfolder_rel_path)
+            dst_full_path = os.path.join(args.ARCHIVE_DIR_, dst_subfolder_rel_path)
             os.mkdir(dst_full_path)
 
             # move log.txt
-            src_log_file_name = os.path.join(args.archive_dir, 'log.txt')
+            src_log_file_name = os.path.join(args.ARCHIVE_DIR_, 'log.txt')
             if os.path.exists(src_log_file_name):
                 shutil.move(src_log_file_name, dst_full_path)
 
             # move old_model.tar
-            if os.path.exists(args.old_model_file_path):
-                shutil.copy(args.old_model_file_path, dst_full_path)
+            if os.path.exists(args.OLD_MODEL_FILEPATH_):
+                shutil.copy(args.OLD_MODEL_FILEPATH_, dst_full_path)
 
             # copy model.tar
-            if os.path.exists(args.src_model_file_path):
-                shutil.copy(args.src_model_file_path, dst_full_path)
+            if os.path.exists(args.MODEL_FILEPATH_):
+                shutil.copy(args.MODEL_FILEPATH_, dst_full_path)
 
             return agent_mgr
 
         start_time = time()
-        if os.path.exists(args.src_model_file_path):
-            shutil.copy(args.src_model_file_path, args.old_model_file_path)
+        if os.path.exists(args.MODEL_FILEPATH_):
+            shutil.copy(args.MODEL_FILEPATH_, args.OLD_MODEL_FILEPATH_)
 
         agent_mgr = namedtuple('_',
                                ['fn_reset', 'fn_train', 'fn_test_against_human', 'fn_test_againt_random', 'fn_test_against_greedy',

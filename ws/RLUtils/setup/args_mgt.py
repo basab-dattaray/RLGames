@@ -1,6 +1,5 @@
 import logging
 import os
-from pathlib import Path
 
 from ws.RLUtils.common.AppInfo import AppInfo
 from ws.RLUtils.common.DotDict import DotDict
@@ -21,23 +20,22 @@ def args_mgt(file_path= None):
         args = _fn_init_arg_with_default_val(args, 'DEMO_FOLDER_', demo_folder)
         args = _fn_init_arg_with_default_val(args, 'DEMO_NAME_', demo_name)
         args = _fn_init_arg_with_default_val(args, 'MODEL_NAME_', 'model.tar')
-        args = _fn_init_arg_with_default_val(args, 'REL_MODEL_PATH', 'model/')
-        args = _fn_init_arg_with_default_val(args, 'temp_model_exchange_filename', '_tmp.tar')
+        args = _fn_init_arg_with_default_val(args, 'REL_MODEL_PATH_', 'model/')
+        args = _fn_init_arg_with_default_val(args, 'TMP_MODEL_FILENAME_', '_tmp.tar')
         current_dir = file_path.rsplit('/', 1)[0]
         archive_dir = current_dir.replace('/Demos/', '/Archives/')
-        args = _fn_init_arg_with_default_val(args, 'archive_dir', archive_dir)
+        args = _fn_init_arg_with_default_val(args, 'ARCHIVE_DIR_', archive_dir)
         args = _fn_init_arg_with_default_val(args, 'fn_record',
                                              log_mgt(log_dir=archive_dir, fixed_log_file=True))
-        args = _fn_init_arg_with_default_val(args, 'calltracer', call_trace_mgt(args.fn_record))
-        src_model_folder = os.path.join(args.DEMO_FOLDER_, args.REL_MODEL_PATH)
-        args = _fn_init_arg_with_default_val(args, 'src_model_file_path',
+        args = _fn_init_arg_with_default_val(args, 'CALL_TRACER_', call_trace_mgt(args.fn_record))
+        src_model_folder = os.path.join(args.DEMO_FOLDER_, args.REL_MODEL_PATH_)
+        args = _fn_init_arg_with_default_val(args, 'MODEL_FILEPATH_',
                                              os.path.join(src_model_folder, args.MODEL_NAME_))
-        args = _fn_init_arg_with_default_val(args, 'old_model_file_path',
+        args = _fn_init_arg_with_default_val(args, 'OLD_MODEL_FILEPATH_',
                                              os.path.join(src_model_folder, 'old_' + args.MODEL_NAME_))
-        args = _fn_init_arg_with_default_val(args, 'REL_MODEL_PATH', 'model/')
 
         args = _fn_init_arg_with_default_val(args, 'DO_LOAD_MODEL', True)
-        args = _fn_init_arg_with_default_val(args, 'DO_LOAD_SAMPLES', False)
+        # args = _fn_init_arg_with_default_val(args, 'DO_LOAD_SAMPLES', False)
 
         args = _fn_init_arg_with_default_val(args, 'NUM_SUCCESSES_FOR_MODEL_UPGRADE_', 1)
         # args = _fn_init_arg_with_default_val(args, 'run_recursive_search', True)

@@ -11,10 +11,7 @@ args = DotDict({
     'EXPLORE_EXPLOIT_FACTOR': 1,
 
     'DO_LOAD_MODEL': True,
-    # 'REL_MODEL_PATH': 'tmp/',
-    # 'DO_LOAD_SAMPLES': False,
-    # 'MODEL_NAME':'model.tar',
-    # 'LOAD_FOLDER_FILE': ('tmp/','model.tar'),
+
     'SAMPLE_HISTORY_BUFFER_SIZE': 20,
 
     'NUM_EPOCHS': 4,

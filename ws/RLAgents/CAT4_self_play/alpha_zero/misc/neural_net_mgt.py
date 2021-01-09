@@ -48,7 +48,7 @@ def neural_net_mgt(args):
         optimizer = optim.Adam(nnet.parameters())
         fn_count_event, fn_stop_counting = progress_count_mgt('Epochs', args.NUM_EPOCHS)
         for epoch in range(args.NUM_EPOCHS):
-            # nn_args.calltracer.fn_write(f'Epoch {epoch + 1} of {nn_args.NUM_EPOCHS}')
+            # nn_args.CALL_TRACER_.fn_write(f'Epoch {epoch + 1} of {nn_args.NUM_EPOCHS}')
             fn_count_event()
 
             nnet.train()
@@ -83,7 +83,7 @@ def neural_net_mgt(args):
                 total_loss.backward()
                 optimizer.step()
         fn_stop_counting()
-        # args.calltracer.fn_write(f'Number of Epochs for training new model: {args.NUM_EPOCHS}')
+        # args.CALL_TRACER_.fn_write(f'Number of Epochs for training new model: {args.NUM_EPOCHS}')
 
     def fn_neural_predict(board):
         start = time.time()
@@ -107,7 +107,7 @@ def neural_net_mgt(args):
         return loss
 
     def fn_save_model(filename= args['MODEL_NAME_']):
-        folder = os.path.join(args.DEMO_FOLDER_, args.REL_MODEL_PATH)
+        folder = os.path.join(args.DEMO_FOLDER_, args.REL_MODEL_PATH_)
         filepath = os.path.join(folder, filename)
         if not os.path.exists(folder):
             os.mkdir(folder)
@@ -117,7 +117,7 @@ def neural_net_mgt(args):
         }, filepath)
 
     def fn_load_model(filename= args['MODEL_NAME_']):
-        folder = os.path.join(args.DEMO_FOLDER_, args.REL_MODEL_PATH)
+        folder = os.path.join(args.DEMO_FOLDER_, args.REL_MODEL_PATH_)
         filepath = os.path.join(folder, filename)
 
         if not os.path.exists(filepath):
