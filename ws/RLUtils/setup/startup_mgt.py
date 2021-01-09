@@ -87,8 +87,8 @@ def fn_setup_paths_in_app_info(app_info):
 
 
 def startup_mgt(callar_filepath):
-    # _app_info = args_mgt(callar_filepath)
-    _app_info = startup_mgt(callar_filepath)
+    _app_info = args_mgt(callar_filepath)
+
     demo_folder, demo_file_name = fn_separate_folderpath_and_filename(callar_filepath)
 
     _app_info['DEMO_FOLDER_PATH'] = demo_folder

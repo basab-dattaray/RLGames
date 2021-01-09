@@ -119,7 +119,7 @@ def neural_net_mgt(args):
         }, filepath)
 
     def fn_load_model(filename= args['MODEL_NAME_']):
-        # folder = os.path.join(args.DEMO_FOLDER_, args.REL_MODEL_PATH_)
+        # folder = os.path.join(args.DEMO_FOLDER_PATH_, args.REL_MODEL_PATH_)
         filepath = os.path.join(folder, filename)
 
         if not os.path.exists(filepath):
@@ -131,7 +131,7 @@ def neural_net_mgt(args):
         return True
 
     def fn_is_model_available(rel_folder):
-        folder = os.path.join(args.DEMO_FOLDER_, rel_folder)
+        folder = os.path.join(args.DEMO_FOLDER_PATH_, rel_folder)
         filepath = os.path.join(folder, args.MODEL_NAME_)
         if  os.path.exists(filepath):
             return True
