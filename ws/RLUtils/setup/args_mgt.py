@@ -4,6 +4,7 @@ from pathlib import Path
 
 from ws.RLUtils.common.AppInfo import AppInfo
 from ws.RLUtils.common.DotDict import DotDict
+from ws.RLUtils.common.folder_paths import fn_get_rel_dot_folder_path
 from ws.RLUtils.common.module_loader import load_function
 from ws.RLUtils.monitoring.tracing.call_trace_mgt import call_trace_mgt
 from ws.RLUtils.monitoring.tracing.log_mgt import log_mgt
@@ -57,8 +58,8 @@ def args_mgt(file_path= None):
     return args_copy
 
 
-def fn_get_rel_dot_folder_path(demo_folder, start_pattern):
-    index = demo_folder.find(start_pattern)
-    relative_demo_path = demo_folder[index:]
-    demo_dot_path = relative_demo_path.replace('/', '.')[1:]
-    return demo_dot_path
+# def fn_get_rel_dot_folder_path(demo_folder, start_pattern):
+#     index = demo_folder.find(start_pattern)
+#     relative_demo_path = demo_folder[index:]
+#     demo_dot_path = relative_demo_path.replace('/', '.')[1:]
+#     return demo_dot_path
