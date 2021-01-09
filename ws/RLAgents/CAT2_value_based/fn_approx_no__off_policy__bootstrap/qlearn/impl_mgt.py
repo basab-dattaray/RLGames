@@ -3,7 +3,7 @@ from ws.RLAgents.algo_lib.logic.common.qtable_mgt import qtable_mgt
 
 
 def impl_mgt(env, app_info):
-    _env = env
+    _env = app_info.ENV
     _fn_display_controller = display_mgt(app_info)
 
     fn_get_qval, fn_set_qval, fn_get_q_actions, fn_get_max_q_actions = qtable_mgt()

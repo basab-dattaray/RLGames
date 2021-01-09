@@ -37,7 +37,7 @@ def fn_gpu_setup(_app_info, verbose= False):
 def fn_setup_for_results(_app_info, verbose= False):
 
     # app_info['GPU_DEVICE'] = get_device(app_info)
-    results_folder = os.path.join(_app_info['DEMO_PATH'], "Results")
+    results_folder = os.path.join(_app_info['DEMO_FOLDER_PATH'], "Results")
     if os.path.exists(results_folder) is False:
         os.makedirs(results_folder)
 
@@ -86,15 +86,15 @@ def fn_setup_paths_in_app_info(app_info, cwd,  verbose= False):
     app_info['AGENT_FOLDER_PATH'] =app_info['AGENTS_DOT_PATH']  + '.{}'.format(app_info['STRATEGY'])
 
     base_path = app_info['RESULTS_BASE_PATH']
-    if app_info['ARCHIVE_SUB_FOLDER'] is not None:
-        base_path = os.path.join(base_path, app_info['ARCHIVE_SUB_FOLDER'])
+    if app_info['FULL_DEMO_PATHNAME'] is not None:
+        base_path = os.path.join(base_path, app_info['FULL_DEMO_PATHNAME'])
 
     app_info['RESULTS_CURRENT_PATH'] = os.path.join(base_path, 'Current')
-    app_info['RESULTS_ARCHIVE_PATH'] = os.path.join(app_info['DEMO_PATH'].replace('Demos', 'ARCHIVES'), app_info['ARCHIVE_SUB_FOLDER'])
+    app_info['RESULTS_ARCHIVE_PATH'] = os.path.join(app_info['DEMO_FOLDER_PATH'].replace('Demos', 'ARCHIVES'), app_info['FULL_DEMO_PATHNAME'])
     if verbose:
-        print(app_info['ARCHIVE_SUB_FOLDER'])
+        print(app_info['FULL_DEMO_PATHNAME'])
 
-def preparation_mgt(calling_filepath, verbose=False):
+def preparation_mgt(calling_filepath):
     filepathname_parts = calling_filepath.rsplit('/', 1)
     cwd = filepathname_parts[0]
 
@@ -106,8 +106,8 @@ def preparation_mgt(calling_filepath, verbose=False):
     _app_info_path = os.path.join(cwd, app_info_file)
     _app_info = get_json_data(_app_info_path)
     _app_info['APP_INFO_SOURCE'] = _app_info_path
-    _app_info['DEMO_PATH'] = cwd
-    _app_info['ARCHIVE_SUB_FOLDER'] = filename_parts[0]
+    _app_info['DEMO_FOLDER_PATH'] = cwd
+    _app_info['FULL_DEMO_PATHNAME'] = filename_parts[0]
 
     fn_setup_for_results(_app_info)
     fn_setup_paths_in_app_info(_app_info, cwd)

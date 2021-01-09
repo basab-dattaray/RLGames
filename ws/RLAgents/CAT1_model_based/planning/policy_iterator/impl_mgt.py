@@ -4,9 +4,9 @@ from ws.RLEnvironments.gridworld.grid_board.display_mgt import display_mgt
 
 
 def impl_mgt(env, app_info):
-    _env = env
+    # _env = env
 
-    fnPolicyIterater, fnValueIterater, fnGetValueFromPolicy = planning_mgt(env, app_info)
+    fnPolicyIterater, fnValueIterater, fnGetValueFromPolicy = planning_mgt(app_info.ENV, app_info)
     _fn_display_controller = display_mgt(app_info)
 
     def fn_bind_fn_display_actions(acton_dictionary):

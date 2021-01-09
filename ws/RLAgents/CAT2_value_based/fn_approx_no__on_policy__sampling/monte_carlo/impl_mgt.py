@@ -5,7 +5,7 @@ from .details_mgt import details_mgt
 
 
 def impl_mgt(env, app_info):
-    _env = env
+    _env = app_info.ENV
 
     _fn_display_controller = display_mgt(app_info)
     fnClearTrace, fnGetEpsilonGreedyAction, fnTraceInteraction, fnUpdateValueTableFromTrace = details_mgt(_env,

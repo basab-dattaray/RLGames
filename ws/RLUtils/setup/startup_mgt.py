@@ -30,7 +30,7 @@ def fn_gpu_setup(_app_info, verbose= False):
 def fn_setup_for_results(_app_info, verbose= False):
 
     # app_info['GPU_DEVICE'] = get_device(app_info)
-    results_folder = os.path.join(_app_info['DEMO_PATH'], "Results")
+    results_folder = os.path.join(_app_info['DEMO_FOLDER_PATH'], "Results")
     if os.path.exists(results_folder) is False:
         os.makedirs(results_folder)
 
@@ -74,31 +74,31 @@ def fn_get_env(app_info, verbose= False):
 
     return env
 
-def fn_setup_paths_in_app_info(app_info, cwd,  verbose= False):
-    fn_set_agent_path_in_app_info(app_info, cwd)
+def fn_setup_paths_in_app_info(app_info):
+    fn_set_agent_path_in_app_info(app_info, app_info['DEMO_FOLDER_PATH'])
     app_info.AGENT_FOLDER_PATH =app_info.AGENTS_DOT_PATH  + '.{}'.format(app_info['STRATEGY'])
 
     base_path = app_info.RESULTS_BASE_PATH
-    if app_info['ARCHIVE_SUB_FOLDER'] is not None:
-        base_path = os.path.join(base_path, app_info['ARCHIVE_SUB_FOLDER'])
+    # if app_info['FULL_DEMO_PATHNAME'] is not None:
+    #     base_path = os.path.join(base_path, app_info['FULL_DEMO_PATHNAME'])
 
     app_info['RESULTS_CURRENT_PATH'] = os.path.join(base_path, 'Current')
-    app_info['RESULTS_ARCHIVE_PATH'] = os.path.join(app_info['DEMO_PATH'].replace('Demos', 'ARCHIVES'), app_info['ARCHIVE_SUB_FOLDER'])
-    if verbose:
-        print(app_info['ARCHIVE_SUB_FOLDER'])
+    app_info['RESULTS_ARCHIVE_PATH'] = os.path.join(app_info['DEMO_FOLDER_PATH'].replace('Demos', 'ARCHIVES'), app_info['FULL_DEMO_PATHNAME'])
 
-def startup_mgt(calling_filepath):
-    _app_info = args_mgt(calling_filepath)
-    cwd, folder_path = fn_separate_folderpath_and_filename(calling_filepath)
 
-    _app_info['DEMO_PATH'] = cwd
-    _app_info['ARCHIVE_SUB_FOLDER'] = folder_path
+def startup_mgt(callar_filepath):
+    _app_info = args_mgt(callar_filepath)
+    demo_folder, demo_file_name = fn_separate_folderpath_and_filename(callar_filepath)
+
+    _app_info['DEMO_FOLDER_PATH'] = demo_folder
+    _app_info['FULL_DEMO_PATHNAME'] = demo_file_name
 
     fn_setup_for_results(_app_info)
-    fn_setup_paths_in_app_info(_app_info, cwd)
+    fn_setup_paths_in_app_info(_app_info)
     fn_setup_logging(_app_info)
     fn_gpu_setup(_app_info)
     env = fn_get_env(_app_info)
+    _app_info.ENV = env
     return _app_info, env
 
 
