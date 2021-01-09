@@ -94,8 +94,8 @@ def agent_mgt(file_path):
 
         @tracer(args, verboscity= 4)
         def fn_reset():
-            if os.path.exists(args.REL_MODEL_PATH_):
-                shutil.rmtree(args.REL_MODEL_PATH_)
+            if os.path.exists(args.RESULTS_FOLDER_PATH_):
+                shutil.rmtree(args.RESULTS_FOLDER_PATH_)
 
             return agent_mgr
 

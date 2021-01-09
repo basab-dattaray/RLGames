@@ -119,7 +119,7 @@ def neural_net_mgt(args):
         }, filepath)
 
     def fn_load_model(filename= args['MODEL_NAME_']):
-        # folder = os.path.join(args.DEMO_FOLDER_PATH_, args.REL_MODEL_PATH_)
+        # folder = os.path.join(args.DEMO_FOLDER_PATH_, args.RESULTS_FOLDER_PATH_)
         filepath = os.path.join(folder, filename)
 
         if not os.path.exists(filepath):

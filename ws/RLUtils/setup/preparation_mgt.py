@@ -57,7 +57,7 @@ def fn_setup_logging(app_info):
     pass
 
 
-def fn_get_env(app_info, verbose= False):
+def fn_setup_env(app_info, verbose= False):
     subpackage_name = None
     if 'ENV_NAME' not in app_info.keys():
         if verbose:
@@ -113,6 +113,6 @@ def preparation_mgt(calling_filepath):
     fn_setup_paths_in_app_info(_app_info, cwd)
     fn_setup_logging(_app_info)
     fn_gpu_setup(_app_info)
-    env = fn_get_env(_app_info)
+    env = fn_setup_env(_app_info)
     return _app_info, env
 

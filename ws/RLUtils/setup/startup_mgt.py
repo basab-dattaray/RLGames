@@ -11,46 +11,38 @@ from ws.RLUtils.setup.args_mgt import args_mgt
 
 
 def fn_set_agent_path_in_app_info(_app_info, calling_root_path):
-    # package_root_path = str(Path(calling_root_path).parent.parent.parent)
-    # base_container_path = str(Path(package_root_path).parent)
-    # relative_package_path = package_root_path.replace(base_container_path, '')
-    root_dot_path = 'ws' # relative_package_path.replace('/', '.')[1:]
+    root_dot_path = 'ws'
     _app_info['ROOT_DOT_PATH'] = root_dot_path
     _app_info['AGENTS_DOT_PATH'] = root_dot_path + '.RLAgents'
     _app_info['AGENTS_CONFIG_DOT_PATH'] = root_dot_path + '.RLAgents' + '.agent_configs'
     pass
 
 def fn_gpu_setup(_app_info, verbose= False):
-    # GPU
     _app_info['GPU_DEVICE'] = get_device(_app_info)
     if verbose:
         print('DEVICE: {}'.format(_app_info['GPU_DEVICE']))
     pass
 
-def fn_setup_for_results(_app_info, verbose= False):
-
-    # app_info['GPU_DEVICE'] = get_device(app_info)
+def fn_setup_for_results(_app_info):
     results_folder = os.path.join(_app_info['DEMO_FOLDER_PATH'], "Results")
     if os.path.exists(results_folder) is False:
         os.makedirs(results_folder)
 
-    env_folder = os.path.join(results_folder, _app_info['ENV_NAME'])
-    if os.path.exists(env_folder) is False:
-        os.makedirs(env_folder)
-    _app_info['RESULTS_BASE_PATH'] = env_folder
-    if verbose:
-        print(env_folder)
+    # env_folder = os.path.join(results_folder, _app_info['ENV_NAME'])
+    # if os.path.exists(env_folder) is False:
+    #     os.makedirs(env_folder)
+    # _app_info['RESULTS_BASE_PATH'] = env_folder
 
 def fn_setup_logging(app_info):
     fn_get_key_as_bool, fn_get_key_as_int, fn_get_key_as_str = config_mgt(app_info)
     debug_mode = fn_get_key_as_bool('DEBUG_MODE')
-    session_repo = app_info['RESULTS_CURRENT_PATH']
+    session_repo = app_info['RESULTS_FILEPATH_']
     fn_log = log_mgt(log_dir= session_repo, show_debug=debug_mode)
     app_info['FN_RECORD'] = fn_log
     pass
 
 
-def fn_get_env(app_info, verbose= False):
+def fn_setup_env(app_info, verbose= False):
     subpackage_name = None
     if 'ENV_NAME' not in app_info.keys():
         if verbose:
@@ -78,11 +70,7 @@ def fn_setup_paths_in_app_info(app_info):
     fn_set_agent_path_in_app_info(app_info, app_info['DEMO_FOLDER_PATH'])
     app_info.AGENT_FOLDER_PATH =app_info.AGENTS_DOT_PATH  + '.{}'.format(app_info['STRATEGY'])
 
-    base_path = app_info.RESULTS_BASE_PATH
-    # if app_info['FULL_DEMO_PATHNAME'] is not None:
-    #     base_path = os.path.join(base_path, app_info['FULL_DEMO_PATHNAME'])
-
-    app_info['RESULTS_CURRENT_PATH'] = os.path.join(base_path, 'Current')
+    # app_info['RESULTS_CURRENT_PATH'] = os.path.join(app_info.RESULTS_BASE_PATH, 'Current')
     app_info['RESULTS_ARCHIVE_PATH'] = os.path.join(app_info['DEMO_FOLDER_PATH'].replace('Demos', 'ARCHIVES'), app_info['FULL_DEMO_PATHNAME'])
 
 
@@ -98,7 +86,7 @@ def startup_mgt(callar_filepath):
     fn_setup_paths_in_app_info(_app_info)
     fn_setup_logging(_app_info)
     fn_gpu_setup(_app_info)
-    env = fn_get_env(_app_info)
+    env = fn_setup_env(_app_info)
     _app_info.ENV = env
     return _app_info, env
 
