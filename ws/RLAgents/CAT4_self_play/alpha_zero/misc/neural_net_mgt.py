@@ -28,6 +28,8 @@ def neural_net_mgt(args):
         'num_channels': 512,
     })
 
+    folder = args.MODEL_PATH_
+
     def fn_get_untrained_model(arguments):
         # nn_args = nn_args
         untrained_nn = NeuralNet(arguments.game_mgr, nn_args)
@@ -107,7 +109,7 @@ def neural_net_mgt(args):
         return loss
 
     def fn_save_model(filename= args['MODEL_NAME_']):
-        folder = os.path.join(args.DEMO_FOLDER_, args.REL_MODEL_PATH_)
+
         filepath = os.path.join(folder, filename)
         if not os.path.exists(folder):
             os.mkdir(folder)
@@ -117,7 +119,7 @@ def neural_net_mgt(args):
         }, filepath)
 
     def fn_load_model(filename= args['MODEL_NAME_']):
-        folder = os.path.join(args.DEMO_FOLDER_, args.REL_MODEL_PATH_)
+        # folder = os.path.join(args.DEMO_FOLDER_, args.REL_MODEL_PATH_)
         filepath = os.path.join(folder, filename)
 
         if not os.path.exists(filepath):
