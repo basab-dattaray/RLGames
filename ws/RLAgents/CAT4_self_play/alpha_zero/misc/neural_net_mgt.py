@@ -106,8 +106,8 @@ def neural_net_mgt(args):
         loss = torch.sum((actual_results - predicted_results.view(-1)) ** 2) / actual_results.size()[0]
         return loss
 
-    def fn_save_model(filename= args['MODEL_NAME']):
-        folder = os.path.join(args.demo_folder, args.REL_MODEL_PATH)
+    def fn_save_model(filename= args['MODEL_NAME_']):
+        folder = os.path.join(args.DEMO_FOLDER_, args.REL_MODEL_PATH)
         filepath = os.path.join(folder, filename)
         if not os.path.exists(folder):
             os.mkdir(folder)
@@ -116,8 +116,8 @@ def neural_net_mgt(args):
             'state_dict': nnet.state_dict(),
         }, filepath)
 
-    def fn_load_model(filename= args['MODEL_NAME']):
-        folder = os.path.join(args.demo_folder, args.REL_MODEL_PATH)
+    def fn_load_model(filename= args['MODEL_NAME_']):
+        folder = os.path.join(args.DEMO_FOLDER_, args.REL_MODEL_PATH)
         filepath = os.path.join(folder, filename)
 
         if not os.path.exists(filepath):
@@ -129,8 +129,8 @@ def neural_net_mgt(args):
         return True
 
     def fn_is_model_available(rel_folder):
-        folder = os.path.join(args.demo_folder, rel_folder)
-        filepath = os.path.join(folder, args.MODEL_NAME)
+        folder = os.path.join(args.DEMO_FOLDER_, rel_folder)
+        filepath = os.path.join(folder, args.MODEL_NAME_)
         if  os.path.exists(filepath):
             return True
         else:
