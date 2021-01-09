@@ -58,8 +58,3 @@ def args_mgt(file_path= None):
     return args_copy
 
 
-# def fn_get_rel_dot_folder_path(demo_folder, start_pattern):
-#     index = demo_folder.find(start_pattern)
-#     relative_demo_path = demo_folder[index:]
-#     demo_dot_path = relative_demo_path.replace('/', '.')[1:]
-#     return demo_dot_path

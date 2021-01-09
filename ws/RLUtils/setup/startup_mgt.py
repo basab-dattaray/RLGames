@@ -2,6 +2,7 @@ import os
 from pathlib import Path
 
 from ws.RLUtils.common.config_mgt import config_mgt
+from ws.RLUtils.common.folder_paths import fn_separate_folderpath_and_filename
 from ws.RLUtils.common.module_loader import load_function
 from ws.RLUtils.monitoring.tracing.log_mgt import log_mgt
 
@@ -88,14 +89,10 @@ def fn_setup_paths_in_app_info(app_info, cwd,  verbose= False):
 
 def startup_mgt(calling_filepath):
     _app_info = args_mgt(calling_filepath)
-    filepathname_parts = calling_filepath.rsplit('/', 1)
-    cwd = filepathname_parts[0]
-    #
-    filename = filepathname_parts[1]
-    filename_parts = filename.rsplit('_', 1)
+    cwd, folder_path = fn_separate_folderpath_and_filename(calling_filepath)
 
     _app_info['DEMO_PATH'] = cwd
-    _app_info['ARCHIVE_SUB_FOLDER'] = filename_parts[0]
+    _app_info['ARCHIVE_SUB_FOLDER'] = folder_path
 
     fn_setup_for_results(_app_info)
     fn_setup_paths_in_app_info(_app_info, cwd)
@@ -103,4 +100,7 @@ def startup_mgt(calling_filepath):
     fn_gpu_setup(_app_info)
     env = fn_get_env(_app_info)
     return _app_info, env
+
+
+
 
