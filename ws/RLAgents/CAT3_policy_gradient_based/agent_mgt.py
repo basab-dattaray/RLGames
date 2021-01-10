@@ -8,9 +8,11 @@ from ws.RLUtils.common.config_mgt import config_mgt
 
 from ws.RLUtils.common.module_loader import load_function
 from ws.RLUtils.modelling.archive_mgt import archive_mgt
+from ws.RLUtils.setup.preparation_mgt import preparation_mgt
 
 
-def agent_mgt(app_info, env, arg_dict=None):
+def agent_mgt(caller_file):
+    app_info, env = preparation_mgt(caller_file)
     fn_get_key_as_bool, fn_get_key_as_int, _ = config_mgt(app_info)
     is_single_episode_result = fn_get_key_as_bool('REWARD_CALCULATED_FROM_SINGLE_EPISODES')
     app_info['ENV'] = env
