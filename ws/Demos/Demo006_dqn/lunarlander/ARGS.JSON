@@ -11,8 +11,9 @@
     "ENV_NAME": "LunarLander-v2",
     "ENV_DISPLAY_ON": 1,
 
+    "REWARD_GOAL": 210,
 
-    "MAX_STEPS_PER_EPISODE": 1234,
+    "MAX_STEPS_PER_EPISODE": 200,
 
     "DEQUE_MEM_SIZE": 4000,
 
