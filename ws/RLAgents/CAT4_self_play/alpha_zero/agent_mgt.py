@@ -19,7 +19,8 @@ from ws.RLAgents.CAT4_self_play.alpha_zero.train.training_mgt import training_mg
 from ws.RLEnvironments.self_play_games.othello.game_mgt import game_mgt
 
 from ws.RLUtils.monitoring.tracing.tracer import tracer
-from ws.RLUtils.setup.args_mgt import args_mgt
+# from ws.RLUtils.setup.args_mgt import args_mgt
+from ws.RLUtils.setup.startup_mgt import startup_mgt
 
 
 def fn_setup_essential_managers(args_):
@@ -31,8 +32,8 @@ def fn_setup_essential_managers(args_):
 
 def agent_mgt(file_path):
     try:
-        args = args_mgt(file_path)
-
+        # args = args_mgt(file_path)
+        args = startup_mgt(file_path)
         def exit_gracefully(signum, frame):
             #
             # if services.chart is not None:

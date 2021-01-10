@@ -1,6 +1,7 @@
 from ws.RLUtils.common.DotDict import DotDict
 
 args = DotDict({
+    'STRATEGY': 'CAT4_self_play.alpha_zero',
     'NUM_TRAINING_ITERATIONS': 3,
     'NUM_TRAINING_EPISODES': 3,              # Number of complete self-play games to simulate during a new iteration.
     'PROBABILITY_SPREAD_THRESHOLD': 15,        #
