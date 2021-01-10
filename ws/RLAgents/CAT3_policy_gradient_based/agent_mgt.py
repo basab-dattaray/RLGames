@@ -104,19 +104,21 @@ def agent_mgt(caller_file):
         fn_run(fn_show_training_progress, fn_should_update_network=fn_should_update_network)
 
         fn_log(refobj_archive_mgt.fn_archive_all(app_info, refobj_archive_mgt.fn_save_model))
+        return agent_mgr
 
 
     def fn_run_test():
         if refobj_archive_mgt.fn_load_model is None:
             fn_log("ERROR:: Loading Model: model function missing")
-            return
+            return agent_mgr
 
         if not refobj_archive_mgt.fn_load_model():
             fn_log("ERROR:: Loading Model: model agent_configs missing")
-            return
+            return agent_mgr
 
         fn_run(fn_show_training_progress, supress_graph=True, consecutive_goal_hits_needed_for_success=1)
         fn_run_episode(do_render=True)
+        return agent_mgr
 
     agent_mgr = namedtuple('_',
                                 [
