@@ -3,11 +3,14 @@ from collections import namedtuple
 
 import numpy as np
 
-from ws.RLUtils.setup.preparation_mgt import preparation_mgt
+# from ws.RLUtils.setup.preparation_mgt import preparation_mgt
+from ws.RLUtils.setup.startup_mgt import startup_mgt
 from .impl_mgt import impl_mgt
 
 def agent_mgt(caller_file):
-    app_info, env = preparation_mgt(caller_file)
+    # app_info, env = preparation_mgt(caller_file)
+    app_info = startup_mgt(caller_file)
+    env = app_info.ENV
     _action_size = env.fn_get_action_size()
     _state_size = env.fn_get_state_size()
 
