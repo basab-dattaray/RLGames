@@ -1,4 +1,5 @@
 import signal
+from collections import namedtuple
 
 from time import sleep
 
@@ -117,4 +118,14 @@ def agent_mgt(caller_file):
         fn_run(fn_show_training_progress, supress_graph=True, consecutive_goal_hits_needed_for_success=1)
         fn_run_episode(do_render=True)
 
-    return fn_run_train, fn_run_test
+    agent_mgr = namedtuple('_',
+                                [
+                                    'fn_run_train',
+                                    'fn_run_test'
+                                ]
+                           )
+    agent_mgr.fn_run_train = fn_run_train
+    agent_mgr.fn_run_test = fn_run_test
+
+    return agent_mgr
+
