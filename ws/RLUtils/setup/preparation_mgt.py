@@ -51,7 +51,7 @@ def fn_setup_for_results(_app_info, verbose= False):
 def fn_setup_logging(app_info):
     fn_get_key_as_bool, fn_get_key_as_int, fn_get_key_as_str = config_mgt(app_info)
     debug_mode = fn_get_key_as_bool('DEBUG_MODE')
-    session_repo = app_info['RESULTS_CURRENT_PATH']
+    session_repo = app_info['RESULTS_BASE_PATH']
     fn_log = log_mgt(log_dir= session_repo, show_debug=debug_mode)
     app_info['FN_RECORD'] = fn_log
     pass
@@ -89,7 +89,7 @@ def fn_setup_paths_in_app_info(app_info, cwd,  verbose= False):
     if app_info['FULL_DEMO_PATHNAME'] is not None:
         base_path = os.path.join(base_path, app_info['FULL_DEMO_PATHNAME'])
 
-    app_info['RESULTS_CURRENT_PATH'] = os.path.join(base_path, 'Current')
+    # app_info['RESULTS_CURRENT_PATH'] = os.path.join(base_path, 'Current')
     app_info['RESULTS_ARCHIVE_PATH'] = os.path.join(app_info['DEMO_FOLDER_PATH'].replace('Demos', 'ARCHIVES'), app_info['FULL_DEMO_PATHNAME'])
     if verbose:
         print(app_info['FULL_DEMO_PATHNAME'])
