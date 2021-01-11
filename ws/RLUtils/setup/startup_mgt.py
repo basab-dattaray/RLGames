@@ -51,7 +51,7 @@ def _fn_setup_env(app_info, verbose= False):
     if env_mgt is not None:
         env = env_mgt(app_info)
         app_info.ACTION_DIMENSIONS = env.fn_get_action_size()
-        app_info['STATE_DIMENSIONS'] = env.fn_get_state_size()
+        app_info.STATE_DIMENSIONS = env.fn_get_state_size()
     app_info.ENV = env
     return env
 
@@ -65,10 +65,10 @@ def _fn_setup_paths_in_app_info(app_info):
     app_info.RESULTS_ARCHIVE_PATH = os.path.join(app_info.DEMO_FOLDER_PATH.replace('Demos', 'ARCHIVES'), app_info.FULL_DEMO_PATHNAME)
 
 
-def startup_mgt(callar_filepath):
-    _app_info = args_mgt(callar_filepath)
+def startup_mgt(caller_filepath):
+    _app_info = args_mgt(caller_filepath)
 
-    demo_folder, demo_file_name = fn_separate_folderpath_and_filename(callar_filepath)
+    demo_folder, demo_file_name = fn_separate_folderpath_and_filename(caller_filepath)
 
     _app_info.DEMO_FOLDER_PATH = demo_folder
     _app_info.FULL_DEMO_PATHNAME = demo_file_name

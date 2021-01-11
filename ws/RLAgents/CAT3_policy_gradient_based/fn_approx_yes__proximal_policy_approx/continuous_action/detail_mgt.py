@@ -5,7 +5,7 @@ from torch.distributions import MultivariateNormal
 
 
 def detail_mgt(app_info):
-    device = app_info['GPU_DEVICE']
+    device = app_info.GPU_DEVICE
 
     def fn_actor_loss_eval(app_info, logprobs, old_logprobs, rewards, state_values):
         clipping_loss_ratio = app_info['CLIPPING_LOSS_RATIO']
@@ -21,7 +21,7 @@ def detail_mgt(app_info):
     def fn_pick_action(state, buffer, policy_old_actor):
         tensored_state = torch.from_numpy(state).float().to(device)
         action_mean = policy_old_actor.forward(tensored_state)
-        action_size = app_info['ACTION_DIMENSIONS']
+        action_size = app_info.ACTION_DIMENSIONS
 
         # action_std = app_info[SD_FOR_MULTIVARIATE_NORMAL_ACTION_DISTRIBUTION]
         action_var = policy_old_actor.get_action_var()

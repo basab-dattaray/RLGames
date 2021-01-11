@@ -12,10 +12,10 @@ class Actor(nn.Module):
     def __init__(self, app_info):
         super(Actor, self).__init__()
 
-        self._hidden_layer_dims = app_info['ACTOR_HIDDEN_LAYER_NODES']
+        self._hidden_layer_dims = app_info.ACTOR_HIDDEN_LAYER_NODES
         fn_hidden_layers_input_proc, self.fn_hidden_layers_forward_proc = hidden_layer_model_mgt(self)
 
-        env = app_info['ENV']
+        env = app_info.ENV
         action_size = env.fn_get_action_size() # app_info[ACTION_DIMENSIONS][0]
         state_size = env.fn_get_state_size() # app_info[STATE_DIMENSIONS][0]
 

@@ -13,7 +13,7 @@ def impl_mgt(app_info):
     _gamma = app_info['GAMMA']
     fn_actor_loss_eval, fn_pick_action, fn_evaluate = detail_mgt(app_info)
 
-    _model_actor_critic = ActorCritic(app_info).to(app_info['GPU_DEVICE'])
+    _model_actor_critic = ActorCritic(app_info).to(app_info.GPU_DEVICE)
 
     _optimizer = torch.optim.Adam(_model_actor_critic.parameters(), lr=app_info['LEARNING_RATE'], betas=(0.9, 0.999))
 

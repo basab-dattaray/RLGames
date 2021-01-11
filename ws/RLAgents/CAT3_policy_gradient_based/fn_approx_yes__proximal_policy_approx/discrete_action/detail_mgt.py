@@ -17,7 +17,7 @@ def detail_mgt(app_info):
         return loss
 
     def fn_pick_action(state, buffer, policy_old_actor):
-        state = torch.from_numpy(state).float().to(app_info['GPU_DEVICE'])
+        state = torch.from_numpy(state).float().to(app_info.GPU_DEVICE)
         policy = policy_old_actor.forward(state)
 
         dist = Categorical(policy)

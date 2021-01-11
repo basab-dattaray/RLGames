@@ -14,7 +14,7 @@ def fn_load_app(file_path):
     agent_config_mgt(app_info)
     subpackage_name = app_info['AGENTS_DOT_PATH'] + '.{}'.format(app_info['STRATEGY'])
     agent_mgt = load_function(function_name="agent_mgt", module_tag="agent_mgt", subpackage_tag=subpackage_name)
-    fn_init = agent_mgt(app_info, app_info['ENV'])
+    fn_init = agent_mgt(app_info, app_info.ENV)
     fn_init()
 
 def fn_set_agent_path_in_app_info(_app_info, calling_root_path):
@@ -29,31 +29,31 @@ def fn_set_agent_path_in_app_info(_app_info, calling_root_path):
 
 def fn_gpu_setup(_app_info, verbose= False):
     # GPU
-    _app_info['GPU_DEVICE'] = get_device(_app_info)
+    _app_info.GPU_DEVICE = get_device(_app_info)
     if verbose:
-        print('DEVICE: {}'.format(_app_info['GPU_DEVICE']))
+        print('DEVICE: {}'.format(_app_info.GPU_DEVICE))
     pass
 
 def fn_setup_for_results(_app_info, verbose= False):
 
-    # app_info['GPU_DEVICE'] = get_device(app_info)
+    # app_info.GPU_DEVICE = get_device(app_info)
     results_folder = os.path.join(_app_info['DEMO_FOLDER_PATH'], "Results")
     if os.path.exists(results_folder) is False:
         os.makedirs(results_folder)
 
-    _app_info['RESULTS_BASE_PATH'] = results_folder
+    _app_info.RESULTS_BASE_PATH = results_folder
 
     # env_folder = os.path.join(results_folder, _app_info['ENV_NAME'])
     # if os.path.exists(env_folder) is False:
     #     os.makedirs(env_folder)
-    # _app_info['RESULTS_BASE_PATH'] = env_folder
+    # _app_info.RESULTS_BASE_PATH = env_folder
     # if verbose:
     #     print(env_folder)
 
 def fn_setup_logging(app_info):
     fn_get_key_as_bool, fn_get_key_as_int, fn_get_key_as_str = config_mgt(app_info)
     debug_mode = fn_get_key_as_bool('DEBUG_MODE')
-    session_repo = app_info['RESULTS_BASE_PATH']
+    session_repo = app_info.RESULTS_BASE_PATH
     fn_log = log_mgt(log_dir= session_repo, show_debug=debug_mode)
     app_info['FN_RECORD'] = fn_log
     pass
@@ -77,21 +77,21 @@ def fn_setup_env(app_info):
     env = None
     if env_mgt is not None:
         env = env_mgt(app_info)
-        app_info['ACTION_DIMENSIONS'] = env.fn_get_action_size()
-        app_info['STATE_DIMENSIONS'] = env.fn_get_state_size()
+        app_info.ACTION_DIMENSIONS = env.fn_get_action_size()
+        app_info.STATE_DIMENSIONS = env.fn_get_state_size()
 
     return env
 
 def fn_setup_paths_in_app_info(app_info, cwd):
     fn_set_agent_path_in_app_info(app_info, cwd)
-    app_info['AGENT_FOLDER_PATH'] =app_info['AGENTS_DOT_PATH']  + '.{}'.format(app_info['STRATEGY'])
+    app_info.AGENT_FOLDER_PATH =app_info['AGENTS_DOT_PATH']  + '.{}'.format(app_info['STRATEGY'])
 
-    base_path = app_info['RESULTS_BASE_PATH']
+    base_path = app_info.RESULTS_BASE_PATH
     if app_info['FULL_DEMO_PATHNAME'] is not None:
         base_path = os.path.join(base_path, app_info['FULL_DEMO_PATHNAME'])
 
-    # app_info['RESULTS_ARCHIVE_PATH'] = os.path.join(app_info['DEMO_FOLDER_PATH'].replace('Demos', 'ARCHIVES'), app_info['FULL_DEMO_PATHNAME'])
-    app_info['RESULTS_ARCHIVE_PATH'] = app_info['DEMO_FOLDER_PATH'].replace('Demos', 'ARCHIVES')
+    # app_info.RESULTS_ARCHIVE_PATH = os.path.join(app_info['DEMO_FOLDER_PATH'].replace('Demos', 'ARCHIVES'), app_info['FULL_DEMO_PATHNAME'])
+    app_info.RESULTS_ARCHIVE_PATH = app_info['DEMO_FOLDER_PATH'].replace('Demos', 'ARCHIVES')
 
 
 def preparation_mgt(calling_filepath):
@@ -105,7 +105,7 @@ def preparation_mgt(calling_filepath):
 
     _app_info_path = os.path.join(cwd, app_info_file)
     _app_info = get_json_data(_app_info_path)
-    _app_info['APP_INFO_SOURCE'] = _app_info_path
+    _app_info.APP_INFO_SOURCE = _app_info_path
     _app_info['DEMO_FOLDER_PATH'] = cwd
     _app_info['FULL_DEMO_PATHNAME'] = filename_parts[0]
 
@@ -113,6 +113,6 @@ def preparation_mgt(calling_filepath):
     fn_setup_paths_in_app_info(_app_info, cwd)
     fn_setup_logging(_app_info)
     fn_gpu_setup(_app_info)
-    _app_info['ENV'] = fn_setup_env(_app_info)
+    _app_info.ENV = fn_setup_env(_app_info)
     return _app_info
 

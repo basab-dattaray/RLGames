@@ -6,7 +6,7 @@ def progress_mgt(app_info):
     _, fn_get_key_as_int, _ = config_mgt(app_info)
     _consecutive_goal_hits_needed_for_success = fn_get_key_as_int('CONSECUTIVE_GOAL_HITS', default = 1)
     _consecutive_goal_hit_count = 0
-    _plot_file_path = os.path.join(app_info['RESULTS_BASE_PATH'], 'rewards_plot.pdf')
+    _plot_file_path = os.path.join(app_info.RESULTS_BASE_PATH, 'rewards_plot.pdf')
 
     _log_interval = app_info['LOG_MEAN_INTERVAL']
     _plot_skip_interval = app_info['LOG_SKIP_INTERVAL']
