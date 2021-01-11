@@ -17,7 +17,7 @@ args = DotDict(
   "ENV_DISPLAY_ON": 1,
 
 
-  "display": {
+  "DISPLAY": {
     "APP_NAME": "Monte Carlo",
     "BOARD_BLOCKERS": [  {"x": 1, "y": 2, "reward": -100},  {"x": 2, "y": 1, "reward": -100}],
     "BOARD_GOAL": {"x":2,"y":2, "reward": 100},

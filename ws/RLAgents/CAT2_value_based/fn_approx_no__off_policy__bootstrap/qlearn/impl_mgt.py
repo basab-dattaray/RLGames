@@ -10,9 +10,9 @@ def impl_mgt(app_info):
 
     def fnUpdateKnowledge(state, action, reward, next_state):
         current_q = fn_get_qval(state, action)
-        new_q = reward + app_info['DISCOUNT_FACTOR'] * max(fn_get_q_actions(next_state))
+        new_q = reward + app_info.DISCOUNT_FACTOR * max(fn_get_q_actions(next_state))
 
-        new_val = current_q + app_info['LEARNING_RATE'] * (new_q - current_q)
+        new_val = current_q + app_info.LEARNING_RATE * (new_q - current_q)
         fn_set_qval(state, action, new_val)
 
     def fn_bind_fn_display_actions(acton_dictionary):

@@ -5,7 +5,7 @@ def planning_mgt(app_info):
     LOW_NUMBER = -9999999999
     _env = app_info.ENV
 
-    _discount_factor = app_info["DISCOUNT_FACTOR"]
+    _discount_factor = app_info.DISCOUNT_FACTOR
 
     fn_set_value_table_item, fn_get_value_table_item, fn_set_value_table, fn_get_value_table, \
     _ ,fn_value_table_reached_target, fn_has_table_changed = \

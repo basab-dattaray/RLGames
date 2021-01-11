@@ -39,9 +39,9 @@ def details_mgt(env, app_info):
             if state not in visit_state:
                 visit_state.append(state)
                 reward = trace[1]
-                G_t = app_info['DISCOUNT_FACTOR'] * (reward + G_t)
+                G_t = app_info.DISCOUNT_FACTOR * (reward + G_t)
                 value = fn_get_value_table_item(state)
-                new_val = (value + app_info['LEARNING_RATE'] * (G_t - value))
+                new_val = (value + app_info.LEARNING_RATE * (G_t - value))
                 fn_set_value_table_item(state, new_val)
                 continue
         val_table = fn_get_value_table()

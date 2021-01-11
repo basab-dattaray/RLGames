@@ -13,7 +13,7 @@ def progress_mgt(app_info):
 
     _x_config_item = {'axis_label': 'episodes'}
     _y_config_list = [{'axis_label': 'reward', 'color_black_background': 'green'}]
-    _title_prefix = '{}:{}\n'.format(app_info['STRATEGY'], app_info['ENV_NAME'])
+    _title_prefix = '{}:{}\n'.format(app_info['STRATEGY'], app_info.ENV_NAME)
 
     _reward_goal = app_info['REWARD_GOAL']
 
@@ -35,8 +35,8 @@ def progress_mgt(app_info):
     fn_log = app_info['FN_RECORD']
 
     def print_it(episode_num, step_num, val):
-        fn_log('SAMPLE GEN EPISODE {:8} \t Steps: {:6} \t Value: {:10.5f}  Goal: {:10.5f}'.
-              format(episode_num, step_num, val, app_info['REWARD_GOAL']))
+        fn_log('SAMPLE GEN EPISODE {:5} out of {:5} \t Steps: {:6} \t Value: {:10.5f}  Goal: {:10.5f}'.
+              format(episode_num,app_info.NUM_EPISODES, step_num,  val, app_info.REWARD_GOAL))
 
     def fn_show_training_progress(episode_num, val, step_num):
 

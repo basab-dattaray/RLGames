@@ -1,5 +1,5 @@
 import os
-from pathlib import Path
+import shutil
 
 from ws.RLUtils.common.config_mgt import config_mgt
 from ws.RLUtils.common.folder_paths import fn_separate_folderpath_and_filename
@@ -10,6 +10,7 @@ from ws.RLUtils.platform_libs.pytorch.device_selection import get_device
 from ws.RLUtils.setup.args_mgt import args_mgt
 
 ROOT_DOT_PATH = 'ws'
+ARGS_PY = 'ARGS.py'
 def _fn_setup_gpu(_app_info, verbose= False):
     _app_info.GPU_DEVICE = get_device(_app_info)
     if verbose:
@@ -21,6 +22,9 @@ def _fn_setup_for_results(_app_info):
     if os.path.exists(results_folder) is False:
         os.makedirs(results_folder)
     _app_info.RESULTS_BASE_PATH = results_folder
+    args_module_path = os.path.join(_app_info.DEMO_FOLDER_PATH, ARGS_PY)
+    if os.path.exists(args_module_path):
+        shutil.copy(args_module_path, _app_info.RESULTS_BASE_PATH)
 
 def _fn_setup_logging(app_info):
     fn_get_key_as_bool, fn_get_key_as_int, fn_get_key_as_str = config_mgt(app_info)

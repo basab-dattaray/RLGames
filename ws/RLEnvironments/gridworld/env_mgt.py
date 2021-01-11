@@ -3,10 +3,10 @@ from collections import namedtuple
 
 def env_mgt(app_info):
 
-    _board_blockers = app_info["display"]["BOARD_BLOCKERS"]
-    _board_goal = app_info["display"]["BOARD_GOAL"]
-    _width = app_info["display"]["WIDTH"]
-    _height = app_info["display"]["HEIGHT"]
+    _board_blockers = app_info.DISPLAY.BOARD_BLOCKERS
+    _board_goal = app_info.DISPLAY.BOARD_GOAL
+    _width = app_info.DISPLAY.WIDTH
+    _height = app_info.DISPLAY.HEIGHT
 
     _reward = None
     # _possible_actions = None

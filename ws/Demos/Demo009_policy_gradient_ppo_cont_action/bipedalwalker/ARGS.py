@@ -5,7 +5,7 @@ args = DotDict(
         "STRATEGY": "CAT3_policy_gradient_based.fn_approx_yes__proximal_policy_approx.continuous_action",
 
         "NUM_EPOCHS": 80,
-        "NUM_EPISODES": 3000,
+        "NUM_EPISODES": 1000,
 
         "MAX_STEPS_PER_EPISODE": 4500,
 
@@ -15,7 +15,7 @@ args = DotDict(
         "CLIPPING_LOSS_RATIO": 0.2,
         "MAX_GRADIENT_NORM": 0.5,
 
-        "UPDATE_STEP_INTERVAL": 4000,
+        "UPDATE_STEP_INTERVAL": 20,
         "BUFFER_CAPACITY": 1000,
 
         "ENV_NAME": "BipedalWalker-v3",

@@ -4,7 +4,7 @@ import gym
 
 def env_mgt(app_info):
 
-    _env = gym.make(app_info['ENV_NAME'])
+    _env = gym.make(app_info.ENV_NAME)
     _state_size = _env.observation_space.shape[0]
     _action_size = _env.action_space.n
 

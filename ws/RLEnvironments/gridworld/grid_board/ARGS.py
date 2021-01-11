@@ -3,7 +3,7 @@ from ws.RLUtils.common.DotDict import DotDict
 args = DotDict(
     {
         "policy_iterator": {
-            "display": {
+            "DISPLAY": {
                 "BOARD_BLOCKERS": [{"x": 1, "y": 2, "reward": -100}, {"x": 2, "y": 1, "reward": -100}],
                 "BOARD_GOAL": {"x": 2, "y": 2, "reward": 100},
                 "UNIT": 100,
@@ -12,7 +12,7 @@ args = DotDict(
             }
         },
         "value_iterator": {
-            "display": {
+            "DISPLAY": {
                 "BOARD_BLOCKERS": [{"x": 1, "y": 2, "reward": -100}, {"x": 2, "y": 1, "reward": -100}],
                 "BOARD_GOAL": {"x": 2, "y": 2, "reward": 100},
                 "UNIT": 100,
@@ -28,7 +28,7 @@ args = DotDict(
             "HEIGHT": 5
         },
         "sarsa": {
-            "display": {
+            "DISPLAY": {
                 "BOARD_BLOCKERS": [{"x": 1, "y": 2, "reward": -100}, {"x": 2, "y": 1, "reward": -100}],
                 "BOARD_GOAL": {"x": 2, "y": 2, "reward": 100},
                 "UNIT": 100,

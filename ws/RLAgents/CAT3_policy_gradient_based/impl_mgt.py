@@ -26,7 +26,7 @@ def impl_mgt(app_info):
     _model_actor = Actor(app_info).to(device)
     _model_critic = Critic(app_info).to(device)
 
-    _optimizer = torch.optim.Adam(_model_actor.parameters(), lr=app_info['LEARNING_RATE'], betas=(0.9, 0.999))
+    _optimizer = torch.optim.Adam(_model_actor.parameters(), lr=app_info.LEARNING_RATE, betas=(0.9, 0.999))
 
     _model_old_critic = Critic(app_info).to(device)
     _model_old_actor = Actor(app_info).to(device)

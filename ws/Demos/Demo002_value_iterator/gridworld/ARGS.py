@@ -13,7 +13,7 @@ args = DotDict({
     "RHO": 0.99,
     "DISCOUNT_FACTOR": 0.9,
 
-    "display": {
+    "DISPLAY": {
         "APP_NAME": "Value Iterator",
         "BOARD_BLOCKERS": [{"x": 1, "y": 2, "reward": -100}, {"x": 2, "y": 1, "reward": -100}],
         "BOARD_GOAL": {"x": 2, "y": 2, "reward": 100},
