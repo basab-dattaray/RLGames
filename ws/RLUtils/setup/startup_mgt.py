@@ -20,11 +20,12 @@ def _fn_setup_for_results(_app_info):
     results_folder = os.path.join(_app_info['DEMO_FOLDER_PATH'], "Results")
     if os.path.exists(results_folder) is False:
         os.makedirs(results_folder)
+    _app_info['RESULTS_BASE_PATH'] = results_folder
 
 def _fn_setup_logging(app_info):
     fn_get_key_as_bool, fn_get_key_as_int, fn_get_key_as_str = config_mgt(app_info)
     debug_mode = fn_get_key_as_bool('DEBUG_MODE')
-    session_repo = app_info['RESULTS_FILEPATH_']
+    session_repo = app_info['RESULTS_BASE_PATH']
     fn_log = log_mgt(log_dir= session_repo, show_debug=debug_mode)
     app_info['FN_RECORD'] = fn_log
     pass
