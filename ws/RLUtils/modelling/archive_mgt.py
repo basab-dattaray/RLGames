@@ -52,25 +52,12 @@ def archive_mgt(fn_save_to_neural_net, fn_load_from_neural_net, archive_folder_p
         return current_folder_path
 
 
-
-
     def fn_archive_all(app_info, fn_save_model=None):
         try:
             if fn_save_model is not None:
                 save_path = fn_save_model()
                 if save_path is None:
                     print("INFO:: unable to Save Model at {}".format(save_path))
-
-
-            # # remove JSON files from results_current_path
-            # if os.path.exists(app_info['RESULTS_BASE_PATH']):
-            #     files_in_results_path = os.listdir(app_info['RESULTS_BASE_PATH'])
-            #     # json_files = []
-            #     for file_name in files_in_results_path:
-            #
-            #         if file_name.rsplit('.', 1)[1] == 'JSON':
-            #             file_path = os.path.join(app_info['RESULTS_BASE_PATH'], file_name)
-            #             os.remove(file_path)
 
             shutil.copy(app_info['APP_INFO_SOURCE'], app_info['RESULTS_BASE_PATH'])
 

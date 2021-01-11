@@ -41,12 +41,14 @@ def fn_setup_for_results(_app_info, verbose= False):
     if os.path.exists(results_folder) is False:
         os.makedirs(results_folder)
 
-    env_folder = os.path.join(results_folder, _app_info['ENV_NAME'])
-    if os.path.exists(env_folder) is False:
-        os.makedirs(env_folder)
-    _app_info['RESULTS_BASE_PATH'] = env_folder
-    if verbose:
-        print(env_folder)
+    _app_info['RESULTS_BASE_PATH'] = results_folder
+
+    # env_folder = os.path.join(results_folder, _app_info['ENV_NAME'])
+    # if os.path.exists(env_folder) is False:
+    #     os.makedirs(env_folder)
+    # _app_info['RESULTS_BASE_PATH'] = env_folder
+    # if verbose:
+    #     print(env_folder)
 
 def fn_setup_logging(app_info):
     fn_get_key_as_bool, fn_get_key_as_int, fn_get_key_as_str = config_mgt(app_info)
@@ -57,12 +59,11 @@ def fn_setup_logging(app_info):
     pass
 
 
-def fn_setup_env(app_info, verbose= False):
+def fn_setup_env(app_info):
     subpackage_name = None
     if 'ENV_NAME' not in app_info.keys():
-        if verbose:
-            print("ENV_NAME is missing")
-        pass
+        print("ENV_NAME is missing")
+        exit()
     else:
         repo_name_parts = app_info['ENV_NAME'].lower().rsplit('-', 1)
         app_info['ENV_REPO'] = repo_name_parts[0]
@@ -81,7 +82,7 @@ def fn_setup_env(app_info, verbose= False):
 
     return env
 
-def fn_setup_paths_in_app_info(app_info, cwd,  verbose= False):
+def fn_setup_paths_in_app_info(app_info, cwd):
     fn_set_agent_path_in_app_info(app_info, cwd)
     app_info['AGENT_FOLDER_PATH'] =app_info['AGENTS_DOT_PATH']  + '.{}'.format(app_info['STRATEGY'])
 
@@ -89,10 +90,9 @@ def fn_setup_paths_in_app_info(app_info, cwd,  verbose= False):
     if app_info['FULL_DEMO_PATHNAME'] is not None:
         base_path = os.path.join(base_path, app_info['FULL_DEMO_PATHNAME'])
 
-    # app_info['RESULTS_CURRENT_PATH'] = os.path.join(base_path, 'Current')
-    app_info['RESULTS_ARCHIVE_PATH'] = os.path.join(app_info['DEMO_FOLDER_PATH'].replace('Demos', 'ARCHIVES'), app_info['FULL_DEMO_PATHNAME'])
-    if verbose:
-        print(app_info['FULL_DEMO_PATHNAME'])
+    # app_info['RESULTS_ARCHIVE_PATH'] = os.path.join(app_info['DEMO_FOLDER_PATH'].replace('Demos', 'ARCHIVES'), app_info['FULL_DEMO_PATHNAME'])
+    app_info['RESULTS_ARCHIVE_PATH'] = app_info['DEMO_FOLDER_PATH'].replace('Demos', 'ARCHIVES')
+
 
 def preparation_mgt(calling_filepath):
     filepathname_parts = calling_filepath.rsplit('/', 1)
