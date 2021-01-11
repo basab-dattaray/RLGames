@@ -15,8 +15,7 @@ args = DotDict(
         "CLIPPING_LOSS_RATIO": 0.2,
         "MAX_GRADIENT_NORM": 0.5,
 
-        "UPDATE_STEP_INTERVAL": 30,
-        "LOG_SKIP_INTERVAL": 20,
+        "UPDATE_STEP_INTERVAL": 4000,
         "BUFFER_CAPACITY": 1000,
 
         "ENV_NAME": "BipedalWalker-v3",
@@ -48,7 +47,7 @@ args = DotDict(
             }
         ],
 
-
+        "LOG_SKIP_INTERVAL": 1,
         "REWARD_GOAL": 20,
         "LOG_MEAN_INTERVAL": 20,
         "MAX_RESULT_COUNT": 3,
