@@ -4,9 +4,9 @@ def value_table_mgt(app_info):
     LOW_NUMBER = -999999
     _goal_coordinates = None
     app_info_fn_display = app_info.DISPLAY
-    _width = app_info_fn_display.WIDTH
+    _width = app_info_fn_display['WIDTH']
     _height = app_info_fn_display['HEIGHT']
-    _board_goal = app_info_fn_display.BOARD_GOAL
+    _board_goal = app_info_fn_display['BOARD_GOAL']
 
     _goal_coordinates = {'x': _board_goal['x'], 'y': _board_goal['y']}
     _value_table = [[0.0] * _width for _ in range(_width)]

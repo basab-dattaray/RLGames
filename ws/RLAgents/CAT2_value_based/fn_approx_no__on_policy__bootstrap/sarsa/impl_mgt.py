@@ -11,10 +11,10 @@ def impl_mgt(app_info):
     _learning_rate = app_info.LEARNING_RATE
 
     app_fn_display_info = app_info.DISPLAY
-    _width = app_fn_display_info.WIDTH
-    _height = app_fn_display_info.HEIGHT
-    _board_blockers = app_fn_display_info.BOARD_BLOCKERS
-    _board_goal = app_fn_display_info.BOARD_GOAL
+    _width = app_fn_display_info['WIDTH']
+    _height = app_fn_display_info['HEIGHT']
+    _board_blockers = app_fn_display_info['BOARD_BLOCKERS']
+    _board_goal = app_fn_display_info['BOARD_GOAL']
 
     fn_get_qval, fn_set_qval, fn_get_q_actions, fn_get_max_q_actions = qtable_mgt()
 

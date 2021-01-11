@@ -21,16 +21,16 @@ def display_mgt(app_info):
 
     app_fn_display_info = app_info.DISPLAY
     _unit = app_fn_display_info["UNIT"]
-    _width = app_fn_display_info.WIDTH
-    _height = app_fn_display_info.HEIGHT
+    _width = app_fn_display_info['WIDTH']
+    _height = app_fn_display_info['HEIGHT']
     _canvas = tkinter.Canvas(
         height=_height * _unit,
         width=_width * _unit)
 
     _cursor = None
 
-    _board_blockers = app_fn_display_info.BOARD_BLOCKERS
-    _board_goal = app_fn_display_info.BOARD_GOAL
+    _board_blockers = app_fn_display_info['BOARD_BLOCKERS']
+    _board_goal = app_fn_display_info['BOARD_GOAL']
     _right_margin = 5
     _bottom_margin = 80
     _tk.title(app_info.DISPLAY["APP_NAME"])
