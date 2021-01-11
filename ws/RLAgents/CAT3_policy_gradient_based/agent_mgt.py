@@ -13,10 +13,10 @@ from ws.RLUtils.setup.preparation_mgt import preparation_mgt
 
 
 def agent_mgt(caller_file):
-    app_info, env = preparation_mgt(caller_file)
+    app_info = preparation_mgt(caller_file)
     fn_get_key_as_bool, fn_get_key_as_int, _ = config_mgt(app_info)
     is_single_episode_result = fn_get_key_as_bool('REWARD_CALCULATED_FROM_SINGLE_EPISODES')
-    app_info['ENV'] = env
+    env = app_info['ENV']
     impl_mgt = load_function('impl_mgt', 'impl_mgt', app_info['AGENT_FOLDER_PATH'])
 
     fn_act, fn_add_transition, fn_save_to_neural_net, fn_load_from_neural_net, fn_should_update_network = impl_mgt(app_info)

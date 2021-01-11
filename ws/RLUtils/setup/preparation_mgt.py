@@ -10,11 +10,11 @@ from ws.RLUtils.monitoring.tracing.log_mgt import log_mgt
 from ws.RLUtils.platform_libs.pytorch.device_selection import get_device
 
 def fn_load_app(file_path):
-    app_info, env = preparation_mgt(file_path)
+    app_info= preparation_mgt(file_path)
     agent_config_mgt(app_info)
     subpackage_name = app_info['AGENTS_DOT_PATH'] + '.{}'.format(app_info['STRATEGY'])
     agent_mgt = load_function(function_name="agent_mgt", module_tag="agent_mgt", subpackage_tag=subpackage_name)
-    fn_init = agent_mgt(app_info, env)
+    fn_init = agent_mgt(app_info, app_info['ENV'])
     fn_init()
 
 def fn_set_agent_path_in_app_info(_app_info, calling_root_path):
@@ -113,6 +113,6 @@ def preparation_mgt(calling_filepath):
     fn_setup_paths_in_app_info(_app_info, cwd)
     fn_setup_logging(_app_info)
     fn_gpu_setup(_app_info)
-    env = fn_setup_env(_app_info)
-    return _app_info, env
+    _app_info['ENV'] = fn_setup_env(_app_info)
+    return _app_info
 
