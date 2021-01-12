@@ -32,7 +32,7 @@ def progress_mgt(app_info):
         average_interval=_log_interval, skip_interval=_plot_skip_interval
     )
 
-    fn_log = app_info['FN_RECORD']
+    fn_log = app_info.FN_RECORD
 
     def print_it(episode_num, step_num, val):
         fn_log('SAMPLE GEN EPISODE {:5} out of {:5} \t Steps: {:6} \t Value: {:10.5f}  Goal: {:10.5f}'.

@@ -35,7 +35,7 @@ def agent_mgt(caller_file):
 
     _episode_num = 0
 
-    fn_log = app_info['FN_RECORD']
+    fn_log = app_info.FN_RECORD
 
     def exit_gracefully(signum, frame):
         fn_log('!!! TERMINATING EARLY!!!')

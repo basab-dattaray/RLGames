@@ -31,7 +31,8 @@ def _fn_setup_logging(app_info):
     debug_mode = fn_get_key_as_bool('DEBUG_MODE')
     session_repo = app_info.RESULTS_BASE_PATH
     fn_log = log_mgt(log_dir= session_repo, show_debug=debug_mode)
-    app_info['FN_RECORD'] = fn_log
+    app_info.FN_RECORD = fn_log
+    app_info.FN_RECORD('hi')
     pass
 
 
