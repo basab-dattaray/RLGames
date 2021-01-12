@@ -2,22 +2,59 @@ import logging
 import os
 import shutil
 
+from ws.RLUtils.common.DotDict import DotDict
 from ws.RLUtils.common.config_mgt import config_mgt
-from ws.RLUtils.common.folder_paths import fn_separate_folderpath_and_filename
+from ws.RLUtils.common.folder_paths import fn_separate_folderpath_and_filename, fn_get_rel_dot_folder_path
 from ws.RLUtils.common.module_loader import load_function
 from ws.RLUtils.monitoring.tracing.call_trace_mgt import call_trace_mgt
 from ws.RLUtils.monitoring.tracing.log_mgt import log_mgt
 
 from ws.RLUtils.platform_libs.pytorch.device_selection import get_device
-from ws.RLUtils.setup.args_mgt import args_mgt, _fn_init_arg_with_default_val
+# from ws.RLUtils.setup.args_mgt import _fn_init_arg_with_default_val
 
 ROOT_DOT_PATH = 'ws'
 ARGS_PY = 'ARGS.py'
+
+def _fn_init_arg_with_default_val(args, name, val):
+    if args is None:
+        args = {}
+    else:
+        args = DotDict(args.copy())
+    args[name] = val
+    return args
+
 def _fn_setup_gpu(_app_info, verbose= False):
     _app_info.GPU_DEVICE = get_device(_app_info)
     if verbose:
         print('DEVICE: {}'.format(_app_info.GPU_DEVICE))
     pass
+
+
+def fn_bootstrap(file_path):
+    demo_folder_path, demo_file_name = fn_separate_folderpath_and_filename(file_path)
+    demo_dot_path = fn_get_rel_dot_folder_path(demo_folder_path, '/ws/')
+    fn_get_args = load_function(function_name="fn_get_args", module_tag="ARGS", subpackage_tag=demo_dot_path)
+    args = fn_get_args()
+    args = _fn_init_arg_with_default_val(args, 'DEMO_FOLDER_PATH_', demo_folder_path)
+    args = _fn_init_arg_with_default_val(args, 'DEMO_FILE_NAME_', demo_file_name)
+    args = _fn_init_arg_with_default_val(args, 'DEMO_DOT_PATH_', demo_dot_path)
+    args = _fn_init_arg_with_default_val(args, 'RESULTS_REL_PATH', 'Results/')
+    results_folder_path = os.path.join(args.DEMO_FOLDER_PATH_, args.RESULTS_REL_PATH)
+    args = _fn_init_arg_with_default_val(args, 'RESULTS_FILEPATH_', results_folder_path)
+    if 'MODEL_NAME' in args:
+        args = _fn_init_arg_with_default_val(args, 'MODEL_FILEPATH_',
+                                             os.path.join(results_folder_path, args.MODEL_NAME))
+        args = _fn_init_arg_with_default_val(args, 'OLD_MODEL_FILEPATH_',
+                                             os.path.join(results_folder_path, 'old_' + args.MODEL_NAME))
+    # current_dir = file_path.rsplit('/', 1)[0]
+    archive_dir = demo_folder_path.replace('/Demos/', '/Archives/')
+    args = _fn_init_arg_with_default_val(args, 'ARCHIVE_DIR_', archive_dir)
+    args = _fn_init_arg_with_default_val(args, 'LOGGER_', logging.getLogger(__name__))
+    args = _fn_init_arg_with_default_val(args, 'fn_record',
+                                         log_mgt(log_dir=args.ARCHIVE_DIR_, fixed_log_file=True))
+    args = _fn_init_arg_with_default_val(args, 'CALL_TRACER_', call_trace_mgt(args.fn_record))
+    # args_copy = _fn_arg_defaults(args)
+    return args
 
 def _fn_setup_for_results(_app_info):
     results_folder = os.path.join(_app_info.DEMO_FOLDER_PATH_, "Results")
@@ -78,7 +115,7 @@ def _fn_setup_paths_in_app_info(app_info):
 
 
 def startup_mgt(caller_filepath):
-    _app_info = args_mgt(caller_filepath)
+    _app_info = fn_bootstrap(caller_filepath)
 
     # demo_folder, _ = fn_separate_folderpath_and_filename(caller_filepath)
 
