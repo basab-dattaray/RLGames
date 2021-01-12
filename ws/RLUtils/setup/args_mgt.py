@@ -34,10 +34,11 @@ def args_mgt(file_path= None):
         args = _fn_init_arg_with_default_val(args, 'CALL_TRACER_', call_trace_mgt(args.fn_record))
         results_folder_path = os.path.join(args.DEMO_FOLDER_PATH_, args.RESULTS_FOLDER_PATH_)
         args = _fn_init_arg_with_default_val(args, 'RESULTS_FILEPATH_', results_folder_path)
-        args = _fn_init_arg_with_default_val(args, 'MODEL_FILEPATH_',
-                                             os.path.join(results_folder_path, args.MODEL_NAME))
-        args = _fn_init_arg_with_default_val(args, 'OLD_MODEL_FILEPATH_',
-                                             os.path.join(results_folder_path, 'old_' + args.MODEL_NAME))
+        if 'MODEL_NAME' in args:
+            args = _fn_init_arg_with_default_val(args, 'MODEL_FILEPATH_',
+                                                 os.path.join(results_folder_path, args.MODEL_NAME))
+            args = _fn_init_arg_with_default_val(args, 'OLD_MODEL_FILEPATH_',
+                                                 os.path.join(results_folder_path, 'old_' + args.MODEL_NAME))
 
         args = _fn_init_arg_with_default_val(args, 'DO_LOAD_MODEL', True)
         # args = _fn_init_arg_with_default_val(args, 'DO_LOAD_SAMPLES', False)
