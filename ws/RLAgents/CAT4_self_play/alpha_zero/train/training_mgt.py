@@ -51,7 +51,7 @@ def training_mgt(nn_mgr_N, args):
                 update_score = float(nwins) / (pwins + nwins)
                 if update_score < args.SCORE_BASED_MODEL_UPDATE_THRESHOLD:
                     reject = True
-            model_already_exists = nn_mgr_N.fn_is_model_available(rel_folder=args.RESULTS_FOLDER_PATH_)
+            model_already_exists = nn_mgr_N.fn_is_model_available(rel_folder=args.RESULTS_REL_PATH)
 
             if not reject:
                 update_count += 1

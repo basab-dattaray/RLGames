@@ -1,13 +1,15 @@
+import logging
 import os
 import shutil
 
 from ws.RLUtils.common.config_mgt import config_mgt
 from ws.RLUtils.common.folder_paths import fn_separate_folderpath_and_filename
 from ws.RLUtils.common.module_loader import load_function
+from ws.RLUtils.monitoring.tracing.call_trace_mgt import call_trace_mgt
 from ws.RLUtils.monitoring.tracing.log_mgt import log_mgt
 
 from ws.RLUtils.platform_libs.pytorch.device_selection import get_device
-from ws.RLUtils.setup.args_mgt import args_mgt
+from ws.RLUtils.setup.args_mgt import args_mgt, _fn_init_arg_with_default_val
 
 ROOT_DOT_PATH = 'ws'
 ARGS_PY = 'ARGS.py'
@@ -21,18 +23,23 @@ def _fn_setup_for_results(_app_info):
     results_folder = os.path.join(_app_info.DEMO_FOLDER_PATH_, "Results")
     if os.path.exists(results_folder) is False:
         os.makedirs(results_folder)
-    _app_info.RESULTS_BASE_PATH = results_folder
+    # _app_info.RESULTS_FILEPATH_ = results_folder
     args_module_path = os.path.join(_app_info.DEMO_FOLDER_PATH_, ARGS_PY)
     if os.path.exists(args_module_path):
-        shutil.copy(args_module_path, _app_info.RESULTS_BASE_PATH)
+        shutil.copy(args_module_path, _app_info.RESULTS_REL_PATH)
 
 def _fn_setup_logging(app_info):
-    fn_get_key_as_bool, fn_get_key_as_int, fn_get_key_as_str = config_mgt(app_info)
+    # app_info = _fn_init_arg_with_default_val(app_info, 'LOGGER_', logging.getLogger(__name__))
+    #
+    # app_info = _fn_init_arg_with_default_val(app_info, 'fn_record',
+    #                                      log_mgt(log_dir=app_info.ARCHIVE_DIR_, fixed_log_file=True))
+
+    fn_get_key_as_bool, _, _ = config_mgt(app_info)
     debug_mode = fn_get_key_as_bool('DEBUG_MODE')
-    session_repo = app_info.RESULTS_BASE_PATH
+    session_repo = app_info.RESULTS_REL_PATH
     fn_log = log_mgt(log_dir= session_repo, show_debug=debug_mode)
     app_info.FN_RECORD = fn_log
-    app_info.FN_RECORD('hi')
+    # app_info.FN_RECORD('hi')
     pass
 
 
@@ -78,8 +85,9 @@ def startup_mgt(caller_filepath):
     # _app_info.DEMO_FOLDER_PATH_ = demo_folder
     # _app_info.FULL_DEMO_PATHNAME = demo_file_name
 
-    _fn_setup_for_results(_app_info)
+
     _fn_setup_paths_in_app_info(_app_info)
+    _fn_setup_for_results(_app_info)
     _fn_setup_logging(_app_info)
     _fn_setup_gpu(_app_info)
     env = _fn_setup_env(_app_info)

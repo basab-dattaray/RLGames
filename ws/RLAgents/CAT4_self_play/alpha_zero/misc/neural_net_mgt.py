@@ -28,7 +28,7 @@ def neural_net_mgt(args):
         'num_channels': 512,
     })
 
-    folder = args.MODEL_PATH_
+    folder = args.RESULTS_FILEPATH_
 
     def fn_get_untrained_model(arguments):
         # nn_args = nn_args
@@ -119,7 +119,7 @@ def neural_net_mgt(args):
         }, filepath)
 
     def fn_load_model(filename= args.MODEL_NAME):
-        # folder = os.path.join(args.DEMO_FOLDER_PATH_, args.RESULTS_FOLDER_PATH_)
+        # folder = os.path.join(args.DEMO_FOLDER_PATH_, args.RESULTS_REL_PATH)
         filepath = os.path.join(folder, filename)
 
         if not os.path.exists(filepath):

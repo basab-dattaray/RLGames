@@ -8,7 +8,7 @@ def fn_getCheckpointFile(iteration):
 
 
 def fn_save_train_examples(args, iteration, training_samples_buffer):
-    folder = args.RESULTS_FOLDER_PATH_
+    folder = args.RESULTS_REL_PATH
     if not os.path.exists(folder):
         os.makedirs(folder)
     filename = os.path.join(folder, fn_getCheckpointFile(iteration) + ".examples")

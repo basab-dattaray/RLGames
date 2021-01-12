@@ -25,7 +25,7 @@ def agent_mgt(caller_file):
         fn_save_to_neural_net,
         fn_load_from_neural_net,
         app_info.RESULTS_ARCHIVE_PATH,
-        app_info.RESULTS_BASE_PATH,
+        app_info.RESULTS_FILEPATH_,
         app_info.MAX_RESULT_COUNT
     )
 
