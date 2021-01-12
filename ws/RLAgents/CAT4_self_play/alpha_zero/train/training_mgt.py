@@ -12,6 +12,7 @@ from ws.RLAgents.CAT4_self_play.alpha_zero.train.sample_generator import fn_gene
 from ws.RLAgents.CAT4_self_play.alpha_zero.train.training_helper import fn_getCheckpointFile, fn_log_iteration_results
 from ws.RLUtils.monitoring.tracing.tracer import tracer
 def training_mgt(nn_mgr_N, args):
+    TMP_MODEL_FILENAME_ = '_tmp.tar'
     nn_mgr_P = copy.deepcopy(nn_mgr_N)
 
     def _fn_try_to_load_model():
@@ -39,7 +40,7 @@ def training_mgt(nn_mgr_N, args):
                     nn_mgr_N.fn_save_model(filename=fn_getCheckpointFile(iteration))
                     nn_mgr_N.fn_save_model()
                 else:
-                    nn_mgr_N.fn_load_model(filename=args.TMP_MODEL_FILENAME_)
+                    nn_mgr_N.fn_load_model(filename=TMP_MODEL_FILENAME_)
 
             nonlocal update_count
             reject = False
@@ -72,8 +73,8 @@ def training_mgt(nn_mgr_N, args):
 
             @tracer(args)
             def _fn_play_next_vs_previous(training_samples):
-                nn_mgr_N.fn_save_model(filename=args.TMP_MODEL_FILENAME_)
-                nn_mgr_P.fn_load_model(filename=args.TMP_MODEL_FILENAME_)
+                nn_mgr_N.fn_save_model(filename=TMP_MODEL_FILENAME_)
+                nn_mgr_P.fn_load_model(filename=TMP_MODEL_FILENAME_)
                 pmcts = monte_carlo_tree_search_mgt(args.game_mgr, nn_mgr_P, args)
                 nn_mgr_N.fn_adjust_model_from_examples(training_samples)
                 nmcts = monte_carlo_tree_search_mgt(args.game_mgr, nn_mgr_N, args)

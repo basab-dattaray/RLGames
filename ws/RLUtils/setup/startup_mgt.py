@@ -18,11 +18,11 @@ def _fn_setup_gpu(_app_info, verbose= False):
     pass
 
 def _fn_setup_for_results(_app_info):
-    results_folder = os.path.join(_app_info.DEMO_FOLDER_PATH, "Results")
+    results_folder = os.path.join(_app_info.DEMO_FOLDER_PATH_, "Results")
     if os.path.exists(results_folder) is False:
         os.makedirs(results_folder)
     _app_info.RESULTS_BASE_PATH = results_folder
-    args_module_path = os.path.join(_app_info.DEMO_FOLDER_PATH, ARGS_PY)
+    args_module_path = os.path.join(_app_info.DEMO_FOLDER_PATH_, ARGS_PY)
     if os.path.exists(args_module_path):
         shutil.copy(args_module_path, _app_info.RESULTS_BASE_PATH)
 
@@ -67,15 +67,15 @@ def _fn_setup_paths_in_app_info(app_info):
 
     app_info.AGENT_FOLDER_PATH =app_info.AGENTS_DOT_PATH  + '.{}'.format(app_info.STRATEGY)
 
-    app_info.RESULTS_ARCHIVE_PATH = os.path.join(app_info.DEMO_FOLDER_PATH.replace('Demos', 'ARCHIVES'), app_info.DEMO_FILE_NAME_)
+    app_info.RESULTS_ARCHIVE_PATH = os.path.join(app_info.DEMO_FOLDER_PATH_.replace('Demos', 'ARCHIVES'), app_info.DEMO_FILE_NAME_)
 
 
 def startup_mgt(caller_filepath):
     _app_info = args_mgt(caller_filepath)
 
-    demo_folder, demo_file_name = fn_separate_folderpath_and_filename(caller_filepath)
+    # demo_folder, _ = fn_separate_folderpath_and_filename(caller_filepath)
 
-    _app_info.DEMO_FOLDER_PATH = demo_folder
+    # _app_info.DEMO_FOLDER_PATH_ = demo_folder
     # _app_info.FULL_DEMO_PATHNAME = demo_file_name
 
     _fn_setup_for_results(_app_info)

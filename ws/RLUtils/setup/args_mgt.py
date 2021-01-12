@@ -1,7 +1,7 @@
 import logging
 import os
 
-from ws.RLUtils.common.AppInfo import AppInfo
+# from ws.RLUtils.common.AppInfo import AppInfo
 from ws.RLUtils.common.DotDict import DotDict
 from ws.RLUtils.common.folder_paths import fn_get_rel_dot_folder_path, fn_separate_folderpath_and_filename
 from ws.RLUtils.common.module_loader import load_function
@@ -19,18 +19,16 @@ def _fn_init_arg_with_default_val(args, name, val):
 
 def args_mgt(file_path= None):
 
-    def _fn_arg_defaults(args, file_path):
+    def _fn_arg_defaults(args):
         args = _fn_init_arg_with_default_val(args, 'LOGGER_', logging.getLogger(__name__))
-        # args = _fn_init_arg_with_default_val(args, 'DEMO_FOLDER_PATH_', demo_folder)
-        # args = _fn_init_arg_with_default_val(args, 'DEMO_FILE_NAME_', demo_name)
-        # args = _fn_init_arg_with_default_val(args, 'MODEL_NAME', 'model.tar')
+
         args = _fn_init_arg_with_default_val(args, 'RESULTS_FOLDER_PATH_', 'Results/')
         model_path = os.path.join(args.DEMO_FOLDER_PATH_, args.RESULTS_FOLDER_PATH_)
         args = _fn_init_arg_with_default_val(args, 'MODEL_PATH_', model_path)
-        args = _fn_init_arg_with_default_val(args, 'TMP_MODEL_FILENAME_', '_tmp.tar')
-        current_dir = file_path.rsplit('/', 1)[0]
-        archive_dir = current_dir.replace('/Demos/', '/Archives/')
-        args = _fn_init_arg_with_default_val(args, 'ARCHIVE_DIR_', archive_dir)
+        # args = _fn_init_arg_with_default_val(args, 'TMP_MODEL_FILENAME_', '_tmp.tar')
+        # current_dir = file_path.rsplit('/', 1)[0]
+        # archive_dir = current_dir.replace('/Demos/', '/Archives/')
+        # args = _fn_init_arg_with_default_val(args, 'ARCHIVE_DIR_', archive_dir)
         args = _fn_init_arg_with_default_val(args, 'fn_record',
                                              log_mgt(log_dir=archive_dir, fixed_log_file=True))
         args = _fn_init_arg_with_default_val(args, 'CALL_TRACER_', call_trace_mgt(args.fn_record))
@@ -43,10 +41,6 @@ def args_mgt(file_path= None):
                                                  os.path.join(results_folder_path, 'old_' + args.MODEL_NAME))
 
         args = _fn_init_arg_with_default_val(args, 'DO_LOAD_MODEL', True)
-        # args = _fn_init_arg_with_default_val(args, 'DO_LOAD_SAMPLES', False)
-
-        # args = _fn_init_arg_with_default_val(args, 'NUM_OF_ITERATION_SUCCESSES_FOR_MODEL_UPGRADE', 1)
-        # args = _fn_init_arg_with_default_val(args, 'run_recursive_search', True)
 
         args = _fn_init_arg_with_default_val(args, 'UCB_USE_LOG_IN_NUMERATOR', True)
         args = _fn_init_arg_with_default_val(args, 'UCB_USE_POLICY_FOR_EXPLORATION', True)
@@ -60,8 +54,11 @@ def args_mgt(file_path= None):
     args = _fn_init_arg_with_default_val(args, 'DEMO_FOLDER_PATH_', demo_folder_path)
     args = _fn_init_arg_with_default_val(args, 'DEMO_FILE_NAME_', demo_file_name)
     args = _fn_init_arg_with_default_val(args, 'DEMO_DOT_PATH_', demo_dot_path)
+    # current_dir = file_path.rsplit('/', 1)[0]
+    archive_dir = demo_folder_path.replace('/Demos/', '/Archives/')
+    args = _fn_init_arg_with_default_val(args, 'ARCHIVE_DIR_', archive_dir)
 
-    args_copy = _fn_arg_defaults(args, file_path)
+    args_copy = _fn_arg_defaults(args)
 
     return args_copy
 
