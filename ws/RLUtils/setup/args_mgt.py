@@ -8,14 +8,16 @@ from ws.RLUtils.common.module_loader import load_function
 from ws.RLUtils.monitoring.tracing.call_trace_mgt import call_trace_mgt
 from ws.RLUtils.monitoring.tracing.log_mgt import log_mgt
 
+
+def _fn_init_arg_with_default_val(args, name, val):
+    if args is None:
+        args = {}
+    else:
+        args = DotDict(args.copy())
+    args[name] = val
+    return args
+
 def args_mgt(file_path= None):
-    def _fn_init_arg_with_default_val(args, name, val):
-        if args is None:
-            args = {}
-        else:
-            args = DotDict(args.copy())
-        args[name] = val
-        return args
 
     def _fn_arg_defaults(args, file_path):
         args = _fn_init_arg_with_default_val(args, 'LOGGER_', logging.getLogger(__name__))
@@ -43,7 +45,7 @@ def args_mgt(file_path= None):
         args = _fn_init_arg_with_default_val(args, 'DO_LOAD_MODEL', True)
         # args = _fn_init_arg_with_default_val(args, 'DO_LOAD_SAMPLES', False)
 
-        args = _fn_init_arg_with_default_val(args, 'NUM_SUCCESSES_FOR_MODEL_UPGRADE_', 1)
+        # args = _fn_init_arg_with_default_val(args, 'NUM_OF_ITERATION_SUCCESSES_FOR_MODEL_UPGRADE', 1)
         # args = _fn_init_arg_with_default_val(args, 'run_recursive_search', True)
 
         args = _fn_init_arg_with_default_val(args, 'UCB_USE_LOG_IN_NUMERATOR', True)
@@ -51,8 +53,6 @@ def args_mgt(file_path= None):
         return args
 
     demo_folder_path, demo_file_name = fn_separate_folderpath_and_filename(file_path)
-
-
     demo_dot_path = fn_get_rel_dot_folder_path(demo_folder_path, '/ws/')
 
     fn_get_args = load_function(function_name="fn_get_args", module_tag="ARGS", subpackage_tag=demo_dot_path)

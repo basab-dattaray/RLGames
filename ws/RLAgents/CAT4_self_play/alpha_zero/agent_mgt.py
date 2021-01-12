@@ -132,6 +132,7 @@ def agent_mgt(file_path):
         @tracer(args, verboscity= 4)
         def fn_archive_log_file():
             dst_subfolder_rel_path = dt.now().strftime("%Y_%m_%d_%H_%M_%S")
+
             dst_full_path = os.path.join(args.ARCHIVE_DIR_, dst_subfolder_rel_path)
             os.mkdir(dst_full_path)
 

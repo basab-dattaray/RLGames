@@ -96,7 +96,7 @@ def training_mgt(nn_mgr_N, args):
         _fn_try_to_load_model()
         for iteration in range(1, args.NUM_TRAINING_ITERATIONS + 1):
             fn_run_iteration(iteration)
-            if update_count >= args.NUM_SUCCESSES_FOR_MODEL_UPGRADE_:
+            if update_count >= args.NUM_OF_ITERATION_SUCCESSES_FOR_MODEL_UPGRADE:
                 break
 
     training_mgr  = namedtuple('_', ['fn_execute_training_iterations'])

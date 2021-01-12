@@ -67,7 +67,7 @@ def _fn_setup_paths_in_app_info(app_info):
 
     app_info.AGENT_FOLDER_PATH =app_info.AGENTS_DOT_PATH  + '.{}'.format(app_info.STRATEGY)
 
-    app_info.RESULTS_ARCHIVE_PATH = os.path.join(app_info.DEMO_FOLDER_PATH.replace('Demos', 'ARCHIVES'), app_info.FULL_DEMO_PATHNAME)
+    app_info.RESULTS_ARCHIVE_PATH = os.path.join(app_info.DEMO_FOLDER_PATH.replace('Demos', 'ARCHIVES'), app_info.DEMO_FILE_NAME_)
 
 
 def startup_mgt(caller_filepath):
@@ -76,7 +76,7 @@ def startup_mgt(caller_filepath):
     demo_folder, demo_file_name = fn_separate_folderpath_and_filename(caller_filepath)
 
     _app_info.DEMO_FOLDER_PATH = demo_folder
-    _app_info.FULL_DEMO_PATHNAME = demo_file_name
+    # _app_info.FULL_DEMO_PATHNAME = demo_file_name
 
     _fn_setup_for_results(_app_info)
     _fn_setup_paths_in_app_info(_app_info)

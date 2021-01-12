@@ -2,12 +2,13 @@ from ws.RLUtils.common.DotDict import DotDict
 
 args = DotDict({
     'NUM_TRAINING_ITERATIONS': 5,
-    'NUM_TRAINING_EPISODES': 50,              # Number of complete self-play games to simulate during a new iteration.
-    'PROBABILITY_SPREAD_THRESHOLD': 0,        #
-    'SCORE_BASED_MODEL_UPDATE_THRESHOLD': 0.6,     # During arena playoff, new neural net will be accepted if threshold or more of games are won.
-    'SAMPLE_BUFFER_SIZE': 200000,    # Number of game examples to train the neural networks.
-    'NUM_MC_SIMULATIONS': 25,          # Number of games moves for MCTS to simulate.
-    'NUM_GAMES_FOR_MODEL_COMPARISON': 40,         # Number of games to play during arena play to determine if new net will be accepted.
+    'NUM_TRAINING_EPISODES': 50,
+    'NUM_OF_ITERATION_SUCCESSES_FOR_MODEL_UPGRADE': 1,
+    'PROBABILITY_SPREAD_THRESHOLD': 0,
+    'SCORE_BASED_MODEL_UPDATE_THRESHOLD': 0.6,
+    'SAMPLE_BUFFER_SIZE': 200000,
+    'NUM_MC_SIMULATIONS': 25,
+    'NUM_GAMES_FOR_MODEL_COMPARISON': 40,
     'EXPLORE_EXPLOIT_FACTOR': 1,
 
     'MODEL_NAME': 'model.tar',
