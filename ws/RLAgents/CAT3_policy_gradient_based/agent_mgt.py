@@ -1,9 +1,7 @@
 import signal
 from collections import namedtuple
-
 from time import sleep
 
-# from ws.RLInterfaces.PARAM_KEY_NAMES import *
 from ws.RLAgents.CAT3_policy_gradient_based.progress_mgt import progress_mgt
 from ws.RLUtils.common.config_mgt import config_mgt
 
@@ -23,7 +21,7 @@ def agent_mgt(caller_file):
 
     fn_act, fn_add_transition, fn_save_to_neural_net, fn_load_from_neural_net, fn_should_update_network = impl_mgt(app_info)
 
-    refobj_archive_mgt = archive_mgt(
+    archive = archive_mgt(
         fn_save_to_neural_net,
         fn_load_from_neural_net,
         app_info.RESULTS_ARCHIVE_PATH,
@@ -39,7 +37,7 @@ def agent_mgt(caller_file):
 
     def exit_gracefully(signum, frame):
         fn_log('!!! TERMINATING EARLY!!!')
-        msg = refobj_archive_mgt.fn_archive_all(app_info, fn_save_model=refobj_archive_mgt.fn_save_model)
+        msg = archive.fn_archive_all(app_info, fn_save_model=archive.fn_save_archive_model)
 
         chart.fn_close()
         fn_log(msg)
@@ -97,24 +95,24 @@ def agent_mgt(caller_file):
         return val, step
 
     def fn_run_train():
-        if refobj_archive_mgt.fn_load_model is not None:
-            if refobj_archive_mgt.fn_load_model():
+        if archive.fn_load_archive_model is not None:
+            if archive.fn_load_archive_model():
                 fn_log('SUCCESS in loading model')
             else:
                 fn_log('FAILED in loading model')
 
         fn_run(fn_show_training_progress, fn_should_update_network=fn_should_update_network)
 
-        fn_log(refobj_archive_mgt.fn_archive_all(app_info, refobj_archive_mgt.fn_save_model))
+        fn_log(archive.fn_archive_all(app_info, archive.fn_save_archive_model))
         return agent_mgr
 
 
     def fn_run_test():
-        if refobj_archive_mgt.fn_load_model is None:
+        if archive.fn_load_archive_model is None:
             fn_log("ERROR:: Loading Model: model function missing")
             return agent_mgr
 
-        if not refobj_archive_mgt.fn_load_model():
+        if not archive.fn_load_archive_model():
             fn_log("ERROR:: Loading Model: model agent_configs missing")
             return agent_mgr
 
