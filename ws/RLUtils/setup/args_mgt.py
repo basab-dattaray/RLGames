@@ -21,7 +21,7 @@ def args_mgt(file_path= None):
         args = _fn_init_arg_with_default_val(args, 'LOGGER_', logging.getLogger(__name__))
         # args = _fn_init_arg_with_default_val(args, 'DEMO_FOLDER_PATH_', demo_folder)
         # args = _fn_init_arg_with_default_val(args, 'DEMO_FILE_NAME_', demo_name)
-        args = _fn_init_arg_with_default_val(args, 'MODEL_NAME_', 'model.tar')
+        # args = _fn_init_arg_with_default_val(args, 'MODEL_NAME', 'model.tar')
         args = _fn_init_arg_with_default_val(args, 'RESULTS_FOLDER_PATH_', 'Results/')
         model_path = os.path.join(args.DEMO_FOLDER_PATH_, args.RESULTS_FOLDER_PATH_)
         args = _fn_init_arg_with_default_val(args, 'MODEL_PATH_', model_path)
@@ -35,9 +35,9 @@ def args_mgt(file_path= None):
         results_folder_path = os.path.join(args.DEMO_FOLDER_PATH_, args.RESULTS_FOLDER_PATH_)
         args = _fn_init_arg_with_default_val(args, 'RESULTS_FILEPATH_', results_folder_path)
         args = _fn_init_arg_with_default_val(args, 'MODEL_FILEPATH_',
-                                             os.path.join(results_folder_path, args.MODEL_NAME_))
+                                             os.path.join(results_folder_path, args.MODEL_NAME))
         args = _fn_init_arg_with_default_val(args, 'OLD_MODEL_FILEPATH_',
-                                             os.path.join(results_folder_path, 'old_' + args.MODEL_NAME_))
+                                             os.path.join(results_folder_path, 'old_' + args.MODEL_NAME))
 
         args = _fn_init_arg_with_default_val(args, 'DO_LOAD_MODEL', True)
         # args = _fn_init_arg_with_default_val(args, 'DO_LOAD_SAMPLES', False)

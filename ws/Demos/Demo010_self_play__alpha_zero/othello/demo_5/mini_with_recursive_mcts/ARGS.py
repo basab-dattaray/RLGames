@@ -11,6 +11,8 @@ args = DotDict({
     'NUM_GAMES_FOR_MODEL_COMPARISON': 4,
     'EXPLORE_EXPLOIT_FACTOR': 1,
 
+    'MODEL_NAME': 'model.tar',
+
     'DO_LOAD_MODEL': True,
 
     'SAMPLE_HISTORY_BUFFER_SIZE': 20,
