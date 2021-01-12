@@ -1,6 +1,7 @@
 import logging
 import os
 import shutil
+from datetime import date, datetime
 
 from ws.RLUtils.common.DotDict import DotDict
 from ws.RLUtils.common.config_mgt import config_mgt
@@ -14,6 +15,11 @@ from ws.RLUtils.platform_libs.pytorch.device_selection import get_device
 def startup_mgt(caller_filepath):
     ROOT_DOT_PATH = 'ws'
     ARGS_PY = 'ARGS.py'
+
+    def _fn_get_another_archive_path():
+        current_time_id = date.now().strftime("%Y_%m_%d_%H_%M_%S")
+        new_archive_folder_path = os.path.join(app_info.RESULTS_ARCHIVE_PATH, current_time_id)
+        return new_archive_folder_path
 
     def _fn_init_arg_with_default_val(args, name, val):
         if args is None:
@@ -98,8 +104,11 @@ def startup_mgt(caller_filepath):
 
         app_info.AGENT_FOLDER_PATH = app_info.AGENTS_DOT_PATH + '.{}'.format(app_info.STRATEGY)
 
-        app_info.RESULTS_ARCHIVE_PATH = os.path.join(app_info.DEMO_FOLDER_PATH_.replace('Demos', 'ARCHIVES'),
+        archive_container_path = os.path.join(app_info.DEMO_FOLDER_PATH_.replace('Demos', 'ARCHIVES'),
                                                      app_info.DEMO_FILE_NAME_)
+        current_time_id = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
+        app_info.RESULTS_ARCHIVE_PATH = os.path.join(archive_container_path, current_time_id)
+        pass
 
     def _fn_setup_gpu(_app_info, verbose=False):
         _app_info.GPU_DEVICE = get_device(_app_info)

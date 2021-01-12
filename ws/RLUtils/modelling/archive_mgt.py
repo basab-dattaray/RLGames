@@ -1,34 +1,11 @@
 import os
 import shutil
 from collections import namedtuple
-from datetime import datetime as dt
+
 
 def archive_mgt(fn_save_to_neural_net, fn_load_from_neural_net, archive_folder_path, current_folder_path,
                 max_result_count):
     obj_archive_mgt = namedtuple('_', 'fn_save_archive_model, fn_load_archive_model, fn_archive_all')
-    def fn_sort_names_in_folder_by_newest(folder_path, name_exclusions=None):
-        if name_exclusions is None:
-            name_exclusions = []
-        if not os.path.exists(folder_path):
-            return None
-
-        items = os.listdir(folder_path)
-        items.sort(reverse=True)
-
-        paths = [os.path.join(folder_path, basename) for basename in items if basename not in name_exclusions]
-        if len(paths) == 0:
-            return None
-        return paths
-
-    def _fn_prune_archive_per_depth():
-        sorted_model_folders = fn_sort_names_in_folder_by_newest(archive_folder_path, [])
-        num_subfolders_to_be_removed = 0
-        if sorted_model_folders is not None:
-            num_subfolders_to_be_removed = sorted_model_folders[max_result_count - 1:]
-            for subfolder in num_subfolders_to_be_removed:
-                if os.path.isdir(subfolder):
-                    shutil.rmtree(subfolder)
-        return num_subfolders_to_be_removed
 
     def fn_load_archive_model():
         if current_folder_path is False:
@@ -56,12 +33,12 @@ def archive_mgt(fn_save_to_neural_net, fn_load_from_neural_net, archive_folder_p
             # shutil.copy(app_info.APP_INFO_SOURCE, app_info.RESULTS_FILEPATH_)
 
             # Copy to Archive
-            number_of_archive_folders_to_remove = _fn_prune_archive_per_depth()
-            archive_folder = _fn_get_another_archive_path()
-            if archive_folder is not None:
-                shutil.copytree(app_info.RESULTS_FILEPATH_, archive_folder, symlinks=False, ignore=None)
+            # number_of_archive_folders_to_remove = _fn_prune_archive_per_depth()
+            # archive_folder = _fn_get_another_archive_path()
+            if app_info.RESULTS_ARCHIVE_PATH is not None:
+                shutil.copytree(app_info.RESULTS_FILEPATH_, app_info.RESULTS_ARCHIVE_PATH, symlinks=False, ignore=None)
 
-            return "INFO:: Sucessfully Archived at {}".format(archive_folder)
+            return "INFO:: Sucessfully Archived at {}".format(app_info.RESULTS_ARCHIVE_PATH)
 
         except Exception as x:
             print(x)
