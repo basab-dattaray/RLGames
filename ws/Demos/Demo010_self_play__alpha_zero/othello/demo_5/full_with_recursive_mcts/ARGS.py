@@ -1,6 +1,7 @@
 from ws.RLUtils.common.DotDict import DotDict
 
 args = DotDict({
+    'STRATEGY': 'CAT4_self_play.alpha_zero',
     'NUM_TRAINING_ITERATIONS': 5,
     'NUM_TRAINING_EPISODES': 50,
     'NUM_OF_ITERATION_SUCCESSES_FOR_MODEL_UPGRADE': 1,

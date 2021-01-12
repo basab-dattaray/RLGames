@@ -10,7 +10,7 @@ if __name__ == "__main__":
             'DO_LOAD_MODEL': True,
             'NUM_MC_SIMULATIONS': 50,
             'NUM_EPOCHS': 5,
-            # 'UCB_USE_POLICY_FOR_EXPLORATION': True,
+            'UCB_USE_POLICY_FOR_EXPLORATION': True,
         }). \
         fn_train(). \
         fn_test_against_greedy(). \
