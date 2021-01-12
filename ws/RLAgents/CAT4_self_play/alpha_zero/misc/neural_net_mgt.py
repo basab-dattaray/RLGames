@@ -30,6 +30,36 @@ def neural_net_mgt(args):
 
     folder = args.RESULTS_FILEPATH_
 
+    def fn_save_model(filename= args.MODEL_NAME):
+
+        filepath = os.path.join(folder, filename)
+        if not os.path.exists(folder):
+            os.mkdir(folder)
+
+        torch.save({
+            'state_dict': nnet.state_dict(),
+        }, filepath)
+
+    def fn_load_model(filename= args.MODEL_NAME):
+        # folder = os.path.join(args.DEMO_FOLDER_PATH_, args.RESULTS_REL_PATH)
+        filepath = os.path.join(folder, filename)
+
+        if not os.path.exists(filepath):
+            return False
+
+        map_location = None if nn_args.cuda else 'cpu'
+        model = torch.load(filepath, map_location=map_location)
+        nnet.load_state_dict(model['state_dict'])
+        return True
+
+    def fn_is_model_available(rel_folder):
+        folder = os.path.join(args.DEMO_FOLDER_PATH_, rel_folder)
+        filepath = os.path.join(folder, args.MODEL_NAME)
+        if  os.path.exists(filepath):
+            return True
+        else:
+            return False
+
     def fn_get_untrained_model(arguments):
         # nn_args = nn_args
         untrained_nn = NeuralNet(arguments.game_mgr, nn_args)
@@ -108,35 +138,6 @@ def neural_net_mgt(args):
         loss = torch.sum((actual_results - predicted_results.view(-1)) ** 2) / actual_results.size()[0]
         return loss
 
-    def fn_save_model(filename= args.MODEL_NAME):
-
-        filepath = os.path.join(folder, filename)
-        if not os.path.exists(folder):
-            os.mkdir(folder)
-
-        torch.save({
-            'state_dict': nnet.state_dict(),
-        }, filepath)
-
-    def fn_load_model(filename= args.MODEL_NAME):
-        # folder = os.path.join(args.DEMO_FOLDER_PATH_, args.RESULTS_REL_PATH)
-        filepath = os.path.join(folder, filename)
-
-        if not os.path.exists(filepath):
-            return False
-
-        map_location = None if nn_args.cuda else 'cpu'
-        model = torch.load(filepath, map_location=map_location)
-        nnet.load_state_dict(model['state_dict'])
-        return True
-
-    def fn_is_model_available(rel_folder):
-        folder = os.path.join(args.DEMO_FOLDER_PATH_, rel_folder)
-        filepath = os.path.join(folder, args.MODEL_NAME)
-        if  os.path.exists(filepath):
-            return True
-        else:
-            return False
 
     neural_net_mgr = namedtuple('_', [
         'fn_get_untrained_model',

@@ -5,8 +5,6 @@ import pytest
 
 from ws.RLUtils.persist.pickle_mgt import pickle_mgt
 
-
-
 @pytest.fixture(scope='module')
 def fixture_ws_mgt():
     obj = {'d1': 3, 'd2': [1, 2], 'd3': {'d31': 'D31', 'd32': 'D32'}}
