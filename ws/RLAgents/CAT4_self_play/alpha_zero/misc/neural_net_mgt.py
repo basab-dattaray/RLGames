@@ -16,11 +16,10 @@ from ws.RLUtils.common.DotDict import *
 import torch
 import torch.optim as optim
 
-def neural_net_mgt(game_mgr, folder, model_name):
+def neural_net_mgt(game_mgr, model_folder, model_name):
     nn_args = DotDict({
-        'lr': 0.001,
+        # 'lr': 0.001,
         'dropout': 0.3,
-        # 'NUM_EPOCHS': 2,
         'batch_size': 64,
         'cuda': torch.cuda.is_available(),
         'num_channels': 512,
@@ -30,9 +29,9 @@ def neural_net_mgt(game_mgr, folder, model_name):
 
     def fn_save_model(filename= model_name):
 
-        filepath = os.path.join(folder, filename)
-        if not os.path.exists(folder):
-            os.mkdir(folder)
+        filepath = os.path.join(model_folder, filename)
+        if not os.path.exists(model_folder):
+            os.mkdir(model_folder)
 
         torch.save({
             'state_dict': nnet.state_dict(),
@@ -40,7 +39,7 @@ def neural_net_mgt(game_mgr, folder, model_name):
 
     def fn_load_model(filename= model_name):
 
-        filepath = os.path.join(folder, filename)
+        filepath = os.path.join(model_folder, filename)
 
         if not os.path.exists(filepath):
             return False

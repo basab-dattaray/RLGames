@@ -136,12 +136,6 @@ def agent_mgt(file_path):
             dst_full_path = os.path.join(args.ARCHIVE_DIR_, dst_subfolder_rel_path)
             os.mkdir(dst_full_path)
 
-            # move log.txt
-            # src_log_file_name = os.path.join(args.ARCHIVE_DIR_, 'log.txt')
-            # if os.path.exists(src_log_file_name):
-            #     shutil.move(src_log_file_name, dst_full_path)
-
-            # move old_model.tar
             if os.path.exists(args.OLD_MODEL_FILEPATH_):
                 shutil.copy(args.OLD_MODEL_FILEPATH_, dst_full_path)
 
