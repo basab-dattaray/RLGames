@@ -100,10 +100,9 @@ def agent_mgt(caller_file):
                 fn_log('FAILED in loading model')
 
         fn_run(fn_show_training_progress, fn_should_update_network=fn_should_update_network)
-
-        fn_log(archive.fn_archive_all(app_info, archive.fn_save_archive_model))
+        archive_msg = archive.fn_archive_all(app_info, archive.fn_save_archive_model)
+        fn_log(archive_msg)
         return agent_mgr
-
 
     def fn_run_test():
         if archive.fn_load_archive_model is None:
