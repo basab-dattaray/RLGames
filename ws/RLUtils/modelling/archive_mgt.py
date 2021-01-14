@@ -1,21 +1,21 @@
-import os
+# import os
 import shutil
 from collections import namedtuple
 
 
-def archive_mgt(fn_save_to_neural_net, fn_load_from_neural_net, current_folder_path):
+def archive_mgt(fn_save_to_neural_net, fn_load_from_neural_net, model_folder_path):
     obj_archive_mgt = namedtuple('_', 'fn_save_archive_model, fn_load_archive_model, fn_archive_all')
 
     def fn_load_archive_model():
-        if current_folder_path is None:
+        if model_folder_path is None:
             return None
 
-        ret = fn_load_from_neural_net(current_folder_path)
+        ret = fn_load_from_neural_net(model_folder_path)
         return ret
 
     def fn_save_archive_model():
-        fn_save_to_neural_net(current_folder_path)
-        return current_folder_path
+        fn_save_to_neural_net(model_folder_path)
+        return model_folder_path
 
     def fn_archive_all(app_info, fn_save_archive_model=None):
         try:
