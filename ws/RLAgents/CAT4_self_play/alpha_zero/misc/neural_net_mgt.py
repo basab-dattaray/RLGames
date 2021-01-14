@@ -28,7 +28,7 @@ def neural_net_mgt(args):
         'num_channels': 512,
     })
 
-    folder = args.RESULTS_FILEPATH_
+    folder = args.RESULTS_PATH_
 
     def fn_save_model(filename= args.MODEL_NAME):
 
@@ -41,7 +41,7 @@ def neural_net_mgt(args):
         }, filepath)
 
     def fn_load_model(filename= args.MODEL_NAME):
-        # folder = os.path.join(args.DEMO_FOLDER_PATH_, args.RESULTS_REL_PATH)
+
         filepath = os.path.join(folder, filename)
 
         if not os.path.exists(filepath):
@@ -52,9 +52,8 @@ def neural_net_mgt(args):
         nnet.load_state_dict(model['state_dict'])
         return True
 
-    def fn_is_model_available(rel_folder):
-        folder = os.path.join(args.DEMO_FOLDER_PATH_, rel_folder)
-        filepath = os.path.join(folder, args.MODEL_NAME)
+    def fn_is_model_available(results_path):
+        filepath = os.path.join(results_path, args.MODEL_NAME)
         if  os.path.exists(filepath):
             return True
         else:
@@ -70,7 +69,7 @@ def neural_net_mgt(args):
 
     nnet = fn_get_untrained_model(args)
     # board_x, board_y = args.BOARD_SIZE, args.BOARD_SIZE
-    action_size = args.game_mgr.fn_get_action_size()
+    # action_size = args.game_mgr.fn_get_action_size()
 
     # @tracer(nn_args)
     def fn_adjust_model_from_examples(examples):

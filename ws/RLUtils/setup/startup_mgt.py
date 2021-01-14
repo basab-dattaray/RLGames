@@ -39,7 +39,7 @@ def startup_mgt(caller_filepath):
         args = _fn_init_arg_with_default_val(args, 'DEMO_DOT_PATH_', demo_dot_path)
         args = _fn_init_arg_with_default_val(args, 'RESULTS_REL_PATH', 'Results/')
         results_folder_path = os.path.join(args.DEMO_FOLDER_PATH_, args.RESULTS_REL_PATH)
-        args = _fn_init_arg_with_default_val(args, 'RESULTS_FILEPATH_', results_folder_path)
+        args = _fn_init_arg_with_default_val(args, 'RESULTS_PATH_', results_folder_path)
         if 'MODEL_NAME' in args:
             args = _fn_init_arg_with_default_val(args, 'MODEL_FILEPATH_',
                                                  os.path.join(results_folder_path, args.MODEL_NAME))
@@ -59,7 +59,7 @@ def startup_mgt(caller_filepath):
         results_folder = os.path.join(_app_info.DEMO_FOLDER_PATH_, "Results")
         if os.path.exists(results_folder) is False:
             os.makedirs(results_folder)
-        # _app_info.RESULTS_FILEPATH_ = results_folder
+        # _app_info.RESULTS_PATH_ = results_folder
         args_module_path = os.path.join(_app_info.DEMO_FOLDER_PATH_, ARGS_PY)
         if os.path.exists(args_module_path):
             shutil.copy(args_module_path, _app_info.RESULTS_REL_PATH)

@@ -24,13 +24,13 @@ def archive_mgt(fn_save_to_neural_net, fn_load_from_neural_net, current_folder_p
                 if save_path is None:
                     print("INFO:: unable to Save Model at {}".format(save_path))
 
-            # shutil.copy(app_info.APP_INFO_SOURCE, app_info.RESULTS_FILEPATH_)
+            # shutil.copy(app_info.APP_INFO_SOURCE, app_info.RESULTS_PATH_)
 
             # Copy to Archive
             # number_of_archive_folders_to_remove = _fn_prune_archive_per_depth()
             # archive_folder = _fn_get_another_archive_path()
             if app_info.RESULTS_ARCHIVE_PATH is not None:
-                shutil.copytree(app_info.RESULTS_FILEPATH_, app_info.RESULTS_ARCHIVE_PATH, symlinks=False, ignore=None)
+                shutil.copytree(app_info.RESULTS_PATH_, app_info.RESULTS_ARCHIVE_PATH, symlinks=False, ignore=None)
 
             return "INFO:: Sucessfully Archived at {}".format(app_info.RESULTS_ARCHIVE_PATH)
 
