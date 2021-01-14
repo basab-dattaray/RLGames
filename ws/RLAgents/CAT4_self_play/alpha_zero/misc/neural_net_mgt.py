@@ -26,9 +26,9 @@ def neural_net_mgt(game_mgr, model_folder, model_name):
 
 
 
-    def fn_save_model(filename= model_name):
+    def fn_save_model(overiding_model_name= model_name):
 
-        filepath = os.path.join(model_folder, filename)
+        filepath = os.path.join(model_folder, overiding_model_name)
         if not os.path.exists(model_folder):
             os.mkdir(model_folder)
 
@@ -36,9 +36,9 @@ def neural_net_mgt(game_mgr, model_folder, model_name):
             'state_dict': nnet.state_dict(),
         }, filepath)
 
-    def fn_load_model(filename= model_name):
+    def fn_load_model(overiding_model_name= model_name):
 
-        filepath = os.path.join(model_folder, filename)
+        filepath = os.path.join(model_folder, overiding_model_name)
 
         if not os.path.exists(filepath):
             return False
@@ -105,17 +105,17 @@ def neural_net_mgt(game_mgr, model_folder, model_name):
                 optimizer.step()
         fn_stop_counting()
 
-    def fn_neural_predict(board):
+    def fn_neural_predict(state):
         start = time.time()
 
         # preparing input
-        board = torch.FloatTensor(board.astype(np.float64))
+        state = torch.FloatTensor(state.astype(np.float64))
         if nn_args.IS_CUDA:
-            board = board.contiguous().cuda()
-        # board = board.view(1, board_x, board_y)
+            state = state.contiguous().cuda()
+        # state = state.view(1, board_x, board_y)
         nnet.eval()
         with torch.no_grad():
-            policy, value = nnet(board)
+            policy, value = nnet(state)
 
         return torch.exp(policy).data.cpu().numpy()[0], value.data.cpu().numpy()[0]
 
@@ -129,7 +129,6 @@ def neural_net_mgt(game_mgr, model_folder, model_name):
 
 
     neural_net_mgr = namedtuple('_', [
-        # 'fn_get_untrained_model',
         'fn_adjust_model_from_examples',
         'fn_load_model' ,
         'fn_save_model',
@@ -137,7 +136,6 @@ def neural_net_mgt(game_mgr, model_folder, model_name):
         'fn_is_model_available'
     ])
 
-    # neural_net_mgr.fn_get_untrained_model = fn_get_untrained_model
     neural_net_mgr.fn_adjust_model_from_examples = fn_adjust_model_from_examples
     neural_net_mgr.fn_load_model = fn_load_model
     neural_net_mgr.fn_save_model = fn_save_model
