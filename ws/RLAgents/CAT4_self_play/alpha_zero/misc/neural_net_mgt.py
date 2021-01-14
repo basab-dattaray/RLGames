@@ -69,7 +69,7 @@ def neural_net_mgt(args):
         return untrained_nn
 
     nnet = fn_get_untrained_model(args)
-    board_x, board_y = args.BOARD_SIZE, args.BOARD_SIZE
+    # board_x, board_y = args.BOARD_SIZE, args.BOARD_SIZE
     action_size = args.game_mgr.fn_get_action_size()
 
     # @tracer(nn_args)
@@ -122,8 +122,9 @@ def neural_net_mgt(args):
 
         # preparing input
         board = torch.FloatTensor(board.astype(np.float64))
-        if nn_args.cuda: board = board.contiguous().cuda()
-        board = board.view(1, board_x, board_y)
+        if nn_args.cuda:
+            board = board.contiguous().cuda()
+        # board = board.view(1, board_x, board_y)
         nnet.eval()
         with torch.no_grad():
             policy, value = nnet(board)
