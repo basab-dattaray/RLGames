@@ -19,7 +19,7 @@ import torch.optim as optim
 def neural_net_mgt(game_mgr, model_folder, model_name):
     nn_args = DotDict({
         'dropout': 0.3,
-        'batch_size': 64,
+        'BATCH_SIZE': 64,
         'IS_CUDA': torch.cuda.is_available(),
         'num_channels': 512,
     })
@@ -77,10 +77,10 @@ def neural_net_mgt(game_mgr, model_folder, model_name):
             pi_losses = average_mgt()
             v_losses = average_mgt()
 
-            batch_count = int(len(examples) / nn_args.batch_size)
+            batch_count = int(len(examples) / nn_args.BATCH_SIZE)
 
             for _ in range(batch_count):
-                sample_ids = np.random.randint(len(examples), size=nn_args.batch_size)
+                sample_ids = np.random.randint(len(examples), size=nn_args.BATCH_SIZE)
                 batch_of_states_as_tuple, batch_of_policies_as_tuple, batch_of_results_as_tuple = list(zip(*[examples[i] for i in sample_ids]))
                 batch_of_states = torch.FloatTensor(np.array(batch_of_states_as_tuple).astype(np.float64))
                 batch_of_policies = torch.FloatTensor(np.array(batch_of_policies_as_tuple))
