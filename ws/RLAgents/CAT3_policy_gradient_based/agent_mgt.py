@@ -24,9 +24,7 @@ def agent_mgt(caller_file):
     archive = archive_mgt(
         fn_save_to_neural_net,
         fn_load_from_neural_net,
-        app_info.RESULTS_ARCHIVE_PATH,
-        app_info.RESULTS_FILEPATH_,
-        app_info.MAX_RESULT_COUNT
+        app_info.RESULTS_FILEPATH_
     )
 
     chart, fn_show_training_progress, fn_has_reached_goal = progress_mgt(app_info)

@@ -3,12 +3,11 @@ import shutil
 from collections import namedtuple
 
 
-def archive_mgt(fn_save_to_neural_net, fn_load_from_neural_net, archive_folder_path, current_folder_path,
-                max_result_count):
+def archive_mgt(fn_save_to_neural_net, fn_load_from_neural_net, current_folder_path):
     obj_archive_mgt = namedtuple('_', 'fn_save_archive_model, fn_load_archive_model, fn_archive_all')
 
     def fn_load_archive_model():
-        if current_folder_path is False:
+        if current_folder_path is None:
             return None
 
         ret = fn_load_from_neural_net(current_folder_path)
@@ -17,11 +16,6 @@ def archive_mgt(fn_save_to_neural_net, fn_load_from_neural_net, archive_folder_p
     def fn_save_archive_model():
         fn_save_to_neural_net(current_folder_path)
         return current_folder_path
-    
-    def _fn_get_another_archive_path():
-        current_time_id = dt.now().strftime("%Y_%m_%d_%H_%M_%S")
-        new_archive_folder_path = os.path.join(archive_folder_path, current_time_id)
-        return new_archive_folder_path
 
     def fn_archive_all(app_info, fn_save_archive_model=None):
         try:
