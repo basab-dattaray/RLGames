@@ -25,7 +25,7 @@ from ws.RLUtils.setup.startup_mgt import startup_mgt
 
 def fn_setup_essential_managers(args_):
     args_.game_mgr = game_mgt(args_.BOARD_SIZE)
-    args_.neural_net_mgr = neural_net_mgt(args_)
+    args_.neural_net_mgr = neural_net_mgt(args_.game_mgr, args_.RESULTS_PATH_, args_.MODEL_NAME)
 
     args_.training_mgr = training_mgt(args_.neural_net_mgr, args_)
     return args_
@@ -79,7 +79,7 @@ def agent_mgt(file_path):
             fn_setup_essential_managers(args)
 
             signal.signal(signal.SIGINT, exit_gracefully)
-            system_nn = neural_net_mgt(args)
+            system_nn = neural_net_mgt(args.game_mgr, args.RESULTS_PATH_, args.MODEL_NAME)
             if not system_nn.fn_load_model():
                 return
 

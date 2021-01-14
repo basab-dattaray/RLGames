@@ -76,7 +76,7 @@ def training_mgt(nn_mgr_N, args):
                 nn_mgr_N.fn_save_model(filename=TMP_MODEL_FILENAME_)
                 nn_mgr_P.fn_load_model(filename=TMP_MODEL_FILENAME_)
                 pmcts = monte_carlo_tree_search_mgt(args.game_mgr, nn_mgr_P, args)
-                nn_mgr_N.fn_adjust_model_from_examples(training_samples)
+                nn_mgr_N.fn_adjust_model_from_examples(training_samples, args.NUM_EPOCHS)
                 nmcts = monte_carlo_tree_search_mgt(args.game_mgr, nn_mgr_N, args)
                 playground = playground_mgt(
                     lambda state: np.argmax(pmcts.fn_get_policy(state, do_random_selection= False)),

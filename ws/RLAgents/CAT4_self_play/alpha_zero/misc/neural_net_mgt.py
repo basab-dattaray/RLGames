@@ -16,9 +16,7 @@ from ws.RLUtils.common.DotDict import *
 import torch
 import torch.optim as optim
 
-# from ws.RLAgents.self_play.alpha_zero._game.othello._ml_lib.pytorch.NeuralNet import NeuralNet
-
-def neural_net_mgt(args):
+def neural_net_mgt(game_mgr, folder, model_name):
     nn_args = DotDict({
         'lr': 0.001,
         'dropout': 0.3,
@@ -28,9 +26,9 @@ def neural_net_mgt(args):
         'num_channels': 512,
     })
 
-    folder = args.RESULTS_PATH_
 
-    def fn_save_model(filename= args.MODEL_NAME):
+
+    def fn_save_model(filename= model_name):
 
         filepath = os.path.join(folder, filename)
         if not os.path.exists(folder):
@@ -40,7 +38,7 @@ def neural_net_mgt(args):
             'state_dict': nnet.state_dict(),
         }, filepath)
 
-    def fn_load_model(filename= args.MODEL_NAME):
+    def fn_load_model(filename= model_name):
 
         filepath = os.path.join(folder, filename)
 
@@ -53,32 +51,27 @@ def neural_net_mgt(args):
         return True
 
     def fn_is_model_available(results_path):
-        filepath = os.path.join(results_path, args.MODEL_NAME)
+        filepath = os.path.join(results_path, model_name)
         if  os.path.exists(filepath):
             return True
         else:
             return False
 
-    def fn_get_untrained_model(arguments):
+    def _fn_get_untrained_model():
         # nn_args = nn_args
-        untrained_nn = NeuralNet(arguments.game_mgr, nn_args)
+        untrained_nn = NeuralNet(game_mgr, nn_args)
 
         if nn_args.cuda:
             untrained_nn.cuda()
         return untrained_nn
 
-    nnet = fn_get_untrained_model(args)
-    # board_x, board_y = args.BOARD_SIZE, args.BOARD_SIZE
-    # action_size = args.game_mgr.fn_get_action_size()
+    nnet = _fn_get_untrained_model()
 
     # @tracer(nn_args)
-    def fn_adjust_model_from_examples(examples):
-        """
-        examples: list of examples, each example is of form (board_pieces, policy, v)
-        """
+    def fn_adjust_model_from_examples(examples, num_epochs):
         optimizer = optim.Adam(nnet.parameters())
-        fn_count_event, fn_stop_counting = progress_count_mgt('Epochs', args.NUM_EPOCHS)
-        for epoch in range(args.NUM_EPOCHS):
+        fn_count_event, fn_stop_counting = progress_count_mgt('Epochs', num_epochs)
+        for epoch in range(num_epochs):
             # nn_args.CALL_TRACER_.fn_write(f'Epoch {epoch + 1} of {nn_args.NUM_EPOCHS}')
             fn_count_event()
 
@@ -114,7 +107,6 @@ def neural_net_mgt(args):
                 total_loss.backward()
                 optimizer.step()
         fn_stop_counting()
-        # args.CALL_TRACER_.fn_write(f'Number of Epochs for training new model: {args.NUM_EPOCHS}')
 
     def fn_neural_predict(board):
         start = time.time()
@@ -140,7 +132,7 @@ def neural_net_mgt(args):
 
 
     neural_net_mgr = namedtuple('_', [
-        'fn_get_untrained_model',
+        # 'fn_get_untrained_model',
         'fn_adjust_model_from_examples',
         'fn_load_model' ,
         'fn_save_model',
@@ -148,7 +140,7 @@ def neural_net_mgt(args):
         'fn_is_model_available'
     ])
 
-    neural_net_mgr.fn_get_untrained_model = fn_get_untrained_model
+    # neural_net_mgr.fn_get_untrained_model = fn_get_untrained_model
     neural_net_mgr.fn_adjust_model_from_examples = fn_adjust_model_from_examples
     neural_net_mgr.fn_load_model = fn_load_model
     neural_net_mgr.fn_save_model = fn_save_model
