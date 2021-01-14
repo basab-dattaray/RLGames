@@ -4,23 +4,15 @@ from collections import namedtuple
 
 
 def archive_mgt(fn_save_to_neural_net,  model_folder_path):
-    obj_archive_mgt = namedtuple('_', 'fn_save_archive_model, fn_load_archive_model, fn_archive_all')
 
-    # def fn_load_archive_model():
-    #     if model_folder_path is None:
-    #         return None
-    #
-    #     ret = fn_load_from_neural_net(model_folder_path)
-    #     return ret
+    # def fn_save_archive_model():
+    #     fn_save_to_neural_net(model_folder_path)
+    #     return model_folder_path
 
-    def fn_save_archive_model():
-        fn_save_to_neural_net(model_folder_path)
-        return model_folder_path
-
-    def fn_archive_all(fn_save_archive_model= None, archive_path= None):
+    def fn_archive(archive_path= None):
         try:
-            if fn_save_archive_model is not None:
-                save_path = fn_save_archive_model()
+            if fn_save_to_neural_net is not None:
+                save_path = fn_save_to_neural_net(model_folder_path)
                 if save_path is None:
                     print("INFO:: unable to Save Model at {}".format(save_path))
 
@@ -40,10 +32,8 @@ def archive_mgt(fn_save_to_neural_net,  model_folder_path):
             print(x)
             raise Exception('Exception: fn_archive_all')
 
-
-    obj_archive_mgt.fn_save_archive_model = fn_save_archive_model
-    # obj_archive_mgt.fn_load_archive_model = fn_load_archive_model
-    obj_archive_mgt.fn_archive_all = fn_archive_all
+    # obj_archive_mgt.fn_save_archive_model = fn_save_archive_model
+    # obj_archive_mgt.fn_archive_all = fn_archive_all
 
 
-    return obj_archive_mgt
+    return fn_archive

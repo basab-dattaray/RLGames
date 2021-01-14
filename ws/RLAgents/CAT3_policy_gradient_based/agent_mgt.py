@@ -19,7 +19,7 @@ def agent_mgt(caller_file):
 
     fn_act, fn_add_transition, fn_save_to_neural_net, fn_load_from_neural_net, fn_should_update_network = impl_mgt(app_info)
 
-    archive = archive_mgt(
+    fn_archive = archive_mgt(
         fn_save_to_neural_net,
         app_info.RESULTS_PATH_
     )
@@ -97,7 +97,7 @@ def agent_mgt(caller_file):
                 fn_log('FAILED in loading model')
 
         fn_run(fn_show_training_progress, fn_should_update_network=fn_should_update_network)
-        archive_msg = archive.fn_archive_all(archive.fn_save_archive_model, archive_path= app_info.FULL_ARCHIVE_PATH)
+        archive_msg = fn_archive(archive_path= app_info.FULL_ARCHIVE_PATH)
         fn_log(archive_msg)
         return agent_mgr
 
@@ -109,14 +109,6 @@ def agent_mgt(caller_file):
             else:
                 fn_log('FAILED in loading model')
                 return agent_mgr
-
-        # if archive.fn_load_archive_model is None:
-        #     fn_log("ERROR:: Loading Model: model function missing")
-        #     return agent_mgr
-        #
-        # if not archive.fn_load_archive_model():
-        #     fn_log("ERROR:: Loading Model: model agent_configs missing")
-        #     return agent_mgr
 
         fn_run(fn_show_training_progress, supress_graph=True, consecutive_goal_hits_needed_for_success=1)
         fn_run_episode(do_render=True)
