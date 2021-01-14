@@ -6,11 +6,12 @@ from .misc import _fn_calculate_montecarlo_normalized_rewards
 
 from ws.RLAgents.CAT3_policy_gradient_based.Buffer import Buffer
 from ws.RLUtils.common.module_loader import load_function
+from .model_mgt import model_mgt
 
 
 def impl_mgt(app_info):
-    MODEL_ACTOR_NAME = 'Model_Actor.pth'
-    MODEL_CRITIC_NAME = 'Model_Critic.pth'
+    # MODEL_ACTOR_NAME = 'Model_Actor.pth'
+    # MODEL_CRITIC_NAME = 'Model_Critic.pth'
 
     _gamma = app_info['GAMMA']
 
@@ -25,13 +26,15 @@ def impl_mgt(app_info):
     Actor = load_function('Actor', 'Actor', target_pkgpath)
     _model_actor = Actor(app_info).to(device)
     _model_critic = Critic(app_info).to(device)
-
+    #
     _optimizer = torch.optim.Adam(_model_actor.parameters(), lr=app_info.LEARNING_RATE, betas=(0.9, 0.999))
-
+    #
     _model_old_critic = Critic(app_info).to(device)
     _model_old_actor = Actor(app_info).to(device)
     _buffer = Buffer()
     _update_interval_count = 0
+
+    fn_save_to_neural_net, fn_load_from_neural_net = model_mgt(_model_actor, _model_critic)
 
     def fn_act(state):
         action = fn_pick_action(state, _buffer, _model_old_actor)
@@ -41,28 +44,28 @@ def impl_mgt(app_info):
         _buffer.rewards.append(reward)
         _buffer.done.append(done)
 
-    def fn_load_from_neural_net(model_folder_path):
-        nonlocal _model_actor, _model_critic
-
-        try:
-            actor_dict = torch.load(os.path.join(model_folder_path, MODEL_ACTOR_NAME))
-            _model_actor.load_state_dict(actor_dict)
-            critic_dict = torch.load(os.path.join(model_folder_path, MODEL_CRITIC_NAME))
-            _model_critic.load_state_dict(critic_dict)
-            return True
-        except Exception as x:
-            return False
-
-    def fn_save_to_neural_net(model_folder_path):
-        nonlocal _model_actor, _model_critic
-        if os.path.exists(model_folder_path) is False:
-            os.makedirs(model_folder_path)
-
-        actor_path = os.path.join(model_folder_path, MODEL_ACTOR_NAME)
-        torch.save(_model_actor.state_dict(), actor_path)
-
-        critic_path = os.path.join(model_folder_path, MODEL_CRITIC_NAME)
-        torch.save(_model_critic.state_dict(), critic_path)
+    # def fn_load_from_neural_net(model_folder_path):
+    #     nonlocal model_actor, model_critic
+    #
+    #     try:
+    #         actor_dict = torch.load(os.path.join(model_folder_path, MODEL_ACTOR_NAME))
+    #         model_actor.load_state_dict(actor_dict)
+    #         critic_dict = torch.load(os.path.join(model_folder_path, MODEL_CRITIC_NAME))
+    #         model_critic.load_state_dict(critic_dict)
+    #         return True
+    #     except Exception as x:
+    #         return False
+    #
+    # def fn_save_to_neural_net(model_folder_path):
+    #     nonlocal model_actor, model_critic
+    #     if os.path.exists(model_folder_path) is False:
+    #         os.makedirs(model_folder_path)
+    #
+    #     actor_path = os.path.join(model_folder_path, MODEL_ACTOR_NAME)
+    #     torch.save(model_actor.state_dict(), actor_path)
+    #
+    #     critic_path = os.path.join(model_folder_path, MODEL_CRITIC_NAME)
+    #     torch.save(model_critic.state_dict(), critic_path)
 
     def fn_should_update_network(done):
         nonlocal _update_interval_count
