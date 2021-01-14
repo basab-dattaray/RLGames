@@ -9,7 +9,7 @@ from ws.RLAgents.CAT4_self_play.alpha_zero._game.othello._ml_lib.pytorch.NeuralN
 from ws.RLAgents.CAT4_self_play.alpha_zero.misc.average_mgt import average_mgt
 from ws.RLUtils.monitoring.tracing.progress_count_mgt import progress_count_mgt
 
-sys.path.append('../../')
+# sys.path.append('../../')
 from ws.RLUtils.common.DotDict import *
 
 
@@ -18,10 +18,10 @@ import torch.optim as optim
 
 def neural_net_mgt(game_mgr, model_folder, model_name):
     nn_args = DotDict({
-        'dropout': 0.3,
         'BATCH_SIZE': 64,
         'IS_CUDA': torch.cuda.is_available(),
         'num_channels': 512,
+        'dropout': 0.3,
     })
 
 
@@ -56,7 +56,6 @@ def neural_net_mgt(game_mgr, model_folder, model_name):
             return False
 
     def _fn_get_untrained_model():
-        # nn_args = nn_args
         untrained_nn = NeuralNet(game_mgr, nn_args)
 
         if nn_args.IS_CUDA:
