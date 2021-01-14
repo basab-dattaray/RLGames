@@ -20,8 +20,8 @@ def neural_net_mgt(game_mgr, model_folder, model_name):
     nn_args = DotDict({
         'BATCH_SIZE': 64,
         'IS_CUDA': torch.cuda.is_available(),
-        'num_channels': 512,
-        'dropout': 0.3,
+        'NUM_CHANNELS': 512,
+        'DROPOUT': 0.3,
     })
 
 
