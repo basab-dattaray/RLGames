@@ -29,10 +29,10 @@ def archive_mgt(fn_save_to_neural_net, fn_load_from_neural_net, model_folder_pat
             # Copy to Archive
             # number_of_archive_folders_to_remove = _fn_prune_archive_per_depth()
             # archive_folder = _fn_get_another_archive_path()
-            if app_info.RESULTS_ARCHIVE_PATH is not None:
-                shutil.copytree(app_info.RESULTS_PATH_, app_info.RESULTS_ARCHIVE_PATH, symlinks=False, ignore=None)
+            if app_info.FULL_ARCHIVE_PATH is not None:
+                shutil.copytree(app_info.RESULTS_PATH_, app_info.FULL_ARCHIVE_PATH, symlinks=False, ignore=None)
 
-            return "INFO:: Sucessfully Archived at {}".format(app_info.RESULTS_ARCHIVE_PATH)
+            return "INFO:: Sucessfully Archived at {}".format(app_info.FULL_ARCHIVE_PATH)
 
         except Exception as x:
             print(x)

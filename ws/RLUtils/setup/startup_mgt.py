@@ -16,10 +16,10 @@ def startup_mgt(caller_filepath):
     ROOT_DOT_PATH = 'ws'
     ARGS_PY = 'ARGS.py'
 
-    def _fn_get_another_archive_path():
-        current_time_id = date.now().strftime("%Y_%m_%d_%H_%M_%S")
-        new_archive_folder_path = os.path.join(app_info.RESULTS_ARCHIVE_PATH, current_time_id)
-        return new_archive_folder_path
+    # def _fn_get_another_archive_path():
+    #     current_time_id = date.now().strftime("%Y_%m_%d_%H_%M_%S")
+    #     new_archive_folder_path = os.path.join(app_info.FULL_ARCHIVE_PATH, current_time_id)
+    #     return new_archive_folder_path
 
     def _fn_init_arg_with_default_val(args, name, val):
         if args is None:
@@ -107,7 +107,7 @@ def startup_mgt(caller_filepath):
         archive_container_path = os.path.join(app_info.DEMO_FOLDER_PATH_.replace('Demos', 'ARCHIVES'),
                                                      app_info.DEMO_FILE_NAME_)
         current_time_id = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
-        app_info.RESULTS_ARCHIVE_PATH = os.path.join(archive_container_path, current_time_id)
+        app_info.FULL_ARCHIVE_PATH = os.path.join(archive_container_path, current_time_id)
         pass
 
     def _fn_setup_gpu(_app_info, verbose=False):
