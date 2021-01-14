@@ -7,12 +7,10 @@ from ws.RLUtils.common.config_mgt import config_mgt
 
 from ws.RLUtils.common.module_loader import load_function
 from ws.RLUtils.modelling.archive_mgt import archive_mgt
-# from ws.RLUtils.setup.preparation_mgt import preparation_mgt
 from ws.RLUtils.setup.startup_mgt import startup_mgt
 
 
 def agent_mgt(caller_file):
-    # app_info = preparation_mgt(caller_file)
     app_info = startup_mgt(caller_file)
     fn_get_key_as_bool, fn_get_key_as_int, _ = config_mgt(app_info)
     is_single_episode_result = fn_get_key_as_bool('REWARD_CALCULATED_FROM_SINGLE_EPISODES')
@@ -23,7 +21,6 @@ def agent_mgt(caller_file):
 
     archive = archive_mgt(
         fn_save_to_neural_net,
-        fn_load_from_neural_net,
         app_info.RESULTS_PATH_
     )
 
@@ -35,7 +32,7 @@ def agent_mgt(caller_file):
 
     def exit_gracefully(signum, frame):
         fn_log('!!! TERMINATING EARLY!!!')
-        msg = archive.fn_archive_all(app_info, fn_save_archive_model=archive.fn_save_archive_model)
+        msg = archive.fn_archive_all(fn_save_archive_model=archive.fn_save_archive_model, archive_path= app_info.FULL_ARCHIVE_PATH)
 
         chart.fn_close()
         fn_log(msg)
@@ -93,25 +90,33 @@ def agent_mgt(caller_file):
         return val, step
 
     def fn_run_train():
-        if archive.fn_load_archive_model is not None:
-            if archive.fn_load_archive_model():
+        if fn_load_from_neural_net is not None:
+            if fn_load_from_neural_net(app_info.RESULTS_PATH_):
                 fn_log('SUCCESS in loading model')
             else:
                 fn_log('FAILED in loading model')
 
         fn_run(fn_show_training_progress, fn_should_update_network=fn_should_update_network)
-        archive_msg = archive.fn_archive_all(app_info, archive.fn_save_archive_model)
+        archive_msg = archive.fn_archive_all(archive.fn_save_archive_model, archive_path= app_info.FULL_ARCHIVE_PATH)
         fn_log(archive_msg)
         return agent_mgr
 
     def fn_run_test():
-        if archive.fn_load_archive_model is None:
-            fn_log("ERROR:: Loading Model: model function missing")
-            return agent_mgr
+        if fn_load_from_neural_net is not None:
+            if fn_load_from_neural_net(app_info.RESULTS_PATH_):
+                # fn_log('SUCCESS in loading model')
+                pass
+            else:
+                fn_log('FAILED in loading model')
+                return agent_mgr
 
-        if not archive.fn_load_archive_model():
-            fn_log("ERROR:: Loading Model: model agent_configs missing")
-            return agent_mgr
+        # if archive.fn_load_archive_model is None:
+        #     fn_log("ERROR:: Loading Model: model function missing")
+        #     return agent_mgr
+        #
+        # if not archive.fn_load_archive_model():
+        #     fn_log("ERROR:: Loading Model: model agent_configs missing")
+        #     return agent_mgr
 
         fn_run(fn_show_training_progress, supress_graph=True, consecutive_goal_hits_needed_for_success=1)
         fn_run_episode(do_render=True)

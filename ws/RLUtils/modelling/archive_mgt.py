@@ -3,21 +3,21 @@ import shutil
 from collections import namedtuple
 
 
-def archive_mgt(fn_save_to_neural_net, fn_load_from_neural_net, model_folder_path):
+def archive_mgt(fn_save_to_neural_net,  model_folder_path):
     obj_archive_mgt = namedtuple('_', 'fn_save_archive_model, fn_load_archive_model, fn_archive_all')
 
-    def fn_load_archive_model():
-        if model_folder_path is None:
-            return None
-
-        ret = fn_load_from_neural_net(model_folder_path)
-        return ret
+    # def fn_load_archive_model():
+    #     if model_folder_path is None:
+    #         return None
+    #
+    #     ret = fn_load_from_neural_net(model_folder_path)
+    #     return ret
 
     def fn_save_archive_model():
         fn_save_to_neural_net(model_folder_path)
         return model_folder_path
 
-    def fn_archive_all(app_info, fn_save_archive_model=None):
+    def fn_archive_all(fn_save_archive_model= None, archive_path= None):
         try:
             if fn_save_archive_model is not None:
                 save_path = fn_save_archive_model()
@@ -29,10 +29,12 @@ def archive_mgt(fn_save_to_neural_net, fn_load_from_neural_net, model_folder_pat
             # Copy to Archive
             # number_of_archive_folders_to_remove = _fn_prune_archive_per_depth()
             # archive_folder = _fn_get_another_archive_path()
-            if app_info.FULL_ARCHIVE_PATH is not None:
-                shutil.copytree(app_info.RESULTS_PATH_, app_info.FULL_ARCHIVE_PATH, symlinks=False, ignore=None)
+            if archive_path is  None:
+                return "FAILED: no archive path found"
 
-            return "INFO:: Sucessfully Archived at {}".format(app_info.FULL_ARCHIVE_PATH)
+            shutil.copytree(model_folder_path, archive_path, symlinks=False, ignore=None)
+
+            return "INFO:: Sucessfully Archived at {}".format(archive_path)
 
         except Exception as x:
             print(x)
@@ -40,7 +42,7 @@ def archive_mgt(fn_save_to_neural_net, fn_load_from_neural_net, model_folder_pat
 
 
     obj_archive_mgt.fn_save_archive_model = fn_save_archive_model
-    obj_archive_mgt.fn_load_archive_model = fn_load_archive_model
+    # obj_archive_mgt.fn_load_archive_model = fn_load_archive_model
     obj_archive_mgt.fn_archive_all = fn_archive_all
 
 

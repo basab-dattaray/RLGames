@@ -17,23 +17,28 @@ from ws.RLAgents.CAT4_self_play.alpha_zero.play.playground_mgt import playground
 from ws.RLAgents.algo_lib.logic.search.monte_carlo_tree_search_mgt import monte_carlo_tree_search_mgt
 from ws.RLAgents.CAT4_self_play.alpha_zero.train.training_mgt import training_mgt
 from ws.RLEnvironments.self_play_games.othello.game_mgt import game_mgt
+from ws.RLUtils.modelling.archive_mgt import archive_mgt
 
 from ws.RLUtils.monitoring.tracing.tracer import tracer
 # from ws.RLUtils.setup.args_mgt import args_mgt
 from ws.RLUtils.setup.startup_mgt import startup_mgt
 
 
-def fn_setup_essential_managers(args_):
-    args_.game_mgr = game_mgt(args_.BOARD_SIZE)
-    args_.neural_net_mgr = neural_net_mgt(args_.game_mgr, args_.RESULTS_PATH_, args_.MODEL_NAME)
+def fn_setup_essential_managers(args):
+    args.game_mgr = game_mgt(args.BOARD_SIZE)
+    args.neural_net_mgr = neural_net_mgt(args.game_mgr, args.RESULTS_PATH_, args.MODEL_NAME)
 
-    args_.training_mgr = training_mgt(args_.neural_net_mgr, args_)
-    return args_
+    args.training_mgr = training_mgt(args.neural_net_mgr, args)
+    return args
 
 def agent_mgt(file_path):
-    # try:
-        # args = args_mgt(file_path)
     args = startup_mgt(file_path)
+    args = fn_setup_essential_managers(args)
+
+    archive = archive_mgt(
+        args.neural_net_mgr.fn_save_model,
+        args.RESULTS_PATH_
+    )
     def exit_gracefully(signum, frame):
         #
         # if services.chart is not None:
@@ -52,7 +57,7 @@ def agent_mgt(file_path):
 
         signal.signal(signal.SIGINT, exit_gracefully)
 
-        fn_setup_essential_managers(args)
+        # fn_setup_essential_managers(args)
         args.training_mgr.fn_execute_training_iterations()
 
         return agent_mgr
@@ -76,7 +81,7 @@ def agent_mgt(file_path):
         return agent_mgr
 
     def fn_test(args, fn_player_policy, verbose=False, NUM_TEST_GAMES=2):
-        fn_setup_essential_managers(args)
+        # fn_setup_essential_managers(args)
 
         signal.signal(signal.SIGINT, exit_gracefully)
         system_nn = neural_net_mgt(args.game_mgr, args.RESULTS_PATH_, args.MODEL_NAME)
@@ -105,14 +110,14 @@ def agent_mgt(file_path):
         if change_args is not None:
             for k, v in change_args.items():
                 args[k] = v
-                args.CALL_TRACER_.fn_write(f'  args_[{k}] = {v}')
+                args.CALL_TRACER_.fn_write(f'  args[{k}] = {v}')
         agent_mgr.args = args
         return agent_mgr
 
     @tracer(args, verboscity= 4)
     def fn_show_args():
         for k, v in args.items():
-            args.CALL_TRACER_.fn_write(f'  args_[{k}] = {v}')
+            args.CALL_TRACER_.fn_write(f'  args[{k}] = {v}')
         return agent_mgr
 
     @tracer(args, verboscity= 4)
@@ -149,7 +154,7 @@ def agent_mgt(file_path):
     agent_mgr = namedtuple('_',
                            ['fn_reset', 'fn_train', 'fn_test_against_human', 'fn_test_againt_random', 'fn_test_against_greedy',
                             'fn_change_args', 'fn_show_args', 'fn_measure_time_elapsed', 'fn_archive_log_file',
-                            'args_'])
+                            'args'])
     agent_mgr.fn_reset = fn_reset
     agent_mgr.fn_train = fn_train
     agent_mgr.fn_test_against_human = fn_test_against_human
