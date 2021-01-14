@@ -30,12 +30,12 @@ def startup_mgt(caller_filepath):
         return args
 
     def fn_bootstrap(file_path):
-        demo_folder_path, demo_file_name = fn_separate_folderpath_and_filename(file_path)
+        demo_folder_path, _ = fn_separate_folderpath_and_filename(file_path)
         demo_dot_path = fn_get_rel_dot_folder_path(demo_folder_path, '/ws/')
         fn_get_args = load_function(function_name="fn_get_args", module_tag="ARGS", subpackage_tag=demo_dot_path)
         args = fn_get_args()
         args = _fn_init_arg_with_default_val(args, 'DEMO_FOLDER_PATH_', demo_folder_path)
-        args = _fn_init_arg_with_default_val(args, 'DEMO_FILE_NAME_', demo_file_name)
+        # args = _fn_init_arg_with_default_val(args, 'DEMO_FILE_NAME_', demo_file_name)
         args = _fn_init_arg_with_default_val(args, 'DEMO_DOT_PATH_', demo_dot_path)
         args = _fn_init_arg_with_default_val(args, 'RESULTS_REL_PATH', 'Results/')
         results_folder_path = os.path.join(args.DEMO_FOLDER_PATH_, args.RESULTS_REL_PATH)
@@ -104,8 +104,7 @@ def startup_mgt(caller_filepath):
 
         app_info.AGENT_FOLDER_PATH = app_info.AGENTS_DOT_PATH + '.{}'.format(app_info.STRATEGY)
 
-        archive_container_path = os.path.join(app_info.DEMO_FOLDER_PATH_.replace('Demos', 'ARCHIVES'),
-                                                     app_info.DEMO_FILE_NAME_)
+        archive_container_path = app_info.DEMO_FOLDER_PATH_.replace('Demos', 'ARCHIVES')
         current_time_id = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
         app_info.FULL_ARCHIVE_PATH = os.path.join(archive_container_path, current_time_id)
         pass

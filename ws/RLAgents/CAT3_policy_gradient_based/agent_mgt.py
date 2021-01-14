@@ -32,10 +32,10 @@ def agent_mgt(caller_file):
 
     def exit_gracefully(signum, frame):
         fn_log('!!! TERMINATING EARLY!!!')
-        msg = archive.fn_archive_all(fn_save_archive_model=archive.fn_save_archive_model, archive_path= app_info.FULL_ARCHIVE_PATH)
+        archive_msg = fn_archive(archive_path= app_info.FULL_ARCHIVE_PATH)
+        fn_log(archive_msg)
 
         chart.fn_close()
-        fn_log(msg)
         env.fn_close()
         exit()
 
