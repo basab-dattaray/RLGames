@@ -18,10 +18,9 @@ import torch.optim as optim
 
 def neural_net_mgt(game_mgr, model_folder, model_name):
     nn_args = DotDict({
-        # 'lr': 0.001,
         'dropout': 0.3,
         'batch_size': 64,
-        'cuda': torch.cuda.is_available(),
+        'IS_CUDA': torch.cuda.is_available(),
         'num_channels': 512,
     })
 
@@ -44,7 +43,7 @@ def neural_net_mgt(game_mgr, model_folder, model_name):
         if not os.path.exists(filepath):
             return False
 
-        map_location = None if nn_args.cuda else 'cpu'
+        map_location = None if nn_args.IS_CUDA else 'cpu'
         model = torch.load(filepath, map_location=map_location)
         nnet.load_state_dict(model['state_dict'])
         return True
@@ -60,8 +59,8 @@ def neural_net_mgt(game_mgr, model_folder, model_name):
         # nn_args = nn_args
         untrained_nn = NeuralNet(game_mgr, nn_args)
 
-        if nn_args.cuda:
-            untrained_nn.cuda()
+        if nn_args.IS_CUDA:
+            untrained_nn.IS_CUDA()
         return untrained_nn
 
     nnet = _fn_get_untrained_model()
@@ -88,7 +87,7 @@ def neural_net_mgt(game_mgr, model_folder, model_name):
                 batch_of_results = torch.FloatTensor(np.array(batch_of_results_as_tuple).astype(np.float64))
 
                 # fn_neural_predict
-                if nn_args.cuda:
+                if nn_args.IS_CUDA:
                     batch_of_states, batch_of_policies, batch_of_results = batch_of_states.contiguous().cuda(), batch_of_policies.contiguous().cuda(), batch_of_results.contiguous().cuda()
 
                 # compute output
@@ -112,7 +111,7 @@ def neural_net_mgt(game_mgr, model_folder, model_name):
 
         # preparing input
         board = torch.FloatTensor(board.astype(np.float64))
-        if nn_args.cuda:
+        if nn_args.IS_CUDA:
             board = board.contiguous().cuda()
         # board = board.view(1, board_x, board_y)
         nnet.eval()
