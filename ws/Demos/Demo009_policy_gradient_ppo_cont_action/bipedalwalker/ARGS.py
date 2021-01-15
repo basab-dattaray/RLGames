@@ -5,7 +5,7 @@ app_info = DotDict(
         "STRATEGY": "CAT3_policy_gradient_based.fn_approx_yes__proximal_policy_approx.continuous_action",
 
         "NUM_EPOCHS": 80,
-        "NUM_EPISODES": 1000,
+        "NUM_EPISODES": 10000,
 
         "MAX_STEPS_PER_EPISODE": 4500,
 
