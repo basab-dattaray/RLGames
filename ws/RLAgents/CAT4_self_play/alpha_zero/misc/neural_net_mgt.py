@@ -24,13 +24,13 @@ def neural_net_mgt(game_mgr, model_folder):
         'DROPOUT': 0.3,
     })
 
-    _model_name = 'model.tar'
+    _MODEL_NAME = 'model.tar'
 
-    # model_folder_path= None, model_file_name= None
+    # results_path= None, model_file_name= None
 
     def fn_save_model(model_folder_path= None, model_file_name= None):
         if model_file_name is None:
-            model_file_name = _model_name
+            model_file_name = _MODEL_NAME
         if model_folder_path is None:
             model_folder_path = model_folder
         filepath = os.path.join(model_folder_path, model_file_name)
@@ -43,7 +43,7 @@ def neural_net_mgt(game_mgr, model_folder):
 
     def fn_load_model(model_folder_path= None, model_file_name= None):
         if model_file_name is None:
-            model_file_name = _model_name
+            model_file_name = _MODEL_NAME
         if model_folder_path is None:
             model_folder_path = model_folder
 
@@ -58,7 +58,7 @@ def neural_net_mgt(game_mgr, model_folder):
         return True
 
     def fn_is_model_available(results_path):
-        filepath = os.path.join(results_path, _model_name)
+        filepath = os.path.join(results_path, _MODEL_NAME)
         if  os.path.exists(filepath):
             return True
         else:

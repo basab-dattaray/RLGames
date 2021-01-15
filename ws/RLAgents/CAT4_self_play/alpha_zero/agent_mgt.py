@@ -37,7 +37,8 @@ def agent_mgt(file_path):
 
     fn_archive = archive_mgt(
         args.neural_net_mgr.fn_save_model,
-        args.RESULTS_PATH_
+        results_path= args.RESULTS_PATH_,
+        archive_path= args.FULL_ARCHIVE_PATH_,
     )
     def exit_gracefully(signum, frame):
         #
@@ -141,7 +142,7 @@ def agent_mgt(file_path):
         # # copy model.tar
         # if os.path.exists(args.MODEL_FILEPATH_):
         #     shutil.copy(args.MODEL_FILEPATH_, dst_full_path)
-        archive_msg = fn_archive(archive_path= args.FULL_ARCHIVE_PATH)
+        archive_msg = fn_archive(archive_path= args.FULL_ARCHIVE_PATH_)
         args.fn_log(archive_msg)
 
         return agent_mgr

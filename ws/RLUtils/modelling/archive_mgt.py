@@ -1,19 +1,25 @@
 import shutil
 
-def archive_mgt(fn_save_to_neural_net,  model_folder_path):
+def archive_mgt(fn_save_to_neural_net, results_path, archive_path):
 
-    def fn_archive(archive_path= None, result_path= None):
+    def fn_archive(archive_path= None, result_folder_path= None, archive_folder_path= None):
         try:
-            if archive_path is None:
-                return "FAILED: no archive path found"
+            if archive_folder_path is None:
+                archive_folder_path = archive_path
 
-            if result_path is None:
-                result_path = model_folder_path
+            if archive_folder_path is None:
+                return "FAILED: no archive path"
+
+            if result_folder_path is None:
+                result_folder_path = results_path
+
+            if result_folder_path is None:
+                return "FAILED: no result path"
 
             if fn_save_to_neural_net is not None:
-                fn_save_to_neural_net(result_path)
+                fn_save_to_neural_net(result_folder_path)
 
-            shutil.copytree(model_folder_path, archive_path, symlinks=False, ignore=None)
+            shutil.copytree(results_path, archive_path, symlinks=False, ignore=None)
 
             return "INFO:: Sucessfully Archived at {}".format(archive_path)
 
