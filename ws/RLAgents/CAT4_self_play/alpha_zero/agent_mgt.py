@@ -26,7 +26,7 @@ from ws.RLUtils.setup.startup_mgt import startup_mgt
 
 def fn_setup_essential_managers(args):
     args.game_mgr = game_mgt(args.BOARD_SIZE)
-    args.neural_net_mgr = neural_net_mgt(args.game_mgr, args.RESULTS_PATH_, args.MODEL_NAME)
+    args.neural_net_mgr = neural_net_mgt(args.game_mgr, args.RESULTS_PATH_)
 
     args.training_mgr = training_mgt(args.neural_net_mgr, args)
     return args
@@ -81,7 +81,7 @@ def agent_mgt(file_path):
 
     def fn_test(args, fn_player_policy, verbose=False, NUM_TEST_GAMES=2):
         signal.signal(signal.SIGINT, exit_gracefully)
-        system_nn = neural_net_mgt(args.game_mgr, args.RESULTS_PATH_, args.MODEL_NAME)
+        system_nn = neural_net_mgt(args.game_mgr, args.RESULTS_PATH_)
         if not system_nn.fn_load_model():
             return
 
@@ -147,8 +147,8 @@ def agent_mgt(file_path):
         return agent_mgr
 
     start_time = time()
-    if os.path.exists(args.MODEL_FILEPATH_):
-        shutil.copy(args.MODEL_FILEPATH_, args.OLD_MODEL_FILEPATH_)
+    # if os.path.exists(args.MODEL_FILEPATH_):
+    #     shutil.copy(args.MODEL_FILEPATH_, args.OLD_MODEL_FILEPATH_)
 
     agent_mgr = namedtuple('_',
                            ['fn_reset', 'fn_train', 'fn_test_against_human', 'fn_test_againt_random', 'fn_test_against_greedy',

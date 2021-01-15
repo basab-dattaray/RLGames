@@ -40,11 +40,11 @@ def startup_mgt(caller_filepath):
         args = _fn_init_arg_with_default_val(args, 'RESULTS_REL_PATH', 'Results/')
         results_folder_path = os.path.join(args.DEMO_FOLDER_PATH_, args.RESULTS_REL_PATH)
         args = _fn_init_arg_with_default_val(args, 'RESULTS_PATH_', results_folder_path)
-        if 'MODEL_NAME' in args:
-            args = _fn_init_arg_with_default_val(args, 'MODEL_FILEPATH_',
-                                                 os.path.join(results_folder_path, args.MODEL_NAME))
-            args = _fn_init_arg_with_default_val(args, 'OLD_MODEL_FILEPATH_',
-                                                 os.path.join(results_folder_path, 'old_' + args.MODEL_NAME))
+        # if 'MODEL_NAME' in args:
+        #     args = _fn_init_arg_with_default_val(args, 'MODEL_FILEPATH_',
+        #                                          os.path.join(results_folder_path, args.MODEL_NAME))
+        #     args = _fn_init_arg_with_default_val(args, 'OLD_MODEL_FILEPATH_',
+        #                                          os.path.join(results_folder_path, 'old_' + args.MODEL_NAME))
         # current_dir = file_path.rsplit('/', 1)[0]
         archive_dir = demo_folder_path.replace('/Demos/', '/Archives/')
         args = _fn_init_arg_with_default_val(args, 'ARCHIVE_DIR_', archive_dir)

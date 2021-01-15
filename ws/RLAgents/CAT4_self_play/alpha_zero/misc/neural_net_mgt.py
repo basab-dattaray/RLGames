@@ -16,7 +16,7 @@ from ws.RLUtils.common.DotDict import *
 import torch
 import torch.optim as optim
 
-def neural_net_mgt(game_mgr, model_folder, model_name):
+def neural_net_mgt(game_mgr, model_folder):
     nn_args = DotDict({
         'BATCH_SIZE': 64,
         'IS_CUDA': torch.cuda.is_available(),
@@ -24,7 +24,7 @@ def neural_net_mgt(game_mgr, model_folder, model_name):
         'DROPOUT': 0.3,
     })
 
-    _model_name = model_name
+    _model_name = 'model.tar'
 
     # model_folder_path= None, model_file_name= None
 
@@ -58,7 +58,7 @@ def neural_net_mgt(game_mgr, model_folder, model_name):
         return True
 
     def fn_is_model_available(results_path):
-        filepath = os.path.join(results_path, model_name)
+        filepath = os.path.join(results_path, _model_name)
         if  os.path.exists(filepath):
             return True
         else:
