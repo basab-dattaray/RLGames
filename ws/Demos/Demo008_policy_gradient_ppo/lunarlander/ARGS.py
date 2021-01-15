@@ -1,6 +1,6 @@
 from ws.RLUtils.common.DotDict import DotDict
 
-args = DotDict(
+app_info = DotDict(
     {
         "STRATEGY": "CAT3_policy_gradient_based.fn_approx_yes__proximal_policy_approx.discrete_action",
 
@@ -52,4 +52,4 @@ args = DotDict(
 )
 
 def fn_get_args():
-    return args
+    return app_info

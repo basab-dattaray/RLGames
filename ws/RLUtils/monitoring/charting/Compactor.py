@@ -10,7 +10,7 @@ class Compactor():
     # def fn_add(self, *nn_args, **kwargs):
     #     pass
 
-    def fn_gen_skip_filter(self, *args, **kwargs):
+    def fn_gen_skip_filter(self, *app_info, **kwargs):
         new_stuff = None
         i = 0
         mid_index = int(self.skip_interval/2)

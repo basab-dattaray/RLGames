@@ -1,6 +1,6 @@
 from ws.RLUtils.common.DotDict import DotDict
 
-args = DotDict({
+app_info = DotDict({
     "STRATEGY": "CAT1_model_based.planning.value_iterator",
     "ENV_NAME": "Gridworld-v1",
     "AGENT_CONFIG": "gridwell_1",
@@ -24,4 +24,4 @@ args = DotDict({
 })
 
 def fn_get_args():
-    return args
+    return app_info

@@ -1,4 +1,4 @@
-# from ws.Demos.Demo010_self_play__alpha_zero.othello.demo_5.mini_with_recursive_mcts.ARGS import args
+# from ws.Demos.Demo010_self_play__alpha_zero.othello.demo_5.mini_with_recursive_mcts.app_info import app_info
 from ws.RLAgents.CAT4_self_play.alpha_zero.agent_mgt import agent_mgt
 
 if __name__ == "__main__":

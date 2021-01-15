@@ -7,17 +7,17 @@ from ws.RLAgents.algo_lib.logic.search.search_helper import search_helper
 def monte_carlo_tree_search_mgt(
     game_mgr,
     neural_net_mgr,
-    args,
+    app_info,
 ):
 
     search_utils = search_helper(
-        args,
+        app_info,
         game_mgr,
         neural_net_mgr
     )
 
     def fn_get_mcts_counts(state):
-        for i in range(args.NUM_MC_SIMULATIONS):
+        for i in range(app_info.NUM_MC_SIMULATIONS):
             fn_search(state)
         state_key = game_mgr.fn_get_state_key(state)
         visit_counts = search_utils.fn_get_visit_counts(state_key)

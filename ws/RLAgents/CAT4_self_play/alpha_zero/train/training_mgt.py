@@ -11,30 +11,30 @@ from ws.RLAgents.algo_lib.logic.search.monte_carlo_tree_search_mgt import monte_
 from ws.RLAgents.CAT4_self_play.alpha_zero.train.sample_generator import fn_generate_samples
 from ws.RLAgents.CAT4_self_play.alpha_zero.train.training_helper import fn_getCheckpointFile, fn_log_iteration_results
 from ws.RLUtils.monitoring.tracing.tracer import tracer
-def training_mgt(nn_mgr_N, args):
+def training_mgt(nn_mgr_N, app_info):
     _TMP_MODEL_FILENAME = '_tmp.tar'
     nn_mgr_P = copy.deepcopy(nn_mgr_N)
 
     def _fn_try_to_load_model():
-        if args.DO_LOAD_MODEL:
-            if not args.neural_net_mgr.fn_load_model():
-                args.fn_log('*** unable to load model')
+        if app_info.DO_LOAD_MODEL:
+            if not app_info.neural_net_mgr.fn_load_model():
+                app_info.fn_log('*** unable to load model')
             else:
-                args.fn_log('!!! loaded model')
+                app_info.fn_log('!!! loaded model')
 
 
-    @tracer(args)
+    @tracer(app_info)
     def fn_execute_training_iterations():
-        game_mgr = args.game_mgr
+        game_mgr = app_info.game_mgr
 
         update_count = 0
-        @tracer(args)
+        @tracer(app_info)
 
         def _fn_interpret_competition_results(iteration, nwins, pwins):
             def _fn_write_result(color, result, update_score, do_save):
-                args.CALL_TRACER_.fn_write(
+                app_info.CALL_TRACER_.fn_write(
                     color + result + ' New Model: update_threshold: {}, update_score: {}'.format(
-                        args.SCORE_BASED_MODEL_UPDATE_THRESHOLD,
+                        app_info.SCORE_BASED_MODEL_UPDATE_THRESHOLD,
                         update_score))
                 if do_save:
                     nn_mgr_N.fn_save_model(model_file_name= fn_getCheckpointFile(iteration))
@@ -49,9 +49,9 @@ def training_mgt(nn_mgr_N, args):
                 reject = True
             else:
                 update_score = float(nwins) / (pwins + nwins)
-                if update_score < args.SCORE_BASED_MODEL_UPDATE_THRESHOLD:
+                if update_score < app_info.SCORE_BASED_MODEL_UPDATE_THRESHOLD:
                     reject = True
-            model_already_exists = nn_mgr_N.fn_is_model_available(args.RESULTS_PATH_)
+            model_already_exists = nn_mgr_N.fn_is_model_available(app_info.RESULTS_PATH_)
 
             if not reject:
                 update_count += 1
@@ -64,40 +64,40 @@ def training_mgt(nn_mgr_N, args):
                 else:
                     _fn_write_result(Fore.GREEN, 'ACCEPTED', update_score, do_save= True)
 
-            args.CALL_TRACER_.fn_write(Fore.BLACK)
+            app_info.CALL_TRACER_.fn_write(Fore.BLACK)
 
         def fn_run_iteration(iteration):
             nonlocal update_count
-            args.CALL_TRACER_.fn_write('')
-            args.CALL_TRACER_.fn_write(f'ITERATION NUMBER {iteration} of {args.NUM_TRAINING_ITERATIONS}', indent=0)
+            app_info.CALL_TRACER_.fn_write('')
+            app_info.CALL_TRACER_.fn_write(f'ITERATION NUMBER {iteration} of {app_info.NUM_TRAINING_ITERATIONS}', indent=0)
 
-            @tracer(args)
+            @tracer(app_info)
             def _fn_play_next_vs_previous(training_samples):
                 nn_mgr_N.fn_save_model(_TMP_MODEL_FILENAME)
                 nn_mgr_P.fn_load_model(_TMP_MODEL_FILENAME)
-                pmcts = monte_carlo_tree_search_mgt(args.game_mgr, nn_mgr_P, args)
-                nn_mgr_N.fn_adjust_model_from_examples(training_samples, args.NUM_EPOCHS)
-                nmcts = monte_carlo_tree_search_mgt(args.game_mgr, nn_mgr_N, args)
+                pmcts = monte_carlo_tree_search_mgt(app_info.game_mgr, nn_mgr_P, app_info)
+                nn_mgr_N.fn_adjust_model_from_examples(training_samples, app_info.NUM_EPOCHS)
+                nmcts = monte_carlo_tree_search_mgt(app_info.game_mgr, nn_mgr_N, app_info)
                 playground = playground_mgt(
                     lambda state: np.argmax(pmcts.fn_get_policy(state, do_random_selection= False)),
                     lambda state: np.argmax(nmcts.fn_get_policy(state, do_random_selection= False)),
                     game_mgr,
-                    msg_recorder=args.CALL_TRACER_.fn_write
+                    msg_recorder=app_info.CALL_TRACER_.fn_write
                 )
-                pwins, nwins, draws = playground.fn_play_games(args.NUM_GAMES_FOR_MODEL_COMPARISON)
-                args.fn_log()
+                pwins, nwins, draws = playground.fn_play_games(app_info.NUM_GAMES_FOR_MODEL_COMPARISON)
+                app_info.fn_log()
                 return draws, nwins, pwins
 
-            training_samples = fn_generate_samples(args, iteration,  monte_carlo_tree_search_mgt(args.game_mgr, nn_mgr_N, args))
+            training_samples = fn_generate_samples(app_info, iteration,  monte_carlo_tree_search_mgt(app_info.game_mgr, nn_mgr_N, app_info))
             draws, nwins, pwins = _fn_play_next_vs_previous(training_samples)
-            fn_log_iteration_results(args, draws, iteration, nwins, pwins)
+            fn_log_iteration_results(app_info, draws, iteration, nwins, pwins)
 
             _fn_interpret_competition_results(iteration, nwins, pwins)
 
         _fn_try_to_load_model()
-        for iteration in range(1, args.NUM_TRAINING_ITERATIONS + 1):
+        for iteration in range(1, app_info.NUM_TRAINING_ITERATIONS + 1):
             fn_run_iteration(iteration)
-            if update_count >= args.NUM_OF_ITERATION_SUCCESSES_FOR_MODEL_UPGRADE:
+            if update_count >= app_info.NUM_OF_ITERATION_SUCCESSES_FOR_MODEL_UPGRADE:
                 break
 
     training_mgr  = namedtuple('_', ['fn_execute_training_iterations'])

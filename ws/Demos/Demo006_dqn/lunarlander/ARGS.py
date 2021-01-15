@@ -1,6 +1,6 @@
 from ws.RLUtils.common.DotDict import DotDict
 
-args = DotDict(
+app_info = DotDict(
   {
     "STRATEGY": "CAT2_value_based.fn_approx_yes__off_policy__bootstrap.dqn",
 
@@ -27,4 +27,4 @@ args = DotDict(
 )
 
 def fn_get_args():
-    return args
+    return app_info

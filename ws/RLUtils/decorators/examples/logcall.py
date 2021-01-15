@@ -4,9 +4,9 @@ def logformat(fmt):
     def logged(fn):
 
         @wraps(fn)
-        def wrapper(*args, **kwargs):
+        def wrapper(*app_info, **kwargs):
             print(fmt.format(funct=fn))
-            return fn(*args, ** kwargs)
+            return fn(*app_info, ** kwargs)
         return wrapper
     return logged
 

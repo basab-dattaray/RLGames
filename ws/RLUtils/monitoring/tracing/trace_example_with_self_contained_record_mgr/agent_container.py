@@ -5,8 +5,8 @@ from ws.RLUtils.monitoring.tracing.trace_example_with_self_contained_record_mgt.
 
 
 def agent_container():
-    args = {}
-    args['fn_loger'] = record_mgt()
+    app_info = {}
+    app_info['fn_loger'] = record_mgt()
 
 
     # @tracer(nn_args)
@@ -14,11 +14,11 @@ def agent_container():
         print('RUNNING fn_test1')
         return agent_container_ref
 
-    fn_test1 = tracer(args)(fn_test1)
+    fn_test1 = tracer(app_info)(fn_test1)
 
     # _fn_wrapper()
 
-    @tracer(args)
+    @tracer(app_info)
     def fn_test2():
         print('RUNNING fn_test2')
         return agent_container_ref

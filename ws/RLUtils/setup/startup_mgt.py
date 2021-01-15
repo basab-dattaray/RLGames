@@ -14,33 +14,33 @@ from ws.RLUtils.platform_libs.pytorch.device_selection import get_device
 
 def startup_mgt(caller_filepath):
     ROOT_DOT_PATH = 'ws'
-    ARGS_PY = 'ARGS.py'
+    ARGS_PY = 'app_info.py'
 
-    def _fn_init_arg_with_default_val(args, name, val):
-        if args is None:
-            args = {}
+    def _fn_init_arg_with_default_val(app_info, name, val):
+        if app_info is None:
+            app_info = {}
         else:
-            args = DotDict(args.copy())
-        args[name] = val
-        return args
+            app_info = DotDict(app_info.copy())
+        app_info[name] = val
+        return app_info
 
     def fn_bootstrap(file_path):
         demo_folder_path, _ = fn_separate_folderpath_and_filename(file_path)
         demo_dot_path = fn_get_rel_dot_folder_path(demo_folder_path, '/ws/')
         fn_get_args = load_function(function_name="fn_get_args", module_tag="ARGS", subpackage_tag=demo_dot_path)
-        args = fn_get_args()
-        args = _fn_init_arg_with_default_val(args, 'DEMO_FOLDER_PATH_', demo_folder_path)
-        args = _fn_init_arg_with_default_val(args, 'DEMO_DOT_PATH_', demo_dot_path)
-        args = _fn_init_arg_with_default_val(args, 'RESULTS_REL_PATH', 'Results/')
-        results_folder_path = os.path.join(args.DEMO_FOLDER_PATH_, args.RESULTS_REL_PATH)
-        args = _fn_init_arg_with_default_val(args, 'RESULTS_PATH_', results_folder_path)
+        app_info = fn_get_args()
+        app_info = _fn_init_arg_with_default_val(app_info, 'DEMO_FOLDER_PATH_', demo_folder_path)
+        app_info = _fn_init_arg_with_default_val(app_info, 'DEMO_DOT_PATH_', demo_dot_path)
+        app_info = _fn_init_arg_with_default_val(app_info, 'RESULTS_REL_PATH', 'Results/')
+        results_folder_path = os.path.join(app_info.DEMO_FOLDER_PATH_, app_info.RESULTS_REL_PATH)
+        app_info = _fn_init_arg_with_default_val(app_info, 'RESULTS_PATH_', results_folder_path)
         archive_dir = demo_folder_path.replace('/Demos/', '/Archives/')
-        args = _fn_init_arg_with_default_val(args, 'ARCHIVE_DIR_', archive_dir)
-        args = _fn_init_arg_with_default_val(args, 'LOGGER_', logging.getLogger(__name__))
-        args = _fn_init_arg_with_default_val(args, 'fn_log',
-                                             log_mgt(log_dir=args.ARCHIVE_DIR_, fixed_log_file=True))
-        args = _fn_init_arg_with_default_val(args, 'CALL_TRACER_', call_trace_mgt(args.fn_log))
-        return args
+        app_info = _fn_init_arg_with_default_val(app_info, 'ARCHIVE_DIR_', archive_dir)
+        app_info = _fn_init_arg_with_default_val(app_info, 'LOGGER_', logging.getLogger(__name__))
+        app_info = _fn_init_arg_with_default_val(app_info, 'fn_log',
+                                             log_mgt(log_dir=app_info.ARCHIVE_DIR_, fixed_log_file=True))
+        app_info = _fn_init_arg_with_default_val(app_info, 'CALL_TRACER_', call_trace_mgt(app_info.fn_log))
+        return app_info
 
     def _fn_setup_for_results(_app_info):
         results_folder = os.path.join(_app_info.DEMO_FOLDER_PATH_, "Results")

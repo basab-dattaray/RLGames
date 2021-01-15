@@ -9,9 +9,9 @@ class AppInfo():
         return dir_path, app_name
 
     @classmethod
-    def fn_arg_as_bool(cls, args, arg_key):
-        if arg_key not in args.keys():
+    def fn_arg_as_bool(cls, app_info, arg_key):
+        if arg_key not in app_info.keys():
             return False
-        if not bool(args[arg_key]):
+        if not bool(app_info[arg_key]):
             return False
         return True

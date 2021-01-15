@@ -8,8 +8,8 @@ from ws.RLUtils.monitoring.tracing.progress_count_mgt import progress_count_mgt
 from ws.RLUtils.monitoring.tracing.tracer import tracer
 
 
-def fn_generate_samples(args, iteration, generation_mcts):
-    game_mgr = args.game_mgr
+def fn_generate_samples(app_info, iteration, generation_mcts):
+    game_mgr = app_info.game_mgr
     training_samples_buffer = []
 
     def _fn_form_sample_data(current_player, run_result, training_samples):
@@ -29,7 +29,7 @@ def fn_generate_samples(args, iteration, generation_mcts):
             samples_from_episodes = []
             canonical_board_pieces = game_mgr.fn_get_canonical_form(current_pieces, cur_player_index)
             policy = generation_mcts.fn_get_policy(
-                canonical_board_pieces, do_random_selection=int(episode_step < args.PROBABILITY_SPREAD_THRESHOLD))
+                canonical_board_pieces, do_random_selection=int(episode_step < app_info.PROBABILITY_SPREAD_THRESHOLD))
 
             if policy is None:
                 return None
@@ -59,12 +59,12 @@ def fn_generate_samples(args, iteration, generation_mcts):
             if game_status != 0 or curPlayer is None:
                 return _fn_form_sample_data(curPlayer, game_status, all_samples_from_iteration)
 
-    @tracer(args)
+    @tracer(app_info)
     def _fn_generate_all_samples():
-        samples_for_iteration = deque([], maxlen=args.SAMPLE_BUFFER_SIZE)
-        fn_count_event, fn_stop_counting = progress_count_mgt('Episodes', args.NUM_TRAINING_EPISODES)
+        samples_for_iteration = deque([], maxlen=app_info.SAMPLE_BUFFER_SIZE)
+        fn_count_event, fn_stop_counting = progress_count_mgt('Episodes', app_info.NUM_TRAINING_EPISODES)
 
-        for episode_num in range(1, args.NUM_TRAINING_EPISODES + 1):
+        for episode_num in range(1, app_info.NUM_TRAINING_EPISODES + 1):
             fn_count_event()
             episode_result = _fn_generate_samples_for_an_iteration()
             if episode_result is not None:
@@ -76,12 +76,12 @@ def fn_generate_samples(args, iteration, generation_mcts):
     all_samples = _fn_generate_all_samples()
     training_samples_buffer.append(all_samples)
 
-    if len(training_samples_buffer) > args.SAMPLE_HISTORY_BUFFER_SIZE:
-        args.logger.warning(
+    if len(training_samples_buffer) > app_info.SAMPLE_HISTORY_BUFFER_SIZE:
+        app_info.logger.warning(
             f"Removing the oldest entry in training_samples. len(training_samples_buffer) = {len(training_samples_buffer)}")
         training_samples_buffer.pop(0)
 
-    fn_save_train_examples(args, iteration - 1, training_samples_buffer)
+    fn_save_train_examples(app_info, iteration - 1, training_samples_buffer)
     training_samples = []
     for samples in training_samples_buffer:
         training_samples.extend(samples)

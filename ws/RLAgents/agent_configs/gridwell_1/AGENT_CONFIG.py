@@ -1,6 +1,6 @@
 from ws.RLUtils.common.DotDict import DotDict
 
-args = DotDict(
+app_info = DotDict(
     {
         "POSSIBLE_ACTIONS": [0, 1, 2, 3] ,
         "INITIAL_ACTION_PROBABILITIES": [.25, .25, .25, .25],
@@ -10,7 +10,7 @@ args = DotDict(
 )
 
 def fn_add_configs(api_info):
-    for k, v in args.items():
+    for k, v in app_info.items():
         api_info[k] = v
 
 

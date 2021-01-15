@@ -24,125 +24,125 @@ from ws.RLUtils.monitoring.tracing.tracer import tracer
 from ws.RLUtils.setup.startup_mgt import startup_mgt
 
 
-def fn_setup_essential_managers(args):
-    args.game_mgr = game_mgt(args.BOARD_SIZE)
-    args.neural_net_mgr = neural_net_mgt(args.game_mgr, args.RESULTS_PATH_)
+def fn_setup_essential_managers(app_info):
+    app_info.game_mgr = game_mgt(app_info.BOARD_SIZE)
+    app_info.neural_net_mgr = neural_net_mgt(app_info.game_mgr, app_info.RESULTS_PATH_)
 
-    args.training_mgr = training_mgt(args.neural_net_mgr, args)
-    return args
+    app_info.training_mgr = training_mgt(app_info.neural_net_mgr, app_info)
+    return app_info
 
 def agent_mgt(file_path):
-    args = startup_mgt(file_path)
-    args = fn_setup_essential_managers(args)
+    app_info = startup_mgt(file_path)
+    app_info = fn_setup_essential_managers(app_info)
 
     fn_archive = archive_mgt(
-        args.neural_net_mgr.fn_save_model,
-        results_path= args.RESULTS_PATH_,
-        archive_path= args.ARCHIVE_PATH_BEFORE_,
+        app_info.neural_net_mgr.fn_save_model,
+        results_path= app_info.RESULTS_PATH_,
+        archive_path= app_info.ARCHIVE_PATH_BEFORE_,
     )
     fn_archive()
 
     def exit_gracefully(signum, frame):
-        args.fn_log('!!! TERMINATING EARLY!!!')
-        archive_msg = fn_archive(archive_folder_path= args.ARCHIVE_PATH_AFTER_)
-        args.fn_log(archive_msg)
+        app_info.fn_log('!!! TERMINATING EARLY!!!')
+        archive_msg = fn_archive(archive_folder_path= app_info.ARCHIVE_PATH_AFTER_)
+        app_info.fn_log(archive_msg)
 
         # chart.fn_close()
-        args.ENV.fn_close()
+        app_info.ENV.fn_close()
         exit()
 
-    @tracer(args, verboscity= 4)
+    @tracer(app_info, verboscity= 4)
     def fn_train():
-        nonlocal args
+        nonlocal app_info
 
         signal.signal(signal.SIGINT, exit_gracefully)
 
-        args.training_mgr.fn_execute_training_iterations()
+        app_info.training_mgr.fn_execute_training_iterations()
 
         return agent_mgr
 
-    @tracer(args)
+    @tracer(app_info)
     def fn_test_against_human():
         fn_human_player_policy = lambda g: animated_player_mgt(g)
-        fn_test(args, fn_human_player_policy, verbose=True, NUM_TEST_GAMES=2)
+        fn_test(app_info, fn_human_player_policy, verbose=True, NUM_TEST_GAMES=2)
         return agent_mgr
 
-    @tracer(args, verboscity= 4)
+    @tracer(app_info, verboscity= 4)
     def fn_test_against_random():
         fn_random_player_policy = lambda g: random_player_mgt(g)
-        fn_test(args, fn_random_player_policy, NUM_TEST_GAMES=args.NUM_TEST_GAMES)
+        fn_test(app_info, fn_random_player_policy, NUM_TEST_GAMES=app_info.NUM_TEST_GAMES)
         return agent_mgr
 
-    @tracer(args, verboscity= 4)
+    @tracer(app_info, verboscity= 4)
     def fn_test_against_greedy():
         fn_random_player_policy = lambda g: greedy_player_mgt(g)
-        fn_test(args, fn_random_player_policy, NUM_TEST_GAMES=args.NUM_TEST_GAMES)
+        fn_test(app_info, fn_random_player_policy, NUM_TEST_GAMES=app_info.NUM_TEST_GAMES)
         return agent_mgr
 
-    def fn_test(args, fn_player_policy, verbose=False, NUM_TEST_GAMES=2):
+    def fn_test(app_info, fn_player_policy, verbose=False, NUM_TEST_GAMES=2):
         signal.signal(signal.SIGINT, exit_gracefully)
-        system_nn = neural_net_mgt(args.game_mgr, args.RESULTS_PATH_)
+        system_nn = neural_net_mgt(app_info.game_mgr, app_info.RESULTS_PATH_)
         if not system_nn.fn_load_model():
             return
 
-        system_mcts = monte_carlo_tree_search_mgt(args.game_mgr, system_nn, args)
+        system_mcts = monte_carlo_tree_search_mgt(app_info.game_mgr, system_nn, app_info)
         fn_system_policy = lambda state: numpy.argmax(system_mcts.fn_get_policy(state, do_random_selection=False))
-        fn_contender_policy = fn_player_policy(args.game_mgr)
-        playground = playground_mgt(fn_system_policy, fn_contender_policy, args.game_mgr,
-                                    fn_display=game_mgt(args['BOARD_SIZE']).fn_display,
-                                    msg_recorder=args.CALL_TRACER_.fn_write)
+        fn_contender_policy = fn_player_policy(app_info.game_mgr)
+        playground = playground_mgt(fn_system_policy, fn_contender_policy, app_info.game_mgr,
+                                    fn_display=game_mgt(app_info['BOARD_SIZE']).fn_display,
+                                    msg_recorder=app_info.CALL_TRACER_.fn_write)
         system_wins, system_losses, draws = playground.fn_play_games(NUM_TEST_GAMES, verbose=verbose)
 
-        args.CALL_TRACER_.fn_write(f'wins:{system_wins} losses:{system_losses} draws:{draws}')
+        app_info.CALL_TRACER_.fn_write(f'wins:{system_wins} losses:{system_losses} draws:{draws}')
 
-    @tracer(args, verboscity= 4)
+    @tracer(app_info, verboscity= 4)
     def fn_reset():
-        if os.path.exists(args.RESULTS_REL_PATH):
-            shutil.rmtree(args.RESULTS_REL_PATH)
+        if os.path.exists(app_info.RESULTS_REL_PATH):
+            shutil.rmtree(app_info.RESULTS_REL_PATH)
 
         return agent_mgr
 
-    @tracer(args, verboscity= 4)
+    @tracer(app_info, verboscity= 4)
     def fn_change_args(change_args):
         if change_args is not None:
             for k, v in change_args.items():
-                args[k] = v
-                args.CALL_TRACER_.fn_write(f'  args[{k}] = {v}')
-        agent_mgr.args = args
+                app_info[k] = v
+                app_info.CALL_TRACER_.fn_write(f'  app_info[{k}] = {v}')
+        agent_mgr.app_info = app_info
         return agent_mgr
 
-    @tracer(args, verboscity= 4)
+    @tracer(app_info, verboscity= 4)
     def fn_show_args():
-        for k, v in args.items():
-            args.CALL_TRACER_.fn_write(f'  args[{k}] = {v}')
+        for k, v in app_info.items():
+            app_info.CALL_TRACER_.fn_write(f'  app_info[{k}] = {v}')
         return agent_mgr
 
-    @tracer(args, verboscity= 4)
+    @tracer(app_info, verboscity= 4)
     def fn_measure_time_elapsed():
         nonlocal start_time
         end_time = time()
         time_diff = int(end_time - start_time)
         mins = math.floor(time_diff / 60)
         secs = time_diff % 60
-        args.CALL_TRACER_.fn_write(f'Time elapsed:    minutes: {mins}    seconds: {secs}')
+        app_info.CALL_TRACER_.fn_write(f'Time elapsed:    minutes: {mins}    seconds: {secs}')
         start_time = time()
         return agent_mgr
 
-    @tracer(args, verboscity= 4)
+    @tracer(app_info, verboscity= 4)
     def fn_archive_log_file():
-        archive_msg = fn_archive(archive_folder_path=args.ARCHIVE_PATH_AFTER_)
-        args.fn_log(archive_msg)
+        archive_msg = fn_archive(archive_folder_path=app_info.ARCHIVE_PATH_AFTER_)
+        app_info.fn_log(archive_msg)
 
         return agent_mgr
 
     start_time = time()
-    # if os.path.exists(args.MODEL_FILEPATH_):
-    #     shutil.copy(args.MODEL_FILEPATH_, args.OLD_MODEL_FILEPATH_)
+    # if os.path.exists(app_info.MODEL_FILEPATH_):
+    #     shutil.copy(app_info.MODEL_FILEPATH_, app_info.OLD_MODEL_FILEPATH_)
 
     agent_mgr = namedtuple('_',
                            ['fn_reset', 'fn_train', 'fn_test_against_human', 'fn_test_againt_random', 'fn_test_against_greedy',
                             'fn_change_args', 'fn_show_args', 'fn_measure_time_elapsed', 'fn_archive_log_file',
-                            'args'])
+                            'app_info'])
     agent_mgr.fn_reset = fn_reset
     agent_mgr.fn_train = fn_train
     agent_mgr.fn_test_against_human = fn_test_against_human
@@ -152,7 +152,7 @@ def agent_mgt(file_path):
     agent_mgr.fn_show_args = fn_show_args
     agent_mgr.fn_measure_time_elapsed = fn_measure_time_elapsed
     agent_mgr.fn_archive_log_file = fn_archive_log_file
-    agent_mgr.arguments = args
+    agent_mgr.arguments = app_info
     return agent_mgr
 
     # except Exception as e:

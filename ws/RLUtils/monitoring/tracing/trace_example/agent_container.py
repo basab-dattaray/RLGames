@@ -4,8 +4,8 @@ from collections import namedtuple
 from ws.RLUtils.monitoring.tracing.trace_example.tracer import tracer
 
 
-def agent_container(args):
-    fn_loger = args['rec_mgt']
+def agent_container(app_info):
+    fn_loger = app_info['rec_mgt']
     agent_container_ref = namedtuple('_', ['fn_test1','fn_test2'])
 
     @tracer(fn_loger)

@@ -1,6 +1,6 @@
 from ws.RLUtils.common.DotDict import DotDict
 
-args = DotDict(
+app_info = DotDict(
     {
         "policy_iterator": {
             "DISPLAY": {

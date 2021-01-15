@@ -1,6 +1,6 @@
 from ws.RLUtils.common.DotDict import DotDict
 
-args = DotDict(
+app_info = DotDict(
 {
   "STRATEGY": "CAT2_value_based.fn_approx_no__off_policy__bootstrap.qlearn",
   "ENV_NAME": "Gridworld-v1",
@@ -28,4 +28,4 @@ args = DotDict(
 )
 
 def fn_get_args():
-    return args
+    return app_info

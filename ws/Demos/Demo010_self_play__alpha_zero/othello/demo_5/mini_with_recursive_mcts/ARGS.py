@@ -1,6 +1,6 @@
 from ws.RLUtils.common.DotDict import DotDict
 
-args = DotDict({
+app_info = DotDict({
     'STRATEGY': 'CAT4_self_play.alpha_zero',
     'NUM_TRAINING_ITERATIONS': 3,
     'NUM_TRAINING_EPISODES': 3,
@@ -28,4 +28,4 @@ args = DotDict({
 })
 
 def fn_get_args():
-    return args
+    return app_info
