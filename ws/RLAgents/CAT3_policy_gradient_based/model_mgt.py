@@ -7,7 +7,7 @@ MODEL_ACTOR_NAME = 'Model_Actor.pth'
 MODEL_CRITIC_NAME = 'Model_Critic.pth'
 def model_mgt(model_actor, model_critic):
 
-    def fn_load_from_neural_net(model_folder_path):
+    def fn_load_from_neural_net(model_folder_path= None, model_file_name= None):
         # nonlocal model_actor, model_critic
 
         try:
@@ -19,7 +19,7 @@ def model_mgt(model_actor, model_critic):
         except Exception as x:
             return False
 
-    def fn_save_to_neural_net(model_folder_path):
+    def fn_save_to_neural_net(model_folder_path= None, model_file_name= None):
         # nonlocal model_actor, model_critic
         if os.path.exists(model_folder_path) is False:
             os.makedirs(model_folder_path)

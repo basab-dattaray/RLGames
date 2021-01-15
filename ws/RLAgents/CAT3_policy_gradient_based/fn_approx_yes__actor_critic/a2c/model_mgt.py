@@ -5,7 +5,7 @@ import torch
 
 def model_mgt(_model_actor_critic):
     MODEL_NAME = 'Model_ActorCritic.pth'
-    def fn_load_from_neural_net(model_folder_path):
+    def fn_load_from_neural_net(model_folder_path= None, model_file_name= None):
 
         if not os.path.exists(model_folder_path):
             return False
@@ -22,7 +22,7 @@ def model_mgt(_model_actor_critic):
         return True
 
 
-    def fn_save_to_neural_net(model_folder_path):
+    def fn_save_to_neural_net(model_folder_path= None, model_file_name= None):
 
         if os.path.exists(model_folder_path) is False:
             os.makedirs(model_folder_path)
