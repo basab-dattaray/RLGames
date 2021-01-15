@@ -71,6 +71,7 @@ def startup_mgt(caller_filepath):
         fn_log = log_mgt(log_dir=session_repo, show_debug=debug_mode)
         app_info.FN_RECORD = fn_log
         # app_info.FN_RECORD('hi')
+        app_info.fn_log = fn_log
         pass
 
     def _fn_setup_env(app_info, verbose=False):

@@ -35,7 +35,7 @@ def agent_mgt(file_path):
     args = startup_mgt(file_path)
     args = fn_setup_essential_managers(args)
 
-    archive = archive_mgt(
+    fn_archive = archive_mgt(
         args.neural_net_mgr.fn_save_model,
         args.RESULTS_PATH_
     )
@@ -130,17 +130,19 @@ def agent_mgt(file_path):
 
     @tracer(args, verboscity= 4)
     def fn_archive_log_file():
-        dst_subfolder_rel_path = dt.now().strftime("%Y_%m_%d_%H_%M_%S")
-
-        dst_full_path = os.path.join(args.ARCHIVE_DIR_, dst_subfolder_rel_path)
-        os.mkdir(dst_full_path)
-
-        if os.path.exists(args.OLD_MODEL_FILEPATH_):
-            shutil.copy(args.OLD_MODEL_FILEPATH_, dst_full_path)
-
-        # copy model.tar
-        if os.path.exists(args.MODEL_FILEPATH_):
-            shutil.copy(args.MODEL_FILEPATH_, dst_full_path)
+        # dst_subfolder_rel_path = dt.now().strftime("%Y_%m_%d_%H_%M_%S")
+        #
+        # dst_full_path = os.path.join(args.ARCHIVE_DIR_, dst_subfolder_rel_path)
+        # os.mkdir(dst_full_path)
+        #
+        # if os.path.exists(args.OLD_MODEL_FILEPATH_):
+        #     shutil.copy(args.OLD_MODEL_FILEPATH_, dst_full_path)
+        #
+        # # copy model.tar
+        # if os.path.exists(args.MODEL_FILEPATH_):
+        #     shutil.copy(args.MODEL_FILEPATH_, dst_full_path)
+        archive_msg = fn_archive(archive_path= args.FULL_ARCHIVE_PATH)
+        args.fn_log(archive_msg)
 
         return agent_mgr
 
