@@ -68,7 +68,7 @@ def neural_net_mgt(game_mgr, model_folder):
         untrained_nn = NeuralNet(game_mgr, nn_args)
 
         if nn_args.IS_CUDA:
-            untrained_nn.IS_CUDA()
+            untrained_nn.cuda()
         return untrained_nn
 
     nnet = _fn_get_untrained_model()
