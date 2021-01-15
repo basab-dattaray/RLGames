@@ -57,7 +57,6 @@ def agent_mgt(file_path):
 
         signal.signal(signal.SIGINT, exit_gracefully)
 
-        # fn_setup_essential_managers(args)
         args.training_mgr.fn_execute_training_iterations()
 
         return agent_mgr
@@ -81,8 +80,6 @@ def agent_mgt(file_path):
         return agent_mgr
 
     def fn_test(args, fn_player_policy, verbose=False, NUM_TEST_GAMES=2):
-        # fn_setup_essential_managers(args)
-
         signal.signal(signal.SIGINT, exit_gracefully)
         system_nn = neural_net_mgt(args.game_mgr, args.RESULTS_PATH_, args.MODEL_NAME)
         if not system_nn.fn_load_model():
