@@ -1,7 +1,7 @@
 import logging
 import os
 import shutil
-from datetime import date, datetime
+from datetime import datetime
 
 from ws.RLUtils.common.DotDict import DotDict
 from ws.RLUtils.common.config_mgt import config_mgt
@@ -15,11 +15,6 @@ from ws.RLUtils.platform_libs.pytorch.device_selection import get_device
 def startup_mgt(caller_filepath):
     ROOT_DOT_PATH = 'ws'
     ARGS_PY = 'ARGS.py'
-
-    # def _fn_get_another_archive_path():
-    #     current_time_id = date.now().strftime("%Y_%m_%d_%H_%M_%S")
-    #     new_archive_folder_path = os.path.join(app_info.FULL_ARCHIVE_PATH_, current_time_id)
-    #     return new_archive_folder_path
 
     def _fn_init_arg_with_default_val(args, name, val):
         if args is None:
@@ -35,24 +30,16 @@ def startup_mgt(caller_filepath):
         fn_get_args = load_function(function_name="fn_get_args", module_tag="ARGS", subpackage_tag=demo_dot_path)
         args = fn_get_args()
         args = _fn_init_arg_with_default_val(args, 'DEMO_FOLDER_PATH_', demo_folder_path)
-        # args = _fn_init_arg_with_default_val(args, 'DEMO_FILE_NAME_', demo_file_name)
         args = _fn_init_arg_with_default_val(args, 'DEMO_DOT_PATH_', demo_dot_path)
         args = _fn_init_arg_with_default_val(args, 'RESULTS_REL_PATH', 'Results/')
         results_folder_path = os.path.join(args.DEMO_FOLDER_PATH_, args.RESULTS_REL_PATH)
         args = _fn_init_arg_with_default_val(args, 'RESULTS_PATH_', results_folder_path)
-        # if 'MODEL_NAME' in args:
-        #     args = _fn_init_arg_with_default_val(args, 'MODEL_FILEPATH_',
-        #                                          os.path.join(results_folder_path, args.MODEL_NAME))
-        #     args = _fn_init_arg_with_default_val(args, 'OLD_MODEL_FILEPATH_',
-        #                                          os.path.join(results_folder_path, 'old_' + args.MODEL_NAME))
-        # current_dir = file_path.rsplit('/', 1)[0]
         archive_dir = demo_folder_path.replace('/Demos/', '/Archives/')
         args = _fn_init_arg_with_default_val(args, 'ARCHIVE_DIR_', archive_dir)
         args = _fn_init_arg_with_default_val(args, 'LOGGER_', logging.getLogger(__name__))
         args = _fn_init_arg_with_default_val(args, 'fn_log',
                                              log_mgt(log_dir=args.ARCHIVE_DIR_, fixed_log_file=True))
         args = _fn_init_arg_with_default_val(args, 'CALL_TRACER_', call_trace_mgt(args.fn_log))
-        # args_copy = _fn_arg_defaults(args)
         return args
 
     def _fn_setup_for_results(_app_info):
@@ -106,6 +93,9 @@ def startup_mgt(caller_filepath):
         archive_container_path = app_info.DEMO_FOLDER_PATH_.replace('Demos', 'ARCHIVES')
         current_time_id = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
         app_info.FULL_ARCHIVE_PATH_ = os.path.join(archive_container_path, current_time_id)
+        app_info.ARCHIVE_PATH_BEFORE_ = os.path.join(app_info.FULL_ARCHIVE_PATH_, 'BEFORE')
+        app_info.ARCHIVE_PATH_AFTER_ = os.path.join(app_info.FULL_ARCHIVE_PATH_, 'AFTER')
+
         pass
 
     def _fn_setup_gpu(_app_info, verbose=False):

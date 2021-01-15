@@ -20,7 +20,7 @@ def archive_mgt(fn_save_to_neural_net, results_path, archive_path):
             if fn_save_to_neural_net is not None:
                 fn_save_to_neural_net(result_folder_path)
 
-            shutil.copytree(results_path, archive_path, symlinks=False, ignore=None)
+            shutil.copytree(result_folder_path, archive_folder_path, symlinks=False, ignore=None)
 
             return "INFO:: Sucessfully Archived at {}".format(archive_path)
 
