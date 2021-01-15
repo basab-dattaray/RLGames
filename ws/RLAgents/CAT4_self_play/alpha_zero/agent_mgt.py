@@ -142,7 +142,7 @@ def agent_mgt(file_path):
         # # copy model.tar
         # if os.path.exists(args.MODEL_FILEPATH_):
         #     shutil.copy(args.MODEL_FILEPATH_, dst_full_path)
-        archive_msg = fn_archive(archive_path= args.FULL_ARCHIVE_PATH_)
+        archive_msg = fn_archive()
         args.fn_log(archive_msg)
 
         return agent_mgr

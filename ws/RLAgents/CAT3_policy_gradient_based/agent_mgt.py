@@ -33,7 +33,7 @@ def agent_mgt(caller_file):
 
     def exit_gracefully(signum, frame):
         fn_log('!!! TERMINATING EARLY!!!')
-        archive_msg = fn_archive(archive_path= app_info.FULL_ARCHIVE_PATH_)
+        archive_msg = fn_archive()
         fn_log(archive_msg)
 
         chart.fn_close()
@@ -98,7 +98,7 @@ def agent_mgt(caller_file):
                 fn_log('FAILED in loading model')
 
         fn_run(fn_show_training_progress, fn_should_update_network=fn_should_update_network)
-        archive_msg = fn_archive(archive_path= app_info.FULL_ARCHIVE_PATH_)
+        archive_msg = fn_archive()
         fn_log(archive_msg)
         return agent_mgr
 
