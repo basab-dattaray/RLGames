@@ -37,10 +37,10 @@ def training_mgt(nn_mgr_N, args):
                         args.SCORE_BASED_MODEL_UPDATE_THRESHOLD,
                         update_score))
                 if do_save:
-                    nn_mgr_N.fn_save_model(model_name= fn_getCheckpointFile(iteration))
+                    nn_mgr_N.fn_save_model(model_file_name= fn_getCheckpointFile(iteration))
                     nn_mgr_N.fn_save_model()
                 else:
-                    nn_mgr_N.fn_load_model(model_name= _TMP_MODEL_FILENAME)
+                    nn_mgr_N.fn_load_model(model_file_name= _TMP_MODEL_FILENAME)
 
             nonlocal update_count
             reject = False

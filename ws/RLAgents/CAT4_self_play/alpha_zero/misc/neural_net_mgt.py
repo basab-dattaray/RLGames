@@ -26,12 +26,12 @@ def neural_net_mgt(game_mgr, model_folder, model_name):
 
     _model_name = model_name
 
-    # model_name = None, model_file_name = None
+    # model_folder_path= None, model_file_name= None
 
-    def fn_save_model(model_name= None):
-        if model_name is None:
-            model_name = _model_name
-        filepath = os.path.join(model_folder, model_name)
+    def fn_save_model(model_file_name= None):
+        if model_file_name is None:
+            model_file_name = _model_name
+        filepath = os.path.join(model_folder, model_file_name)
         if not os.path.exists(model_folder):
             os.mkdir(model_folder)
 
@@ -39,11 +39,11 @@ def neural_net_mgt(game_mgr, model_folder, model_name):
             'state_dict': nnet.state_dict(),
         }, filepath)
 
-    def fn_load_model(model_name= None):
-        if model_name is None:
-            model_name = _model_name
+    def fn_load_model(model_file_name= None):
+        if model_file_name is None:
+            model_file_name = _model_name
 
-        filepath = os.path.join(model_folder, model_name)
+        filepath = os.path.join(model_folder, model_file_name)
 
         if not os.path.exists(filepath):
             return False
