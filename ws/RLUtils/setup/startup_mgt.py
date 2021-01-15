@@ -49,9 +49,9 @@ def startup_mgt(caller_filepath):
         archive_dir = demo_folder_path.replace('/Demos/', '/Archives/')
         args = _fn_init_arg_with_default_val(args, 'ARCHIVE_DIR_', archive_dir)
         args = _fn_init_arg_with_default_val(args, 'LOGGER_', logging.getLogger(__name__))
-        args = _fn_init_arg_with_default_val(args, 'fn_record',
+        args = _fn_init_arg_with_default_val(args, 'fn_log',
                                              log_mgt(log_dir=args.ARCHIVE_DIR_, fixed_log_file=True))
-        args = _fn_init_arg_with_default_val(args, 'CALL_TRACER_', call_trace_mgt(args.fn_record))
+        args = _fn_init_arg_with_default_val(args, 'CALL_TRACER_', call_trace_mgt(args.fn_log))
         # args_copy = _fn_arg_defaults(args)
         return args
 
@@ -69,8 +69,6 @@ def startup_mgt(caller_filepath):
         debug_mode = fn_get_key_as_bool('DEBUG_MODE')
         session_repo = app_info.RESULTS_REL_PATH
         fn_log = log_mgt(log_dir=session_repo, show_debug=debug_mode)
-        app_info.FN_RECORD = fn_log
-        # app_info.FN_RECORD('hi')
         app_info.fn_log = fn_log
         pass
 

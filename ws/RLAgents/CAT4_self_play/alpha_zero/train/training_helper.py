@@ -25,10 +25,10 @@ def fn_load_train_examples(args):
         if r != "y":
             sys.exit()
     else:
-        args.fn_record("File with training_samples found. Loading it...")
+        args.fn_log("File with training_samples found. Loading it...")
         with open(examplesFile, "rb") as f:
             training_samples_buffer = Unpickler(f).load()
-        args.fn_record('Loading done!')
+        args.fn_log('Loading done!')
 
 
 

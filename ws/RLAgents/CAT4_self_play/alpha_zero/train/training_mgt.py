@@ -18,9 +18,9 @@ def training_mgt(nn_mgr_N, args):
     def _fn_try_to_load_model():
         if args.DO_LOAD_MODEL:
             if not args.neural_net_mgr.fn_load_model():
-                args.fn_record('*** unable to load model')
+                args.fn_log('*** unable to load model')
             else:
-                args.fn_record('!!! loaded model')
+                args.fn_log('!!! loaded model')
 
 
     @tracer(args)
@@ -85,7 +85,7 @@ def training_mgt(nn_mgr_N, args):
                     msg_recorder=args.CALL_TRACER_.fn_write
                 )
                 pwins, nwins, draws = playground.fn_play_games(args.NUM_GAMES_FOR_MODEL_COMPARISON)
-                args.fn_record()
+                args.fn_log()
                 return draws, nwins, pwins
 
             training_samples = fn_generate_samples(args, iteration,  monte_carlo_tree_search_mgt(args.game_mgr, nn_mgr_N, args))

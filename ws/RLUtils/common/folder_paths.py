@@ -12,3 +12,6 @@ def fn_separate_folderpath_and_filename(filepath):
     filename_parts = filename.rsplit('_', 1)
     folder_path = filename_parts[0]
     return cwd, folder_path
+
+def fn_get_files_with_prefix(result_path, prefix='model'):
+    pass
