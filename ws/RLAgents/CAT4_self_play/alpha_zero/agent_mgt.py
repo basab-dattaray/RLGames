@@ -2,9 +2,7 @@ import math
 import os
 import shutil
 import signal
-import sys
 from collections import namedtuple
-from datetime import datetime as dt
 from time import time
 
 import numpy
@@ -17,7 +15,7 @@ from ws.RLAgents.CAT4_self_play.alpha_zero.play.playground_mgt import playground
 from ws.RLAgents.algo_lib.logic.search.monte_carlo_tree_search_mgt import monte_carlo_tree_search_mgt
 from ws.RLAgents.CAT4_self_play.alpha_zero.train.training_mgt import training_mgt
 from ws.RLEnvironments.self_play_games.othello.game_mgt import game_mgt
-from ws.RLUtils.modelling.archive_mgt import archive_mgt
+from ws.RLUtils.setup.archive_mgt import archive_mgt
 
 from ws.RLUtils.monitoring.tracing.tracer import tracer
 # from ws.RLUtils.setup.args_mgt import args_mgt
@@ -40,7 +38,6 @@ def agent_mgt(file_path):
         results_path= app_info.RESULTS_PATH_,
         archive_path= app_info.ARCHIVE_PATH_BEFORE_,
     )
-    fn_archive()
 
     def exit_gracefully(signum, frame):
         app_info.fn_log('!!! TERMINATING EARLY!!!')
@@ -132,7 +129,6 @@ def agent_mgt(file_path):
     def fn_archive_log_file():
         archive_msg = fn_archive(archive_folder_path=app_info.ARCHIVE_PATH_AFTER_)
         app_info.fn_log(archive_msg)
-
         return agent_mgr
 
     start_time = time()

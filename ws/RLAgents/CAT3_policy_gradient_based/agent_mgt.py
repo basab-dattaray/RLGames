@@ -6,7 +6,7 @@ from ws.RLAgents.CAT3_policy_gradient_based.progress_mgt import progress_mgt
 from ws.RLUtils.common.config_mgt import config_mgt
 
 from ws.RLUtils.common.module_loader import load_function
-from ws.RLUtils.modelling.archive_mgt import archive_mgt
+from ws.RLUtils.setup.archive_mgt import archive_mgt
 from ws.RLUtils.setup.startup_mgt import startup_mgt
 
 
