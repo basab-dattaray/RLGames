@@ -93,8 +93,8 @@ def startup_mgt(caller_filepath):
         archive_container_path = app_info.DEMO_FOLDER_PATH_.replace('Demos', 'ARCHIVES')
         current_time_id = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
         app_info.FULL_ARCHIVE_PATH_ = os.path.join(archive_container_path, current_time_id)
-        app_info.ARCHIVE_PATH_BEFORE_ = os.path.join(app_info.FULL_ARCHIVE_PATH_, 'BEFORE')
-        app_info.ARCHIVE_PATH_AFTER_ = os.path.join(app_info.FULL_ARCHIVE_PATH_, 'AFTER')
+        # app_info.ARCHIVE_PATH_BEFORE_ = os.path.join(app_info.FULL_ARCHIVE_PATH_, 'BEFORE')
+        # app_info.ARCHIVE_PATH_AFTER_ = os.path.join(app_info.FULL_ARCHIVE_PATH_, 'AFTER')
 
         pass
 

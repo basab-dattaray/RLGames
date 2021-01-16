@@ -6,7 +6,7 @@ from datetime import datetime as dt
 # from ws.RLUtils.monitoring.tracing.CustomFormatter import CustomFormatter
 
 
-def log_mgt(log_dir, show_debug=False, log_file_name = 'log.txt',  fresh_logfile_content=True, fixed_log_file=True):
+def log_mgt(log_dir, show_debug=False, log_file_name = 'log.txt',  fresh_logfile_content=False, fixed_log_file=True):
     _log = None
     _log_file_name = log_file_name
 

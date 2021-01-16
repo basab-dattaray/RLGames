@@ -18,7 +18,6 @@ from ws.RLEnvironments.self_play_games.othello.game_mgt import game_mgt
 from ws.RLUtils.setup.archive_mgt import archive_mgt
 
 from ws.RLUtils.monitoring.tracing.tracer import tracer
-# from ws.RLUtils.setup.args_mgt import args_mgt
 from ws.RLUtils.setup.startup_mgt import startup_mgt
 
 
@@ -36,15 +35,14 @@ def agent_mgt(file_path):
     fn_archive = archive_mgt(
         app_info.neural_net_mgr.fn_save_model,
         results_path= app_info.RESULTS_PATH_,
-        archive_path= app_info.ARCHIVE_PATH_BEFORE_,
+        archive_path= app_info.FULL_ARCHIVE_PATH_,
     )
 
     def exit_gracefully(signum, frame):
         app_info.fn_log('!!! TERMINATING EARLY!!!')
-        archive_msg = fn_archive(archive_folder_path= app_info.ARCHIVE_PATH_AFTER_)
+        archive_msg = fn_archive(archive_folder_path= app_info.FULL_ARCHIVE_PATH_)
         app_info.fn_log(archive_msg)
 
-        # chart.fn_close()
         app_info.ENV.fn_close()
         exit()
 
@@ -53,9 +51,7 @@ def agent_mgt(file_path):
         nonlocal app_info
 
         signal.signal(signal.SIGINT, exit_gracefully)
-
         app_info.training_mgr.fn_execute_training_iterations()
-
         return agent_mgr
 
     @tracer(app_info)
@@ -96,7 +92,6 @@ def agent_mgt(file_path):
     def fn_reset():
         if os.path.exists(app_info.RESULTS_REL_PATH):
             shutil.rmtree(app_info.RESULTS_REL_PATH)
-
         return agent_mgr
 
     @tracer(app_info, verboscity= 4)
@@ -127,13 +122,11 @@ def agent_mgt(file_path):
 
     @tracer(app_info, verboscity= 4)
     def fn_archive_log_file():
-        archive_msg = fn_archive(archive_folder_path=app_info.ARCHIVE_PATH_AFTER_)
+        archive_msg = fn_archive(archive_folder_path=app_info.FULL_ARCHIVE_PATH_)
         app_info.fn_log(archive_msg)
         return agent_mgr
 
     start_time = time()
-    # if os.path.exists(app_info.MODEL_FILEPATH_):
-    #     shutil.copy(app_info.MODEL_FILEPATH_, app_info.OLD_MODEL_FILEPATH_)
 
     agent_mgr = namedtuple('_',
                            ['fn_reset', 'fn_train', 'fn_test_against_human', 'fn_test_againt_random', 'fn_test_against_greedy',
@@ -150,9 +143,3 @@ def agent_mgt(file_path):
     agent_mgr.fn_archive_log_file = fn_archive_log_file
     agent_mgr.arguments = app_info
     return agent_mgr
-
-    # except Exception as e:
-    #     exc_type, exc_obj, exc_tb = sys.exc_info()
-    #     fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-    #     print(exc_type, fname, exc_tb.tb_lineno)
-    #     raise e
