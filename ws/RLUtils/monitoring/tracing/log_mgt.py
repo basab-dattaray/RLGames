@@ -3,9 +3,6 @@ import logging.handlers
 import os
 from datetime import datetime as dt
 
-# from ws.RLUtils.monitoring.tracing.CustomFormatter import CustomFormatter
-
-
 def log_mgt(log_dir, show_debug=False, log_file_name = 'log.txt',  fresh_logfile_content=False, fixed_log_file=True):
     _log = None
     _log_file_name = log_file_name
@@ -30,8 +27,7 @@ def log_mgt(log_dir, show_debug=False, log_file_name = 'log.txt',  fresh_logfile
             _log_file_name = dt.now().strftime("%Y_%m_%d_%H_%M_%S")
         logfile = os.path.join(log_dir, _log_file_name)
         if fresh_logfile_content:
-            if os.path.exists(logfile):
-                os.remove(logfile)
+            fn_log_reset(logfile)
 
         handler = logging.handlers.RotatingFileHandler(filename=logfile, maxBytes=1000000, backupCount=5)
         handler.setLevel(logging.DEBUG)
@@ -40,6 +36,10 @@ def log_mgt(log_dir, show_debug=False, log_file_name = 'log.txt',  fresh_logfile
         # handler.setFormatter(formatter)
         logging.getLogger().addHandler(handler)
         _log = logging.getLogger("app." + __name__)
+
+    def fn_log_reset(logfile):
+        if os.path.exists(logfile):
+            os.remove(logfile)
 
     def fn_log(msg="", color="", debug=False):
 
@@ -56,4 +56,4 @@ def log_mgt(log_dir, show_debug=False, log_file_name = 'log.txt',  fresh_logfile
 
     setup()
 
-    return fn_log
+    return fn_log, fn_log_reset

@@ -8,11 +8,11 @@ if __name__ == '__main__':
     log_dir = os.path.join(acwd, "logs")
 
     log_dir_show_debug_False = os.path.join(log_dir, "show_debug_False")
-    fn_log = log_mgt(log_dir=log_dir_show_debug_False)
+    fn_log = log_mgt(log_dir=log_dir_show_debug_False)[0]
     fn_log('default debug=False')
     fn_log('debug=True', debug=True)
 
     log_dir_show_debug_True = os.path.join(log_dir, "show_debug_True")
-    fn_log2 = log_mgt(log_dir=log_dir_show_debug_True, show_debug=True)
+    fn_log2 = log_mgt(log_dir=log_dir_show_debug_True, show_debug=True)[0]
     fn_log2('default debug=False')
     fn_log2('debug=True', debug=True)

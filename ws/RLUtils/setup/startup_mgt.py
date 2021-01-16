@@ -50,7 +50,7 @@ def startup_mgt(caller_filepath):
         fn_get_key_as_bool, _, _ = config_mgt(app_info)
         debug_mode = fn_get_key_as_bool('DEBUG_MODE')
         session_repo = app_info.RESULTS_REL_PATH
-        fn_log = log_mgt(log_dir=session_repo, show_debug=debug_mode)
+        fn_log, fn_log_reset = log_mgt(log_dir=session_repo, show_debug=debug_mode)
         app_info.fn_log = fn_log
         pass
 
@@ -105,7 +105,7 @@ def startup_mgt(caller_filepath):
         # app_info.ARCHIVE_PATH_AFTER_ = os.path.join(app_info.FULL_ARCHIVE_PATH_, 'AFTER')
 
         app_info.LOGGER_ =  logging.getLogger(__name__)
-        app_info.fn_log = log_mgt(log_dir=app_info.RESULTS_PATH_, fixed_log_file=True)
+        app_info.fn_log, app_info.fn_log_reset = log_mgt(log_dir=app_info.RESULTS_PATH_, fixed_log_file=True)
         app_info.trace_mgr = call_trace_mgt(app_info.fn_log)
 
         pass
