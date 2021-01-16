@@ -78,7 +78,7 @@ def neural_net_mgt(game_mgr, model_folder):
         optimizer = optim.Adam(nnet.parameters())
         fn_count_event, fn_stop_counting = progress_count_mgt('Epochs', num_epochs)
         for epoch in range(num_epochs):
-            # nn_args.CALL_TRACER_.fn_write(f'Epoch {epoch + 1} of {nn_args.NUM_EPOCHS}')
+            # nn_args.trace_mgr.fn_write(f'Epoch {epoch + 1} of {nn_args.NUM_EPOCHS}')
             fn_count_event()
 
             nnet.train()

@@ -12,7 +12,7 @@ from ws.RLAgents.CAT4_self_play.alpha_zero.train.sample_generator import fn_gene
 from ws.RLAgents.CAT4_self_play.alpha_zero.train.training_helper import fn_getCheckpointFile, fn_log_iteration_results
 from ws.RLUtils.monitoring.tracing.tracer import tracer
 def training_mgt(nn_mgr_N, app_info):
-    _TMP_MODEL_FILENAME = '_tmp.tar'
+    _TMP_MODEL_FILENAME = '_Tmp'
     nn_mgr_P = copy.deepcopy(nn_mgr_N)
 
     def _fn_try_to_load_model():
@@ -32,7 +32,7 @@ def training_mgt(nn_mgr_N, app_info):
 
         def _fn_interpret_competition_results(iteration, nwins, pwins):
             def _fn_write_result(color, result, update_score, do_save):
-                app_info.CALL_TRACER_.fn_write(
+                app_info.trace_mgr.fn_write(
                     color + result + ' New Model: update_threshold: {}, update_score: {}'.format(
                         app_info.SCORE_BASED_MODEL_UPDATE_THRESHOLD,
                         update_score))
@@ -40,7 +40,7 @@ def training_mgt(nn_mgr_N, app_info):
                     nn_mgr_N.fn_save_model(model_file_name= fn_getCheckpointFile(iteration))
                     nn_mgr_N.fn_save_model()
                 else:
-                    nn_mgr_N.fn_load_model(model_file_name= _TMP_MODEL_FILENAME)
+                    nn_mgr_N.fn_load_model(model_file_name= app_info.RESULTS_PATH_)
 
             nonlocal update_count
             reject = False
@@ -51,7 +51,7 @@ def training_mgt(nn_mgr_N, app_info):
                 update_score = float(nwins) / (pwins + nwins)
                 if update_score < app_info.SCORE_BASED_MODEL_UPDATE_THRESHOLD:
                     reject = True
-            model_already_exists = nn_mgr_N.fn_is_model_available(app_info.RESULTS_PATH_)
+            model_already_exists = nn_mgr_N.fn_is_model_available(app_info.RESULTS_PATH_) ###
 
             if not reject:
                 update_count += 1
@@ -64,12 +64,12 @@ def training_mgt(nn_mgr_N, app_info):
                 else:
                     _fn_write_result(Fore.GREEN, 'ACCEPTED', update_score, do_save= True)
 
-            app_info.CALL_TRACER_.fn_write(Fore.BLACK)
+            app_info.trace_mgr.fn_write(Fore.BLACK)
 
         def fn_run_iteration(iteration):
             nonlocal update_count
-            app_info.CALL_TRACER_.fn_write('')
-            app_info.CALL_TRACER_.fn_write(f'ITERATION NUMBER {iteration} of {app_info.NUM_TRAINING_ITERATIONS}', indent=0)
+            app_info.trace_mgr.fn_write('')
+            app_info.trace_mgr.fn_write(f'ITERATION NUMBER {iteration} of {app_info.NUM_TRAINING_ITERATIONS}', indent=0)
 
             @tracer(app_info)
             def _fn_play_next_vs_previous(training_samples):
@@ -82,7 +82,7 @@ def training_mgt(nn_mgr_N, app_info):
                     lambda state: np.argmax(pmcts.fn_get_policy(state, do_random_selection= False)),
                     lambda state: np.argmax(nmcts.fn_get_policy(state, do_random_selection= False)),
                     game_mgr,
-                    msg_recorder=app_info.CALL_TRACER_.fn_write
+                    msg_recorder=app_info.trace_mgr.fn_write
                 )
                 pwins, nwins, draws = playground.fn_play_games(app_info.NUM_GAMES_FOR_MODEL_COMPARISON)
                 app_info.fn_log()

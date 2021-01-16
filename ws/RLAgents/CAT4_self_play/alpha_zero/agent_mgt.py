@@ -83,10 +83,10 @@ def agent_mgt(file_path):
         fn_contender_policy = fn_player_policy(app_info.game_mgr)
         playground = playground_mgt(fn_system_policy, fn_contender_policy, app_info.game_mgr,
                                     fn_display=game_mgt(app_info['BOARD_SIZE']).fn_display,
-                                    msg_recorder=app_info.CALL_TRACER_.fn_write)
+                                    msg_recorder=app_info.trace_mgr.fn_write)
         system_wins, system_losses, draws = playground.fn_play_games(NUM_TEST_GAMES, verbose=verbose)
 
-        app_info.CALL_TRACER_.fn_write(f'wins:{system_wins} losses:{system_losses} draws:{draws}')
+        app_info.trace_mgr.fn_write(f'wins:{system_wins} losses:{system_losses} draws:{draws}')
 
     @tracer(app_info, verboscity= 4)
     def fn_reset():
@@ -99,14 +99,14 @@ def agent_mgt(file_path):
         if change_args is not None:
             for k, v in change_args.items():
                 app_info[k] = v
-                app_info.CALL_TRACER_.fn_write(f'  app_info[{k}] = {v}')
+                app_info.trace_mgr.fn_write(f'  app_info[{k}] = {v}')
         agent_mgr.app_info = app_info
         return agent_mgr
 
     @tracer(app_info, verboscity= 4)
     def fn_show_args():
         for k, v in app_info.items():
-            app_info.CALL_TRACER_.fn_write(f'  app_info[{k}] = {v}')
+            app_info.trace_mgr.fn_write(f'  app_info[{k}] = {v}')
         return agent_mgr
 
     @tracer(app_info, verboscity= 4)
@@ -116,7 +116,7 @@ def agent_mgt(file_path):
         time_diff = int(end_time - start_time)
         mins = math.floor(time_diff / 60)
         secs = time_diff % 60
-        app_info.CALL_TRACER_.fn_write(f'Time elapsed:    minutes: {mins}    seconds: {secs}')
+        app_info.trace_mgr.fn_write(f'Time elapsed:    minutes: {mins}    seconds: {secs}')
         start_time = time()
         return agent_mgr
 

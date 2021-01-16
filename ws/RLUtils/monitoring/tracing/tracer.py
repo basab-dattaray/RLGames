@@ -5,7 +5,7 @@ import inspect
 def tracer(app_info, verboscity = 1):
     # recorder = nn_args['fn_loger']
 
-    recorder = app_info.CALL_TRACER_
+    recorder = app_info.trace_mgr
     def function_wrapper_maker(fn):
         @functools.wraps(fn)
         def fn_wrapper(*app_info, **kwargs):

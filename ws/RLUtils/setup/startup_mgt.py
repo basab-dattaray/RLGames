@@ -14,7 +14,7 @@ from ws.RLUtils.platform_libs.pytorch.device_selection import get_device
 
 def startup_mgt(caller_filepath):
     ROOT_DOT_PATH = 'ws'
-    ARGS_PY = 'app_info.py'
+    ARGS_PY = 'ARGS.py'
 
     def _fn_init_arg_with_default_val(app_info, name, val):
         if app_info is None:
@@ -34,22 +34,17 @@ def startup_mgt(caller_filepath):
         app_info = _fn_init_arg_with_default_val(app_info, 'RESULTS_REL_PATH', 'Results/')
         results_folder_path = os.path.join(app_info.DEMO_FOLDER_PATH_, app_info.RESULTS_REL_PATH)
         app_info = _fn_init_arg_with_default_val(app_info, 'RESULTS_PATH_', results_folder_path)
-        archive_dir = demo_folder_path.replace('/Demos/', '/Archives/')
-        app_info = _fn_init_arg_with_default_val(app_info, 'ARCHIVE_DIR_', archive_dir)
-        app_info = _fn_init_arg_with_default_val(app_info, 'LOGGER_', logging.getLogger(__name__))
-        app_info = _fn_init_arg_with_default_val(app_info, 'fn_log',
-                                             log_mgt(log_dir=app_info.ARCHIVE_DIR_, fixed_log_file=True))
-        app_info = _fn_init_arg_with_default_val(app_info, 'CALL_TRACER_', call_trace_mgt(app_info.fn_log))
+        # archive_dir = demo_folder_path.replace('/Demos/', '/Archives/')
+        # app_info = _fn_init_arg_with_default_val(app_info, 'ARCHIVE_DIR_', archive_dir)
+
+        # app_info = _fn_init_arg_with_default_val(app_info, 'LOGGER_', logging.getLogger(__name__))
+        # app_info = _fn_init_arg_with_default_val(app_info, 'fn_log',
+        #                                      log_mgt(log_dir=app_info.ARCHIVE_DIR_, fixed_log_file=True))
+        # app_info = _fn_init_arg_with_default_val(app_info, 'trace_mgr', call_trace_mgt(app_info.fn_log))
         return app_info
 
     def _fn_setup_for_results(_app_info):
-        results_folder = os.path.join(_app_info.DEMO_FOLDER_PATH_, "Results")
-        if os.path.exists(results_folder) is False:
-            os.makedirs(results_folder)
-        # _app_info.RESULTS_PATH_ = results_folder
-        args_module_path = os.path.join(_app_info.DEMO_FOLDER_PATH_, ARGS_PY)
-        if os.path.exists(args_module_path):
-            shutil.copy(args_module_path, _app_info.RESULTS_REL_PATH)
+        pass
 
     def _fn_setup_logging(app_info):
         fn_get_key_as_bool, _, _ = config_mgt(app_info)
@@ -93,8 +88,25 @@ def startup_mgt(caller_filepath):
         archive_container_path = app_info.DEMO_FOLDER_PATH_.replace('Demos', 'ARCHIVES')
         current_time_id = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
         app_info.FULL_ARCHIVE_PATH_ = os.path.join(archive_container_path, current_time_id)
+
+        results_folder = os.path.join(app_info.DEMO_FOLDER_PATH_, "Results")
+        if os.path.exists(results_folder) is False:
+            os.makedirs(results_folder)
+        app_info.RESULTS_PATH_ = results_folder
+
+        results_args_py_path = os.path.join(app_info.RESULTS_PATH_, ARGS_PY)
+        if os.path.exists(results_args_py_path):
+            os.remove(results_args_py_path)
+        args_py_path = os.path.join(app_info.DEMO_FOLDER_PATH_, ARGS_PY)
+        shutil.copy(args_py_path, app_info.RESULTS_PATH_)
+
+
         # app_info.ARCHIVE_PATH_BEFORE_ = os.path.join(app_info.FULL_ARCHIVE_PATH_, 'BEFORE')
         # app_info.ARCHIVE_PATH_AFTER_ = os.path.join(app_info.FULL_ARCHIVE_PATH_, 'AFTER')
+
+        app_info.LOGGER_ =  logging.getLogger(__name__)
+        app_info.fn_log = log_mgt(log_dir=app_info.RESULTS_PATH_, fixed_log_file=True)
+        app_info.trace_mgr = call_trace_mgt(app_info.fn_log)
 
         pass
 
@@ -107,7 +119,7 @@ def startup_mgt(caller_filepath):
     app_info = fn_bootstrap(caller_filepath)
 
     _fn_setup_paths_in_app_info(app_info)
-    _fn_setup_for_results(app_info)
+    # _fn_setup_for_results(app_info)
     _fn_setup_logging(app_info)
     _fn_setup_gpu(app_info)
     _fn_setup_env(app_info)
