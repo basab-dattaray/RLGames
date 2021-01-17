@@ -15,5 +15,4 @@ if __name__ == "__main__":
         fn_train(). \
         fn_test_against_greedy(). \
         fn_test_against_random(). \
-        fn_measure_time_elapsed(). \
         fn_archive_log_file()

@@ -1,8 +1,13 @@
 import os
 import shutil
+from time import time
 
-def archive_mgt(fn_save_to_neural_net, results_path, archive_path, fn_log_reset= None):
+from ws.RLUtils.common.misc_functions import fn_get_elapsed_time
+
+
+def archive_mgt(fn_save_to_neural_net, results_path, archive_path, fn_log= None,  fn_log_reset= None):
     _before_instance = True
+    _start_time = time()
 
     def fn_archive(result_folder_path= None, archive_folder_path= None):
         nonlocal  _before_instance
@@ -29,6 +34,10 @@ def archive_mgt(fn_save_to_neural_net, results_path, archive_path, fn_log_reset=
 
             if os.path.exists(real_archive_path):
                 shutil.rmtree(real_archive_path)
+
+            if not _before_instance:
+                end_time = fn_get_elapsed_time(_start_time, fn_log)
+
             shutil.copytree(result_folder_path, real_archive_path, symlinks=False, ignore=None)
 
             if _before_instance:
