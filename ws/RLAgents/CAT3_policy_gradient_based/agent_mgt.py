@@ -19,12 +19,12 @@ def agent_mgt(caller_file):
 
     fn_act, fn_add_transition, fn_save_to_neural_net, fn_load_from_neural_net, fn_should_update_network = impl_mgt(app_info)
 
-    fn_archive = archive_mgt(
-        results_path= app_info.RESULTS_PATH_,
-        archive_path=app_info.FULL_ARCHIVE_PATH_,
-        fn_log=app_info.fn_log,
-        fn_log_reset = app_info.fn_log_reset,
-    )
+    # fn_archive = archive_mgt(
+    #     results_path= app_info.RESULTS_PATH_,
+    #     archive_path=app_info.FULL_ARCHIVE_PATH_,
+    #     fn_log=app_info.fn_log,
+    #     fn_log_reset = app_info.fn_log_reset,
+    # )
 
     chart, fn_show_training_progress, fn_has_reached_goal = progress_mgt(app_info)
 
@@ -34,7 +34,7 @@ def agent_mgt(caller_file):
 
     def exit_gracefully(signum, frame):
         fn_log('!!! TERMINATING EARLY!!!')
-        archive_msg = fn_archive(fn_save_to_neural_net= fn_save_to_neural_net,)
+        archive_msg = app_info.fn_archive(fn_save_to_neural_net= fn_save_to_neural_net,)
         fn_log(archive_msg)
 
         chart.fn_close()
@@ -99,7 +99,7 @@ def agent_mgt(caller_file):
                 fn_log('FAILED in loading model')
 
         fn_run(fn_show_training_progress, fn_should_update_network=fn_should_update_network)
-        archive_msg = fn_archive(fn_save_to_neural_net= fn_save_to_neural_net,)
+        archive_msg = app_info.fn_archive(fn_save_to_neural_net= fn_save_to_neural_net,)
         fn_log(archive_msg)
         return agent_mgr
 

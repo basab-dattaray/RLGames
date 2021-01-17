@@ -56,7 +56,9 @@ app_info = DotDict(
 
         "SD_FOR_MULTIVARIATE_NORMAL_ACTION_DISTRIBUTION": 0.5,
 
-        "FORCE_CPU_USE": -1
+        "FORCE_CPU_USE": -1,
+
+        "AUTO_ARCHIVE": 1,
     }
 )
 

@@ -27,7 +27,9 @@ app_info = DotDict(
         "MAX_RESULT_COUNT": 100,
 
         "NUM_EPISODES_FOR_UPDATE": 1,
-        "ENV_SEED": 523
+        "ENV_SEED": 523,
+
+        "AUTO_ARCHIVE": 1,
     }
 )
 

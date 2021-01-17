@@ -1,4 +1,3 @@
-import logging
 import os
 import shutil
 from datetime import datetime
@@ -11,6 +10,7 @@ from ws.RLUtils.monitoring.tracing.call_trace_mgt import call_trace_mgt
 from ws.RLUtils.monitoring.tracing.log_mgt import log_mgt
 
 from ws.RLUtils.platform_libs.pytorch.device_selection import get_device
+from ws.RLUtils.setup.archive_mgt import archive_mgt
 
 def startup_mgt(caller_filepath):
     ROOT_DOT_PATH = 'ws'
@@ -37,7 +37,6 @@ def startup_mgt(caller_filepath):
         return app_info
 
     def _fn_setup_logging(app_info):
-        fn_get_key_as_bool, _, _ = config_mgt(app_info)
         debug_mode = fn_get_key_as_bool('DEBUG_MODE')
         app_info.fn_log, app_info.fn_log_reset = log_mgt(log_dir=app_info.RESULTS_PATH_, show_debug=debug_mode)
         app_info.trace_mgr = call_trace_mgt(app_info.fn_log)
@@ -89,25 +88,28 @@ def startup_mgt(caller_filepath):
         args_py_path = os.path.join(app_info.DEMO_FOLDER_PATH_, ARGS_PY)
         shutil.copy(args_py_path, app_info.RESULTS_PATH_)
 
-        # app_info.LOGGER_ =  logging.getLogger(__name__)
-        # app_info.fn_log, app_info.fn_log_reset = log_mgt(log_dir=app_info.RESULTS_PATH_, fixed_log_file=True)
-
-
-        pass
-
     def _fn_setup_gpu(app_info, verbose=False):
         app_info.GPU_DEVICE = get_device(app_info)
         if verbose:
             print('DEVICE: {}'.format(app_info.GPU_DEVICE))
         pass
 
+
     app_info = fn_bootstrap(caller_filepath)
+    fn_get_key_as_bool, fn_get_key_as_int, fn_get_key_as_str = config_mgt(app_info)
 
     _fn_setup_paths_in_app_info(app_info)
-    # _fn_setup_for_results(app_info)
     _fn_setup_logging(app_info)
     _fn_setup_gpu(app_info)
     _fn_setup_env(app_info)
+
+    if fn_get_key_as_bool('AUTO_ARCHIVE'):
+        app_info.fn_archive = archive_mgt(
+            results_path= app_info.RESULTS_PATH_,
+            archive_path=app_info.FULL_ARCHIVE_PATH_,
+            fn_log=app_info.fn_log,
+            fn_log_reset = app_info.fn_log_reset,
+        )
 
     return app_info
 

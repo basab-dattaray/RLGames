@@ -47,7 +47,9 @@ app_info = DotDict(
         "REWARD_CALCULATED_FROM_SINGLE_EPISODES": 0,
         "CONSECUTIVE_GOAL_HITS": 3,
         "LOG_MEAN_INTERVAL": 5,
-        "MAX_RESULT_COUNT": 2
+        "MAX_RESULT_COUNT": 2,
+
+        "AUTO_ARCHIVE": 1,
     }
 )
 

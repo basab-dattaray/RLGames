@@ -25,6 +25,8 @@ app_info = DotDict({
     'UCB_USE_LOG_IN_NUMERATOR': True,
     'UCB_USE_POLICY_FOR_EXPLORATION': True,
 
+    "AUTO_ARCHIVE": 1,
+
 })
 
 def fn_get_args():
