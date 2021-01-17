@@ -36,6 +36,7 @@ def agent_mgt(file_path):
         app_info.neural_net_mgr.fn_save_model,
         results_path= app_info.RESULTS_PATH_,
         archive_path= app_info.FULL_ARCHIVE_PATH_,
+        fn_log_reset=app_info.fn_log_reset,
     )
 
     def exit_gracefully(signum, frame):
@@ -90,8 +91,8 @@ def agent_mgt(file_path):
 
     @tracer(app_info, verboscity= 4)
     def fn_reset():
-        if os.path.exists(app_info.RESULTS_REL_PATH):
-            shutil.rmtree(app_info.RESULTS_REL_PATH)
+        if os.path.exists(app_info.RESULTS_PATH_):
+            shutil.rmtree(app_info.RESULTS_PATH_)
         return agent_mgr
 
     @tracer(app_info, verboscity= 4)
@@ -116,6 +117,8 @@ def agent_mgt(file_path):
         time_diff = int(end_time - start_time)
         mins = math.floor(time_diff / 60)
         secs = time_diff % 60
+        app_info.trace_mgr.fn_write(f'start_time:{start_time}')
+        app_info.trace_mgr.fn_write(f'end_time:{end_time}')
         app_info.trace_mgr.fn_write(f'Time elapsed:    minutes: {mins}    seconds: {secs}')
         start_time = time()
         return agent_mgr

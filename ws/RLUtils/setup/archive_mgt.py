@@ -1,7 +1,7 @@
 import os
 import shutil
 
-def archive_mgt(fn_save_to_neural_net, results_path, archive_path):
+def archive_mgt(fn_save_to_neural_net, results_path, archive_path, fn_log_reset= None):
     _before_instance = True
 
     def fn_archive(result_folder_path= None, archive_folder_path= None):
@@ -21,7 +21,6 @@ def archive_mgt(fn_save_to_neural_net, results_path, archive_path):
 
             if _before_instance:
                 real_archive_path = os.path.join( archive_folder_path , 'BEFORE')
-                _before_instance = False
             else:
                 real_archive_path = os.path.join( archive_folder_path , 'AFTER')
 
@@ -31,6 +30,12 @@ def archive_mgt(fn_save_to_neural_net, results_path, archive_path):
             if os.path.exists(real_archive_path):
                 shutil.rmtree(real_archive_path)
             shutil.copytree(result_folder_path, real_archive_path, symlinks=False, ignore=None)
+
+            if _before_instance:
+                _before_instance = False
+                if fn_log_reset is not None:
+                    fn_log_reset()
+
 
             return "INFO:: Sucessfully Archived at {}".format(archive_path)
 

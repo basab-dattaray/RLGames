@@ -20,7 +20,7 @@ def fn_load_train_examples(app_info):
     modelFile = os.path.join(app_info.LOAD_FOLDER_FILE[0], app_info.LOAD_FOLDER_FILE[1])
     examplesFile = modelFile + ".examples"
     if not os.path.isfile(examplesFile):
-        app_info.LOGGER_.warning(f'File "{examplesFile}" with training_samples not found!')
+        # app_info.LOGGER_.warning(f'File "{examplesFile}" with training_samples not found!')
         r = input("Continue? [y|size]")
         if r != "y":
             sys.exit()

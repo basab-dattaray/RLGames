@@ -23,6 +23,8 @@ def agent_mgt(caller_file):
         fn_save_to_neural_net,
         results_path= app_info.RESULTS_PATH_,
         archive_path=app_info.FULL_ARCHIVE_PATH_,
+        fn_log_reset = app_info.fn_log_reset,
+
     )
 
     chart, fn_show_training_progress, fn_has_reached_goal = progress_mgt(app_info)

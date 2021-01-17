@@ -6,6 +6,7 @@ from datetime import datetime as dt
 def log_mgt(log_dir, show_debug=False, log_file_name = 'log.txt',  fresh_logfile_content=False, fixed_log_file=True):
     _log = None
     _log_file_name = log_file_name
+    _logfile_path = os.path.join(log_dir, log_file_name)
 
     _log_level = logging.INFO
     if show_debug:
@@ -25,11 +26,11 @@ def log_mgt(log_dir, show_debug=False, log_file_name = 'log.txt',  fresh_logfile
 
         if not fixed_log_file:
             _log_file_name = dt.now().strftime("%Y_%m_%d_%H_%M_%S")
-        logfile = os.path.join(log_dir, _log_file_name)
-        if fresh_logfile_content:
-            fn_log_reset(logfile)
 
-        handler = logging.handlers.RotatingFileHandler(filename=logfile, maxBytes=1000000, backupCount=5)
+        if fresh_logfile_content:
+            fn_log_reset()
+
+        handler = logging.handlers.RotatingFileHandler(filename=_logfile_path, maxBytes=1000000, backupCount=5)
         handler.setLevel(logging.DEBUG)
         # formatter = logging.Formatter('%(asctime)state - %(message)state')
         # formatter = logging.Formatter(CustomFormatter)
@@ -37,9 +38,11 @@ def log_mgt(log_dir, show_debug=False, log_file_name = 'log.txt',  fresh_logfile
         logging.getLogger().addHandler(handler)
         _log = logging.getLogger("app." + __name__)
 
-    def fn_log_reset(logfile):
-        if os.path.exists(logfile):
-            os.remove(logfile)
+    def fn_log_reset():
+        if os.path.exists(_logfile_path):
+            with open(_logfile_path, "w"):
+                pass
+            # os.remove(_logfile_path)
 
     def fn_log(msg="", color="", debug=False):
 

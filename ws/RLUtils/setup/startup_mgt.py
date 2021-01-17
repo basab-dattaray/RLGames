@@ -34,24 +34,13 @@ def startup_mgt(caller_filepath):
         app_info = _fn_init_arg_with_default_val(app_info, 'RESULTS_REL_PATH', 'Results/')
         results_folder_path = os.path.join(app_info.DEMO_FOLDER_PATH_, app_info.RESULTS_REL_PATH)
         app_info = _fn_init_arg_with_default_val(app_info, 'RESULTS_PATH_', results_folder_path)
-        # archive_dir = demo_folder_path.replace('/Demos/', '/Archives/')
-        # app_info = _fn_init_arg_with_default_val(app_info, 'ARCHIVE_DIR_', archive_dir)
-
-        # app_info = _fn_init_arg_with_default_val(app_info, 'LOGGER_', logging.getLogger(__name__))
-        # app_info = _fn_init_arg_with_default_val(app_info, 'fn_log',
-        #                                      log_mgt(log_dir=app_info.ARCHIVE_DIR_, fixed_log_file=True))
-        # app_info = _fn_init_arg_with_default_val(app_info, 'trace_mgr', call_trace_mgt(app_info.fn_log))
         return app_info
-
-    def _fn_setup_for_results(_app_info):
-        pass
 
     def _fn_setup_logging(app_info):
         fn_get_key_as_bool, _, _ = config_mgt(app_info)
         debug_mode = fn_get_key_as_bool('DEBUG_MODE')
-        session_repo = app_info.RESULTS_REL_PATH
-        fn_log, fn_log_reset = log_mgt(log_dir=session_repo, show_debug=debug_mode)
-        app_info.fn_log = fn_log
+        app_info.fn_log, app_info.fn_log_reset = log_mgt(log_dir=app_info.RESULTS_PATH_, show_debug=debug_mode)
+        app_info.trace_mgr = call_trace_mgt(app_info.fn_log)
         pass
 
     def _fn_setup_env(app_info, verbose=False):
@@ -100,20 +89,16 @@ def startup_mgt(caller_filepath):
         args_py_path = os.path.join(app_info.DEMO_FOLDER_PATH_, ARGS_PY)
         shutil.copy(args_py_path, app_info.RESULTS_PATH_)
 
+        # app_info.LOGGER_ =  logging.getLogger(__name__)
+        # app_info.fn_log, app_info.fn_log_reset = log_mgt(log_dir=app_info.RESULTS_PATH_, fixed_log_file=True)
 
-        # app_info.ARCHIVE_PATH_BEFORE_ = os.path.join(app_info.FULL_ARCHIVE_PATH_, 'BEFORE')
-        # app_info.ARCHIVE_PATH_AFTER_ = os.path.join(app_info.FULL_ARCHIVE_PATH_, 'AFTER')
-
-        app_info.LOGGER_ =  logging.getLogger(__name__)
-        app_info.fn_log, app_info.fn_log_reset = log_mgt(log_dir=app_info.RESULTS_PATH_, fixed_log_file=True)
-        app_info.trace_mgr = call_trace_mgt(app_info.fn_log)
 
         pass
 
-    def _fn_setup_gpu(_app_info, verbose=False):
-        _app_info.GPU_DEVICE = get_device(_app_info)
+    def _fn_setup_gpu(app_info, verbose=False):
+        app_info.GPU_DEVICE = get_device(app_info)
         if verbose:
-            print('DEVICE: {}'.format(_app_info.GPU_DEVICE))
+            print('DEVICE: {}'.format(app_info.GPU_DEVICE))
         pass
 
     app_info = fn_bootstrap(caller_filepath)
