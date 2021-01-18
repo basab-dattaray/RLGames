@@ -57,12 +57,12 @@ def training_mgt(nn_mgr_N, app_info):
                 update_count += 1
 
             if reject and not model_already_exists:
-                _fn_write_result(Fore.MAGENTA, 'ACCEPTED', update_score, do_save= True)
+                app_info.fn_log('ACCEPTED', update_score)
             else:
                 if reject:
-                    _fn_write_result(Fore.RED, 'REJECTED', update_score, do_save= False)
+                    app_info.fn_log('REJECTED', update_score)
                 else:
-                    _fn_write_result(Fore.GREEN, 'ACCEPTED', update_score, do_save= True)
+                    app_info.fn_log('ACCEPTED', update_score)
 
             app_info.trace_mgr.fn_write(Fore.BLACK)
 

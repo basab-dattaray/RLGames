@@ -79,7 +79,6 @@ def agent_mgt(file_path):
         return agent_mgr
 
     def fn_test(app_info, fn_player_policy, verbose=False, NUM_TEST_GAMES=2):
-        signal.signal(signal.SIGINT, exit_gracefully)
         system_nn = neural_net_mgt(app_info.game_mgr, app_info.RESULTS_PATH_)
         if not system_nn.fn_load_model():
             return

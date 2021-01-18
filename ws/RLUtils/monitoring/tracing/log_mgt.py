@@ -48,7 +48,7 @@ def log_mgt(log_dir, show_debug=False, log_file_name = 'log.txt',  fresh_logfile
 
         # PRINT
         if show_debug or not debug:
-            print_msg = color + msg
+            print_msg = msg
             print(print_msg)
 
         # LOG
