@@ -6,7 +6,7 @@ import numpy as np
 from pip._vendor.colorama import Fore
 
 from ws.RLAgents.CAT4_self_play.alpha_zero.play.playground_mgt import playground_mgt
-# from ws.RLAgents.CAT4_self_play.alpha_zero.search.mcts_adapter import mcts_adapter
+
 from ws.RLAgents.algo_lib.logic.search.monte_carlo_tree_search_mgt import monte_carlo_tree_search_mgt
 from ws.RLAgents.CAT4_self_play.alpha_zero.train.sample_generator import fn_generate_samples
 from ws.RLAgents.CAT4_self_play.alpha_zero.train.training_helper import fn_getCheckpointFile, fn_log_iteration_results
@@ -31,17 +31,6 @@ def training_mgt(nn_mgr_N, app_info):
         @tracer(app_info)
 
         def _fn_interpret_competition_results(iteration, nwins, pwins):
-            # def _fn_write_result(color, result, update_score, do_save):
-            #     app_info.fn_log(
-            #         color + result + ' New Model: update_threshold: {}, update_score: {}'.format(
-            #             app_info.SCORE_BASED_MODEL_UPDATE_THRESHOLD,
-            #             update_score))
-            #     if do_save:
-            #         nn_mgr_N.fn_save_model(model_file_name= fn_getCheckpointFile(iteration))
-            #         nn_mgr_N.fn_save_model()
-            #     else:
-            #         nn_mgr_N.fn_load_model(model_file_name= app_info.RESULTS_PATH_)
-
             nonlocal update_count
             reject = False
             update_score = 0
@@ -57,7 +46,8 @@ def training_mgt(nn_mgr_N, app_info):
                 update_count += 1
 
             if reject and not model_already_exists:
-                app_info.fn_log(f'MODEL ACCEPTED: score: {update_score} pass: {app_info.SCORE_BASED_MODEL_UPDATE_THRESHOLD}')
+                app_info.fn_log(f'MODEL CREATED: score: {update_score} pass: {app_info.SCORE_BASED_MODEL_UPDATE_THRESHOLD}')
+                nn_mgr_N.fn_save_model()
             else:
                 if reject:
                     app_info.fn_log(
@@ -65,8 +55,7 @@ def training_mgt(nn_mgr_N, app_info):
                 else:
                     app_info.fn_log(
                         f'MODEL ACCEPTED: score: {update_score} pass: {app_info.SCORE_BASED_MODEL_UPDATE_THRESHOLD}')
-
-            # app_info.fn_log('')
+                    nn_mgr_N.fn_save_model()
 
         def fn_run_iteration(iteration):
             nonlocal update_count
