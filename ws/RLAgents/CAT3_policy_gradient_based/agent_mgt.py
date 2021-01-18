@@ -6,7 +6,7 @@ from ws.RLAgents.CAT3_policy_gradient_based.progress_mgt import progress_mgt
 from ws.RLUtils.common.config_mgt import config_mgt
 
 from ws.RLUtils.common.module_loader import load_function
-from ws.RLUtils.setup.archive_mgt import archive_mgt
+from ws.RLUtils.setup.interrupt_mgt import interrupt_mgt
 from ws.RLUtils.setup.startup_mgt import startup_mgt
 
 
@@ -19,27 +19,22 @@ def agent_mgt(caller_file):
 
     fn_act, fn_add_transition, fn_save_to_neural_net, fn_load_from_neural_net, fn_should_update_network = impl_mgt(app_info)
 
-    # fn_archive = archive_mgt(
-    #     results_path= app_info.RESULTS_PATH_,
-    #     archive_path=app_info.FULL_ARCHIVE_PATH_,
-    #     fn_log=app_info.fn_log,
-    #     fn_log_reset = app_info.fn_log_reset,
-    # )
-
     chart, fn_show_training_progress, fn_has_reached_goal = progress_mgt(app_info)
 
     _episode_num = 0
 
     fn_log = app_info.fn_log
 
-    def exit_gracefully(signum, frame):
-        fn_log('!!! TERMINATING EARLY!!!')
-        archive_msg = app_info.fn_archive(fn_save_to_neural_net= fn_save_to_neural_net,)
-        fn_log(archive_msg)
+    interrupt_mgt(app_info)
 
-        chart.fn_close()
-        env.fn_close()
-        exit()
+    # def exit_gracefully(signum, frame):
+    #     fn_log('!!! TERMINATING EARLY!!!')
+    #     archive_msg = app_info.fn_archive(fn_save_to_neural_net= fn_save_to_neural_net,)
+    #     fn_log(archive_msg)
+    #
+    #     chart.fn_close()
+    #     env.fn_close()
+    #     exit()
 
     def fn_run(fn_show_training_progress,
                supress_graph=False,
@@ -51,7 +46,7 @@ def agent_mgt(caller_file):
         # if supress_graph:
         #     fn_supress_graphing()
 
-        signal.signal(signal.SIGINT, exit_gracefully)
+        # signal.signal(signal.SIGINT, exit_gracefully)
         _episode_num = 1
         done = False
         while _episode_num <= app_info['NUM_EPISODES'] and not done:

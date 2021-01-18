@@ -19,6 +19,7 @@ from ws.RLUtils.common.misc_functions import fn_get_elapsed_time
 from ws.RLUtils.setup.archive_mgt import archive_mgt
 
 from ws.RLUtils.monitoring.tracing.tracer import tracer
+from ws.RLUtils.setup.interrupt_mgt import interrupt_mgt
 from ws.RLUtils.setup.startup_mgt import startup_mgt
 
 
@@ -40,19 +41,22 @@ def agent_mgt(file_path):
     #     fn_log_reset=app_info.fn_log_reset,
     # )
 
-    def exit_gracefully(signum, frame):
-        app_info.fn_log('!!! TERMINATING EARLY!!!')
-        archive_msg = app_info.fn_archive(archive_folder_path= app_info.FULL_ARCHIVE_PATH_,  fn_save_to_neural_net= app_info.neural_net_mgr.fn_save_model)
-        app_info.fn_log(archive_msg)
+    # def exit_gracefully(signum, frame):
+    #     app_info.fn_log('!!! TERMINATING EARLY!!!')
+    #     archive_msg = app_info.fn_archive(archive_folder_path= app_info.FULL_ARCHIVE_PATH_,  fn_save_to_neural_net= app_info.neural_net_mgr.fn_save_model)
+    #     app_info.fn_log(archive_msg)
+    #
+    #     # app_info.ENV.fn_close()
+    #     exit()
+    #
+    # signal.signal(signal.SIGINT, exit_gracefully)
 
-        app_info.ENV.fn_close()
-        exit()
+    interrupt_mgt(app_info)
 
     @tracer(app_info, verboscity= 4)
     def fn_train():
         nonlocal app_info
 
-        signal.signal(signal.SIGINT, exit_gracefully)
         app_info.training_mgr.fn_execute_training_iterations()
         return agent_mgr
 
