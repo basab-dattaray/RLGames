@@ -31,16 +31,16 @@ def training_mgt(nn_mgr_N, app_info):
         @tracer(app_info)
 
         def _fn_interpret_competition_results(iteration, nwins, pwins):
-            def _fn_write_result(color, result, update_score, do_save):
-                app_info.trace_mgr.fn_write(
-                    color + result + ' New Model: update_threshold: {}, update_score: {}'.format(
-                        app_info.SCORE_BASED_MODEL_UPDATE_THRESHOLD,
-                        update_score))
-                if do_save:
-                    nn_mgr_N.fn_save_model(model_file_name= fn_getCheckpointFile(iteration))
-                    nn_mgr_N.fn_save_model()
-                else:
-                    nn_mgr_N.fn_load_model(model_file_name= app_info.RESULTS_PATH_)
+            # def _fn_write_result(color, result, update_score, do_save):
+            #     app_info.fn_log(
+            #         color + result + ' New Model: update_threshold: {}, update_score: {}'.format(
+            #             app_info.SCORE_BASED_MODEL_UPDATE_THRESHOLD,
+            #             update_score))
+            #     if do_save:
+            #         nn_mgr_N.fn_save_model(model_file_name= fn_getCheckpointFile(iteration))
+            #         nn_mgr_N.fn_save_model()
+            #     else:
+            #         nn_mgr_N.fn_load_model(model_file_name= app_info.RESULTS_PATH_)
 
             nonlocal update_count
             reject = False
@@ -57,19 +57,21 @@ def training_mgt(nn_mgr_N, app_info):
                 update_count += 1
 
             if reject and not model_already_exists:
-                app_info.fn_log('ACCEPTED', update_score)
+                app_info.fn_log(f'MODEL ACCEPTED: score: {update_score} pass: {app_info.SCORE_BASED_MODEL_UPDATE_THRESHOLD}')
             else:
                 if reject:
-                    app_info.fn_log('REJECTED', update_score)
+                    app_info.fn_log(
+                        f'MODEL REJECTED: score: {update_score} pass: {app_info.SCORE_BASED_MODEL_UPDATE_THRESHOLD}')
                 else:
-                    app_info.fn_log('ACCEPTED', update_score)
+                    app_info.fn_log(
+                        f'MODEL ACCEPTED: score: {update_score} pass: {app_info.SCORE_BASED_MODEL_UPDATE_THRESHOLD}')
 
-            app_info.trace_mgr.fn_write(Fore.BLACK)
+            # app_info.fn_log('')
 
         def fn_run_iteration(iteration):
             nonlocal update_count
-            app_info.trace_mgr.fn_write('')
-            app_info.trace_mgr.fn_write(f'ITERATION NUMBER {iteration} of {app_info.NUM_TRAINING_ITERATIONS}', indent=0)
+            app_info.fn_log('')
+            app_info.fn_log(f'ITERATION NUMBER {iteration} of {app_info.NUM_TRAINING_ITERATIONS}')
 
             @tracer(app_info)
             def _fn_play_next_vs_previous(training_samples):
@@ -81,8 +83,7 @@ def training_mgt(nn_mgr_N, app_info):
                 playground = playground_mgt(
                     lambda state: np.argmax(pmcts.fn_get_policy(state, do_random_selection= False)),
                     lambda state: np.argmax(nmcts.fn_get_policy(state, do_random_selection= False)),
-                    game_mgr,
-                    msg_recorder=app_info.trace_mgr.fn_write
+                    game_mgr
                 )
                 pwins, nwins, draws = playground.fn_play_games(app_info.NUM_GAMES_FOR_MODEL_COMPARISON)
                 app_info.fn_log()

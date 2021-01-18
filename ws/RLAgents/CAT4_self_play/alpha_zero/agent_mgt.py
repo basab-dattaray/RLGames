@@ -88,7 +88,7 @@ def agent_mgt(file_path):
         fn_contender_policy = fn_player_policy(app_info.game_mgr)
         playground = playground_mgt(fn_system_policy, fn_contender_policy, app_info.game_mgr,
                                     fn_display=game_mgt(app_info['BOARD_SIZE']).fn_display,
-                                    msg_recorder=app_info.trace_mgr.fn_write)
+                                    )
         system_wins, system_losses, draws = playground.fn_play_games(NUM_TEST_GAMES, verbose=verbose)
 
         app_info.trace_mgr.fn_write(f'wins:{system_wins} losses:{system_losses} draws:{draws}')

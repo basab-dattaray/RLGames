@@ -6,7 +6,7 @@ from random import random
 from ws.RLUtils.monitoring.tracing.progress_count_mgt import progress_count_mgt
 
 
-def playground_mgt(fn_get_action_given_state_player1, fn_get_action_given_state__player2, game_mgr, fn_display=None, msg_recorder = None):
+def playground_mgt(fn_get_action_given_state_player1, fn_get_action_given_state__player2, game_mgr, fn_display=None):
     game_num = 0
     def fn_play_one_game(pieces, turn= 1, verbose=False):
         def _fn_switch_get_action_given_state(cur_player_index):
