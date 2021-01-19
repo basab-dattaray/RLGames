@@ -1,9 +1,6 @@
 import copy
 from collections import namedtuple
-
-
 import numpy as np
-from pip._vendor.colorama import Fore
 
 from ws.RLAgents.CAT4_self_play.alpha_zero.play.playground_mgt import playground_mgt
 
@@ -38,7 +35,7 @@ def training_mgt(nn_mgr_N, app_info):
                 reject = True
             else:
                 update_score = float(nwins) / (pwins + nwins)
-                if update_score < app_info.SCORE_BASED_MODEL_UPDATE_THRESHOLD:
+                if update_score < app_info.PASSING_SCORE:
                     reject = True
             model_already_exists = nn_mgr_N.fn_is_model_available(app_info.RESULTS_PATH_) ###
 
@@ -46,15 +43,15 @@ def training_mgt(nn_mgr_N, app_info):
                 update_count += 1
 
             if reject and not model_already_exists:
-                app_info.fn_log(f'MODEL CREATED: score: {update_score} pass: {app_info.SCORE_BASED_MODEL_UPDATE_THRESHOLD}')
+                app_info.fn_log(f'MODEL CREATED: score: {update_score} pass: {app_info.PASSING_SCORE}')
                 nn_mgr_N.fn_save_model()
             else:
                 if reject:
                     app_info.fn_log(
-                        f'MODEL REJECTED: score: {update_score} pass: {app_info.SCORE_BASED_MODEL_UPDATE_THRESHOLD}')
+                        f'MODEL REJECTED: score: {update_score} pass: {app_info.PASSING_SCORE}')
                 else:
                     app_info.fn_log(
-                        f'MODEL ACCEPTED: score: {update_score} pass: {app_info.SCORE_BASED_MODEL_UPDATE_THRESHOLD}')
+                        f'MODEL ACCEPTED: score: {update_score} pass: {app_info.PASSING_SCORE}')
                     nn_mgr_N.fn_save_model()
 
         def fn_run_iteration(iteration):

@@ -30,6 +30,7 @@ app_info = DotDict(
       "ENV_SEED": 123,
 
       "AUTO_ARCHIVE": 1,
+      "AUTO_INTERRUPT_HANDLING": 1,
   }
 )
 

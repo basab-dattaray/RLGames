@@ -59,6 +59,7 @@ app_info = DotDict(
         "FORCE_CPU_USE": -1,
 
         "AUTO_ARCHIVE": 1,
+        "AUTO_INTERRUPT_HANDLING": 1,
     }
 )
 

@@ -51,7 +51,7 @@ def agent_mgt(file_path):
     #
     # signal.signal(signal.SIGINT, exit_gracefully)
 
-    interrupt_mgt(app_info)
+    # interrupt_mgt(app_info)
 
     @tracer(app_info, verboscity= 4)
     def fn_train():

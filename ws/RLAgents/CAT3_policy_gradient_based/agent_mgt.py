@@ -3,7 +3,7 @@ from collections import namedtuple
 from time import sleep
 
 from ws.RLAgents.CAT3_policy_gradient_based.progress_mgt import progress_mgt
-from ws.RLUtils.common.config_mgt import config_mgt
+from ws.RLUtils.common.attr_mgt import attr_mgt
 
 from ws.RLUtils.common.module_loader import load_function
 from ws.RLUtils.setup.interrupt_mgt import interrupt_mgt
@@ -12,7 +12,7 @@ from ws.RLUtils.setup.startup_mgt import startup_mgt
 
 def agent_mgt(caller_file):
     app_info = startup_mgt(caller_file)
-    fn_get_key_as_bool, fn_get_key_as_int, _ = config_mgt(app_info)
+    fn_get_key_as_bool, fn_get_key_as_int, _ = attr_mgt(app_info)
     is_single_episode_result = fn_get_key_as_bool('REWARD_CALCULATED_FROM_SINGLE_EPISODES')
     env = app_info.ENV
     impl_mgt = load_function('impl_mgt', 'impl_mgt', app_info.AGENT_FOLDER_PATH)
@@ -25,7 +25,7 @@ def agent_mgt(caller_file):
 
     fn_log = app_info.fn_log
 
-    interrupt_mgt(app_info)
+    # interrupt_mgt(app_info)
 
     # def exit_gracefully(signum, frame):
     #     fn_log('!!! TERMINATING EARLY!!!')

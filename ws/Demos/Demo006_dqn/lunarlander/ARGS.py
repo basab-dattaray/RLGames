@@ -21,7 +21,11 @@ app_info = DotDict(
     "DEQUE_MEM_SIZE": 4000,
 
     "EPSILON_MIN": 0.01,
-    "EPSILON_DECAY": 0.996
+    "EPSILON_DECAY": 0.996,
+
+    "AUTO_ARCHIVE": 1,
+    "AUTO_INTERRUPT_HANDLING": 1,
+
 
   }
 )

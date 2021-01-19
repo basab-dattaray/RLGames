@@ -33,6 +33,6 @@ def fn_load_train_examples(app_info):
 
 
 def fn_log_iteration_results(app_info, draws, iteration, nwins, pwins):
-    update_threshold = 'update threshold: {}'.format(app_info.SCORE_BASED_MODEL_UPDATE_THRESHOLD)
+    update_threshold = 'update threshold: {}'.format(app_info.PASSING_SCORE)
     score = f'nwins:{nwins} pwins:{pwins} draws:{draws} {update_threshold}'
     app_info.fn_log(score)

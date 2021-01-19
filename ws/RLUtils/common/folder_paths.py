@@ -13,5 +13,3 @@ def fn_separate_folderpath_and_filename(filepath):
     folder_path = filename_parts[0]
     return cwd, folder_path
 
-def fn_get_files_with_prefix(result_path, prefix='model'):
-    pass

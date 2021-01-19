@@ -3,7 +3,7 @@ import shutil
 from datetime import datetime
 
 from ws.RLUtils.common.DotDict import DotDict
-from ws.RLUtils.common.config_mgt import config_mgt
+from ws.RLUtils.common.attr_mgt import attr_mgt
 from ws.RLUtils.common.folder_paths import fn_separate_folderpath_and_filename, fn_get_rel_dot_folder_path
 from ws.RLUtils.common.module_loader import load_function
 from ws.RLUtils.monitoring.tracing.call_trace_mgt import call_trace_mgt
@@ -11,6 +11,8 @@ from ws.RLUtils.monitoring.tracing.log_mgt import log_mgt
 
 from ws.RLUtils.platform_libs.pytorch.device_selection import get_device
 from ws.RLUtils.setup.archive_mgt import archive_mgt
+from ws.RLUtils.setup.interrupt_mgt import interrupt_mgt
+
 
 def startup_mgt(caller_filepath):
     ROOT_DOT_PATH = 'ws'
@@ -96,7 +98,7 @@ def startup_mgt(caller_filepath):
 
 
     app_info = fn_bootstrap(caller_filepath)
-    fn_get_key_as_bool, fn_get_key_as_int, fn_get_key_as_str = config_mgt(app_info)
+    fn_get_key_as_bool, fn_get_key_as_int, fn_get_key_as_str = attr_mgt(app_info)
 
     _fn_setup_paths_in_app_info(app_info)
     _fn_setup_logging(app_info)
@@ -110,6 +112,9 @@ def startup_mgt(caller_filepath):
             fn_log=app_info.fn_log,
             fn_log_reset = app_info.fn_log_reset,
         )
+
+    if fn_get_key_as_bool('AUTO_INTERRUPT_HANDLING'):
+        interrupt_mgt(app_info)
 
     return app_info
 

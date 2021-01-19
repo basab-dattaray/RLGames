@@ -1,9 +1,9 @@
 import os
 from ws.RLUtils.monitoring.charting.Chart import Chart
-from ws.RLUtils.common.config_mgt import config_mgt
+from ws.RLUtils.common.attr_mgt import attr_mgt
 
 def progress_mgt(app_info):
-    _, fn_get_key_as_int, _ = config_mgt(app_info)
+    _, fn_get_key_as_int, _ = attr_mgt(app_info)
     _consecutive_goal_hits_needed_for_success = fn_get_key_as_int('CONSECUTIVE_GOAL_HITS', default = 1)
     _consecutive_goal_hit_count = 0
     _plot_file_path = os.path.join(app_info.RESULTS_PATH_, 'rewards_plot.pdf')

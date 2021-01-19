@@ -1,4 +1,4 @@
-def config_mgt(app_info):
+def attr_mgt(app_info):
     def fn_get_key_as_bool(config_key):
         if config_key not in app_info.keys():
             return False
