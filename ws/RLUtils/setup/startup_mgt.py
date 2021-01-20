@@ -14,6 +14,7 @@ from ws.RLUtils.setup.archive_mgt import archive_mgt
 from ws.RLUtils.setup.interrupt_mgt import interrupt_mgt
 
 
+
 def startup_mgt(caller_filepath):
     ROOT_DOT_PATH = 'ws'
     ARGS_PY = 'ARGS.py'
@@ -69,11 +70,11 @@ def startup_mgt(caller_filepath):
         return env
 
     def _fn_setup_paths_in_app_info(app_info):
-        app_info.ROOT_DOT_PATH = ROOT_DOT_PATH
-        app_info.AGENTS_DOT_PATH = ROOT_DOT_PATH + '.RLAgents'
+        # app_info.ROOT_DOT_PATH = ROOT_DOT_PATH
+        app_info.AGENTS_DOT_PATH_ = ROOT_DOT_PATH + '.RLAgents'
         app_info.AGENTS_CONFIG_DOT_PATH = ROOT_DOT_PATH + '.RLAgents' + '.agent_configs'
 
-        app_info.AGENT_FOLDER_PATH = app_info.AGENTS_DOT_PATH + '.{}'.format(app_info.STRATEGY)
+        app_info.AGENT_FOLDER_PATH = app_info.AGENTS_DOT_PATH_ + '.{}'.format(app_info.STRATEGY)
 
         archive_container_path = app_info.DEMO_FOLDER_PATH_.replace('Demos', 'ARCHIVES')
         current_time_id = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
@@ -96,6 +97,17 @@ def startup_mgt(caller_filepath):
             print('DEVICE: {}'.format(app_info.GPU_DEVICE))
         pass
 
+    def _fn_load_agent_config(app_info):
+        if 'AGENT_CONFIG' not in app_info.keys():
+            return
+
+
+        agent_config_path = app_info.AGENTS_CONFIG_DOT_PATH + '.' + app_info.AGENT_CONFIG
+        fn_add_configs = load_function(function_name="fn_add_configs", module_tag="AGENT_CONFIG",
+                                       subpackage_tag=agent_config_path)
+
+        fn_add_configs(app_info)
+        pass
 
     app_info = fn_bootstrap(caller_filepath)
     fn_get_key_as_bool, fn_get_key_as_int, fn_get_key_as_str = attr_mgt(app_info)
@@ -104,6 +116,7 @@ def startup_mgt(caller_filepath):
     _fn_setup_logging(app_info)
     _fn_setup_gpu(app_info)
     _fn_setup_env(app_info)
+    _fn_load_agent_config(app_info)
 
     if fn_get_key_as_bool('AUTO_ARCHIVE'):
         app_info.fn_archive = archive_mgt(

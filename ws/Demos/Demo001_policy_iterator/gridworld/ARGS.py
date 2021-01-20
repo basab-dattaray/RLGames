@@ -14,7 +14,9 @@ app_info = DotDict({
         "UNIT": 100,
         "WIDTH": 6,
         "HEIGHT": 5
-    }
+    },
+    "AUTO_ARCHIVE": 1,
+    "AUTO_INTERRUPT_HANDLING": 1,
 })
 
 def fn_get_args():
