@@ -49,7 +49,7 @@ def value_table_mgt(app_info):
         row, col = state
         possible_actions = [LOW_NUMBER] * len(app_info['ACTION_MOVE_STATE_RULES'] )
 
-        vt = _value_table
+        # vt = _value_table
 
         dir_up = [row, max(0, col -1)]
         if col > 0:
