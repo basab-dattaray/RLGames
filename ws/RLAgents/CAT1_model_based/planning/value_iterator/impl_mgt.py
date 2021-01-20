@@ -28,17 +28,17 @@ def impl_mgt(app_info):
     #             return index
     #     return -1
 
-    def fn_move_per_policy():
-        start_state = _fn_display_controller.fn_get_start_state()
-        state = _fn_display_controller.fn_run_next_move(start_state, fnNextGetAction)
-
-        while state is not None:
-            _fn_display_controller.fn_move_cursor(start_state, state)
-            if _fn_display_controller.fn_is_target_state_reached(state):
-                break
-            start_state = state
-            state = _fn_display_controller.fn_run_next_move(start_state, fnNextGetAction)
-        _fn_display_controller.fn_move_cursor(state)
+    # def fn_move_per_policy():
+    #     start_state = _fn_display_controller.fn_get_start_state()
+    #     state = _fn_display_controller.fn_run_next_move(start_state, fnNextGetAction)
+    #
+    #     while state is not None:
+    #         _fn_display_controller.fn_move_cursor(start_state, state)
+    #         if _fn_display_controller.fn_is_target_state_reached(state):
+    #             break
+    #         start_state = state
+    #         state = _fn_display_controller.fn_run_next_move(start_state, fnNextGetAction)
+    #     _fn_display_controller.fn_move_cursor(state)
 
     def fn_apply_policy_iteration():
         value_table, policy_table = fnValueIterater()
@@ -50,4 +50,4 @@ def impl_mgt(app_info):
         _fn_display_controller.fn_show_state_values(value_table)
         _fn_display_controller.fn_show_policy_arrows(_policy_table)
 
-    return fn_bind_fn_display_actions, fn_move_per_policy, fn_apply_policy_iteration, fn_apply_value_iteration
+    return fn_bind_fn_display_actions, None, fn_apply_policy_iteration, fn_apply_value_iteration
