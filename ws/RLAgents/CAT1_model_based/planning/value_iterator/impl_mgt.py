@@ -13,20 +13,20 @@ def impl_mgt(app_info):
 
         _fn_display_controller.fn_init(acton_dictionary)
 
-    def fnNextGetAction(state):
-        random_pick = random.randrange(100) / 100
-
-        policy_value_for_state = fnGetValueFromPolicy(state)
-
-        if policy_value_for_state is None:
-            return -1
-
-        policy_sum = 0.0
-        for index, value in enumerate(policy_value_for_state):
-            policy_sum += value
-            if random_pick < policy_sum:
-                return index
-        return -1
+    # def fnNextGetAction(state):
+    #     random_pick = random.randrange(100) / 100
+    #
+    #     policy_value_for_state = fnGetValueFromPolicy(state)
+    #
+    #     if policy_value_for_state is None:
+    #         return -1
+    #
+    #     policy_sum = 0.0
+    #     for index, value in enumerate(policy_value_for_state):
+    #         policy_sum += value
+    #         if random_pick < policy_sum:
+    #             return index
+    #     return -1
 
     def fn_move_per_policy():
         start_state = _fn_display_controller.fn_get_start_state()

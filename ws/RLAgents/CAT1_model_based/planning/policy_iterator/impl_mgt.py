@@ -1,4 +1,7 @@
 import random
+
+import numpy as np
+
 from ws.RLAgents.algo_lib.logic.common.planning_mgt import planning_mgt
 from ws.RLEnvironments.gridworld.grid_board.display_mgt import display_mgt
 
@@ -14,19 +17,9 @@ def impl_mgt(app_info):
         _fn_display_controller.fn_init(acton_dictionary)
 
     def fnNextGetAction(state):
-        random_pick = random.randrange(100) / 100
-
-        policy_value_for_state = fnGetValueFromPolicy(state)
-
-        if policy_value_for_state is None:
-            return -1
-
-        policy_sum = 0.0
-        for index, value in enumerate(policy_value_for_state):
-            policy_sum += value
-            if random_pick < policy_sum:
-                return index
-        return -1
+        actions = fnGetValueFromPolicy(state)
+        best_action = np.random.choice(len(actions), p=actions)
+        return best_action
 
     def fn_move_per_policy():
         start_state = _fn_display_controller.fn_get_start_state()
