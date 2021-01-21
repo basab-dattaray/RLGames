@@ -1,3 +1,5 @@
+from collections import namedtuple
+
 from ws.RLAgents.algo_lib.logic.common.policy_table_mgt import policy_table_mgt
 from ws.RLAgents.algo_lib.logic.common.value_table_mgt import value_table_mgt
 
@@ -107,5 +109,13 @@ def planning_mgt(app_info):
     def fnValueIterater():
         return repeatEvalAndImprove(applyValueIteration)
 
+    ret_obj = namedtuple('_', [
+        'fnPolicyIterater',
+        'fnValueIterater',
+        'fnGetValueFromPolicy',
+    ])
 
-    return fnPolicyIterater, fnValueIterater, fnGetValueFromPolicy
+    ret_obj.fnPolicyIterater = fnPolicyIterater
+    ret_obj.fnValueIterater = fnValueIterater
+    ret_obj.fnGetValueFromPolicy = fnGetValueFromPolicy
+    return ret_obj

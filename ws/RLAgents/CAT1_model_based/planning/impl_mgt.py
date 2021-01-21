@@ -9,7 +9,7 @@ from ws.RLEnvironments.gridworld.grid_board.display_mgt import display_mgt
 def impl_mgt(app_info):
     # _env = env
 
-    fnPolicyIterater, fnValueIterater, fnGetValueFromPolicy = planning_mgt(app_info)
+    planning_mgr = planning_mgt(app_info)
     _fn_display_controller = display_mgt(app_info)
 
     def fn_bind_fn_display_actions(acton_dictionary):
@@ -17,7 +17,7 @@ def impl_mgt(app_info):
         _fn_display_controller.fn_init(acton_dictionary)
 
     def fnNextGetAction(state):
-        actions = fnGetValueFromPolicy(state)
+        actions = planning_mgr.fnGetValueFromPolicy(state)
         best_action = np.random.choice(len(actions), p=actions)
         return best_action
 
@@ -34,12 +34,12 @@ def impl_mgt(app_info):
         _fn_display_controller.fn_move_cursor(state)
 
     def fn_apply_policy_iteration():
-        value_table, policy_table = fnPolicyIterater()
+        value_table, policy_table = planning_mgr.fnPolicyIterater()
         _fn_display_controller.fn_show_state_values(value_table)
         _fn_display_controller.fn_show_policy_arrows(policy_table)
 
     def fn_apply_value_iteration():
-        value_table, _policy_table = fnValueIterater()
+        value_table, _policy_table = planning_mgr.fnValueIterater()
         _fn_display_controller.fn_show_state_values(value_table)
         _fn_display_controller.fn_show_policy_arrows(_policy_table)
 
