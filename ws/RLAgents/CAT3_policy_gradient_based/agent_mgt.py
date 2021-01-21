@@ -1,4 +1,3 @@
-import signal
 from collections import namedtuple
 from time import sleep
 
@@ -6,7 +5,6 @@ from ws.RLAgents.CAT3_policy_gradient_based.progress_mgt import progress_mgt
 from ws.RLUtils.common.attr_mgt import attr_mgt
 
 from ws.RLUtils.common.module_loader import load_function
-from ws.RLUtils.setup.interrupt_mgt import interrupt_mgt
 from ws.RLUtils.setup.startup_mgt import startup_mgt
 
 
@@ -15,7 +13,7 @@ def agent_mgt(caller_file):
     fn_get_key_as_bool, fn_get_key_as_int, _ = attr_mgt(app_info)
     is_single_episode_result = fn_get_key_as_bool('REWARD_CALCULATED_FROM_SINGLE_EPISODES')
     env = app_info.ENV
-    impl_mgt = load_function('impl_mgt', 'impl_mgt', app_info.AGENT_FOLDER_PATH)
+    impl_mgt = load_function(function_name= 'impl_mgt', module_tag='impl_mgt', subpackage_tag= app_info.AGENT_FOLDER_PATH)
 
     fn_act, fn_add_transition, fn_save_to_neural_net, fn_load_from_neural_net, fn_should_update_network = impl_mgt(app_info)
 
@@ -25,17 +23,6 @@ def agent_mgt(caller_file):
 
     fn_log = app_info.fn_log
 
-    # interrupt_mgt(app_info)
-
-    # def exit_gracefully(signum, frame):
-    #     fn_log('!!! TERMINATING EARLY!!!')
-    #     archive_msg = app_info.fn_archive(fn_save_to_neural_net= fn_save_to_neural_net,)
-    #     fn_log(archive_msg)
-    #
-    #     chart.fn_close()
-    #     env.fn_close()
-    #     exit()
-
     def fn_run(fn_show_training_progress,
                supress_graph=False,
                fn_should_update_network=fn_should_update_network,
@@ -43,10 +30,6 @@ def agent_mgt(caller_file):
                ):
         nonlocal _episode_num
 
-        # if supress_graph:
-        #     fn_supress_graphing()
-
-        # signal.signal(signal.SIGINT, exit_gracefully)
         _episode_num = 1
         done = False
         while _episode_num <= app_info['NUM_EPISODES'] and not done:
