@@ -20,7 +20,7 @@ app_info = DotDict(
 
         "BUFFER_CAPACITY": 1000,
 
-        "ENV_NAME": "BipedalWalker-v3",
+        "ENV_NAME": "BipedalWalker-v2",
         "ENV_DISPLAY_ON": 0,
 
         "ACTOR_HIDDEN_LAYER_NODES": [
