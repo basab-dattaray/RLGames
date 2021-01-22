@@ -10,11 +10,11 @@ def env_mgt(app_info):
 
     _reward = None
     # _possible_actions = None
-    _all_states = None
-    _state = []
+    _all_sites = None
+    _current_site = None
 
     def fn_reset_env():
-        nonlocal  _reward,  _all_states, _state
+        nonlocal  _reward,  _all_sites, _current_site
 
         _reward = [[0] * _width for _ in range(_height)]
         # _possible_actions = app_info['POSSIBLE_ACTIONS']
@@ -23,45 +23,45 @@ def env_mgt(app_info):
             _reward[blocker['y']][blocker['x']] = blocker['reward']  # for square
 
         _reward[_board_goal['y']][_board_goal['x']] = _board_goal['reward']  # for triangle
-        _all_states = []
+        _all_sites = []
 
         for x in range(_width):
             for y in range(_height):
                 state = [x, y]
-                _all_states.append(state)
+                _all_sites.append(state)
 
-        _state = [0, 0]
-        return _state
+        _current_site = [0, 0]
+        return _current_site
 
     def _fn_env_step(action):
-        nonlocal _state
+        nonlocal _current_site
         one = 1
-        next_state_x = _state[0]
-        next_state_y = _state[1]
+        next_state_x = _current_site[0]
+        next_state_y = _current_site[1]
 
         if action == 0:  # up
-            if _state[1] >= one:
+            if _current_site[1] >= one:
                 next_state_y -= one
         elif action == 1:  # down
-            if _state[1] < (_height - 1) * one:
+            if _current_site[1] < (_height - 1) * one:
                 next_state_y += one
         elif action == 2:  # left
-            if _state[0] >= one:
+            if _current_site[0] >= one:
                 next_state_x -= one
         elif action == 3:  # right
-            if _state[0] < (_width - 1) * one:
+            if _current_site[0] < (_width - 1) * one:
                 next_state_x += one
 
         return next_state_x, next_state_y
 
     def fn_take_step(action, planning_mode=False):
-        nonlocal  _state
+        nonlocal  _current_site
 
         next_state = _fn_env_step(action)
         reward = _reward[next_state[1]][next_state[0]]
 
         if not planning_mode:
-            _state = next_state
+            _current_site = next_state
 
         return next_state, reward, None, None
 
@@ -72,17 +72,17 @@ def env_mgt(app_info):
         return [_width, _height]
 
     def fn_get_action_size():
-        return [2]
+        return [4]
 
     def fn_close():
         pass
 
-    def fn_update_state(state):
-        nonlocal _state
-        _state = state
+    def fn_update_current_site(current_site):
+        nonlocal _current_site
+        _current_site = current_site
 
     def fn_get_all_states():
-        return _all_states
+        return _all_sites
 
     def fn_value_table_possible_actions():
         return app_info['POSSIBLE_ACTIONS']
@@ -96,7 +96,7 @@ def env_mgt(app_info):
         'fn_get_action_size',
         'fn_close',
 
-        'fn_update_state',
+        'fn_update_current_site',
         'fn_get_all_states',
         'fn_value_table_possible_actions',
     ])
@@ -108,7 +108,7 @@ def env_mgt(app_info):
     ret_obj.fn_get_action_size = fn_get_action_size
     ret_obj.fn_close = fn_close
 
-    ret_obj.fn_update_state = fn_update_state
+    ret_obj.fn_update_current_site = fn_update_current_site
     ret_obj.fn_get_all_states = fn_get_all_states
     ret_obj.fn_value_table_possible_actions = fn_value_table_possible_actions
 

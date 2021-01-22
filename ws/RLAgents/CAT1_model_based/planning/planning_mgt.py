@@ -15,17 +15,17 @@ def planning_mgt(app_info):
 
     fn_get_policy_state_value, fn_set_policy_state_value, fn_fetch_policy_table = policy_table_mgt(app_info)
 
-    def fnGetValueFromPolicy(state):
+    def fn_get_actions_given_state(state):
         if fn_value_table_reached_target(state):
             return None
-        val = fn_get_policy_state_value(state)
-        return val
+        actions = fn_get_policy_state_value(state)
+        return actions
 
-    def applyPolicyIteration():
+    def fn_run_policy():
 
         for state in _env.fn_get_all_states():
 
-            _env.fn_update_state(state)
+            _env.fn_update_current_site(state)
 
 
             if fn_value_table_reached_target(state):
@@ -37,11 +37,11 @@ def planning_mgt(app_info):
                 next_state, reward, _, _= _env.fn_take_step(action, planning_mode = True)
 
                 next_value = fn_get_value_table_item(next_state)
-                value = value + fnGetValueFromPolicy(state)[action] * (reward + _discount_factor * next_value)
+                value = value + fn_get_actions_given_state(state)[action] * (reward + _discount_factor * next_value)
 
             fn_set_value_table_item(state, value)
 
-    def applyValueIteration():
+    def fn_calc_values():
         all_states = _env.fn_get_all_states()
 
         for state in all_states:
@@ -50,7 +50,7 @@ def planning_mgt(app_info):
                 fn_set_value_table_item(state, 0)
                 continue
 
-            _env.fn_update_state(state)
+            _env.fn_update_current_site(state)
 
             value_list = []
 
@@ -61,27 +61,27 @@ def planning_mgt(app_info):
 
             fn_set_value_table_item(state, round(max(value_list), 2))
 
-    def improvePolicy():
+    def fn_run_policy_improvement():
         for state in _env.fn_get_all_states():
             if fn_value_table_reached_target(state):
                 continue
 
-            _env.fn_update_state(state)
+            _env.fn_update_current_site(state)
 
             value = LOW_NUMBER
             max_index = []
 
-            for index, action in enumerate(_env.fn_value_table_possible_actions()):
+            for action in range(_env.fn_get_action_size()[0]):
                 next_state, reward, _, _ = _env.fn_take_step(action, planning_mode = True)
                 next_value = fn_get_value_table_item(next_state)
                 total_reward = reward + _discount_factor * next_value
 
                 if total_reward == value: # there can be multiple maximums
-                    max_index.append(index)
+                    max_index.append(action)
                 elif total_reward > value: # start new maximum maximums
                     value = total_reward
                     max_index.clear()
-                    max_index.append(index)
+                    max_index.append(action)
 
             prob = 1 / len(max_index)
 
@@ -94,7 +94,7 @@ def planning_mgt(app_info):
 
     def repeatEvalAndImprove(evalFunction):
         while True:
-            policy_table = improvePolicy()
+            policy_table = fn_run_policy_improvement()
 
             evalFunction()
 
@@ -104,18 +104,18 @@ def planning_mgt(app_info):
         return value_table, policy_table
 
     def fnPolicyIterater():
-        return repeatEvalAndImprove(applyPolicyIteration)
+        return repeatEvalAndImprove(fn_run_policy)
 
     def fnValueIterater():
-        return repeatEvalAndImprove(applyValueIteration)
+        return repeatEvalAndImprove(fn_calc_values)
 
     ret_obj = namedtuple('_', [
         'fnPolicyIterater',
         'fnValueIterater',
-        'fnGetValueFromPolicy',
+        'fn_get_actions_given_state',
     ])
 
     ret_obj.fnPolicyIterater = fnPolicyIterater
     ret_obj.fnValueIterater = fnValueIterater
-    ret_obj.fnGetValueFromPolicy = fnGetValueFromPolicy
+    ret_obj.fn_get_actions_given_state = fn_get_actions_given_state
     return ret_obj

@@ -15,7 +15,7 @@ def impl_mgt(app_info):
         _fn_display_controller.fn_init(acton_dictionary)
 
     def fnNextGetAction(state):
-        actions = planning_mgr.fnGetValueFromPolicy(state)
+        actions = planning_mgr.fn_get_actions_given_state(state)
         best_action = np.random.choice(len(actions), p=actions)
         return best_action
 

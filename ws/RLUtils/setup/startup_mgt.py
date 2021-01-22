@@ -17,6 +17,7 @@ from ws.RLUtils.setup.interrupt_mgt import interrupt_mgt
 
 def startup_mgt(caller_filepath):
     ROOT_DOT_PATH = 'ws'
+    ENV_CONFIG_PATH = 'configs'
     ARGS_PY = 'ARGS.py'
 
     def _fn_init_arg_with_default_val(app_info, name, val):
