@@ -1,8 +1,8 @@
-import coloredlogs
+# import coloredlogs
 
 from ws.RLAgents.CAT4_self_play.alpha_zero.agent_mgt import agent_mgt
 
-coloredlogs.install(level='INFO')  # Change this to DEBUG to see more info.
+# coloredlogs.install(level='INFO')  # Change this to DEBUG to see more info.
 
 if __name__ == "__main__":
     agent_mgt(file_path= __file__). \

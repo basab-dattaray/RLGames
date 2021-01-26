@@ -50,6 +50,7 @@ app_info = DotDict(
         "MAX_RESULT_COUNT": 2,
 
         "AUTO_ARCHIVE": 1,
+        "AUTO_INTERRUPT_HANDLING": 1,
     }
 )
 
