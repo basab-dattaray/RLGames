@@ -16,14 +16,9 @@ COORD_RIGHT = (77, 42)  # right
 COORD_UP = (42, 5)  # up
 COORD_DOWN = (42, 77)  # down
 
-def display_mgt(env, strategy= None):
+def display_mgt(env):
 
-    if env.fn_get_strategy is not None:
-        strategy = env.fn_get_strategy()
-
-    strategy_parts = strategy.rsplit('.')
-    app_type = strategy_parts[len(strategy_parts) - 1]
-    app_title = app_type.replace('_', ' ')
+    app_title = _fn_get_app_title(env)
 
     _tk = tkinter.Tk()
     config = CONFIG.fn_get_config()
@@ -265,3 +260,13 @@ def display_mgt(env, strategy= None):
     ret_obj.fn_run_next_move = fn_run_next_move
 
     return ret_obj
+
+
+def _fn_get_app_title(env):
+    strategy= None
+    if env.fn_get_strategy is not None:
+        strategy = env.fn_get_strategy()
+    strategy_parts = strategy.rsplit('.')
+    app_type = strategy_parts[len(strategy_parts) - 1]
+    app_title = app_type.replace('_', ' ')
+    return app_title
