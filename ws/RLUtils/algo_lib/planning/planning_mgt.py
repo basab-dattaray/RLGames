@@ -3,7 +3,7 @@ from collections import namedtuple
 from ws.RLUtils.algo_lib.planning.policy_table_mgt import policy_table_mgt
 from ws.RLUtils.algo_lib.planning.value_table_mgt import value_table_mgt
 
-def planning_mgt(app_info, env= None, discount_factor= None):
+def planning_mgt(env, discount_factor= 0.9):
     LOW_NUMBER = -9999999999
     _env_config = env.fn_get_config()
 
@@ -12,7 +12,7 @@ def planning_mgt(app_info, env= None, discount_factor= None):
         env,
     )
 
-    fn_get_policy_state_value, fn_set_policy_state_value, fn_fetch_policy_table = policy_table_mgt(app_info.ENV)
+    fn_get_policy_state_value, fn_set_policy_state_value, fn_fetch_policy_table = policy_table_mgt(env)
 
     def fn_get_actions_given_state(state):
         if fn_value_table_reached_target(state):
