@@ -1,6 +1,6 @@
 import numpy as np
 
-from ws.RLAgents.CAT1_model_based.planning.value_table_mgt import value_table_mgt
+from ws.RLUtils.algo_lib.planning.value_table_mgt import value_table_mgt
 from ws.RLUtils.common.misc_functions import arg_max
 
 def details_mgt(env, app_info):

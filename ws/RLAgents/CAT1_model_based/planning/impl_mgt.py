@@ -1,6 +1,6 @@
 import numpy as np
 
-from ws.RLAgents.CAT1_model_based.planning.planning_mgt import planning_mgt
+from ws.RLUtils.algo_lib.planning.planning_mgt import planning_mgt
 from ws.RLEnvironments.gridworld.grid_board.display_mgt import display_mgt
 
 

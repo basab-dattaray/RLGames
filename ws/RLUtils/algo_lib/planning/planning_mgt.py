@@ -1,7 +1,7 @@
 from collections import namedtuple
 
-from ws.RLAgents.CAT1_model_based.planning.policy_table_mgt import policy_table_mgt
-from ws.RLAgents.CAT1_model_based.planning.value_table_mgt import value_table_mgt
+from ws.RLUtils.algo_lib.planning.policy_table_mgt import policy_table_mgt
+from ws.RLUtils.algo_lib.planning.value_table_mgt import value_table_mgt
 
 def planning_mgt(app_info):
     LOW_NUMBER = -9999999999
