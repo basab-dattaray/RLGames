@@ -3,11 +3,11 @@ from collections import namedtuple
 from ws.RLUtils.algo_lib.planning.policy_table_mgt import policy_table_mgt
 from ws.RLUtils.algo_lib.planning.value_table_mgt import value_table_mgt
 
-def planning_mgt(app_info):
+def planning_mgt(app_info, env= None, discount_factor= None):
     LOW_NUMBER = -9999999999
-    _env = app_info.ENV
+    _env = env
 
-    _discount_factor = app_info.DISCOUNT_FACTOR
+    _discount_factor = discount_factor
 
     fn_set_value_table_item, fn_get_value_table_item, fn_set_value_table, fn_get_value_table, \
     _ ,fn_value_table_reached_target, fn_has_table_changed = value_table_mgt(

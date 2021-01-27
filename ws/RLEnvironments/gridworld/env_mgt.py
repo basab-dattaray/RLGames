@@ -1,5 +1,7 @@
 from collections import namedtuple
 
+from ws.RLEnvironments.gridworld import CONFIG
+
 
 def env_mgt(name, strategy= None, app_info= None):
 
@@ -92,6 +94,8 @@ def env_mgt(name, strategy= None, app_info= None):
     def fn_get_allowed_moves():
         return [(0, -1), (0, 1), (-1, 0), (1, 0)]
 
+    fn_get_config = CONFIG.fn_get_config
+
     fn_reset_env()
     ret_obj = namedtuple('_', [
         'fn_reset_env',
@@ -105,6 +109,7 @@ def env_mgt(name, strategy= None, app_info= None):
         'fn_get_all_sites',
         'fn_value_table_possible_actions',
         'fn_get_allowed_moves',
+        'fn_get_config',
     ])
 
     ret_obj.fn_reset_env = fn_reset_env
@@ -118,5 +123,6 @@ def env_mgt(name, strategy= None, app_info= None):
     ret_obj.fn_get_all_sites = fn_get_all_sites
     ret_obj.fn_value_table_possible_actions = fn_value_table_possible_actions
     ret_obj.fn_get_allowed_moves = fn_get_allowed_moves
+    ret_obj.fn_get_config = fn_get_config
 
     return ret_obj
