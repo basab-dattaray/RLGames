@@ -10,8 +10,10 @@ def planning_mgt(app_info):
     _discount_factor = app_info.DISCOUNT_FACTOR
 
     fn_set_value_table_item, fn_get_value_table_item, fn_set_value_table, fn_get_value_table, \
-    _ ,fn_value_table_reached_target, fn_has_table_changed = \
-                                            value_table_mgt(app_info)
+    _ ,fn_value_table_reached_target, fn_has_table_changed = value_table_mgt(
+        app_info,
+        goal_coordinates=None, width=None, height=None, board_goal=None
+    )
 
     fn_get_policy_state_value, fn_set_policy_state_value, fn_fetch_policy_table = policy_table_mgt(app_info)
 

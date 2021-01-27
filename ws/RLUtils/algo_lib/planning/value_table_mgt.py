@@ -1,6 +1,6 @@
 import copy
 
-def value_table_mgt(app_info):
+def value_table_mgt(app_info, goal_coordinates= None, width= None, height = None, board_goal= None):
     LOW_NUMBER = -999999
     _goal_coordinates = None
     _width = app_info.DISPLAY['WIDTH']
