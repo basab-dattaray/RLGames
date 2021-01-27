@@ -12,7 +12,6 @@ app_info = DotDict(
     "RHO": 0.99,
 
     "ENV_NAME": "LunarLander-v2",
-    "ENV_DISPLAY_ON": 1,
 
     "REWARD_GOAL": 210,
 

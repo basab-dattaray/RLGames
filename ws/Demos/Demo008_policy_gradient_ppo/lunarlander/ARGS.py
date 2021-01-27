@@ -19,7 +19,6 @@ app_info = DotDict(
         "UPDATE_STEP_INTERVAL" : 2000,
 
         "ENV_NAME": "LunarLander-v2",
-        "ENV_DISPLAY_ON": 0,
 
         "ACTOR_HIDDEN_LAYER_NODES": [
             {

@@ -18,7 +18,6 @@ app_info = DotDict(
       "UPDATE_STEP_INTERVAL" : 2000,
 
       "ENV_NAME": "CartPole-v1",
-      "ENV_DISPLAY_ON": 0,
 
       "LOG_SKIP_INTERVAL": 10,
       "REWARD_GOAL": 500,
