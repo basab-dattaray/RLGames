@@ -4,7 +4,7 @@ from ws.RLUtils.algo_lib.planning.value_table_mgt import value_table_mgt
 from ws.RLUtils.common.misc_functions import arg_max
 
 def montecarlo_trace_mgt(env, app_info):
-    _env = env
+    # _env = env
 
     fn_set_value_table_item, fn_get_value_table_item, fn_set_value_table, fn_get_value_table, \
     fn_value_table_possible_actions_given_state, _, _ = value_table_mgt(

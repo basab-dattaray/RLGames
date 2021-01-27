@@ -5,10 +5,10 @@ from .montecarlo_trace_mgt import montecarlo_trace_mgt
 
 
 def impl_mgt(app_info):
-    _env = app_info.ENV
+    # _env = app_info.ENV
 
     _fn_display_controller = display_mgt(app_info)
-    fnClearTrace, fnGetEpsilonGreedyAction, fnTraceInteraction, fnUpdateValueTableFromTrace = montecarlo_trace_mgt(_env,
+    fnClearTrace, fnGetEpsilonGreedyAction, fnTraceInteraction, fnUpdateValueTableFromTrace = montecarlo_trace_mgt(app_info.ENV,
                                                                                                                    app_info)
 
     def fn_bind_fn_display_actions(acton_dictionary):
@@ -23,12 +23,12 @@ def impl_mgt(app_info):
 
     def runEpisode(fn_move_cursor):
         new_state = None
-        state = _env.fn_reset_env()
+        state = app_info.ENV.fn_reset_env()
         action = fnGetEpsilonGreedyAction(state)
 
         continue_running = True
         while continue_running:
-            new_state, reward, done, info = _env.fn_take_step(action)
+            new_state, reward, done, info = app_info.ENV.fn_take_step(action)
             continue_running = reward == 0
             fnTraceInteraction(new_state, reward, continue_running)
             if fn_move_cursor is not None:

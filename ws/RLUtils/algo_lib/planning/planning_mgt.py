@@ -8,7 +8,7 @@ def planning_mgt(app_info, env= None, discount_factor= None):
     # _env = env
 
     # _discount_factor = discount_factor
-
+    _env_config = env.fn_get_config()
 
     fn_set_value_table_item, fn_get_value_table_item, fn_set_value_table, fn_get_value_table, \
     _ ,fn_value_table_reached_target, fn_has_table_changed = value_table_mgt(
