@@ -1,7 +1,6 @@
-def policy_table_mgt(app_info):
-    LOW_NUMBER = -999999
-
-    _policy_table = [[.25, .25, .25, .25 ] * app_info.DISPLAY['WIDTH'] for _ in range(app_info.DISPLAY['HEIGHT'])]
+def policy_table_mgt(env):
+    config = env.fn_get_config()
+    _policy_table = [[.25, .25, .25, .25] * config.DISPLAY['WIDTH'] for _ in range(config.DISPLAY['HEIGHT'])]
 
     def fn_get_policy_state_value(state):
         return _policy_table[state[1]][state[0]]

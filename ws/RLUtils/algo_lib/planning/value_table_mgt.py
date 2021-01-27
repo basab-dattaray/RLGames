@@ -1,11 +1,12 @@
 import copy
 
-def value_table_mgt(app_info, env):
+def value_table_mgt(env):
     LOW_NUMBER = -999999
-    _goal_coordinates = None
-    _width = app_info.DISPLAY['WIDTH']
-    _height = app_info.DISPLAY['HEIGHT']
-    _board_goal = app_info.DISPLAY['BOARD_GOAL']
+    env_config = env.fn_get_config()
+    # _goal_coordinates = None
+    _width = env_config.DISPLAY['WIDTH']
+    _height = env_config.DISPLAY['HEIGHT']
+    _board_goal =  env_config.DISPLAY['BOARD_GOAL']
 
     _goal_coordinates = {'x': _board_goal['x'], 'y': _board_goal['y']}
     _value_table = [[0.0] * _width for _ in range(_width)]
@@ -39,14 +40,12 @@ def value_table_mgt(app_info, env):
                 if _prev_value_table[col][row] != _value_table[col][row]:
                     _prev_value_table[col][row] = _value_table[col][row]
                     return True
-
-
         return False
 
     def fn_value_table_possible_actions_given_state(state):
 
         row, col = state
-        action_size = app_info.ENV.fn_get_action_size()
+        action_size = env.fn_get_action_size()
         possible_actions = [LOW_NUMBER] * action_size
 
         dir_up = [row, max(0, col -1)]
