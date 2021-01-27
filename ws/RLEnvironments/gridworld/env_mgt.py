@@ -1,7 +1,4 @@
 from collections import namedtuple
-# from ws.RLAgents.algo_lib.agent_configs.gridwell_1.AGENT_CONFIG import POSSIBLE_ACTIONS
-from ws.RLEnvironments.bipedalwalker.configs.gridwell_1.ARGS import fn_get_args
-from ws.RLUtils.common.folder_paths import fn_separate_folderpath_and_filename, fn_get_rel_dot_folder_path
 
 
 def env_mgt(name, strategy= None, app_info= None):
@@ -9,9 +6,6 @@ def env_mgt(name, strategy= None, app_info= None):
     parts = strategy.rsplit('.')
     app_type = parts[len(parts) - 1]
 
-    # folder_path, _ = fn_separate_folderpath_and_filename(__file__)
-    # dot_path = fn_get_rel_dot_folder_path(folder_path, '/')
-    # app_info = fn_get_args()
     _board_blockers = app_info.DISPLAY['BOARD_BLOCKERS']
     _board_goal = app_info.DISPLAY['BOARD_GOAL']
     _width = app_info.DISPLAY['WIDTH']
@@ -95,6 +89,9 @@ def env_mgt(name, strategy= None, app_info= None):
     def fn_value_table_possible_actions():
         return [0, 1, 2, 3]
 
+    def fn_get_allowed_moves():
+        return [(0, -1), (0, 1), (-1, 0), (1, 0)]
+
     fn_reset_env()
     ret_obj = namedtuple('_', [
         'fn_reset_env',
@@ -107,6 +104,7 @@ def env_mgt(name, strategy= None, app_info= None):
         'fn_update_current_site',
         'fn_get_all_sites',
         'fn_value_table_possible_actions',
+        'fn_get_allowed_moves',
     ])
 
     ret_obj.fn_reset_env = fn_reset_env
@@ -119,5 +117,6 @@ def env_mgt(name, strategy= None, app_info= None):
     ret_obj.fn_update_current_site = fn_update_current_site
     ret_obj.fn_get_all_sites = fn_get_all_sites
     ret_obj.fn_value_table_possible_actions = fn_value_table_possible_actions
+    ret_obj.fn_get_allowed_moves = fn_get_allowed_moves
 
     return ret_obj

@@ -8,8 +8,6 @@ app_info = DotDict({
     "AUTO_ARCHIVE": 1,
     "AUTO_INTERRUPT_HANDLING": 1,
 
-    # "DISCOUNT_FACTOR": 0.9,
-
     "DISPLAY": {
         "APP_NAME": "Policy Iterator",
         "BOARD_BLOCKERS": [{"x": 1, "y": 2, "reward": -100}, {"x": 2, "y": 1, "reward": -100}],

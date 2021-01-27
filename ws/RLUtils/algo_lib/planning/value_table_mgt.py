@@ -46,9 +46,8 @@ def value_table_mgt(app_info):
     def fn_value_table_possible_actions_given_state(state):
 
         row, col = state
-        possible_actions = [LOW_NUMBER] * len(app_info.ACTION_MOVE_STATE_RULES )
-
-        # vt = _value_table
+        action_size = app_info.ENV.fn_get_action_size()
+        possible_actions = [LOW_NUMBER] * action_size
 
         dir_up = [row, max(0, col -1)]
         if col > 0:

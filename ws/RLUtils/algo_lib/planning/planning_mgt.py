@@ -86,7 +86,6 @@ def planning_mgt(app_info):
 
             result = [0] * _env.fn_get_action_size()
 
-            # result = [0, 0, 0, 0] # app_info.INITIAL_ACTION_VALUES .copy()
             for index in max_index:
                 result[index] = prob
             fn_set_policy_state_value(site, result)
