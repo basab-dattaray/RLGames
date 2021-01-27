@@ -18,26 +18,33 @@ COORD_DOWN = (42, 77)  # down
 
 def display_mgt(env):
 
-    app_title = _fn_get_app_title(env)
 
     _tk = tkinter.Tk()
     config = CONFIG.fn_get_config()
 
-    app_fn_display_info = config.DISPLAY
-    _unit = app_fn_display_info["UNIT"]
-    _width = app_fn_display_info['WIDTH']
-    _height = app_fn_display_info['HEIGHT']
+    display_info = config.DISPLAY
+    _unit = display_info["UNIT"]
+    _width = display_info['WIDTH']
+    _height = display_info['HEIGHT']
     _canvas = tkinter.Canvas(
         height=_height * _unit,
         width=_width * _unit)
 
     _cursor = None
 
-    _board_blockers = app_fn_display_info['BOARD_BLOCKERS']
-    _board_goal = app_fn_display_info['BOARD_GOAL']
+    _board_blockers = display_info['BOARD_BLOCKERS']
+    _board_goal = display_info['BOARD_GOAL']
     _right_margin = 5
     _bottom_margin = 80
-    _tk.title(app_title)
+
+    def _fn_get_app_title(env):
+        strategy = None
+        if env.fn_get_strategy is not None:
+            strategy = env.fn_get_strategy()
+        strategy_parts = strategy.rsplit('.')
+        app_type = strategy_parts[len(strategy_parts) - 1]
+        app_title = app_type.replace('_', ' ')
+        return app_title
 
     def canvas_text_mgt(canvas):
         _dict = {}
@@ -237,6 +244,9 @@ def display_mgt(env):
         new_y = state[1] + next_state[1]
         return new_x, new_y
 
+    app_title = _fn_get_app_title(env)
+    _tk.title(app_title)
+
     ret_obj = namedtuple('_', [
         'fn_init',
         'fn_move_cursor',
@@ -262,11 +272,3 @@ def display_mgt(env):
     return ret_obj
 
 
-def _fn_get_app_title(env):
-    strategy= None
-    if env.fn_get_strategy is not None:
-        strategy = env.fn_get_strategy()
-    strategy_parts = strategy.rsplit('.')
-    app_type = strategy_parts[len(strategy_parts) - 1]
-    app_title = app_type.replace('_', ' ')
-    return app_title
