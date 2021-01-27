@@ -28,11 +28,6 @@ def agent_mgt(file_path):
         fn_bind_fn_display_actions(actions)
         return
 
-    agent_mgr = namedtuple('_',
-                                [
-                                    'fn_init'
-                                ]
-                           )
-    agent_mgr.fn_init = fn_init
+    fn_init()
 
-    return agent_mgr
+    return
