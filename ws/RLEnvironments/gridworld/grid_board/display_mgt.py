@@ -229,7 +229,7 @@ def display_mgt(app_info):
         if action < 0:
             return None
 
-        next_state = app_info['ACTION_MOVE_STATE_RULES'][action]
+        next_state = app_info.ACTION_MOVE_STATE_RULES[action]
         new_x = state[0] + next_state[0]
         new_y = state[1] + next_state[1]
         return new_x, new_y

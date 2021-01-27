@@ -20,8 +20,8 @@ def details_mgt(env, app_info):
 
     def fnGetEpsilonGreedyAction(state):
         rn = np.random.rand()
-        if rn < app_info['EPSILON']:
-            selected_action = np.random.choice(len(app_info['ACTION_MOVE_STATE_RULES'] ))
+        if rn < app_info.EPSILON:
+            selected_action = np.random.choice(len(app_info.ACTION_MOVE_STATE_RULES ))
         else:
             actions = fn_value_table_possible_actions(state)
             selected_action = arg_max(actions)

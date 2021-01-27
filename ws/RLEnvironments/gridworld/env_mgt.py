@@ -1,8 +1,13 @@
 from collections import namedtuple
 # from ws.RLAgents.algo_lib.agent_configs.gridwell_1.AGENT_CONFIG import POSSIBLE_ACTIONS
+from ws.RLEnvironments.bipedalwalker.configs.gridwell_1.ARGS import fn_get_args
+from ws.RLUtils.common.folder_paths import fn_separate_folderpath_and_filename, fn_get_rel_dot_folder_path
+
 
 def env_mgt(app_info):
-
+    folder_path, _ = fn_separate_folderpath_and_filename(__file__)
+    dot_path = fn_get_rel_dot_folder_path(folder_path, '/')
+    # app_info = fn_get_args()
     _board_blockers = app_info.DISPLAY['BOARD_BLOCKERS']
     _board_goal = app_info.DISPLAY['BOARD_GOAL']
     _width = app_info.DISPLAY['WIDTH']
@@ -17,7 +22,6 @@ def env_mgt(app_info):
         nonlocal  _reward,  _all_sites, _current_site
 
         _reward = [[0] * _width for _ in range(_height)]
-        # _possible_actions = app_info['POSSIBLE_ACTIONS']
 
         for blocker in _board_blockers:
             _reward[blocker['y']][blocker['x']] = blocker['reward']  # for square
@@ -85,7 +89,7 @@ def env_mgt(app_info):
         return _all_sites
 
     def fn_value_table_possible_actions():
-        return app_info['POSSIBLE_ACTIONS']
+        return app_info.POSSIBLE_ACTIONS
 
     fn_reset_env()
     ret_obj = namedtuple('_', [

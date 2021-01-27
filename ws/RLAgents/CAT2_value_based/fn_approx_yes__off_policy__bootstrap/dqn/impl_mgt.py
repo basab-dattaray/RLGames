@@ -12,12 +12,12 @@ import os
 
 
 def impl_mgt(app_info, state_size, action_size):
-    _epsilon = app_info['EPSILON']
-    _gamma = app_info['GAMMA']
-    _batch_size = app_info['BATCH_SIZE']
-    _epsilon_min = app_info['EPSILON_MIN']
+    _epsilon = app_info.EPSILON
+    _gamma = app_info.GAMMA
+    _batch_size = app_info.BATCH_SIZE
+    _epsilon_min = app_info.EPSILON_MIN
     _learning_rate = app_info.LEARNING_RATE
-    _epsilon_decay = app_info['EPSILON_DECAY']
+    _epsilon_decay = app_info.EPSILON_DECAY
     # _memory = None
     _model = None
 

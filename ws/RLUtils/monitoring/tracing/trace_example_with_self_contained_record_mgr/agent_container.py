@@ -1,12 +1,12 @@
 from collections import namedtuple
 
-from ws.RLUtils.monitoring.tracing.trace_example_with_self_contained_record_mgt.record_mgt import record_mgt
-from ws.RLUtils.monitoring.tracing.trace_example_with_self_contained_record_mgt.tracer import tracer
+from ws.RLUtils.monitoring.tracing.trace_example.record_mgt import record_mgt
+from ws.RLUtils.monitoring.tracing.tracer import tracer
 
 
 def agent_container():
     app_info = {}
-    app_info['fn_loger'] = record_mgt()
+    app_info.fn_loger = record_mgt()
 
 
     # @tracer(nn_args)

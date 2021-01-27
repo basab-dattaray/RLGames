@@ -13,7 +13,7 @@ def impl_mgt(app_info):
     # MODEL_ACTOR_NAME = 'Model_Actor.pth'
     # MODEL_CRITIC_NAME = 'Model_Critic.pth'
 
-    _gamma = app_info['GAMMA']
+    _gamma = app_info.GAMMA
 
     target_pkgpath = app_info.AGENT_FOLDER_PATH
 
@@ -70,7 +70,7 @@ def impl_mgt(app_info):
     def fn_should_update_network(done):
         nonlocal _update_interval_count
         _update_interval_count += 1
-        if _update_interval_count % app_info['UPDATE_STEP_INTERVAL'] == 0:
+        if _update_interval_count % app_info.UPDATE_STEP_INTERVAL == 0:
             fn_update()
 
     def fn_update():
@@ -84,7 +84,7 @@ def impl_mgt(app_info):
         old_actions = torch.stack(_buffer.actions).to(device).detach()
         old_logprobs = torch.stack(_buffer.logprobs).to(device).detach()
 
-        for _ in range(app_info['NUM_EPOCHS']):
+        for _ in range(app_info.NUM_EPOCHS):
             # Evaluating old actions and values :
             logprobs, state_values, dist_entropy = fn_evaluate(_model_actor, _model_critic, old_states, old_actions)
             loss = fn_actor_loss_eval(app_info, logprobs, old_logprobs, rewards, state_values)

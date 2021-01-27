@@ -32,7 +32,7 @@ def impl_mgt(app_info):
         continue_running = True
         while continue_running:
 
-            action = fn_get_max_q_actions(state, app_info['EPSILON'])
+            action = fn_get_max_q_actions(state, app_info.EPSILON)
 
             new_state, reward, _, _ = _env.fn_take_step(action)
 

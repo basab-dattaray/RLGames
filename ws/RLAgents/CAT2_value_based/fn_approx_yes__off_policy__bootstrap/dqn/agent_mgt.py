@@ -19,18 +19,15 @@ def agent_mgt(caller_file):
         def fn_run_training_episodes():
             # nonlocal fn_remember
     
-            num_episodes = app_info['NUM_EPISODES']
+            num_episodes = app_info.NUM_EPISODES
             loss = []
             for episode_num in range(1, num_episodes):
                 state = env.fn_reset_env()
                 state = np.reshape(state, (1, _state_size))
                 score = 0
-    
-                # num_steps = 0
-                for step_num in range(app_info['MAX_STEPS_PER_EPISODE']):
-                    # num_steps += 1
+
+                for step_num in range(app_info.MAX_STEPS_PER_EPISODE):
                     action = fnAct(state)
-                    # if episode_num > app_info['NUM_EPISODES'] - 5:
                     env.fn_render()
                     next_state, reward, done, _ = env.fn_take_step(action)
                     score += reward
@@ -39,7 +36,7 @@ def agent_mgt(caller_file):
                     state = next_state
                     fnReplay()
     
-                    if done or (step_num == app_info['MAX_STEPS_PER_EPISODE'] - 1) or (score >= app_info['REWARD_GOAL']):
+                    if done or (step_num == app_info.MAX_STEPS_PER_EPISODE - 1) or (score >= app_info.REWARD_GOAL):
                         print("episode: {}/{}, num of steps: {}, score: {}".format(episode_num, num_episodes, step_num, score))
                         break
                 loss.append(score)

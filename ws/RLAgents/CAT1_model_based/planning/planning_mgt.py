@@ -85,7 +85,7 @@ def planning_mgt(app_info):
 
             prob = 1 / len(max_index)
 
-            result = app_info['INITIAL_ACTION_VALUES'] .copy()
+            result = app_info.INITIAL_ACTION_VALUES .copy()
             for index in max_index:
                 result[index] = prob
             fn_set_policy_state_value(state, result)

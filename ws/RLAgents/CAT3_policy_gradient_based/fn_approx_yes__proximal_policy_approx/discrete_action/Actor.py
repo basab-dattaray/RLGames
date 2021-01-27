@@ -16,8 +16,8 @@ class Actor(nn.Module):
         fn_hidden_layers_input_proc, self.fn_hidden_layers_forward_proc = hidden_layer_model_mgt(self)
 
         env = app_info.ENV
-        action_size = env.fn_get_action_size() # app_info[ACTION_DIMENSIONS][0]
-        state_size = env.fn_get_state_size() # app_info[STATE_DIMENSIONS][0]
+        action_size = env.fn_get_action_size()
+        state_size = env.fn_get_state_size()
 
         last_hidden_layer_size = fn_hidden_layers_input_proc(state_size)
         self.last_hidden_to_out = nn.Linear(last_hidden_layer_size, action_size)

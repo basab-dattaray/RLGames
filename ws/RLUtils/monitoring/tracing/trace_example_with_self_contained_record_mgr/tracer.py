@@ -1,7 +1,7 @@
 import functools
 
 def tracer(app_info):
-    recorder = app_info['fn_loger']
+    recorder = app_info.fn_loger
     def function_wrapper_maker(fn):
         @functools.wraps(fn)
         def fn_wrapper(*app_info, **kwargs):

@@ -32,7 +32,7 @@ def agent_mgt(caller_file):
 
         _episode_num = 1
         done = False
-        while _episode_num <= app_info['NUM_EPISODES'] and not done:
+        while _episode_num <= app_info.NUM_EPISODES and not done:
             running_reward, num_steps = fn_run_episode(fn_should_update_network=fn_should_update_network)
             fn_show_training_progress(_episode_num, running_reward, num_steps)
 
@@ -47,7 +47,7 @@ def agent_mgt(caller_file):
         reward = 0
         step = 0
         done = False
-        while step < app_info['MAX_STEPS_PER_EPISODE'] and not done:
+        while step < app_info.MAX_STEPS_PER_EPISODE and not done:
             step += 1
 
             if do_render:

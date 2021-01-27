@@ -10,11 +10,11 @@ class Critic(nn.Module):
     def __init__(self, app_info):
         super(Critic, self).__init__()
 
-        self._hidden_layer_dims = app_info['CRITIC_HIDDEN_LAYER_NODES']
+        self._hidden_layer_dims = app_info.CRITIC_HIDDEN_LAYER_NODES
         fn_hidden_layers_input_proc, self.fn_hidden_layers_forward_proc = hidden_layer_model_mgt(self)
 
         env = app_info.ENV
-        state_size = env.fn_get_state_size() # app_info[STATE_DIMENSIONS][0]
+        state_size = env.fn_get_state_size()
 
         last_hidden_layer_size = fn_hidden_layers_input_proc(state_size)
 

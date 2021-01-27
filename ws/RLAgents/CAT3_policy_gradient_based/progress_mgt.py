@@ -8,14 +8,14 @@ def progress_mgt(app_info):
     _consecutive_goal_hit_count = 0
     _plot_file_path = os.path.join(app_info.RESULTS_PATH_, 'rewards_plot.pdf')
 
-    _log_interval = app_info['LOG_MEAN_INTERVAL']
-    _plot_skip_interval = app_info['LOG_SKIP_INTERVAL']
+    _log_interval = app_info.LOG_MEAN_INTERVAL
+    _plot_skip_interval = app_info.LOG_SKIP_INTERVAL
 
     _x_config_item = {'axis_label': 'episodes'}
     _y_config_list = [{'axis_label': 'reward', 'color_black_background': 'green'}]
-    _title_prefix = '{}:{}\n'.format(app_info['STRATEGY'], app_info.ENV_NAME)
+    _title_prefix = '{}:{}\n'.format(app_info.STRATEGY, app_info.ENV_NAME)
 
-    _reward_goal = app_info['REWARD_GOAL']
+    _reward_goal = app_info.REWARD_GOAL
 
     def fn_title_update_callback(progress_info):
         msg = 'episode_mgt: {}/{}'.format(
@@ -41,8 +41,8 @@ def progress_mgt(app_info):
     def fn_show_training_progress(episode_num, val, step_num):
 
         print_it(episode_num, step_num, val)
-        if episode_num % app_info['LOG_MEAN_INTERVAL'] == 0:
-            progress_info = {'max_episode_num': app_info['NUM_EPISODES'], 'episode_num': episode_num}
+        if episode_num % app_info.LOG_MEAN_INTERVAL == 0:
+            progress_info = {'max_episode_num': app_info.NUM_EPISODES, 'episode_num': episode_num}
 
             _chart.fn_log_event(
                 episode_num,

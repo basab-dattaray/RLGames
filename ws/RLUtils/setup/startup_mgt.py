@@ -17,7 +17,7 @@ from ws.RLUtils.setup.interrupt_mgt import interrupt_mgt
 
 def startup_mgt(caller_filepath):
     ROOT_DOT_PATH = 'ws'
-    ENV_CONFIG_PATH = 'configs'
+    # ENV_CONFIG_PATH = 'configs'
     ARGS_PY = 'ARGS.py'
 
     def _fn_init_arg_with_default_val(app_info, name, val):
@@ -54,8 +54,8 @@ def startup_mgt(caller_filepath):
             pass
         else:
             repo_name_parts = app_info.ENV_NAME.lower().rsplit('-', 1)
-            app_info['ENV_REPO'] = repo_name_parts[0]
-            subpackage_name = 'ws.RLEnvironments.' + app_info['ENV_REPO']
+            app_info.ENV_REPO = repo_name_parts[0]
+            subpackage_name = 'ws.RLEnvironments.' + app_info.ENV_REPO
 
         if subpackage_name is None:
             return app_info, None
