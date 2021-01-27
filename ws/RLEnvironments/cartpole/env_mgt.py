@@ -2,7 +2,7 @@ from collections import namedtuple
 
 import gym
 
-def env_mgt(name, app_info= None):
+def env_mgt(name, strategy= None,  app_info= None):
 
     _env = gym.make(name)
     _state_size = _env.observation_space.shape[0]
