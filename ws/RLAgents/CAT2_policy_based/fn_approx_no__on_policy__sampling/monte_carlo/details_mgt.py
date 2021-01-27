@@ -6,7 +6,7 @@ from ws.RLUtils.common.misc_functions import arg_max
 def details_mgt(env, app_info):
     _env = env
 
-    fn_set_value_table_item, fn_get_value_table_item, fn_set_value_table, fn_get_value_table, fn_value_table_possible_actions, _, _  \
+    fn_set_value_table_item, fn_get_value_table_item, fn_set_value_table, fn_get_value_table, fn_value_table_possible_actions_given_state, _, _  \
         = value_table_mgt(app_info)
 
     _interaction_trace = []
@@ -23,7 +23,7 @@ def details_mgt(env, app_info):
         if rn < app_info.EPSILON:
             selected_action = np.random.choice(len(app_info.ACTION_MOVE_STATE_RULES ))
         else:
-            actions = fn_value_table_possible_actions(state)
+            actions = fn_value_table_possible_actions_given_state(state)
             selected_action = arg_max(actions)
         return selected_action
 
