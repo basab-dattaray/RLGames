@@ -13,7 +13,7 @@ def env_mgt(name, strategy= None, app_info= None):
     _height = config.DISPLAY['HEIGHT']
 
     _reward = None
-    # _possible_actions = None
+
     _all_sites = None
     _current_site = None
 
