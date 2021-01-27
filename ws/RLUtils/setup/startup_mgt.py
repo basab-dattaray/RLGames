@@ -31,7 +31,7 @@ def startup_mgt(caller_filepath):
     def fn_bootstrap(file_path):
         demo_folder_path, _ = fn_separate_folderpath_and_filename(file_path)
         demo_dot_path = fn_get_rel_dot_folder_path(demo_folder_path, '/ws/')
-        fn_get_args = load_function(function_name="fn_get_args", module_tag="ARGS", module_dot_path=demo_dot_path)
+        fn_get_args = load_function(function_name="fn_get_args", module_name="ARGS", module_dot_path=demo_dot_path)
         app_info = fn_get_args()
         app_info = _fn_init_arg_with_default_val(app_info, 'DEMO_FOLDER_PATH_', demo_folder_path)
         app_info = _fn_init_arg_with_default_val(app_info, 'DEMO_DOT_PATH_', demo_dot_path)
@@ -60,7 +60,7 @@ def startup_mgt(caller_filepath):
         if subpackage_name is None:
             return app_info, None
 
-        env_mgt = load_function(function_name="env_mgt", module_tag="env_mgt", module_dot_path=subpackage_name)
+        env_mgt = load_function(function_name="env_mgt", module_name="env_mgt", module_dot_path=subpackage_name)
 
         env = None
         if env_mgt is not None:
@@ -104,7 +104,7 @@ def startup_mgt(caller_filepath):
 
 
         agent_config_path = app_info.AGENTS_CONFIG_DOT_PATH + '.' + app_info.AGENT_CONFIG
-        fn_add_configs = load_function(function_name="fn_add_configs", module_tag="AGENT_CONFIG",
+        fn_add_configs = load_function(function_name="fn_add_configs", module_name="AGENT_CONFIG",
                                        module_dot_path=agent_config_path)
 
         fn_add_configs(app_info)
