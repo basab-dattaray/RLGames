@@ -9,7 +9,7 @@ def montecarlo_trace_mgt(env, app_info):
     fn_set_value_table_item, fn_get_value_table_item, fn_set_value_table, fn_get_value_table, \
     fn_value_table_possible_actions_given_state, _, _ = value_table_mgt(
         app_info,
-        goal_coordinates=None, width=None, height=None, board_goal=None
+        app_info.ENV
     )
 
     _interaction_trace = []
