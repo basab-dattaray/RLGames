@@ -9,13 +9,13 @@ def get_module(tag, package_tag):
         return None
 
 
-def load_function(function_name, module_tag, subpackage_tag, package_tag=None):
+def load_function(function_name, module_tag, module_dot_path, package_tag=None):
     MAX_ATTEMPT_COUNT = 7
-    tag = subpackage_tag + '.' + module_tag
+    tag = module_dot_path + '.' + module_tag
     obj = get_module(tag, package_tag)
 
     attempt_count = 0
-    inner_subpackage_tag = subpackage_tag
+    inner_subpackage_tag = module_dot_path
     while obj is None:
         inner_subpackage_tag = inner_subpackage_tag.rsplit('.', 1)[0]
         obj = get_module(inner_subpackage_tag + '.' + module_tag, package_tag)

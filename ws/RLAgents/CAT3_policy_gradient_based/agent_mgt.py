@@ -13,7 +13,7 @@ def agent_mgt(caller_file):
     fn_get_key_as_bool, fn_get_key_as_int, _ = attr_mgt(app_info)
     is_single_episode_result = fn_get_key_as_bool('REWARD_CALCULATED_FROM_SINGLE_EPISODES')
     env = app_info.ENV
-    impl_mgt = load_function(function_name= 'impl_mgt', module_tag='impl_mgt', subpackage_tag= app_info.AGENT_FOLDER_PATH)
+    impl_mgt = load_function(function_name= 'impl_mgt', module_tag='impl_mgt', module_dot_path= app_info.AGENT_FOLDER_PATH)
 
     fn_act, fn_add_transition, fn_save_to_neural_net, fn_load_from_neural_net, fn_should_update_network = impl_mgt(app_info)
 

@@ -2,9 +2,9 @@ from collections import namedtuple
 
 import gym
 
-def env_mgt(app_info):
+def env_mgt(nname, app_info= None):
 
-    _env = gym.make(app_info.ENV_NAME)
+    _env = gym.make(name)
     _state_size = _env.observation_space.shape[0]
     _action_size = _env.action_space.shape[0]
 

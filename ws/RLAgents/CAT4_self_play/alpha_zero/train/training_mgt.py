@@ -4,9 +4,9 @@ import numpy as np
 
 from ws.RLAgents.CAT4_self_play.alpha_zero.play.playground_mgt import playground_mgt
 
-from ws.RLAgents.algo_lib.logic.search.monte_carlo_tree_search_mgt import monte_carlo_tree_search_mgt
+from ws.RLUtils.algo_lib.search.monte_carlo_tree_search_mgt import monte_carlo_tree_search_mgt
 from ws.RLAgents.CAT4_self_play.alpha_zero.train.sample_generator import fn_generate_samples
-from ws.RLAgents.CAT4_self_play.alpha_zero.train.training_helper import fn_getCheckpointFile, fn_log_iteration_results
+from ws.RLAgents.CAT4_self_play.alpha_zero.train.training_helper import fn_log_iteration_results
 from ws.RLUtils.monitoring.tracing.tracer import tracer
 def training_mgt(nn_mgr_N, app_info):
     _TMP_MODEL_FILENAME = '_Tmp'

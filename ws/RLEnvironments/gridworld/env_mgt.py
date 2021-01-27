@@ -4,7 +4,7 @@ from ws.RLEnvironments.bipedalwalker.configs.gridwell_1.ARGS import fn_get_args
 from ws.RLUtils.common.folder_paths import fn_separate_folderpath_and_filename, fn_get_rel_dot_folder_path
 
 
-def env_mgt(app_info):
+def env_mgt(name, app_info= None):
     folder_path, _ = fn_separate_folderpath_and_filename(__file__)
     dot_path = fn_get_rel_dot_folder_path(folder_path, '/')
     # app_info = fn_get_args()
