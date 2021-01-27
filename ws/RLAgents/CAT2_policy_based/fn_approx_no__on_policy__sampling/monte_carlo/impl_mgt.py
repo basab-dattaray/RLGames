@@ -7,7 +7,7 @@ from .montecarlo_trace_mgt import montecarlo_trace_mgt
 def impl_mgt(app_info):
     # _env = app_info.ENV
 
-    _fn_display_controller = display_mgt(app_info)
+    _fn_display_controller = display_mgt(app_info.ENV)
     fnClearTrace, fnGetEpsilonGreedyAction, fnTraceInteraction, fnUpdateValueTableFromTrace = montecarlo_trace_mgt(app_info.ENV,
                                                                                                                    app_info)
 

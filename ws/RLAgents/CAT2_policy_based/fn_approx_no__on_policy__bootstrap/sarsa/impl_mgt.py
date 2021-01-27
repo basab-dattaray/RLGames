@@ -1,16 +1,19 @@
+
 from ws.RLEnvironments.gridworld.grid_board.display_mgt import display_mgt
 from ws.RLUtils.algo_lib.policy_based.qtable_mgt import qtable_mgt
 
 def impl_mgt(app_info):
     _env = app_info.ENV
 
-    _fn_display_controller = display_mgt(app_info)
+    _fn_display_controller = display_mgt(app_info.ENV)
 
     _epsilon = app_info.EPSILON
+
+    _env_config = _env.fn_get_config()
     _discount_factor = app_info.DISCOUNT_FACTOR
     _learning_rate = app_info.LEARNING_RATE
 
-    app_fn_display_info = app_info.DISPLAY
+    app_fn_display_info = _env_config.DISPLAY
     _width = app_fn_display_info['WIDTH']
     _height = app_fn_display_info['HEIGHT']
     _board_blockers = app_fn_display_info['BOARD_BLOCKERS']

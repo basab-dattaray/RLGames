@@ -5,13 +5,12 @@ from ws.RLEnvironments.gridworld import CONFIG
 
 def env_mgt(name, strategy= None, app_info= None):
 
-    parts = strategy.rsplit('.')
-    app_type = parts[len(parts) - 1]
+    config = CONFIG.fn_get_config()
 
-    _board_blockers = app_info.DISPLAY['BOARD_BLOCKERS']
-    _board_goal = app_info.DISPLAY['BOARD_GOAL']
-    _width = app_info.DISPLAY['WIDTH']
-    _height = app_info.DISPLAY['HEIGHT']
+    _board_blockers = config.DISPLAY['BOARD_BLOCKERS']
+    _board_goal = config.DISPLAY['BOARD_GOAL']
+    _width = config.DISPLAY['WIDTH']
+    _height = config.DISPLAY['HEIGHT']
 
     _reward = None
     # _possible_actions = None
@@ -94,6 +93,9 @@ def env_mgt(name, strategy= None, app_info= None):
     def fn_get_allowed_moves():
         return [(0, -1), (0, 1), (-1, 0), (1, 0)]
 
+    def fn_get_strategy():
+        return strategy
+
     fn_get_config = CONFIG.fn_get_config
 
     fn_reset_env()
@@ -110,6 +112,7 @@ def env_mgt(name, strategy= None, app_info= None):
         'fn_value_table_possible_actions',
         'fn_get_allowed_moves',
         'fn_get_config',
+        'fn_get_strategy',
     ])
 
     ret_obj.fn_reset_env = fn_reset_env
@@ -124,5 +127,6 @@ def env_mgt(name, strategy= None, app_info= None):
     ret_obj.fn_value_table_possible_actions = fn_value_table_possible_actions
     ret_obj.fn_get_allowed_moves = fn_get_allowed_moves
     ret_obj.fn_get_config = fn_get_config
+    ret_obj.fn_get_strategy = fn_get_strategy
 
     return ret_obj

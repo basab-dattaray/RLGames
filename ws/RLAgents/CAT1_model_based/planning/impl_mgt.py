@@ -8,7 +8,7 @@ def impl_mgt(app_info):
     # _env = env
 
     planning_mgr = planning_mgt(app_info.ENV, app_info.DISCOUNT_FACTOR)
-    _fn_display_controller = display_mgt(app_info)
+    _fn_display_controller = display_mgt(app_info.ENV)
 
     def fn_bind_fn_display_actions(acton_dictionary):
 
