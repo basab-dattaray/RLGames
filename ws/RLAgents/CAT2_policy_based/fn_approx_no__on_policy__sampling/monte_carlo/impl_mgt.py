@@ -1,15 +1,19 @@
 
 from ws.RLEnvironments.gridworld.grid_board.display_mgt import display_mgt
 
-from .montecarlo_trace_mgt import montecarlo_trace_mgt
+from ws.RLUtils.algo_lib.policy_based.montecarlo_trace_mgt import montecarlo_trace_mgt
 
 
 def impl_mgt(app_info):
     # _env = app_info.ENV
 
     _fn_display_controller = display_mgt(app_info.ENV)
-    fnClearTrace, fnGetEpsilonGreedyAction, fnTraceInteraction, fnUpdateValueTableFromTrace = montecarlo_trace_mgt(app_info.ENV,
-                                                                                                                   app_info)
+    fnClearTrace, fnGetEpsilonGreedyAction, fnTraceInteraction, fnUpdateValueTableFromTrace = montecarlo_trace_mgt(
+        app_info.ENV,
+        app_info.EPSILON,
+        app_info.DISCOUNT_FACTOR,
+        app_info.LEARNING_RATE,
+    )
 
     def fn_bind_fn_display_actions(acton_dictionary):
         _fn_display_controller.fn_init(acton_dictionary)
