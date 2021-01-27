@@ -80,7 +80,7 @@ def env_mgt(name, strategy= None, app_info= None):
         return [_width, _height]
 
     def fn_get_action_size():
-        return [4]
+        return 4
 
     def fn_close():
         pass
@@ -93,7 +93,7 @@ def env_mgt(name, strategy= None, app_info= None):
         return _all_sites
 
     def fn_value_table_possible_actions():
-        return app_info.POSSIBLE_ACTIONS
+        return [0, 1, 2, 3]
 
     fn_reset_env()
     ret_obj = namedtuple('_', [
