@@ -1,4 +1,4 @@
-from ws.RLAgents.CAT2_value_based.fn_approx_no__on_policy__bootstrap.sarsa.agent_mgt import agent_mgt
+from ws.RLAgents.CAT2_policy_based.fn_approx_no__on_policy__bootstrap.sarsa.agent_mgt import agent_mgt
 
 if __name__ == "__main__":
 

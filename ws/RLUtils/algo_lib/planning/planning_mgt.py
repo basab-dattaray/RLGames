@@ -23,13 +23,13 @@ def planning_mgt(app_info):
 
     def fn_run_policy():
 
-        for state in _env.fn_get_all_states():
+        for sites in _env.fn_get_all_sites():
 
-            _env.fn_update_current_site(state)
+            _env.fn_update_current_site(sites)
 
 
-            if fn_value_table_reached_target(state):
-                fn_set_value_table_item(state, 0.0)
+            if fn_value_table_reached_target(sites):
+                fn_set_value_table_item(sites, 0.0)
                 continue
 
             value = 0.0
@@ -37,20 +37,19 @@ def planning_mgt(app_info):
                 next_state, reward, _, _= _env.fn_take_step(action, planning_mode = True)
 
                 next_value = fn_get_value_table_item(next_state)
-                value = value + fn_get_actions_given_state(state)[action] * (reward + _discount_factor * next_value)
+                value = value + fn_get_actions_given_state(sites)[action] * (reward + _discount_factor * next_value)
 
-            fn_set_value_table_item(state, value)
+            fn_set_value_table_item(sites, value)
 
     def fn_calc_values():
-        all_states = _env.fn_get_all_states()
 
-        for state in all_states:
+        for site in _env.fn_get_all_sites():
 
-            if fn_value_table_reached_target(state):
-                fn_set_value_table_item(state, 0)
+            if fn_value_table_reached_target(site):
+                fn_set_value_table_item(site, 0)
                 continue
 
-            _env.fn_update_current_site(state)
+            _env.fn_update_current_site(site)
 
             value_list = []
 
@@ -59,14 +58,14 @@ def planning_mgt(app_info):
                 next_value = fn_get_value_table_item(next_state)
                 value_list.append((reward + _discount_factor * next_value))
 
-            fn_set_value_table_item(state, round(max(value_list), 2))
+            fn_set_value_table_item(site, round(max(value_list), 2))
 
     def fn_run_policy_improvement():
-        for state in _env.fn_get_all_states():
-            if fn_value_table_reached_target(state):
+        for site in _env.fn_get_all_sites():
+            if fn_value_table_reached_target(site):
                 continue
 
-            _env.fn_update_current_site(state)
+            _env.fn_update_current_site(site)
 
             value = LOW_NUMBER
             max_index = []
@@ -88,7 +87,7 @@ def planning_mgt(app_info):
             result = app_info.INITIAL_ACTION_VALUES .copy()
             for index in max_index:
                 result[index] = prob
-            fn_set_policy_state_value(state, result)
+            fn_set_policy_state_value(site, result)
         policy_table = fn_fetch_policy_table()
         return policy_table
 

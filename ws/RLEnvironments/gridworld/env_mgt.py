@@ -5,8 +5,8 @@ from ws.RLUtils.common.folder_paths import fn_separate_folderpath_and_filename, 
 
 
 def env_mgt(name, app_info= None):
-    folder_path, _ = fn_separate_folderpath_and_filename(__file__)
-    dot_path = fn_get_rel_dot_folder_path(folder_path, '/')
+    # folder_path, _ = fn_separate_folderpath_and_filename(__file__)
+    # dot_path = fn_get_rel_dot_folder_path(folder_path, '/')
     # app_info = fn_get_args()
     _board_blockers = app_info.DISPLAY['BOARD_BLOCKERS']
     _board_goal = app_info.DISPLAY['BOARD_GOAL']
@@ -85,7 +85,7 @@ def env_mgt(name, app_info= None):
         nonlocal _current_site
         _current_site = current_site
 
-    def fn_get_all_states():
+    def fn_get_all_sites():
         return _all_sites
 
     def fn_value_table_possible_actions():
@@ -101,7 +101,7 @@ def env_mgt(name, app_info= None):
         'fn_close',
 
         'fn_update_current_site',
-        'fn_get_all_states',
+        'fn_get_all_sites',
         'fn_value_table_possible_actions',
     ])
 
@@ -113,7 +113,7 @@ def env_mgt(name, app_info= None):
     ret_obj.fn_close = fn_close
 
     ret_obj.fn_update_current_site = fn_update_current_site
-    ret_obj.fn_get_all_states = fn_get_all_states
+    ret_obj.fn_get_all_sites = fn_get_all_sites
     ret_obj.fn_value_table_possible_actions = fn_value_table_possible_actions
 
     return ret_obj

@@ -11,7 +11,6 @@ def agent_mgt(file_path):
     strategy = app_info.STRATEGY
     right_dot_index = strategy.rfind('.')
     iterator_name =  strategy[right_dot_index + 1:]
-    # x = 1
 
     fn_apply = None
     if iterator_name == 'policy_iterator':
@@ -22,14 +21,12 @@ def agent_mgt(file_path):
 
 
     def fn_init():
-
         actions = OrderedDict()
         actions["plan"] = fn_apply
         actions["move"] = fn_move_per_policy
 
         fn_bind_fn_display_actions(actions)
         return
-
 
     agent_mgr = namedtuple('_',
                                 [

@@ -5,7 +5,10 @@ app_info = DotDict({
     "ENV_NAME": "Gridworld-v1",
     "AGENT_CONFIG": "gridwell_1",
 
-    "DISCOUNT_FACTOR": 0.9,
+    "AUTO_ARCHIVE": 1,
+    "AUTO_INTERRUPT_HANDLING": 1,
+
+    # "DISCOUNT_FACTOR": 0.9,
 
     "DISPLAY": {
         "APP_NAME": "Policy Iterator",
@@ -15,8 +18,7 @@ app_info = DotDict({
         "WIDTH": 6,
         "HEIGHT": 5
     },
-    "AUTO_ARCHIVE": 1,
-    "AUTO_INTERRUPT_HANDLING": 1,
+
 })
 
 def fn_get_args():

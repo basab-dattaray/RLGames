@@ -11,7 +11,6 @@ app_info = DotDict({
     "LEARNING_RATE": 0.01,
     "EPSILON": 0.1,
     "RHO": 0.99,
-    "DISCOUNT_FACTOR": 0.9,
 
     "DISPLAY": {
         "APP_NAME": "Value Iterator",
