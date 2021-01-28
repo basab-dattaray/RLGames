@@ -2,7 +2,7 @@ from ws.RLUtils.common.DotDict import DotDict
 
 app_info = DotDict(
   {
-    "STRATEGY": "CAT2_policy_based.fn_approx_yes__off_policy__bootstrap.dqn",
+    "STRATEGY": "CAT2_value_based_based.fn_approx_yes__off_policy__bootstrap.dqn",
 
     "NUM_EPISODES": 20,
     "BATCH_SIZE": 64,

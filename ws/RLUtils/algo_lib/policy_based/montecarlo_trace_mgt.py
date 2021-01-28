@@ -7,7 +7,7 @@ def montecarlo_trace_mgt(env, epsilon, discount_factor, learning_rate):
     # config = env.fn_get_config()
 
     fn_set_state_site_value, fn_get_state_site_value, fn_set_all_state_site_values, fn_get_all_state_site_values, \
-    fn_value_table_possible_actions_given_state, _, _ = value_table_mgt(
+    fn_value_table_possible_actions_given_state, _ = value_table_mgt(
         env
     )
 

@@ -96,6 +96,9 @@ def env_mgt(name, strategy= None, app_info= None):
     def fn_get_strategy():
         return strategy
 
+    def fn_is_goal_reached(state_site):
+        return True if state_site == [_board_goal['x'], _board_goal['y']] else False
+
     fn_get_config = CONFIG.fn_get_config
 
     fn_reset_env()
@@ -113,7 +116,9 @@ def env_mgt(name, strategy= None, app_info= None):
         'fn_get_allowed_moves',
         'fn_get_config',
         'fn_get_strategy',
+        'fn_is_goal_reached',
     ])
+
 
     ret_obj.fn_reset_env = fn_reset_env
     ret_obj.fn_take_step = fn_take_step
@@ -128,5 +133,6 @@ def env_mgt(name, strategy= None, app_info= None):
     ret_obj.fn_get_allowed_moves = fn_get_allowed_moves
     ret_obj.fn_get_config = fn_get_config
     ret_obj.fn_get_strategy = fn_get_strategy
+    ret_obj.fn_is_goal_reached = fn_is_goal_reached
 
     return ret_obj

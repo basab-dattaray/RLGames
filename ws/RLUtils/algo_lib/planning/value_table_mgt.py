@@ -66,7 +66,5 @@ def value_table_mgt(env):
 
         return possible_actions
 
-    def fn_goal_reached(state_site):
-        return True if state_site == [_goal_coordinates['x'], _goal_coordinates['y']] else False
 
-    return fn_set_state_site_value, fn_get_state_site_value, fn_set_all_state_site_values, fn_get_all_state_site_values, fn_get_state_site_actions, fn_goal_reached, fn_has_any_state_site_changed
+    return fn_set_state_site_value, fn_get_state_site_value, fn_set_all_state_site_values, fn_get_all_state_site_values, fn_get_state_site_actions, fn_has_any_state_site_changed

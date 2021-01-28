@@ -2,7 +2,7 @@ from ws.RLUtils.common.DotDict import DotDict
 
 app_info = DotDict(
 {
-  "STRATEGY": "CAT2_policy_based.fn_approx_no__off_policy__bootstrap.qlearn",
+  "STRATEGY": "CAT2_value_based_based.fn_approx_no__off_policy__bootstrap.qlearn",
   "ENV_NAME": "Gridworld-v1",
   "AGENT_CONFIG": "gridwell_qlearn",
 
