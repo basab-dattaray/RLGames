@@ -35,31 +35,28 @@ def impl_mgt(app_info):
         episode_num = 0
         while True:
             episode_num += 1
-            episode_status = runEpisode(_fn_display_controller.fn_move_cursor, _fn_display_controller.fn_show_qvalue)
+            episode_status = runEpisode(_fn_display_controller.fn_move_cursor)
             print('episode number: {}   status = {}'.format(episode_num, episode_status))
 
-    def runEpisode(fn_move_cursor, fn_show_qvalue):
+    def runEpisode(fn_move_cursor):
         new_state = None
 
         state = _env.fn_reset_env()
         action = fn_get_max_q_actions(state, app_info.EPSILON)
-
+        _fn_display_controller.fn_update_ui(state, fn_get_q_actions(state))
         continue_running  = True
         while continue_running:
             new_state, reward, done, _ = _env.fn_take_step(action)
             continue_running = reward == 0
-            if fn_show_qvalue is not None:
-                q_actions = fn_get_q_actions(state)
-                fn_show_qvalue(state, q_actions)
             if fn_move_cursor is not None:
                 fn_move_cursor(state, new_state)
 
             new_action = fn_get_max_q_actions(new_state, app_info.EPSILON)
             fnUpdateKnowledge(state, action, reward, new_state, new_action)
+            _fn_display_controller.fn_update_ui(state, fn_get_q_actions(state))
 
             action = new_action
             state = new_state
-
         if fn_move_cursor is not None:
             fn_move_cursor(new_state)
 
