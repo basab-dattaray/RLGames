@@ -244,6 +244,11 @@ def display_mgt(env):
         new_y = state[1] + next_state[1]
         return new_x, new_y
 
+    def fn_update_ui(state, actions):
+        if fn_show_qvalue is not None:
+            # q_actions = fn_get_q_actions(state)
+            fn_show_qvalue(state, actions)
+
     app_title = _fn_get_app_title(env)
     _tk.title(app_title)
 
@@ -257,6 +262,7 @@ def display_mgt(env):
         'fn_is_target_state_reached',
         'fn_get_start_state',
         'fn_run_next_move',
+        'fn_update_ui',
     ])
 
     ret_obj.fn_init = fn_init
@@ -268,6 +274,7 @@ def display_mgt(env):
     ret_obj.fn_is_target_state_reached = fn_is_target_state_reached
     ret_obj.fn_get_start_state = fn_get_start_state
     ret_obj.fn_run_next_move = fn_run_next_move
+    ret_obj.fn_update_ui = fn_update_ui
 
     return ret_obj
 
