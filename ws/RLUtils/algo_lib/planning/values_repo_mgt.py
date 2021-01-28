@@ -29,7 +29,7 @@ def values_repo_mgt(env):
     def fn_get_all_statepart_values():
         return _value_table
 
-    def fn_has_any_statepart_changed():
+    def fn_has_state_changed():
         nonlocal _prev_value_table
 
         if _prev_value_table is None:
@@ -82,7 +82,7 @@ def values_repo_mgt(env):
 
     ret_obj.fn_get_all_statepart_values = fn_get_all_statepart_values
     ret_obj.fn_get_statepart_actions = fn_get_statepart_actions
-    ret_obj.fn_has_any_statepart_changed = fn_has_any_statepart_changed
+    ret_obj.fn_has_any_statepart_changed = fn_has_state_changed
 
     return ret_obj
 
