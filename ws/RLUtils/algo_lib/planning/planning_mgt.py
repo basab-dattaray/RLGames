@@ -7,8 +7,7 @@ def planning_mgt(env, discount_factor= 0.9):
     LOW_NUMBER = -9999999999
     _env_config = env.fn_get_config()
 
-    fn_set_state_statepart_value, fn_get_state_statepart_value, fn_set_all_state_statepart_values, fn_get_all_state_statepart_values, \
-    _ ,fn_has_any_state_statepart_changed = value_table_mgt(
+    statepart_values_repo = value_table_mgt(
         env,
     )
 
@@ -26,24 +25,24 @@ def planning_mgt(env, discount_factor= 0.9):
             env.fn_set_active_statepart(statepart)
 
             if env.fn_is_goal_reached(statepart):
-                fn_set_state_statepart_value(statepart, 0.0)
+                statepart_values_repo.fn_set_statepart_value(statepart, 0.0)
                 continue
 
             value = 0.0
             for action in env.fn_value_table_possible_actions():
                 next_state, reward, _, _= env.fn_take_step(action, planning_mode = True)
 
-                next_value = fn_get_state_statepart_value(next_state)
+                next_value = statepart_values_repo.fn_get_statepart_value(next_state)
                 value = value + fn_get_actions_given_state(statepart)[action] * (reward + discount_factor * next_value)
 
-            fn_set_state_statepart_value(statepart, value)
+            statepart_values_repo.fn_set_statepart_value(statepart, value)
 
     def fn_calc_values():
 
         for statepart in env.fn_get_all_stateparts():
 
             if env.fn_is_goal_reached(statepart):
-                fn_set_state_statepart_value(statepart, 0)
+                statepart_values_repo.fn_set_statepart_value(statepart, 0)
                 continue
 
             env.fn_set_active_statepart(statepart)
@@ -52,10 +51,10 @@ def planning_mgt(env, discount_factor= 0.9):
 
             for action in env.fn_value_table_possible_actions():
                 next_state, reward, _, _= env.fn_take_step(action, planning_mode = True)
-                next_value = fn_get_state_statepart_value(next_state)
+                next_value = statepart_values_repo.fn_get_statepart_value(next_state)
                 value_list.append((reward + discount_factor * next_value))
 
-            fn_set_state_statepart_value(statepart, round(max(value_list), 2))
+            statepart_values_repo.fn_set_statepart_value(statepart, round(max(value_list), 2))
 
     def fn_run_policy_improvement():
         for statepart in env.fn_get_all_stateparts():
@@ -69,7 +68,7 @@ def planning_mgt(env, discount_factor= 0.9):
 
             for action in range(env.fn_get_action_size()):
                 next_state, reward, _, _ = env.fn_take_step(action, planning_mode = True)
-                next_value = fn_get_state_statepart_value(next_state)
+                next_value = statepart_values_repo.fn_get_statepart_value(next_state)
                 total_reward = reward + discount_factor * next_value
 
                 if total_reward == value: # there can be multiple maximums
@@ -95,9 +94,9 @@ def planning_mgt(env, discount_factor= 0.9):
 
             evalFunction()
 
-            if not fn_has_any_state_statepart_changed():
+            if not statepart_values_repo.fn_has_any_statepart_changed():
                 break
-        value_table = fn_get_all_state_statepart_values()
+        value_table = statepart_values_repo.fn_get_all_statepart_values()
         return value_table, policy_table
 
     def fnPolicyIterater():

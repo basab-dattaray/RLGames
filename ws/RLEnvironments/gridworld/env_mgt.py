@@ -96,8 +96,8 @@ def env_mgt(name, strategy= None, app_info= None):
     def fn_get_strategy():
         return strategy
 
-    def fn_is_goal_reached(state_statepart):
-        return True if state_statepart == [_board_goal['x'], _board_goal['y']] else False
+    def fn_is_goal_reached(statepart):
+        return True if statepart == [_board_goal['x'], _board_goal['y']] else False
 
     fn_get_config = CONFIG.fn_get_config
 
