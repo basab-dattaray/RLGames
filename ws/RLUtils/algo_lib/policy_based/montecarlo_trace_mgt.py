@@ -1,12 +1,12 @@
 import numpy as np
 
-from ws.RLUtils.algo_lib.planning.value_table_mgt import value_table_mgt
+from ws.RLUtils.algo_lib.planning.values_repo_mgt import values_repo_mgt
 from ws.RLUtils.common.misc_functions import arg_max
 
 def montecarlo_trace_mgt(env, epsilon, discount_factor, learning_rate):
     # config = env.fn_get_config()
 
-    _stateparts_repo = value_table_mgt(
+    _stateparts_repo = values_repo_mgt(
         env
     )
 

@@ -2,7 +2,7 @@ import copy
 from collections import namedtuple
 
 
-def value_table_mgt(env):
+def values_repo_mgt(env):
     LOW_NUMBER = -999999
     env_config = env.fn_get_config()
     # _goal_coordinates = None
