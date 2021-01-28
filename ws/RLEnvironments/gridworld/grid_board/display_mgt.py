@@ -249,8 +249,8 @@ def display_mgt(env):
             fn_show_qvalue(state, actions)
 
 
-    def fn_is_goal_reached(state_site):
-        return True if state_site == [_board_goal['x'], _board_goal['y']] else False
+    def fn_is_goal_reached(state_statepart):
+        return True if state_statepart == [_board_goal['x'], _board_goal['y']] else False
 
     app_title = _fn_get_app_title(env)
     _tk.title(app_title)

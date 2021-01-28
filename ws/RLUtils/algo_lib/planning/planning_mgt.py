@@ -7,8 +7,8 @@ def planning_mgt(env, discount_factor= 0.9):
     LOW_NUMBER = -9999999999
     _env_config = env.fn_get_config()
 
-    fn_set_state_site_value, fn_get_state_site_value, fn_set_all_state_site_values, fn_get_all_state_site_values, \
-    _ ,fn_has_any_state_site_changed = value_table_mgt(
+    fn_set_state_statepart_value, fn_get_state_statepart_value, fn_set_all_state_statepart_values, fn_get_all_state_statepart_values, \
+    _ ,fn_has_any_state_statepart_changed = value_table_mgt(
         env,
     )
 
@@ -22,54 +22,54 @@ def planning_mgt(env, discount_factor= 0.9):
 
     def fn_run_policy():
 
-        for site in env.fn_get_all_sites():
-            env.fn_update_current_site(site)
+        for statepart in env.fn_get_all_stateparts():
+            env.fn_set_active_statepart(statepart)
 
-            if env.fn_is_goal_reached(site):
-                fn_set_state_site_value(site, 0.0)
+            if env.fn_is_goal_reached(statepart):
+                fn_set_state_statepart_value(statepart, 0.0)
                 continue
 
             value = 0.0
             for action in env.fn_value_table_possible_actions():
                 next_state, reward, _, _= env.fn_take_step(action, planning_mode = True)
 
-                next_value = fn_get_state_site_value(next_state)
-                value = value + fn_get_actions_given_state(site)[action] * (reward + discount_factor * next_value)
+                next_value = fn_get_state_statepart_value(next_state)
+                value = value + fn_get_actions_given_state(statepart)[action] * (reward + discount_factor * next_value)
 
-            fn_set_state_site_value(site, value)
+            fn_set_state_statepart_value(statepart, value)
 
     def fn_calc_values():
 
-        for site in env.fn_get_all_sites():
+        for statepart in env.fn_get_all_stateparts():
 
-            if env.fn_is_goal_reached(site):
-                fn_set_state_site_value(site, 0)
+            if env.fn_is_goal_reached(statepart):
+                fn_set_state_statepart_value(statepart, 0)
                 continue
 
-            env.fn_update_current_site(site)
+            env.fn_set_active_statepart(statepart)
 
             value_list = []
 
             for action in env.fn_value_table_possible_actions():
                 next_state, reward, _, _= env.fn_take_step(action, planning_mode = True)
-                next_value = fn_get_state_site_value(next_state)
+                next_value = fn_get_state_statepart_value(next_state)
                 value_list.append((reward + discount_factor * next_value))
 
-            fn_set_state_site_value(site, round(max(value_list), 2))
+            fn_set_state_statepart_value(statepart, round(max(value_list), 2))
 
     def fn_run_policy_improvement():
-        for site in env.fn_get_all_sites():
-            if env.fn_is_goal_reached(site):
+        for statepart in env.fn_get_all_stateparts():
+            if env.fn_is_goal_reached(statepart):
                 continue
 
-            env.fn_update_current_site(site)
+            env.fn_set_active_statepart(statepart)
 
             value = LOW_NUMBER
             max_index = []
 
             for action in range(env.fn_get_action_size()):
                 next_state, reward, _, _ = env.fn_take_step(action, planning_mode = True)
-                next_value = fn_get_state_site_value(next_state)
+                next_value = fn_get_state_statepart_value(next_state)
                 total_reward = reward + discount_factor * next_value
 
                 if total_reward == value: # there can be multiple maximums
@@ -85,7 +85,7 @@ def planning_mgt(env, discount_factor= 0.9):
 
             for index in max_index:
                 result[index] = prob
-            fn_set_policy_state_value(site, result)
+            fn_set_policy_state_value(statepart, result)
         policy_table = fn_fetch_policy_table()
         return policy_table
 
@@ -95,9 +95,9 @@ def planning_mgt(env, discount_factor= 0.9):
 
             evalFunction()
 
-            if not fn_has_any_state_site_changed():
+            if not fn_has_any_state_statepart_changed():
                 break
-        value_table = fn_get_all_state_site_values()
+        value_table = fn_get_all_state_statepart_values()
         return value_table, policy_table
 
     def fnPolicyIterater():

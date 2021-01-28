@@ -12,22 +12,22 @@ def value_table_mgt(env):
     _value_table = [[0.0] * _width for _ in range(_width)]
     _prev_value_table = None
 
-    def fn_set_state_site_value(state_site, value):
+    def fn_set_state_statepart_value(state_statepart, value):
         nonlocal _value_table
-        _value_table[state_site[1]][state_site[0]] = value
+        _value_table[state_statepart[1]][state_statepart[0]] = value
 
-    def fn_get_state_site_value(state_site):
-        return _value_table[state_site[1]][state_site[0]]
+    def fn_get_state_statepart_value(state_statepart):
+        return _value_table[state_statepart[1]][state_statepart[0]]
 
 
-    def fn_set_all_state_site_values(table):
+    def fn_set_all_state_statepart_values(table):
         nonlocal _value_table
         _value_table = table
 
-    def fn_get_all_state_site_values():
+    def fn_get_all_state_statepart_values():
         return _value_table
 
-    def fn_has_any_state_site_changed():
+    def fn_has_any_state_statepart_changed():
         nonlocal _prev_value_table
 
         if _prev_value_table is None:
@@ -42,29 +42,29 @@ def value_table_mgt(env):
                     return True
         return False
 
-    def fn_get_state_site_actions(state_site):
+    def fn_get_state_statepart_actions(state_statepart):
 
-        row, col = state_site
+        row, col = state_statepart
         action_size = env.fn_get_action_size()
         possible_actions = [LOW_NUMBER] * action_size
 
         dir_up = [row, max(0, col -1)]
         if col > 0:
-            possible_actions[0] = fn_get_state_site_value(dir_up)
+            possible_actions[0] = fn_get_state_statepart_value(dir_up)
 
         dir_down = [row, min(_height - 1, col + 1) ]
         if col < _height - 1:
-            possible_actions[1] = fn_get_state_site_value(dir_down)
+            possible_actions[1] = fn_get_state_statepart_value(dir_down)
 
         dir_left = [max(0, row - 1), col]
         if row > 0:
-            possible_actions[2] = fn_get_state_site_value(dir_left)
+            possible_actions[2] = fn_get_state_statepart_value(dir_left)
 
         dir_right = [ min(_width - 1, row + 1) , col]
         if row < _width - 1:
-            possible_actions[3] = fn_get_state_site_value(dir_right)
+            possible_actions[3] = fn_get_state_statepart_value(dir_right)
 
         return possible_actions
 
 
-    return fn_set_state_site_value, fn_get_state_site_value, fn_set_all_state_site_values, fn_get_all_state_site_values, fn_get_state_site_actions, fn_has_any_state_site_changed
+    return fn_set_state_statepart_value, fn_get_state_statepart_value, fn_set_all_state_statepart_values, fn_get_all_state_statepart_values, fn_get_state_statepart_actions, fn_has_any_state_statepart_changed
