@@ -246,8 +246,11 @@ def display_mgt(env):
 
     def fn_update_ui(state, actions):
         if fn_show_qvalue is not None:
-            # q_actions = fn_get_q_actions(state)
             fn_show_qvalue(state, actions)
+
+
+    def fn_is_goal_reached(state_site):
+        return True if state_site == [_board_goal['x'], _board_goal['y']] else False
 
     app_title = _fn_get_app_title(env)
     _tk.title(app_title)
@@ -263,6 +266,7 @@ def display_mgt(env):
         'fn_get_start_state',
         'fn_run_next_move',
         'fn_update_ui',
+        'fn_is_goal_reached',
     ])
 
     ret_obj.fn_init = fn_init
@@ -275,6 +279,7 @@ def display_mgt(env):
     ret_obj.fn_get_start_state = fn_get_start_state
     ret_obj.fn_run_next_move = fn_run_next_move
     ret_obj.fn_update_ui = fn_update_ui
+    ret_obj.fn_is_goal_reached = fn_is_goal_reached
 
     return ret_obj
 

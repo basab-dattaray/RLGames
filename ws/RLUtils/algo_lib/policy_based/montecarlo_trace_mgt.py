@@ -6,7 +6,7 @@ from ws.RLUtils.common.misc_functions import arg_max
 def montecarlo_trace_mgt(env, epsilon, discount_factor, learning_rate):
     # config = env.fn_get_config()
 
-    fn_set_value_table_item, fn_get_value_table_item, fn_set_value_table, fn_get_value_table, \
+    fn_set_state_site_value, fn_get_state_site_value, fn_set_all_state_site_values, fn_get_all_state_site_values, \
     fn_value_table_possible_actions_given_state, _, _ = value_table_mgt(
         env
     )
@@ -42,11 +42,11 @@ def montecarlo_trace_mgt(env, epsilon, discount_factor, learning_rate):
                 visit_state.append(state)
                 reward = trace[1]
                 G_t = discount_factor * (reward + G_t)
-                value = fn_get_value_table_item(state)
+                value = fn_get_state_site_value(state)
                 new_val = (value + learning_rate * (G_t - value))
-                fn_set_value_table_item(state, new_val)
+                fn_set_state_site_value(state, new_val)
                 continue
-        val_table = fn_get_value_table()
+        val_table = fn_get_all_state_site_values()
         return val_table
 
     return fnClearTrace, fnGetEpsilonGreedyAction, fnTraceInteraction, fnUpdateValueTableFromTrace

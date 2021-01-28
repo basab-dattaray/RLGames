@@ -7,8 +7,8 @@ def planning_mgt(env, discount_factor= 0.9):
     LOW_NUMBER = -9999999999
     _env_config = env.fn_get_config()
 
-    fn_set_value_table_item, fn_get_value_table_item, fn_set_value_table, fn_get_value_table, \
-    _ ,fn_goal_reached, fn_has_table_changed = value_table_mgt(
+    fn_set_state_site_value, fn_get_state_site_value, fn_set_all_state_site_values, fn_get_all_state_site_values, \
+    _ ,fn_goal_reached, fn_has_any_state_site_changed = value_table_mgt(
         env,
     )
 
@@ -26,24 +26,24 @@ def planning_mgt(env, discount_factor= 0.9):
             env.fn_update_current_site(site)
 
             if fn_goal_reached(site):
-                fn_set_value_table_item(site, 0.0)
+                fn_set_state_site_value(site, 0.0)
                 continue
 
             value = 0.0
             for action in env.fn_value_table_possible_actions():
                 next_state, reward, _, _= env.fn_take_step(action, planning_mode = True)
 
-                next_value = fn_get_value_table_item(next_state)
+                next_value = fn_get_state_site_value(next_state)
                 value = value + fn_get_actions_given_state(site)[action] * (reward + discount_factor * next_value)
 
-            fn_set_value_table_item(site, value)
+            fn_set_state_site_value(site, value)
 
     def fn_calc_values():
 
         for site in env.fn_get_all_sites():
 
             if fn_goal_reached(site):
-                fn_set_value_table_item(site, 0)
+                fn_set_state_site_value(site, 0)
                 continue
 
             env.fn_update_current_site(site)
@@ -52,10 +52,10 @@ def planning_mgt(env, discount_factor= 0.9):
 
             for action in env.fn_value_table_possible_actions():
                 next_state, reward, _, _= env.fn_take_step(action, planning_mode = True)
-                next_value = fn_get_value_table_item(next_state)
+                next_value = fn_get_state_site_value(next_state)
                 value_list.append((reward + discount_factor * next_value))
 
-            fn_set_value_table_item(site, round(max(value_list), 2))
+            fn_set_state_site_value(site, round(max(value_list), 2))
 
     def fn_run_policy_improvement():
         for site in env.fn_get_all_sites():
@@ -69,7 +69,7 @@ def planning_mgt(env, discount_factor= 0.9):
 
             for action in range(env.fn_get_action_size()):
                 next_state, reward, _, _ = env.fn_take_step(action, planning_mode = True)
-                next_value = fn_get_value_table_item(next_state)
+                next_value = fn_get_state_site_value(next_state)
                 total_reward = reward + discount_factor * next_value
 
                 if total_reward == value: # there can be multiple maximums
@@ -95,9 +95,9 @@ def planning_mgt(env, discount_factor= 0.9):
 
             evalFunction()
 
-            if not fn_has_table_changed():
+            if not fn_has_any_state_site_changed():
                 break
-        value_table = fn_get_value_table()
+        value_table = fn_get_all_state_site_values()
         return value_table, policy_table
 
     def fnPolicyIterater():
