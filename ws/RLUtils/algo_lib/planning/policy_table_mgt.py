@@ -1,3 +1,6 @@
+from collections import namedtuple
+
+
 def policy_table_mgt(env):
     config = env.fn_get_config()
     init_policy = [1/ env.fn_get_action_size()] * env.fn_get_action_size() # [.25, .25, .25, .25]
@@ -13,4 +16,14 @@ def policy_table_mgt(env):
     def fn_fetch_policy_table():
         return _policy_table
 
-    return fn_get_policy_state_value, fn_set_policy_state_value, fn_fetch_policy_table
+    ret_obj = namedtuple('_', [
+        'fn_get_policy_state_value',
+        'fn_set_policy_state_value',
+        'fn_fetch_policy_table',
+    ])
+
+    ret_obj.fn_get_policy_state_value = fn_get_policy_state_value
+    ret_obj.fn_set_policy_state_value = fn_set_policy_state_value
+    ret_obj.fn_fetch_policy_table = fn_fetch_policy_table
+
+    return ret_obj

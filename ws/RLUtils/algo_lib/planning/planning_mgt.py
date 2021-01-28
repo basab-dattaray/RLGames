@@ -12,12 +12,12 @@ def planning_mgt(env, discount_factor= 0.9):
         env,
     )
 
-    fn_get_policy_state_value, fn_set_policy_state_value, fn_fetch_policy_table = policy_table_mgt(env)
+    policy_repo = policy_table_mgt(env)
 
     def fn_get_actions_given_state(state):
         if env.fn_is_goal_reached(state):
             return None
-        actions = fn_get_policy_state_value(state)
+        actions = policy_repo.fn_get_policy_state_value(state)
         return actions
 
     def fn_run_policy():
@@ -85,8 +85,8 @@ def planning_mgt(env, discount_factor= 0.9):
 
             for index in max_index:
                 result[index] = prob
-            fn_set_policy_state_value(statepart, result)
-        policy_table = fn_fetch_policy_table()
+            policy_repo.fn_set_policy_state_value(statepart, result)
+        policy_table = policy_repo.fn_fetch_policy_table()
         return policy_table
 
     def repeatEvalAndImprove(evalFunction):
