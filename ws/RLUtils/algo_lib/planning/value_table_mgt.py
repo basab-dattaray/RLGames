@@ -66,7 +66,7 @@ def value_table_mgt(env):
 
         return possible_actions
 
-    def fn_value_table_reached_target(state):
+    def fn_goal_reached(state):
         return True if state == [_goal_coordinates['x'], _goal_coordinates['y']] else False
 
-    return fn_set_value_table_item, fn_get_value_table_item, fn_set_value_table, fn_get_value_table, fn_value_table_possible_actions_given_state,fn_value_table_reached_target, fn_has_table_changed
+    return fn_set_value_table_item, fn_get_value_table_item, fn_set_value_table, fn_get_value_table, fn_value_table_possible_actions_given_state,fn_goal_reached, fn_has_table_changed

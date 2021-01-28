@@ -8,27 +8,25 @@ def planning_mgt(env, discount_factor= 0.9):
     _env_config = env.fn_get_config()
 
     fn_set_value_table_item, fn_get_value_table_item, fn_set_value_table, fn_get_value_table, \
-    _ ,fn_value_table_reached_target, fn_has_table_changed = value_table_mgt(
+    _ ,fn_goal_reached, fn_has_table_changed = value_table_mgt(
         env,
     )
 
     fn_get_policy_state_value, fn_set_policy_state_value, fn_fetch_policy_table = policy_table_mgt(env)
 
     def fn_get_actions_given_state(state):
-        if fn_value_table_reached_target(state):
+        if fn_goal_reached(state):
             return None
         actions = fn_get_policy_state_value(state)
         return actions
 
     def fn_run_policy():
 
-        for sites in env.fn_get_all_sites():
+        for site in env.fn_get_all_sites():
+            env.fn_update_current_site(site)
 
-            env.fn_update_current_site(sites)
-
-
-            if fn_value_table_reached_target(sites):
-                fn_set_value_table_item(sites, 0.0)
+            if fn_goal_reached(site):
+                fn_set_value_table_item(site, 0.0)
                 continue
 
             value = 0.0
@@ -36,15 +34,15 @@ def planning_mgt(env, discount_factor= 0.9):
                 next_state, reward, _, _= env.fn_take_step(action, planning_mode = True)
 
                 next_value = fn_get_value_table_item(next_state)
-                value = value + fn_get_actions_given_state(sites)[action] * (reward + discount_factor * next_value)
+                value = value + fn_get_actions_given_state(site)[action] * (reward + discount_factor * next_value)
 
-            fn_set_value_table_item(sites, value)
+            fn_set_value_table_item(site, value)
 
     def fn_calc_values():
 
         for site in env.fn_get_all_sites():
 
-            if fn_value_table_reached_target(site):
+            if fn_goal_reached(site):
                 fn_set_value_table_item(site, 0)
                 continue
 
@@ -61,7 +59,7 @@ def planning_mgt(env, discount_factor= 0.9):
 
     def fn_run_policy_improvement():
         for site in env.fn_get_all_sites():
-            if fn_value_table_reached_target(site):
+            if fn_goal_reached(site):
                 continue
 
             env.fn_update_current_site(site)
