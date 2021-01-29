@@ -37,6 +37,17 @@ def display_mgt(env):
     _right_margin = 5
     _bottom_margin = 80
 
+    def fn_create_value_repo():
+        return [[0.0] * _width for _ in range(_width)]
+
+    def fn_compare_value_repos(repo1, repo2):
+        for col in range(0, _height):
+            for row in range(0, _width):
+                if repo1[col][row] != repo2[col][row]:
+                    repo1[col][row] = repo2[col][row]
+                    return True
+        return False
+
     def _fn_get_app_title(env):
         strategy = None
         if env.fn_get_strategy is not None:
@@ -252,6 +263,7 @@ def display_mgt(env):
     def fn_is_goal_reached(state):
         return True if state == [_board_goal['x'], _board_goal['y']] else False
 
+
     app_title = _fn_get_app_title(env)
     _tk.title(app_title)
 
@@ -267,6 +279,8 @@ def display_mgt(env):
         'fn_run_next_move',
         'fn_update_ui',
         'fn_is_goal_reached',
+        'fn_create_value_repo',
+        'fn_compare_value_repos',
     ])
 
     ret_obj.fn_init = fn_init
@@ -280,6 +294,8 @@ def display_mgt(env):
     ret_obj.fn_run_next_move = fn_run_next_move
     ret_obj.fn_update_ui = fn_update_ui
     ret_obj.fn_is_goal_reached = fn_is_goal_reached
+    ret_obj.fn_create_value_repo = fn_create_value_repo
+    ret_obj.fn_compare_value_repos = fn_compare_value_repos
 
     return ret_obj
 

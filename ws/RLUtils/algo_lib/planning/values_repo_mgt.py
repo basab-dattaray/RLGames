@@ -8,11 +8,24 @@ def values_repo_mgt(env):
     # _goal_coordinates = None
     _width = env_config.DISPLAY['WIDTH']
     _height = env_config.DISPLAY['HEIGHT']
-    _board_goal =  env_config.DISPLAY['BOARD_GOAL']
+    # _board_goal =  env_config.DISPLAY['BOARD_GOAL']
 
-    _goal_coordinates = {'x': _board_goal['x'], 'y': _board_goal['y']}
-    _value_table = [[0.0] * _width for _ in range(_width)]
+    # _goal_coordinates = {'x': _board_goal['x'], 'y': _board_goal['y']}
+
     _prev_value_table = None
+
+    def fn_create_value_repo():
+        return [[0.0] * _width for _ in range(_width)]
+
+    def fn_compare_value_repos(repo1, repo2):
+        for col in range(0, _height):
+            for row in range(0, _width):
+                if repo1[col][row] != repo2[col][row]:
+                    repo1[col][row] = repo2[col][row]
+                    return True
+        return False
+
+    _value_table = fn_create_value_repo()
 
     def fn_set_state_value(state, value):
         nonlocal _value_table
@@ -35,14 +48,10 @@ def values_repo_mgt(env):
         if _prev_value_table is None:
             _prev_value_table = copy.deepcopy(_value_table)
             return True
-        # if value_table == None:
-        #     return True
-        for col in range(0, _height):
-            for row in range(0, _width):
-                if _prev_value_table[col][row] != _value_table[col][row]:
-                    _prev_value_table[col][row] = _value_table[col][row]
-                    return True
-        return False
+
+        return fn_compare_value_repos(_prev_value_table, _value_table)
+
+
 
     def fn_get_state_actions(state):
 
