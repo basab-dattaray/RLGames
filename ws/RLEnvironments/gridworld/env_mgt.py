@@ -2,9 +2,13 @@ from collections import namedtuple
 
 from ws.RLEnvironments.gridworld import CONFIG
 from ws.RLEnvironments.gridworld.grid_board.display_mgt import display_mgt
+from ws.RLUtils.algo_lib.planning.policy_repo_mgt import policy_table_mgt
+
+from ws.RLUtils.algo_lib.planning.values_repo_mgt import values_repo_mgt
 
 
 def env_mgt(name, strategy= None):
+    ACTION_SIZE = 4
     config = CONFIG.fn_get_config()
 
     _board_blockers = config.DISPLAY['BOARD_BLOCKERS']
@@ -17,6 +21,8 @@ def env_mgt(name, strategy= None):
     _all_states = None
     _current_state = None
     display_mgr = display_mgt(strategy)
+    values_repo_mgr = values_repo_mgt(display_mgr)
+    policy_repo_mgr = policy_table_mgt(ACTION_SIZE, _width, _height)
 
     def fn_reset_env():
         nonlocal  _reward,  _all_states, _current_state
@@ -76,7 +82,7 @@ def env_mgt(name, strategy= None):
         return [_width, _height]
 
     def fn_get_action_size():
-        return 4
+        return ACTION_SIZE
 
     def fn_close():
         pass
@@ -119,9 +125,14 @@ def env_mgt(name, strategy= None):
         'fn_get_config',
         'fn_get_strategy',
         'fn_is_goal_reached',
+        'values_repo_mgr',
+        'policy_repo_mgr',
     ])
 
     ret_obj.display_mgr = display_mgr
+    ret_obj.values_repo_mgr = values_repo_mgr
+    ret_obj.policy_repo_mgr = policy_repo_mgr
+
     ret_obj.fn_reset_env = fn_reset_env
     ret_obj.fn_take_step = fn_take_step
     ret_obj.fn_render = fn_render

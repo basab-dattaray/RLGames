@@ -1,10 +1,11 @@
 from collections import namedtuple
 
 
-def policy_table_mgt(env):
-    config = env.fn_get_config()
-    init_policy = [1/ env.fn_get_action_size()] * env.fn_get_action_size() # [.25, .25, .25, .25]
-    _policy_table = [init_policy * config.DISPLAY['WIDTH'] for _ in range(config.DISPLAY['HEIGHT'])]
+def policy_table_mgt(action_size, width, height):
+
+    init_policy = [1/ action_size] * action_size # [.25, .25, .25, .25]
+    _policy_table = [[init_policy] * width for _ in range(height)]
+    pass
 
     def fn_get_policy_state_value(state):
         return _policy_table[state[1]][state[0]]
