@@ -19,14 +19,14 @@ def impl_mgt(app_info):
 
     def fn_move_per_policy():
         start_state = _display_mgr.fn_get_start_state()
-        state = _display_mgr.fn_run_next_move(start_state, fnNextGetAction)
+        state = _display_mgr.fn_run_next_move(app_info.ENV, start_state, fnNextGetAction)
 
         while state is not None:
             _display_mgr.fn_move_cursor(start_state, state)
             if _display_mgr.fn_is_target_state_reached(state):
                 break
             start_state = state
-            state = _display_mgr.fn_run_next_move(start_state, fnNextGetAction)
+            state = _display_mgr.fn_run_next_move(app_info.ENV, start_state, fnNextGetAction)
         _display_mgr.fn_move_cursor(state)
 
     def fn_apply_policy_iteration():

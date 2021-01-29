@@ -16,8 +16,7 @@ COORD_RIGHT = (77, 42)  # right
 COORD_UP = (42, 5)  # up
 COORD_DOWN = (42, 77)  # down
 
-def display_mgt(env):
-
+def display_mgt(env_):
 
     _tk = tkinter.Tk()
     config = CONFIG.fn_get_config()
@@ -246,7 +245,7 @@ def display_mgt(env):
     def fn_get_start_state():
         return [0, 0]
 
-    def fn_run_next_move(state, fnNextGetAction):
+    def fn_run_next_move(env, state, fnNextGetAction):
         action = fnNextGetAction(state)
         if action < 0:
             return None
@@ -264,7 +263,7 @@ def display_mgt(env):
         return True if state == [_board_goal['x'], _board_goal['y']] else False
 
 
-    app_title = _fn_get_app_title(env)
+    app_title = 'xyz' # _fn_get_app_title(env_)
     _tk.title(app_title)
 
     ret_obj = namedtuple('_', [
