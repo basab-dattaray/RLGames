@@ -64,7 +64,7 @@ def startup_mgt(caller_filepath):
 
         env = None
         if env_mgt is not None:
-            env = env_mgt(app_info.ENV_NAME, app_info.STRATEGY, app_info)
+            env = env_mgt(app_info.ENV_NAME, app_info.STRATEGY)
             app_info.ACTION_DIMENSIONS = env.fn_get_action_size()
             app_info.STATE_DIMENSIONS = env.fn_get_state_size()
             app_info.ENV = env

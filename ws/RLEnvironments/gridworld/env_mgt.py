@@ -3,7 +3,7 @@ from collections import namedtuple
 from ws.RLEnvironments.gridworld import CONFIG
 
 
-def env_mgt(name, strategy= None, app_info= None):
+def env_mgt(name, strategy= None):
 
     config = CONFIG.fn_get_config()
 
