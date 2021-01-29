@@ -4,7 +4,6 @@ from ws.RLUtils.algo_lib.planning.values_repo_mgt import values_repo_mgt
 from ws.RLUtils.common.misc_functions import arg_max
 
 def montecarlo_trace_mgt(env, epsilon, discount_factor, learning_rate):
-    # config = env.fn_get_config()
 
     _states_repo = values_repo_mgt(
         env
