@@ -24,7 +24,7 @@ def montecarlo_trace_mgt(env, epsilon, discount_factor, learning_rate):
         if rn < epsilon:
             selected_action = np.random.choice(len(env.fn_get_allowed_moves()))
         else:
-            actions = _states_repo.fn_get_state_actions(state)
+            actions = env.display_mgr.fn_get_state_actions(state, env.fn_get_action_size(), _states_repo.fn_get_state_value)
             selected_action = arg_max(actions)
         return selected_action
 

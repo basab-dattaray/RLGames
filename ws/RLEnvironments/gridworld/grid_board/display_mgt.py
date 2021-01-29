@@ -16,6 +16,8 @@ COORD_RIGHT = (77, 42)  # right
 COORD_UP = (42, 5)  # up
 COORD_DOWN = (42, 77)  # down
 
+LOW_NUMBER = -999999
+
 def display_mgt(strategy):
 
     _tk = tkinter.Tk()
@@ -46,6 +48,30 @@ def display_mgt(strategy):
                     repo1[col][row] = repo2[col][row]
                     return True
         return False
+
+    def fn_get_state_actions(state, action_size, fn_get_state_value):
+
+        row, col = state
+        action_size = action_size
+        possible_actions = [LOW_NUMBER] * action_size
+
+        dir_up = [row, max(0, col -1)]
+        if col > 0:
+            possible_actions[0] = fn_get_state_value(dir_up)
+
+        dir_down = [row, min(_height - 1, col + 1) ]
+        if col < _height - 1:
+            possible_actions[1] = fn_get_state_value(dir_down)
+
+        dir_left = [max(0, row - 1), col]
+        if row > 0:
+            possible_actions[2] = fn_get_state_value(dir_left)
+
+        dir_right = [ min(_width - 1, row + 1) , col]
+        if row < _width - 1:
+            possible_actions[3] = fn_get_state_value(dir_right)
+
+        return possible_actions
 
     def _fn_get_app_title():
         strategy_parts = strategy.rsplit('.')
@@ -275,6 +301,7 @@ def display_mgt(strategy):
         'fn_is_goal_reached',
         'fn_create_value_repo',
         'fn_compare_value_repos',
+        'fn_get_state_actions',
     ])
 
     ret_obj.fn_init = fn_init
@@ -290,6 +317,7 @@ def display_mgt(strategy):
     ret_obj.fn_is_goal_reached = fn_is_goal_reached
     ret_obj.fn_create_value_repo = fn_create_value_repo
     ret_obj.fn_compare_value_repos = fn_compare_value_repos
+    ret_obj.fn_get_state_actions = fn_get_state_actions
 
     return ret_obj
 
