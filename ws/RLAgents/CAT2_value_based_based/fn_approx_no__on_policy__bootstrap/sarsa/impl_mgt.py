@@ -5,7 +5,7 @@ from ws.RLUtils.algo_lib.policy_based.qtable_mgt import qtable_mgt
 def impl_mgt(app_info):
     _env = app_info.ENV
 
-    display_mgr = display_mgt(app_info.ENV)
+    display_mgr = display_mgt()
 
     _epsilon = app_info.EPSILON
 

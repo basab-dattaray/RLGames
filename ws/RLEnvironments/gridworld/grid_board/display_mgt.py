@@ -16,7 +16,7 @@ COORD_RIGHT = (77, 42)  # right
 COORD_UP = (42, 5)  # up
 COORD_DOWN = (42, 77)  # down
 
-def display_mgt(env_):
+def display_mgt():
 
     _tk = tkinter.Tk()
     config = CONFIG.fn_get_config()

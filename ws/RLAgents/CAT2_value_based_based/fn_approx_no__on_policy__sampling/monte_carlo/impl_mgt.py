@@ -7,7 +7,7 @@ from ws.RLUtils.algo_lib.policy_based.montecarlo_trace_mgt import montecarlo_tra
 def impl_mgt(app_info):
     # _env = app_info.ENV
 
-    _fn_display_controller = display_mgt(app_info.ENV)
+    _fn_display_controller = display_mgt()
     fnClearTrace, fnGetEpsilonGreedyAction, fnTraceInteraction, fnUpdateValueTableFromTrace = montecarlo_trace_mgt(
         app_info.ENV,
         app_info.EPSILON,
