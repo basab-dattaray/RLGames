@@ -6,7 +6,7 @@ from ws.RLUtils.common.misc_functions import arg_max
 def montecarlo_trace_mgt(env, epsilon, discount_factor, learning_rate):
     # config = env.fn_get_config()
 
-    _stateparts_repo = values_repo_mgt(
+    _states_repo = values_repo_mgt(
         env
     )
 
@@ -24,7 +24,7 @@ def montecarlo_trace_mgt(env, epsilon, discount_factor, learning_rate):
         if rn < epsilon:
             selected_action = np.random.choice(len(env.fn_get_allowed_moves()))
         else:
-            actions = _stateparts_repo.fn_get_statepart_actions(state)
+            actions = _states_repo.fn_get_state_actions(state)
             selected_action = arg_max(actions)
         return selected_action
 
@@ -41,11 +41,11 @@ def montecarlo_trace_mgt(env, epsilon, discount_factor, learning_rate):
                 visit_state.append(state)
                 reward = trace[1]
                 G_t = discount_factor * (reward + G_t)
-                value = _stateparts_repo.fn_get_statepart_value(state)
+                value = _states_repo.fn_get_state_value(state)
                 new_val = (value + learning_rate * (G_t - value))
-                _stateparts_repo.fn_set_statepart_value(state, new_val)
+                _states_repo.fn_set_state_value(state, new_val)
                 continue
-        val_table = _stateparts_repo.fn_get_all_statepart_values()
+        val_table = _states_repo.fn_get_all_state_values()
         return val_table
 
     return fnClearTrace, fnGetEpsilonGreedyAction, fnTraceInteraction, fnUpdateValueTableFromTrace

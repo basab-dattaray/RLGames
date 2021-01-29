@@ -14,11 +14,11 @@ def env_mgt(name, strategy= None, app_info= None):
 
     _reward = None
 
-    _all_stateparts = None
-    _current_statepart = None
+    _all_states = None
+    _current_state = None
 
     def fn_reset_env():
-        nonlocal  _reward,  _all_stateparts, _current_statepart
+        nonlocal  _reward,  _all_states, _current_state
 
         _reward = [[0] * _width for _ in range(_height)]
 
@@ -26,45 +26,45 @@ def env_mgt(name, strategy= None, app_info= None):
             _reward[blocker['y']][blocker['x']] = blocker['reward']  # for square
 
         _reward[_board_goal['y']][_board_goal['x']] = _board_goal['reward']  # for triangle
-        _all_stateparts = []
+        _all_states = []
 
         for x in range(_width):
             for y in range(_height):
                 state = [x, y]
-                _all_stateparts.append(state)
+                _all_states.append(state)
 
-        _current_statepart = [0, 0]
-        return _current_statepart
+        _current_state = [0, 0]
+        return _current_state
 
     def _fn_env_step(action):
-        nonlocal _current_statepart
+        nonlocal _current_state
         one = 1
-        next_state_x = _current_statepart[0]
-        next_state_y = _current_statepart[1]
+        next_state_x = _current_state[0]
+        next_state_y = _current_state[1]
 
         if action == 0:  # up
-            if _current_statepart[1] >= one:
+            if _current_state[1] >= one:
                 next_state_y -= one
         elif action == 1:  # down
-            if _current_statepart[1] < (_height - 1) * one:
+            if _current_state[1] < (_height - 1) * one:
                 next_state_y += one
         elif action == 2:  # left
-            if _current_statepart[0] >= one:
+            if _current_state[0] >= one:
                 next_state_x -= one
         elif action == 3:  # right
-            if _current_statepart[0] < (_width - 1) * one:
+            if _current_state[0] < (_width - 1) * one:
                 next_state_x += one
 
         return next_state_x, next_state_y
 
     def fn_take_step(action, planning_mode=False):
-        nonlocal  _current_statepart
+        nonlocal  _current_state
 
         next_state = _fn_env_step(action)
         reward = _reward[next_state[1]][next_state[0]]
 
         if not planning_mode:
-            _current_statepart = next_state
+            _current_state = next_state
 
         return next_state, reward, None, None
 
@@ -80,12 +80,12 @@ def env_mgt(name, strategy= None, app_info= None):
     def fn_close():
         pass
 
-    def fn_set_active_statepart(current_statepart):
-        nonlocal _current_statepart
-        _current_statepart = current_statepart
+    def fn_set_active_state(current_state):
+        nonlocal _current_state
+        _current_state = current_state
 
-    def fn_get_all_stateparts():
-        return _all_stateparts
+    def fn_get_all_states():
+        return _all_states
 
     def fn_value_table_possible_actions():
         return [0, 1, 2, 3]
@@ -96,8 +96,8 @@ def env_mgt(name, strategy= None, app_info= None):
     def fn_get_strategy():
         return strategy
 
-    def fn_is_goal_reached(statepart):
-        return True if statepart == [_board_goal['x'], _board_goal['y']] else False
+    def fn_is_goal_reached(state):
+        return True if state == [_board_goal['x'], _board_goal['y']] else False
 
     fn_get_config = CONFIG.fn_get_config
 
@@ -110,8 +110,8 @@ def env_mgt(name, strategy= None, app_info= None):
         'fn_get_action_size',
         'fn_close',
 
-        'fn_set_active_statepart',
-        'fn_get_all_stateparts',
+        'fn_set_active_state',
+        'fn_get_all_states',
         'fn_value_table_possible_actions',
         'fn_get_allowed_moves',
         'fn_get_config',
@@ -127,8 +127,8 @@ def env_mgt(name, strategy= None, app_info= None):
     ret_obj.fn_get_action_size = fn_get_action_size
     ret_obj.fn_close = fn_close
 
-    ret_obj.fn_set_active_statepart = fn_set_active_statepart
-    ret_obj.fn_get_all_stateparts = fn_get_all_stateparts
+    ret_obj.fn_set_active_state = fn_set_active_state
+    ret_obj.fn_get_all_states = fn_get_all_states
     ret_obj.fn_value_table_possible_actions = fn_value_table_possible_actions
     ret_obj.fn_get_allowed_moves = fn_get_allowed_moves
     ret_obj.fn_get_config = fn_get_config
