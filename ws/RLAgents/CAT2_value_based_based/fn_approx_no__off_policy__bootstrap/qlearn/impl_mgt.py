@@ -4,7 +4,7 @@ from ws.RLUtils.algo_lib.policy_based.qtable_mgt import qtable_mgt
 
 def impl_mgt(app_info):
     _env = app_info.ENV
-    _fn_display_controller = display_mgt()
+    _fn_display_controller = display_mgt(app_info.STRATEGY)
 
     fn_get_qval, fn_set_qval, fn_get_q_actions, fn_get_max_q_actions = qtable_mgt()
 

@@ -16,7 +16,7 @@ COORD_RIGHT = (77, 42)  # right
 COORD_UP = (42, 5)  # up
 COORD_DOWN = (42, 77)  # down
 
-def display_mgt():
+def display_mgt(strategy):
 
     _tk = tkinter.Tk()
     config = CONFIG.fn_get_config()
@@ -47,10 +47,7 @@ def display_mgt():
                     return True
         return False
 
-    def _fn_get_app_title(env):
-        strategy = None
-        if env.fn_get_strategy is not None:
-            strategy = env.fn_get_strategy()
+    def _fn_get_app_title():
         strategy_parts = strategy.rsplit('.')
         app_type = strategy_parts[len(strategy_parts) - 1]
         app_title = app_type.replace('_', ' ')
@@ -263,7 +260,7 @@ def display_mgt():
         return True if state == [_board_goal['x'], _board_goal['y']] else False
 
 
-    app_title = 'xyz' # _fn_get_app_title(env_)
+    app_title = _fn_get_app_title()
     _tk.title(app_title)
 
     ret_obj = namedtuple('_', [

@@ -37,7 +37,7 @@ def env_mgt(name, strategy= None):
 
     def _fn_init():
         nonlocal _display_mgr
-        # _display_mgr = display_mgt(ret_obj)
+        # _display_mgr = display_mgt(app_info.STRATEGY)
 
     def fn_reset_env():
         nonlocal  _reward,  _all_states, _current_state
