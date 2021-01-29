@@ -73,7 +73,7 @@ def startup_mgt(caller_filepath):
     def _fn_setup_paths_in_app_info(app_info):
         # app_info.ROOT_DOT_PATH = ROOT_DOT_PATH
         app_info.AGENTS_DOT_PATH_ = ROOT_DOT_PATH + '.RLAgents'
-        app_info.AGENTS_CONFIG_DOT_PATH = ROOT_DOT_PATH + '.RLAgents' + '.agent_configs'
+        app_info.AGENTS_CONFIG_DOT_PATH = ROOT_DOT_PATH + '.RLAgents' + '._CommonAgentConfigurations'
 
         app_info.AGENT_FOLDER_PATH = app_info.AGENTS_DOT_PATH_ + '.{}'.format(app_info.STRATEGY)
 

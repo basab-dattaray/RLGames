@@ -1,9 +1,9 @@
 import pytest
 #
-# from ws.RLAgents.self_play.alpha_zero.misc.agent_mgt import agent_mgt, _fn_init_arg_with_default_val
-# from ws.RLAgents.self_play.alpha_zero.search.mcts_adapter import mcts_adapter
-# from ws.RLAgents.self_play.alpha_zero.search.non_recursive.mcts_mgt import mcts_mgt
-# from ws.RLAgents.self_play.alpha_zero.search.non_recursive.pytests.app_info import app_info
+# from ws.RLAgents.self_play.DeepLearning_SelfPlay.misc.agent_mgt import agent_mgt, _fn_init_arg_with_default_val
+# from ws.RLAgents.self_play.DeepLearning_SelfPlay.search.mcts_adapter import mcts_adapter
+# from ws.RLAgents.self_play.DeepLearning_SelfPlay.search.non_recursive.mcts_mgt import mcts_mgt
+# from ws.RLAgents.self_play.DeepLearning_SelfPlay.search.non_recursive.pytests.app_info import app_info
 # from ..node import node
 # from ...mcts_adapter import mcts_adapter
 # from ws.RLEnvironments.self_play_games.othello.game_mgt import game_mgt

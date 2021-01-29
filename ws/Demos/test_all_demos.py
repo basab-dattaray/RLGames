@@ -13,10 +13,10 @@ def _fn_run_file(rel_dir):
         fn_init()
 
 def test_fn_get_state():
-    _fn_run_file('Demo001_policy_iterator')
-    _fn_run_file('Demo002_value_iterator')
-    _fn_run_file('Demo003_monte_carlo')
-    _fn_run_file('Demo004_sarsa')
-    _fn_run_file('Demo005_qlearn')
+    _fn_run_file('Demo001_PolicyIteration')
+    _fn_run_file('Demo002_ValueIterator')
+    _fn_run_file('Demo003_MonteCarlo')
+    _fn_run_file('Demo004_Sarsa')
+    _fn_run_file('Demo005_QLearning')
 
 
