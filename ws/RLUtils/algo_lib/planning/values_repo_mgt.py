@@ -5,27 +5,15 @@ from collections import namedtuple
 def values_repo_mgt(env):
     LOW_NUMBER = -999999
     env_config = env.fn_get_config()
-    # _goal_coordinates = None
+
     _width = env_config.DISPLAY['WIDTH']
     _height = env_config.DISPLAY['HEIGHT']
-    # _board_goal =  env_config.DISPLAY['BOARD_GOAL']
 
-    # _goal_coordinates = {'x': _board_goal['x'], 'y': _board_goal['y']}
 
     _prev_value_table = None
 
-    def fn_create_value_repo():
-        return [[0.0] * _width for _ in range(_width)]
 
-    def fn_compare_value_repos(repo1, repo2):
-        for col in range(0, _height):
-            for row in range(0, _width):
-                if repo1[col][row] != repo2[col][row]:
-                    repo1[col][row] = repo2[col][row]
-                    return True
-        return False
-
-    _value_table = fn_create_value_repo()
+    _value_table = env.display_mgr.fn_create_value_repo()
 
     def fn_set_state_value(state, value):
         nonlocal _value_table
@@ -49,7 +37,7 @@ def values_repo_mgt(env):
             _prev_value_table = copy.deepcopy(_value_table)
             return True
 
-        return fn_compare_value_repos(_prev_value_table, _value_table)
+        return env.display_mgr.fn_compare_value_repos(_prev_value_table, _value_table)
 
 
 
@@ -94,6 +82,3 @@ def values_repo_mgt(env):
     ret_obj.fn_has_any_state_changed = fn_has_state_changed
 
     return ret_obj
-
-
-    # return fn_set_state_value, fn_get_state_value, fn_set_all_state_values, fn_get_all_state_values, fn_get_state_actions, fn_has_any_state_changed
