@@ -69,8 +69,6 @@ def display_mgt(strategy):
 
     _fn_filter_canvas_text = canvas_text_mgt(_canvas)
 
-
-
     def _fn_calculate_step(state, newState):
         stepX, stepY = newState[0] - state[0], newState[1] - state[1]
         return stepX, stepY

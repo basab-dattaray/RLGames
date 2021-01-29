@@ -16,28 +16,7 @@ def env_mgt(name, strategy= None):
 
     _all_states = None
     _current_state = None
-    _display_mgr = None
-
-    ret_obj = namedtuple('_', [
-        'fn_reset_env',
-        'fn_take_step',
-        'fn_render',
-        'fn_get_state_size',
-        'fn_get_action_size',
-        'fn_close',
-
-        'fn_set_active_state',
-        'fn_get_all_states',
-        'fn_value_table_possible_actions',
-        'fn_get_allowed_moves',
-        'fn_get_config',
-        'fn_get_strategy',
-        'fn_is_goal_reached',
-    ])
-
-    def _fn_init():
-        nonlocal _display_mgr
-        # _display_mgr = display_mgt(app_info.STRATEGY)
+    display_mgr = display_mgt(strategy)
 
     def fn_reset_env():
         nonlocal  _reward,  _all_states, _current_state
@@ -123,12 +102,26 @@ def env_mgt(name, strategy= None):
 
     fn_get_config = CONFIG.fn_get_config
 
-    _fn_init()
-
     fn_reset_env()
+    ret_obj = namedtuple('_', [
+        'display_mgr',
+        'fn_reset_env',
+        'fn_take_step',
+        'fn_render',
+        'fn_get_state_size',
+        'fn_get_action_size',
+        'fn_close',
 
+        'fn_set_active_state',
+        'fn_get_all_states',
+        'fn_value_table_possible_actions',
+        'fn_get_allowed_moves',
+        'fn_get_config',
+        'fn_get_strategy',
+        'fn_is_goal_reached',
+    ])
 
-
+    ret_obj.display_mgr = display_mgr
     ret_obj.fn_reset_env = fn_reset_env
     ret_obj.fn_take_step = fn_take_step
     ret_obj.fn_render = fn_render

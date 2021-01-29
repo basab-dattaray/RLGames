@@ -3,11 +3,10 @@ import numpy as np
 from ws.RLUtils.algo_lib.planning.planning_mgt import planning_mgt
 from ws.RLEnvironments.gridworld.grid_board.display_mgt import display_mgt
 
-
 def impl_mgt(app_info):
 
     _planning_mgr = planning_mgt(app_info.ENV, app_info.DISCOUNT_FACTOR)
-    _display_mgr = display_mgt(app_info.STRATEGY)
+    _display_mgr = app_info.ENV.display_mgr # display_mgt(app_info.STRATEGY)
 
     def fn_bind_fn_display_actions(acton_dictionary):
         _display_mgr.fn_init(acton_dictionary)
