@@ -3,8 +3,8 @@ from ws.RLUtils.algo_lib.policy_based.qtable_mgt import qtable_mgt
 
 
 def impl_mgt(app_info):
-    _env = app_info.ENV
-    _fn_display_controller = display_mgt(app_info.STRATEGY)
+    # _env = app_info.ENV
+    _display_mgr = app_info.ENV.display_mgr
 
     fn_get_qval, fn_set_qval, fn_get_q_actions, fn_get_max_q_actions = qtable_mgt()
 
@@ -16,7 +16,7 @@ def impl_mgt(app_info):
         fn_set_qval(state, action, new_val)
 
     def fn_bind_fn_display_actions(acton_dictionary):
-        _fn_display_controller.fn_init(acton_dictionary)
+        _display_mgr.fn_init(acton_dictionary)
 
     def fnQLearn():
         episode_num = 0
@@ -26,30 +26,30 @@ def impl_mgt(app_info):
             print('episode number: {}   status = {}'.format(episode_num, episode_status))
 
     def runEpisode():
-        state = _env.fn_reset_env()
-        # fn_update_ui(_fn_display_controller.fn_show_qvalue, state)
-        _fn_display_controller.fn_update_ui(state, fn_get_q_actions(state))
+        state = app_info.ENV.fn_reset_env()
+        # fn_update_ui(display_mgr.fn_show_qvalue, state)
+        _display_mgr.fn_update_ui(state, fn_get_q_actions(state))
 
         continue_running = True
         while continue_running:
 
             action = fn_get_max_q_actions(state, app_info.EPSILON)
 
-            new_state, reward, _, _ = _env.fn_take_step(action)
+            new_state, reward, _, _ = app_info.ENV.fn_take_step(action)
 
             fnUpdateKnowledge(state, action, reward, new_state)
             continue_running = reward == 0
 
-            # fn_update_ui(_fn_display_controller.fn_show_qvalue, state)
-            _fn_display_controller.fn_update_ui(state, fn_get_q_actions(state))
+            # fn_update_ui(display_mgr.fn_show_qvalue, state)
+            _display_mgr.fn_update_ui(state, fn_get_q_actions(state))
 
-            if _fn_display_controller.fn_move_cursor is not None:
-                _fn_display_controller.fn_move_cursor(state, new_state)
+            if _display_mgr.fn_move_cursor is not None:
+                _display_mgr.fn_move_cursor(state, new_state)
 
             state = new_state
 
-        if _fn_display_controller.fn_move_cursor is not None:
-            _fn_display_controller.fn_move_cursor(state)
+        if _display_mgr.fn_move_cursor is not None:
+            _display_mgr.fn_move_cursor(state)
 
         return continue_running
 

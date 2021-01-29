@@ -5,9 +5,7 @@ from ws.RLUtils.algo_lib.policy_based.montecarlo_trace_mgt import montecarlo_tra
 
 
 def impl_mgt(app_info):
-    # _env = app_info.ENV
-
-    _fn_display_controller = display_mgt(app_info.STRATEGY)
+    _display_mgr = app_info.ENV.display_mgr
     fnClearTrace, fnGetEpsilonGreedyAction, fnTraceInteraction, fnUpdateValueTableFromTrace = montecarlo_trace_mgt(
         app_info.ENV,
         app_info.EPSILON,
@@ -16,14 +14,14 @@ def impl_mgt(app_info):
     )
 
     def fn_bind_fn_display_actions(acton_dictionary):
-        _fn_display_controller.fn_init(acton_dictionary)
+        _display_mgr.fn_init(acton_dictionary)
 
     def fnRunMonteCarlo():
         fnClearTrace()
         for episode in range(app_info.NUM_EPISODES):
-            value_table, episode_status = runEpisode(_fn_display_controller.fn_move_cursor)
-            if _fn_display_controller.fn_show_state_values is not None:
-                _fn_display_controller.fn_show_state_values(value_table)
+            value_table, episode_status = runEpisode(_display_mgr.fn_move_cursor)
+            if _display_mgr.fn_show_state_values is not None:
+                _display_mgr.fn_show_state_values(value_table)
 
     def runEpisode(fn_move_cursor):
         new_state = None
