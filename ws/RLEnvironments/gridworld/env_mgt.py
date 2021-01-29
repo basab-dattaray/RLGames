@@ -2,9 +2,9 @@ from collections import namedtuple
 
 from ws.RLEnvironments.gridworld import CONFIG
 from ws.RLEnvironments.gridworld.grid_board.display_mgt import display_mgt
-from ws.RLUtils.algo_lib.planning.policy_repo_mgt import policy_table_mgt
+from ws.RLEnvironments.gridworld.grid_board.policy_repo_mgt import policy_table_mgt
 
-from ws.RLUtils.algo_lib.planning.values_repo_mgt import values_repo_mgt
+from ws.RLEnvironments.gridworld.grid_board.values_repo_mgt import values_repo_mgt
 
 
 def env_mgt(name, strategy= None):
