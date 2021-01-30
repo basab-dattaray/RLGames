@@ -132,8 +132,8 @@ def display_mgt(strategy):
                                  text=button_name,
                                  command=button_action)
         bound_button.configure(width=10, height=2)
-        canvas.create_window(_width * _unit * button_x_offset, _height * _unit + 25,
-                             window=bound_button)
+        canvas.create_window(_width * _unit * button_x_offset, _height * _unit *  + 25,
+                             window=bound_button, pady=10)
 
     def _fn_build_canvas(acton_dictionary):
         nonlocal _cursor
