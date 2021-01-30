@@ -4,7 +4,7 @@ import torch
 
 
 def model_mgt(_model_actor_critic):
-    MODEL_NAME = 'Model_ActorCritic.pth'
+    MODEL_NAME = 'ModelActorCritic.tar'
     def fn_load_from_neural_net(model_folder_path= None, model_file_name= None):
 
         if not os.path.exists(model_folder_path):
