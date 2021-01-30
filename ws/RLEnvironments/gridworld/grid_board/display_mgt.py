@@ -132,7 +132,7 @@ def display_mgt(strategy):
                                  text=button_name,
                                  command=button_action)
         bound_button.configure(width=10, height=2)
-        canvas.create_window(_width * _unit * button_x_offset, _height * _unit + 23,
+        canvas.create_window(_width * _unit * button_x_offset, _height * _unit + 25,
                              window=bound_button)
 
     def _fn_build_canvas(acton_dictionary):
@@ -208,7 +208,7 @@ def display_mgt(strategy):
 
     def fn_init(acton_dictionary):
         _tk.geometry('{0}x{1}'.format(_width * _unit + _right_margin,
-                                      _height * _unit + _bottom_margin))
+                                      _height * _unit + _bottom_margin + 40))
         _tk.texts = []
         _tk.arrows = []
 
