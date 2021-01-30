@@ -9,7 +9,7 @@ from ws.RLAgents.Category4_SelfPlay.DeepLearning_SelfPlay.train.sample_generator
 from ws.RLAgents.Category4_SelfPlay.DeepLearning_SelfPlay.train.training_helper import fn_log_iteration_results
 from ws.RLUtils.monitoring.tracing.tracer import tracer
 def training_mgt(nn_mgr_N, app_info):
-    _TMP_MODEL_FILENAME = '_Tmp'
+    _TMP_MODEL_FILENAME = '_tmp'
     nn_mgr_P = copy.deepcopy(nn_mgr_N)
 
     def _fn_try_to_load_model():

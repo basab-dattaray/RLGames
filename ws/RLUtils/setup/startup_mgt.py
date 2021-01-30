@@ -4,7 +4,8 @@ from datetime import datetime
 
 from ws.RLUtils.common.DotDict import DotDict
 from ws.RLUtils.common.attr_mgt import attr_mgt
-from ws.RLUtils.common.folder_paths import fn_separate_folderpath_and_filename, fn_get_rel_dot_folder_path
+from ws.RLUtils.common.folder_paths import fn_get_rel_dot_folder_path
+
 from ws.RLUtils.common.module_loader import load_function
 from ws.RLUtils.monitoring.tracing.call_trace_mgt import call_trace_mgt
 from ws.RLUtils.monitoring.tracing.log_mgt import log_mgt
@@ -15,7 +16,7 @@ from ws.RLUtils.setup.interrupt_mgt import interrupt_mgt
 
 
 
-def startup_mgt(caller_filepath):
+def startup_mgt(demo_filepath, agent_filepath):
     ROOT_DOT_PATH = 'ws'
     # ENV_CONFIG_PATH = 'configs'
     ARGS_PY = 'ARGS.py'
@@ -28,11 +29,13 @@ def startup_mgt(caller_filepath):
         app_info[name] = val
         return app_info
 
-    def fn_bootstrap(file_path):
-        demo_folder_path, _ = fn_separate_folderpath_and_filename(file_path)
-        demo_dot_path = fn_get_rel_dot_folder_path(demo_folder_path, '/ws/')
+    def fn_bootstrap():
+        demo_folder_path= os.path.dirname(demo_filepath)
+        # base_dot_path = fn_get_base_dot_path(demo_folder_path)
+        base_dot_path, demo_dot_path = fn_get_rel_dot_folder_path(current_path= demo_folder_path, base_path=agent_filepath)
         fn_get_args = load_function(function_name="fn_get_args", module_name="ARGS", module_dot_path=demo_dot_path)
         app_info = fn_get_args()
+        app_info.BASE_DOT_PATH_ = base_dot_path
         app_info = _fn_init_arg_with_default_val(app_info, 'DEMO_FOLDER_PATH_', demo_folder_path)
         app_info = _fn_init_arg_with_default_val(app_info, 'DEMO_DOT_PATH_', demo_dot_path)
         app_info = _fn_init_arg_with_default_val(app_info, 'RESULTS_REL_PATH', 'Results/')
@@ -40,18 +43,18 @@ def startup_mgt(caller_filepath):
         app_info = _fn_init_arg_with_default_val(app_info, 'RESULTS_PATH_', results_folder_path)
         return app_info
 
-    def _fn_setup_logging(app_info):
+    def _fn_setup_logging():
         debug_mode = fn_get_key_as_bool('DEBUG_MODE')
         app_info.fn_log, app_info.fn_log_reset = log_mgt(log_dir=app_info.RESULTS_PATH_, show_debug=debug_mode)
         app_info.trace_mgr = call_trace_mgt(app_info.fn_log)
         pass
 
-    def _fn_setup_env(app_info, verbose=False):
+    def _fn_setup_env():
         subpackage_name = None
         if 'ENV_NAME' not in app_info.keys():
-            if verbose:
                 print("ENV_NAME is missing")
-            pass
+                exit()
+
         else:
             repo_name_parts = app_info.ENV_NAME.lower().rsplit('-', 1)
             app_info.ENV_REPO = repo_name_parts[0]
@@ -70,7 +73,7 @@ def startup_mgt(caller_filepath):
             app_info.ENV = env
         return env
 
-    def _fn_setup_paths_in_app_info(app_info):
+    def _fn_setup_paths_in_app_info():
         # app_info.ROOT_DOT_PATH = ROOT_DOT_PATH
         app_info.AGENTS_DOT_PATH_ = ROOT_DOT_PATH + '.RLAgents'
         app_info.AGENTS_CONFIG_DOT_PATH = ROOT_DOT_PATH + '.RLAgents' + '._CommonAgentConfigurations'
@@ -92,16 +95,15 @@ def startup_mgt(caller_filepath):
         args_py_path = os.path.join(app_info.DEMO_FOLDER_PATH_, ARGS_PY)
         shutil.copy(args_py_path, app_info.RESULTS_PATH_)
 
-    def _fn_setup_gpu(app_info, verbose=False):
+    def _fn_setup_gpu():
         app_info.GPU_DEVICE = get_device(app_info)
-        if verbose:
-            print('DEVICE: {}'.format(app_info.GPU_DEVICE))
+
+        print('DEVICE: {}'.format(app_info.GPU_DEVICE))
         pass
 
-    def _fn_load_agent_config(app_info):
+    def _fn_load_agent_config():
         if 'AGENT_CONFIG' not in app_info.keys():
             return
-
 
         agent_config_path = app_info.AGENTS_CONFIG_DOT_PATH + '.' + app_info.AGENT_CONFIG
         fn_add_configs = load_function(function_name="fn_add_configs", module_name="AGENT_CONFIG",
@@ -110,14 +112,14 @@ def startup_mgt(caller_filepath):
         fn_add_configs(app_info)
         pass
 
-    app_info = fn_bootstrap(caller_filepath)
+    app_info = fn_bootstrap()
     fn_get_key_as_bool, fn_get_key_as_int, fn_get_key_as_str = attr_mgt(app_info)
 
-    _fn_setup_paths_in_app_info(app_info)
-    _fn_setup_logging(app_info)
-    _fn_setup_gpu(app_info)
-    _fn_setup_env(app_info)
-    _fn_load_agent_config(app_info)
+    _fn_setup_paths_in_app_info()
+    _fn_setup_logging()
+    _fn_setup_gpu()
+    _fn_setup_env()
+    _fn_load_agent_config()
 
     if fn_get_key_as_bool('AUTO_ARCHIVE'):
         app_info.fn_archive = archive_mgt(

@@ -3,8 +3,8 @@ from collections import namedtuple
 
 import torch
 
-MODEL_ACTOR_NAME = 'Model_Actor.pth'
-MODEL_CRITIC_NAME = 'Model_Critic.pth'
+MODEL_ACTOR_NAME = 'ModelActor.tar'
+MODEL_CRITIC_NAME = 'ModelCritic.tar'
 def model_mgt(model_actor, model_critic):
 
     def fn_load_from_neural_net(model_folder_path= None, model_file_name= None):
