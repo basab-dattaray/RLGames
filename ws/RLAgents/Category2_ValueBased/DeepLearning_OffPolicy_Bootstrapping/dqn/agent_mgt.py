@@ -9,7 +9,7 @@ from .impl_mgt import impl_mgt
 
 def agent_mgt(caller_file):
     # app_info, env = preparation_mgt(caller_file)
-    app_info = startup_mgt(caller_file)
+    app_info = startup_mgt(caller_file, __file__)
     env = app_info.ENV
     _action_size = env.fn_get_action_size()
     _state_size = env.fn_get_state_size()

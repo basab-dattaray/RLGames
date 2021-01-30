@@ -27,7 +27,7 @@ def fn_setup_essential_managers(app_info):
     return app_info
 
 def agent_mgt(file_path):
-    app_info = startup_mgt(file_path)
+    app_info = startup_mgt(file_path, __file__)
     app_info = fn_setup_essential_managers(app_info)
 
     # fn_archive = archive_mgt(
