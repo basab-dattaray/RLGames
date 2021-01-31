@@ -26,8 +26,21 @@ def agent_mgt(file_path):
         actions["move"] = fn_move_per_policy
 
         fn_bind_fn_display_actions(actions)
-        return
+        return agent_mgr
+
+
+    def x():
+        pass
+
+    agent_mgr = namedtuple('_',
+                                [
+                                    'fn_init',
+                                    'x'
+                                ]
+                           )
+    agent_mgr.fn_init = fn_init
+    agent_mgr.x = x
 
     fn_init()
 
-    return
+    return agent_mgr
