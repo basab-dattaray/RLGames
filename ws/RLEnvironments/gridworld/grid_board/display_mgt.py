@@ -28,7 +28,7 @@ def display_mgt(strategy):
     _width = display_info['WIDTH']
     _height = display_info['HEIGHT']
     _canvas = tkinter.Canvas(
-        height=_height * _unit,
+        height=_height * _unit + 25,
         width=_width * _unit)
 
     _cursor = None
@@ -128,19 +128,29 @@ def display_mgt(strategy):
         _tk.update()
 
     def _fn_create_button(canvas, button_x_offset, button_name, button_action):
-        bound_button = tkinter.Button(bg="gray",
+        bound_button = tkinter.Button(bg="white",
                                  text=button_name,
                                  command=button_action)
         bound_button.configure(width=10, height=2)
-        canvas.create_window(_width * _unit * button_x_offset, _height * _unit *  + 25,
-                             window=bound_button, pady=10)
+        # bound_button.pack(pady=100) ###
+        canvas.create_window(_width * _unit * button_x_offset, _height * _unit + 45,
+                             window=bound_button)
+
+        # tkinter.Frame(height=15, width=740, bg='green').pack() ##
+
+    def _fn_create_label(canvas, button_x_offset, label_text=''):
+        widgit = tkinter.Label(bg="white",
+                                 text=label_text)
+        widgit.configure(width=10, height=2)
+        # bound_button.pack(pady=100) ###
+        canvas.create_window(
+                             window=widgit)
+
+        tkinter.Frame(height=15, width=740, bg='green').pack() ##
 
     def _fn_build_canvas(acton_dictionary):
         nonlocal _cursor
-        button_x_offset = .10
-        for label, fn in acton_dictionary.items():
-            _fn_create_button(_canvas, button_x_offset, label, fn)
-            button_x_offset += .20
+
 
         # create lines
         for col in range(0, (_width + 1) * _unit, _unit):  # 0~400 by 80
@@ -158,10 +168,16 @@ def display_mgt(strategy):
 
         pix_x, pix_y = calc_pixels(_unit, _board_goal['x'], _board_goal['y'])
         _canvas.create_image(pix_x, pix_y, image=_tk.shapes[1])
+
+        button_x_offset = .10
+        for label, fn in acton_dictionary.items():
+            _fn_create_button(_canvas, button_x_offset, label, fn)
+            button_x_offset += .20
+
         _canvas.pack()
         return _canvas
 
-    
+
     def _fn_load_images():
         rwd = os.path.dirname(__file__)
         image_dir = os.path.join(rwd, 'img')
@@ -208,7 +224,7 @@ def display_mgt(strategy):
 
     def fn_init(acton_dictionary):
         _tk.geometry('{0}x{1}'.format(_width * _unit + _right_margin,
-                                      _height * _unit + _bottom_margin + 40))
+                                      _height * _unit + _bottom_margin))
         _tk.texts = []
         _tk.arrows = []
 
