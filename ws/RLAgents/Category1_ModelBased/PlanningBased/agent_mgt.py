@@ -38,7 +38,6 @@ def agent_mgt(file_path):
         agent_mgr.app_info = app_info
         return agent_mgr
 
-
     @tracer(app_info, verboscity= 4)
     def fn_set_test_mode():
         app_info.ENV.display_mgr.fn_set_test_mode()

@@ -7,7 +7,7 @@ def _fn_run_file(rel_dir):
     fn_get_rel_dot_folder_path('__file__', '/ws/')
     parent_dir = os.getcwd()
     child_dir = os.path.join(parent_dir, rel_dir + '/gridworld')
-    file = os.path.join(child_dir, 'demo_run.py')
+    file = os.path.join(child_dir, 'demo.py')
     # fn_load_app(file)
     agent = agent_mgt(__file__). \
         fn_init()

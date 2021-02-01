@@ -11,21 +11,21 @@ def impl_mgt(app_info):
     def fn_bind_fn_display_actions(acton_dictionary):
         display_mgr.fn_init(acton_dictionary)
 
-    def fnNextGetAction(state):
+    def fn_next_get_action(state):
         actions = _planning_mgr.fn_get_actions_given_state(state)
         best_action = np.random.choice(len(actions), p=actions)
         return best_action
 
     def fn_move_per_policy():
         start_state = display_mgr.fn_get_start_state()
-        state = display_mgr.fn_run_next_move(app_info.ENV, start_state, fnNextGetAction)
+        state = display_mgr.fn_run_next_move(app_info.ENV, start_state, fn_next_get_action)
 
         while state is not None:
             display_mgr.fn_move_cursor(start_state, state)
             if display_mgr.fn_is_target_state_reached(state):
                 break
             start_state = state
-            state = display_mgr.fn_run_next_move(app_info.ENV, start_state, fnNextGetAction)
+            state = display_mgr.fn_run_next_move(app_info.ENV, start_state, fn_next_get_action)
         display_mgr.fn_move_cursor(state)
 
     def fn_apply_policy_iteration():
