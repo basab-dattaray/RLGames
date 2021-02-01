@@ -31,6 +31,9 @@ def impl_mgt(app_info):
     def fn_bind_fn_display_actions(acton_dictionary):
         display_mgr.fn_init(acton_dictionary)
 
+    def fn_set_test_mode():
+        app_info.ENV.display_mgr.fn_set_test_mode()
+
     def fn_run_sarsa():
         episode_num = 0
         while True:
@@ -62,4 +65,4 @@ def impl_mgt(app_info):
 
         return continue_running
 
-    return fn_bind_fn_display_actions, fn_run_sarsa
+    return fn_bind_fn_display_actions, fn_run_sarsa, fn_set_test_mode

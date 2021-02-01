@@ -16,6 +16,9 @@ def impl_mgt(app_info):
     def fn_bind_fn_display_actions(acton_dictionary):
         display_mgr.fn_init(acton_dictionary)
 
+    def fn_set_test_mode():
+        app_info.ENV.display_mgr.fn_set_test_mode()
+
     def fn_run_monte_carlo():
         _fn_clear_trace()
         for episode in range(app_info.NUM_EPISODES):
@@ -46,4 +49,4 @@ def impl_mgt(app_info):
 
         return value_table, continue_running
 
-    return fn_bind_fn_display_actions, fn_run_monte_carlo
+    return fn_bind_fn_display_actions, fn_run_monte_carlo, fn_set_test_mode
