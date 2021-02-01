@@ -30,7 +30,7 @@ def display_mgt(strategy):
     _canvas = tkinter.Canvas(
         height=_height * _unit + 25,
         width=_width * _unit,
-        bg= 'white'
+        # bg= 'white'
     )
 
     _cursor = None
@@ -153,8 +153,6 @@ def display_mgt(strategy):
         # bound_button.pack(pady=100) ###
         canvas.create_window(
                              window=widgit)
-
-        tkinter.Frame(height=15, width=740, bg='green').pack() ##
 
     def _fn_build_canvas(acton_dictionary):
         nonlocal _cursor
