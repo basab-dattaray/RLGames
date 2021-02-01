@@ -9,7 +9,7 @@ from ws.RLAgents.Category4_SelfPlay.DeepLearning_SelfPlay._game.othello._ml_lib.
 from ws.RLAgents.Category4_SelfPlay.DeepLearning_SelfPlay.misc.average_mgt import average_mgt
 from ws.RLUtils.monitoring.tracing.progress_count_mgt import progress_count_mgt
 
-# sys.path.append('../../')
+# sys.dir_path.append('../../')
 from ws.RLUtils.common.DotDict import *
 
 

@@ -46,7 +46,8 @@ def impl_mgt(app_info):
             episode_status = _fn_run_episode(display_mgr.fn_move_cursor)
             print('episode number: {}   status = {}'.format(episode_num, episode_status))
             if _test_mode: # ONLY 1 episode needed
-                exit()
+                break;
+        pass
 
     def _fn_run_episode(fn_move_cursor):
         new_state = None

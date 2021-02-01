@@ -242,8 +242,11 @@ def display_mgt(strategy):
 
         _fn_append_rewards_to_canvas()
         _fn_render_on_canvas()
-
         _tk.mainloop()
+        # if _test_mode:
+        #     _tk.quit()
+        # else:
+        #     _tk.mainloop()
 
     def fn_move_cursor(stateStart, stateEnd=(0, 0)):
         step = _fn_calculate_step(stateStart, stateEnd)

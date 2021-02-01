@@ -16,13 +16,13 @@ def archive_mgt(results_path, archive_path, fn_log= None,  fn_log_reset= None, )
                 archive_folder_path = archive_path
 
             if archive_folder_path is None:
-                return "FAILED: no archive path"
+                return "FAILED: no archive dir_path"
 
             if result_folder_path is None:
                 result_folder_path = results_path
 
             if result_folder_path is None:
-                return "FAILED: no result path"
+                return "FAILED: no result dir_path"
 
             if _before_instance:
                 real_archive_path = os.path.join( archive_folder_path , 'BEFORE')

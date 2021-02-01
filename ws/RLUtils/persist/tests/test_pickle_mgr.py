@@ -11,7 +11,7 @@ def fixture_ws_mgt():
     dump_folder_path = os.path.join(os.getcwd(), 'tmp_dump_dir')
     dump_file_name = 'tmp.obj'
     yield dump_folder_path, dump_file_name, obj
-    # dump_folder_path = os.path.join(os.getcwd(), '__tmp_dump_dir')
+    # dump_folder_path = os.dir_path.join(os.getcwd(), '__tmp_dump_dir')
     if os.path.exists(dump_folder_path):
         shutil.rmtree(dump_folder_path)
 
