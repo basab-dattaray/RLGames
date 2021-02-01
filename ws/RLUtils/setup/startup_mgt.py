@@ -9,16 +9,12 @@ from ws.RLUtils.common.folder_paths import fn_get_rel_dot_folder_path
 from ws.RLUtils.common.module_loader import load_function
 from ws.RLUtils.monitoring.tracing.call_trace_mgt import call_trace_mgt
 from ws.RLUtils.monitoring.tracing.log_mgt import log_mgt
-
 from ws.RLUtils.platform_libs.pytorch.device_selection import get_device
 from ws.RLUtils.setup.archive_mgt import archive_mgt
 from ws.RLUtils.setup.interrupt_mgt import interrupt_mgt
 
-
-
 def startup_mgt(demo_filepath, agent_filepath):
     ARGS_PY = 'ARGS.py'
-
     def _fn_init_arg_with_default_val(app_info, name, val):
         if app_info is None:
             app_info = {}
@@ -29,12 +25,10 @@ def startup_mgt(demo_filepath, agent_filepath):
 
     def fn_bootstrap():
         demo_folder_path= os.path.dirname(demo_filepath)
-        # base_dot_path = fn_get_base_dot_path(demo_folder_path)
         base_dot_path, demo_dot_path = fn_get_rel_dot_folder_path(current_path= demo_folder_path, base_path=agent_filepath)
         fn_get_args = load_function(function_name="fn_get_args", module_name="ARGS", module_dot_path=demo_dot_path)
         app_info = fn_get_args()
         app_info = _fn_init_arg_with_default_val(app_info, 'BASE_DOT_PATH_', base_dot_path)
-        # app_info.BASE_DOT_PATH_ = base_dot_path
         app_info = _fn_init_arg_with_default_val(app_info, 'DEMO_FOLDER_PATH_', demo_folder_path)
         app_info = _fn_init_arg_with_default_val(app_info, 'DEMO_DOT_PATH_', demo_dot_path)
         app_info = _fn_init_arg_with_default_val(app_info, 'RESULTS_REL_PATH', 'Results/')
@@ -52,7 +46,6 @@ def startup_mgt(demo_filepath, agent_filepath):
         subpackage_name = None
         if 'ENV_NAME' not in app_info.keys():
                 print("ENV_NAME is missing")
-
         else:
             repo_name_parts = app_info.ENV_NAME.lower().rsplit('-', 1)
             app_info.ENV_REPO = repo_name_parts[0]
@@ -72,7 +65,6 @@ def startup_mgt(demo_filepath, agent_filepath):
         return env
 
     def _fn_setup_paths_in_app_info():
-        # app_info.ROOT_DOT_PATH = ROOT_DOT_PATH
         app_info.AGENTS_DOT_PATH_ = app_info.BASE_DOT_PATH_ + '.RLAgents'
         app_info.AGENTS_CONFIG_DOT_PATH = app_info.BASE_DOT_PATH_ + '.RLAgents' + '._CommonAgentConfigurations'
 

@@ -30,25 +30,6 @@ def agent_mgt(file_path):
     app_info = startup_mgt(file_path, __file__)
     app_info = fn_setup_essential_managers(app_info)
 
-    # fn_archive = archive_mgt(
-    #     results_path= app_info.RESULTS_PATH_,
-    #     archive_path= app_info.FULL_ARCHIVE_PATH_,
-    #     fn_log = app_info.fn_log,
-    #     fn_log_reset=app_info.fn_log_reset,
-    # )
-
-    # def exit_gracefully(signum, frame):
-    #     app_info.fn_log('!!! TERMINATING EARLY!!!')
-    #     archive_msg = app_info.fn_archive(archive_folder_path= app_info.FULL_ARCHIVE_PATH_,  fn_save_to_neural_net= app_info.neural_net_mgr.fn_save_model)
-    #     app_info.fn_log(archive_msg)
-    #
-    #     # app_info.ENV.fn_close()
-    #     exit()
-    #
-    # signal.signal(signal.SIGINT, exit_gracefully)
-
-    # interrupt_mgt(app_info)
-
     @tracer(app_info, verboscity= 4)
     def fn_train():
         nonlocal app_info

@@ -5,7 +5,7 @@ from ws.RLUtils.algo_lib.policy_based.qtable_mgt import qtable_mgt
 def impl_mgt(app_info):
     _env = app_info.ENV
 
-    _display_mgr = app_info.ENV.display_mgr
+    display_mgr = app_info.ENV.display_mgr
 
     _epsilon = app_info.EPSILON
 
@@ -29,13 +29,13 @@ def impl_mgt(app_info):
         fn_set_qval(state, action, new_q)
 
     def fn_bind_fn_display_actions(acton_dictionary):
-        _display_mgr.fn_init(acton_dictionary)
+        display_mgr.fn_init(acton_dictionary)
 
     def fnRunSarsa():
         episode_num = 0
         while True:
             episode_num += 1
-            episode_status = runEpisode(_display_mgr.fn_move_cursor)
+            episode_status = runEpisode(display_mgr.fn_move_cursor)
             print('episode number: {}   status = {}'.format(episode_num, episode_status))
 
     def runEpisode(fn_move_cursor):
@@ -43,7 +43,7 @@ def impl_mgt(app_info):
 
         state = _env.fn_reset_env()
         action = fn_get_max_q_actions(state, app_info.EPSILON)
-        _display_mgr.fn_update_ui(state, fn_get_q_actions(state))
+        display_mgr.fn_update_ui(state, fn_get_q_actions(state))
         continue_running  = True
         while continue_running:
             new_state, reward, done, _ = _env.fn_take_step(action)
@@ -53,7 +53,7 @@ def impl_mgt(app_info):
 
             new_action = fn_get_max_q_actions(new_state, app_info.EPSILON)
             fnUpdateKnowledge(state, action, reward, new_state, new_action)
-            _display_mgr.fn_update_ui(state, fn_get_q_actions(state))
+            display_mgr.fn_update_ui(state, fn_get_q_actions(state))
 
             action = new_action
             state = new_state

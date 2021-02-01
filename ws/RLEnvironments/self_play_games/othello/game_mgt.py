@@ -4,8 +4,6 @@ import copy
 import sys
 from collections import namedtuple
 
-# from .board_mgt import board_mgt
-
 sys.path.append('..')
 
 from .board_mgt import board_mgt
@@ -74,7 +72,7 @@ def game_mgt(BOARD_SIZE):
         canonical_pieces = copy.deepcopy(player * pieces)
         return canonical_pieces
 
-    def fn_get_symetric_samples(pieces, policy):
+    def fn_get_symmetric_samples(pieces, policy):
         pi_board = np.reshape(policy, (BOARD_SIZE, BOARD_SIZE))
         list_of_symetries = []
 
@@ -107,7 +105,6 @@ def game_mgt(BOARD_SIZE):
                 piece = pieces[y][x]    # get the piece to print
                 print(square_content[piece], end=" ")
             print("|")
-
         print("-----------------------")
 
 
@@ -122,11 +119,10 @@ def game_mgt(BOARD_SIZE):
         'fn_game_status',
         'fn_get_canonical_form',
 
-        'fn_get_symetric_samples',
+        'fn_get_symmetric_samples',
         'fn_get_state_key',
         'fn_get_score' ,
         'fn_display',
-
         ]
     )
 
@@ -140,7 +136,7 @@ def game_mgt(BOARD_SIZE):
     game_mgr.fn_game_status = fn_game_status
     game_mgr.fn_get_canonical_form = fn_get_canonical_form
 
-    game_mgr.fn_get_symetric_samples = fn_get_symetric_samples
+    game_mgr.fn_get_symmetric_samples = fn_get_symmetric_samples
     game_mgr.fn_get_state_key = fn_get_state_key
     game_mgr.fn_get_score = fn_get_score
     game_mgr.fn_display = fn_display

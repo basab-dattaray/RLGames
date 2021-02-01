@@ -23,20 +23,28 @@ def display_mgt(strategy):
     _tk = tkinter.Tk()
     config = CONFIG.fn_get_config()
 
-    display_info = config.DISPLAY
-    _unit = display_info["UNIT"]
-    _width = display_info['WIDTH']
-    _height = display_info['HEIGHT']
+    _display_info = config.DISPLAY
+    _unit = _display_info["UNIT"]
+    _width = _display_info['WIDTH']
+    _height = _display_info['HEIGHT']
     _canvas = tkinter.Canvas(
         height=_height * _unit + 25,
-        width=_width * _unit)
+        width=_width * _unit,
+        bg= 'white'
+    )
 
     _cursor = None
 
-    _board_blockers = display_info['BOARD_BLOCKERS']
-    _board_goal = display_info['BOARD_GOAL']
+    _board_blockers = _display_info['BOARD_BLOCKERS']
+    _board_goal = _display_info['BOARD_GOAL']
     _right_margin = 5
     _bottom_margin = 80
+
+    _test_mode = False
+
+    def fn_set_test_mode():
+        nonlocal _test_mode
+        _test_mode = True
 
     def fn_create_value_repo():
         return [[0.0] * _width for _ in range(_width)]
@@ -151,7 +159,6 @@ def display_mgt(strategy):
     def _fn_build_canvas(acton_dictionary):
         nonlocal _cursor
 
-
         # create lines
         for col in range(0, (_width + 1) * _unit, _unit):  # 0~400 by 80
             x0, y0, x1, y1 = col, 0, col, _height * _unit
@@ -231,6 +238,10 @@ def display_mgt(strategy):
         (_tk.up, _tk.down, _tk.left, _tk.right), _tk.shapes = _fn_load_images()
         _tk.canvas = _fn_build_canvas(acton_dictionary)
 
+        if _test_mode:
+            for key, action in acton_dictionary.items():
+                action()
+
         _fn_append_rewards_to_canvas()
         _fn_render_on_canvas()
 
@@ -295,10 +306,8 @@ def display_mgt(strategy):
         if fn_show_qvalue is not None:
             fn_show_qvalue(state, actions)
 
-
     def fn_is_goal_reached(state):
         return True if state == [_board_goal['x'], _board_goal['y']] else False
-
 
     app_title = _fn_get_app_title()
     _tk.title(app_title)
@@ -318,6 +327,7 @@ def display_mgt(strategy):
         'fn_create_value_repo',
         'fn_compare_value_repos',
         'fn_get_state_actions',
+        'fn_set_test_mode',
     ])
 
     ret_obj.fn_init = fn_init
@@ -334,7 +344,7 @@ def display_mgt(strategy):
     ret_obj.fn_create_value_repo = fn_create_value_repo
     ret_obj.fn_compare_value_repos = fn_compare_value_repos
     ret_obj.fn_get_state_actions = fn_get_state_actions
-
+    ret_obj.fn_set_test_mode = fn_set_test_mode
     return ret_obj
 
 

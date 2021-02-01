@@ -34,7 +34,7 @@ def fn_generate_samples(app_info, iteration, generation_mcts):
             if policy is None:
                 return None
 
-            symmetric_samples = game_mgr.fn_get_symetric_samples(canonical_board_pieces, policy)
+            symmetric_samples = game_mgr.fn_get_symmetric_samples(canonical_board_pieces, policy)
 
             for sym_canon_board, canon_policies in symmetric_samples:
                 samples_from_episodes.append((sym_canon_board, cur_player_index, canon_policies))

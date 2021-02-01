@@ -1,6 +1,7 @@
 from collections import OrderedDict, namedtuple
 
 from ws.RLAgents.Category1_ModelBased.PlanningBased.impl_mgt import impl_mgt
+from ws.RLUtils.monitoring.tracing.tracer import tracer
 from ws.RLUtils.setup.startup_mgt import startup_mgt
 
 
@@ -28,19 +29,30 @@ def agent_mgt(file_path):
         fn_bind_fn_display_actions(actions)
         return agent_mgr
 
+    @tracer(app_info, verboscity= 4)
+    def fn_change_args(change_args):
+        if change_args is not None:
+            for k, v in change_args.items():
+                app_info[k] = v
+                app_info.trace_mgr.fn_write(f'  app_info[{k}] = {v}')
+        agent_mgr.app_info = app_info
+        return agent_mgr
 
-    def x():
-        pass
+
+    @tracer(app_info, verboscity= 4)
+    def fn_set_test_mode():
+        app_info.ENV.display_mgr.fn_set_test_mode()
+        return agent_mgr
 
     agent_mgr = namedtuple('_',
                                 [
                                     'fn_init',
-                                    'x'
+                                    'fn_change_args',
+                                    'fn_set_test_mode'
                                 ]
                            )
     agent_mgr.fn_init = fn_init
-    agent_mgr.x = x
-
-    fn_init()
+    agent_mgr.fn_change_args = fn_change_args
+    agent_mgr.fn_set_test_mode = fn_set_test_mode
 
     return agent_mgr
