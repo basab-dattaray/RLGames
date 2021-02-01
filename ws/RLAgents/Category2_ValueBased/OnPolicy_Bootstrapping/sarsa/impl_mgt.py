@@ -7,17 +7,6 @@ def impl_mgt(app_info):
 
     display_mgr = app_info.ENV.display_mgr
 
-    _epsilon = app_info.EPSILON
-
-    _env_config = _env.fn_get_config()
-    _discount_factor = app_info.DISCOUNT_FACTOR
-    _learning_rate = app_info.LEARNING_RATE
-
-    app_fn_display_info = _env_config.DISPLAY
-    _width = app_fn_display_info['WIDTH']
-    _height = app_fn_display_info['HEIGHT']
-    _board_blockers = app_fn_display_info['BOARD_BLOCKERS']
-    _board_goal = app_fn_display_info['BOARD_GOAL']
 
     fn_get_qval, fn_set_qval, fn_get_q_actions, fn_get_max_q_actions = qtable_mgt()
 

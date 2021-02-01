@@ -4,6 +4,7 @@ from collections import namedtuple
 import numpy as np
 
 # from ws.RLUtils.setup.preparation_mgt import preparation_mgt
+from ws.RLUtils.monitoring.tracing.tracer import tracer
 from ws.RLUtils.setup.startup_mgt import startup_mgt
 from .impl_mgt import impl_mgt
 
@@ -14,7 +15,16 @@ def agent_mgt(caller_file):
     _action_size = env.fn_get_action_size()
     _state_size = env.fn_get_state_size()
 
+    _test_mode = False
+
     fn_reset_env, fn_remember, fnAct, fnReplay, fnSaveWeights, fnLoadWeights = impl_mgt(app_info, _state_size, _action_size)
+    @tracer(app_info, verboscity= 4)
+    def fn_set_test_mode():
+        nonlocal  _test_mode
+        _test_mode = True
+
+        return agent_mgr
+
     def fn_train():
         def fn_run_training_episodes():
             # nonlocal fn_remember
@@ -40,6 +50,8 @@ def agent_mgt(caller_file):
                         print("episode: {}/{}, num of steps: {}, score: {}".format(episode_num, num_episodes, step_num, score))
                         break
                 loss.append(score)
+                if _test_mode:
+                    break
     
             return loss
     

@@ -1,4 +1,4 @@
-import os
+
 from collections import namedtuple
 from time import sleep
 
@@ -6,6 +6,7 @@ from ws.RLAgents.Category3_PolicyGradientBased.progress_mgt import progress_mgt
 from ws.RLUtils.common.attr_mgt import attr_mgt
 
 from ws.RLUtils.common.module_loader import load_function
+from ws.RLUtils.monitoring.tracing.tracer import tracer
 from ws.RLUtils.setup.startup_mgt import startup_mgt
 
 
@@ -13,9 +14,6 @@ def agent_mgt(demo_path):
     app_info = startup_mgt(demo_path, __file__)
     fn_get_key_as_bool, fn_get_key_as_int, _ = attr_mgt(app_info)
     is_single_episode_result = fn_get_key_as_bool('REWARD_CALCULATED_FROM_SINGLE_EPISODES')
-    env = app_info.ENV
-
-    dir_path = os.path.dirname(__file__)
 
     impl_mgt = load_function(function_name= 'impl_mgt', module_name='impl_mgt', module_dot_path= app_info.AGENT_FOLDER_PATH)
 
@@ -27,6 +25,14 @@ def agent_mgt(demo_path):
 
     fn_log = app_info.fn_log
 
+    _test_mode = False
+
+    @tracer(app_info, verboscity= 4)
+    def fn_set_test_mode():
+        nonlocal  _test_mode
+        _test_mode = True
+
+        # env.display_mgr.fn_set_test_mode()
     def fn_run(fn_show_training_progress,
                supress_graph=False,
                fn_should_update_network=fn_should_update_network,
@@ -42,11 +48,13 @@ def agent_mgt(demo_path):
 
             done = fn_has_reached_goal(running_reward, consecutive_goal_hits_needed_for_success)
             _episode_num += 1
+            if not _test_mode:
+                break
         chart.fn_close()
 
     def fn_run_episode(fn_should_update_network=None, do_render=False):
 
-        state = env.fn_reset_env()
+        state = app_info.ENV.fn_reset_env()
         running_reward = 0
         reward = 0
         step = 0
@@ -55,11 +63,11 @@ def agent_mgt(demo_path):
             step += 1
 
             if do_render:
-                env.fn_render()
+                app_info.ENV.fn_render()
                 sleep(.01)
 
             action = fn_act(state)
-            state, reward, done, _ = env.fn_take_step(action)
+            state, reward, done, _ = app_info.ENV.fn_take_step(action)
 
             fn_add_transition(reward, done)
 
@@ -68,7 +76,7 @@ def agent_mgt(demo_path):
 
             running_reward += reward
 
-        env.fn_close()
+        app_info.ENV.fn_close()
 
         val = reward if is_single_episode_result else running_reward
         return val, step
@@ -102,10 +110,11 @@ def agent_mgt(demo_path):
                                 [
                                     'fn_run_train',
                                     'fn_run_test'
+                                    'fn_set_test_mode'
                                 ]
                            )
     agent_mgr.fn_run_train = fn_run_train
     agent_mgr.fn_run_test = fn_run_test
-
+    agent_mgr.fn_set_test_mode = fn_set_test_mode
     return agent_mgr
 
