@@ -32,7 +32,7 @@ def impl_mgt(app_info):
             if display_mgr.fn_show_state_values is not None:
                 display_mgr.fn_show_state_values(value_table)
             if _test_mode: # ONLY 1 episode needed
-                exit()
+                break;
 
 
     def _fn_run_episode(fn_move_cursor):

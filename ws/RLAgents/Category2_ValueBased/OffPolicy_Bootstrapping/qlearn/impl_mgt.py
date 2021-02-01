@@ -31,7 +31,7 @@ def impl_mgt(app_info):
             episode_status = _fn_run_episode()
             print('episode number: {}   status = {}'.format(episode_num, episode_status))
             if _test_mode: # ONLY 1 episode needed
-                exit()
+                break
 
     def _fn_run_episode():
         state = app_info.ENV.fn_reset_env()
