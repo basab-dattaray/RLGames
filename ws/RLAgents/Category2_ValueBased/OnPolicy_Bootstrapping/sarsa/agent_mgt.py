@@ -8,10 +8,10 @@ from ws.RLUtils.setup.startup_mgt import startup_mgt
 
 def agent_mgt(file_path):
     app_info = startup_mgt(file_path, __file__)
-    fn_bind_fn_display_actions, fnRun = impl_mgt(app_info)
+    fn_bind_fn_display_actions, fn_run = impl_mgt(app_info)
     def fn_init():
         actions = OrderedDict()
-        actions["run"] = fnRun
+        actions["run"] = fn_run
 
         fn_bind_fn_display_actions(actions)
         return
