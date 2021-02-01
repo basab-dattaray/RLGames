@@ -12,20 +12,22 @@ from ws.RLUtils.setup.startup_mgt import startup_mgt
 
 def agent_mgt(demo_path):
     app_info = startup_mgt(demo_path, __file__)
-    fn_get_key_as_bool, fn_get_key_as_int, _ = attr_mgt(app_info)
-    is_single_episode_result = fn_get_key_as_bool('REWARD_CALCULATED_FROM_SINGLE_EPISODES')
+    fn_should_update_network= None
+    if app_info.ENV is not None:
+        fn_get_key_as_bool, fn_get_key_as_int, _ = attr_mgt(app_info)
+        is_single_episode_result = fn_get_key_as_bool('REWARD_CALCULATED_FROM_SINGLE_EPISODES')
 
-    impl_mgt = load_function(function_name= 'impl_mgt', module_name='impl_mgt', module_dot_path= app_info.AGENT_FOLDER_PATH)
+        impl_mgt = load_function(function_name= 'impl_mgt', module_name='impl_mgt', module_dot_path= app_info.AGENT_FOLDER_PATH)
 
-    fn_act, fn_add_transition, fn_save_to_neural_net, fn_load_from_neural_net, fn_should_update_network = impl_mgt(app_info)
+        fn_act, fn_add_transition, fn_save_to_neural_net, fn_load_from_neural_net, fn_should_update_network = impl_mgt(app_info)
 
-    chart, fn_show_training_progress, fn_has_reached_goal = progress_mgt(app_info)
+        chart, fn_show_training_progress, fn_has_reached_goal = progress_mgt(app_info)
 
-    _episode_num = 0
+        _episode_num = 0
 
-    fn_log = app_info.fn_log
+        fn_log = app_info.fn_log
 
-    _test_mode = False
+        _test_mode = False
 
     @tracer(app_info, verboscity= 4)
     def fn_set_test_mode():
@@ -82,6 +84,8 @@ def agent_mgt(demo_path):
         return val, step
 
     def fn_run_train():
+        if app_info.ENV is None:
+            return agent_mgr
         if fn_load_from_neural_net is not None:
             if fn_load_from_neural_net(app_info.RESULTS_PATH_):
                 fn_log('SUCCESS in loading model')
@@ -94,6 +98,9 @@ def agent_mgt(demo_path):
         return agent_mgr
 
     def fn_run_test():
+        if app_info.ENV is None:
+            return agent_mgr
+
         if fn_load_from_neural_net is not None:
             if fn_load_from_neural_net(app_info.RESULTS_PATH_):
                 # fn_log('SUCCESS in loading model')

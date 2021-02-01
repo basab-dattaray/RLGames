@@ -3,10 +3,13 @@ from collections import namedtuple
 import gym
 
 def env_mgt(name, strategy= None):
-
-    _env = gym.make(name)
-    _state_size = _env.observation_space.shape[0]
-    _action_size = _env.action_space.n
+    error_message = None
+    try:
+        _env = gym.make(name)
+        _state_size = _env.observation_space.shape[0]
+        _action_size = _env.action_space.n
+    except Exception as x:
+        error_message = x
 
     def fn_reset_env():
         return _env.reset()
@@ -34,6 +37,7 @@ def env_mgt(name, strategy= None):
         'fn_get_state_size',
         'fn_get_action_size',
         'fn_close',
+        'error_message',
     ])
 
     ret_obj.fn_reset_env = fn_reset_env
@@ -42,5 +46,6 @@ def env_mgt(name, strategy= None):
     ret_obj.fn_get_state_size = fn_get_state_size
     ret_obj.fn_get_action_size = fn_get_action_size
     ret_obj.fn_close = fn_close
+    ret_obj.ERROR_MESSAGE = error_message
 
     return ret_obj

@@ -126,6 +126,7 @@ def env_mgt(name, strategy= None):
         'fn_is_goal_reached',
         'values_repo_mgr',
         'policy_repo_mgr',
+        'ERROR_MESSAGE',
     ])
 
     ret_obj.display_mgr = display_mgr
@@ -146,5 +147,7 @@ def env_mgt(name, strategy= None):
     ret_obj.fn_get_config = fn_get_config
     ret_obj.fn_get_strategy = fn_get_strategy
     ret_obj.fn_is_goal_reached = fn_is_goal_reached
+
+    ret_obj.ERROR_MESSAGE = None
 
     return ret_obj

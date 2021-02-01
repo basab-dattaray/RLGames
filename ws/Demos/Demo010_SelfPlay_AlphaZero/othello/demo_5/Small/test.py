@@ -2,7 +2,7 @@ from ws.RLAgents.Category4_SelfPlay.DeepLearning_SelfPlay.agent_mgt import agent
 
 
 def fn_exec_test():
-    agent_mgt(__file__). \
+    agent_mgr = agent_mgt(__file__). \
         fn_change_args({
             'TEST_MODE_': 1,
             'NUM_TRAINING_ITERATIONS': 1,
@@ -19,6 +19,7 @@ def fn_exec_test():
         fn_test_against_greedy(). \
         fn_test_against_random(). \
         fn_archive_log_file()
+    pass
 
 
 if __name__ == "__main__":
