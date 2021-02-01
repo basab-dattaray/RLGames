@@ -12,11 +12,17 @@ def impl_mgt(app_info):
         app_info.DISCOUNT_FACTOR,
         app_info.LEARNING_RATE,
     )
+    _test_mode = False
 
     def fn_bind_fn_display_actions(acton_dictionary):
+
         display_mgr.fn_init(acton_dictionary)
 
+
     def fn_set_test_mode():
+        nonlocal  _test_mode
+        _test_mode = True
+
         app_info.ENV.display_mgr.fn_set_test_mode()
 
     def fn_run_monte_carlo():
@@ -25,6 +31,9 @@ def impl_mgt(app_info):
             value_table, episode_status = _fn_run_episode(display_mgr.fn_move_cursor)
             if display_mgr.fn_show_state_values is not None:
                 display_mgr.fn_show_state_values(value_table)
+            if _test_mode: # ONLY 1 episode needed
+                exit()
+
 
     def _fn_run_episode(fn_move_cursor):
         new_state = None

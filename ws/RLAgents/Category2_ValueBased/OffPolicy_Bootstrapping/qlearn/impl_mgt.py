@@ -6,6 +6,7 @@ def impl_mgt(app_info):
     display_mgr = app_info.ENV.display_mgr
 
     fn_get_qval, fn_set_qval, fn_get_q_actions, fn_get_max_q_actions = qtable_mgt()
+    _test_mode = False
 
     def fnUpdateKnowledge(state, action, reward, next_state):
         current_q = fn_get_qval(state, action)
@@ -18,6 +19,9 @@ def impl_mgt(app_info):
         display_mgr.fn_init(acton_dictionary)
 
     def fn_set_test_mode():
+        nonlocal  _test_mode
+        _test_mode = True
+
         app_info.ENV.display_mgr.fn_set_test_mode()
 
     def fn_q_learn():
@@ -26,6 +30,8 @@ def impl_mgt(app_info):
             episode_num += 1
             episode_status = _fn_run_episode()
             print('episode number: {}   status = {}'.format(episode_num, episode_status))
+            if _test_mode: # ONLY 1 episode needed
+                exit()
 
     def _fn_run_episode():
         state = app_info.ENV.fn_reset_env()
