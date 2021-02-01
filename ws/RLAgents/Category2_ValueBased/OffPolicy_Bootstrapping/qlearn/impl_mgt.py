@@ -17,14 +17,14 @@ def impl_mgt(app_info):
     def fn_bind_fn_display_actions(acton_dictionary):
         display_mgr.fn_init(acton_dictionary)
 
-    def fnQLearn():
+    def fn_q_learn():
         episode_num = 0
         while True:
             episode_num += 1
-            episode_status = runEpisode()
+            episode_status = _fn_run_episode()
             print('episode number: {}   status = {}'.format(episode_num, episode_status))
 
-    def runEpisode():
+    def _fn_run_episode():
         state = app_info.ENV.fn_reset_env()
         # fn_update_ui(display_mgr.fn_show_qvalue, state)
         display_mgr.fn_update_ui(state, fn_get_q_actions(state))
@@ -52,10 +52,4 @@ def impl_mgt(app_info):
 
         return continue_running
 
-
-    # def fn_update_ui(fn_show_qvalue, state):
-    #     if fn_show_qvalue is not None:
-    #         q_actions = fn_get_q_actions(state)
-    #         fn_show_qvalue(state, q_actions)
-
-    return fn_bind_fn_display_actions, fnQLearn
+    return fn_bind_fn_display_actions, fn_q_learn

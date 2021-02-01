@@ -21,7 +21,7 @@ def impl_mgt(app_info):
 
     fn_get_qval, fn_set_qval, fn_get_q_actions, fn_get_max_q_actions = qtable_mgt()
 
-    def fnUpdateKnowledge(state, action, reward, next_state, next_action):
+    def _fn_update_knowledge(state, action, reward, next_state, next_action):
         current_q = fn_get_qval(state, action)
         next_state_q = fn_get_qval(next_state, next_action)
         new_q = (current_q + app_info.LEARNING_RATE *
@@ -31,7 +31,7 @@ def impl_mgt(app_info):
     def fn_bind_fn_display_actions(acton_dictionary):
         display_mgr.fn_init(acton_dictionary)
 
-    def fnRunSarsa():
+    def fn_run_sarsa():
         episode_num = 0
         while True:
             episode_num += 1
@@ -52,7 +52,7 @@ def impl_mgt(app_info):
                 fn_move_cursor(state, new_state)
 
             new_action = fn_get_max_q_actions(new_state, app_info.EPSILON)
-            fnUpdateKnowledge(state, action, reward, new_state, new_action)
+            _fn_update_knowledge(state, action, reward, new_state, new_action)
             display_mgr.fn_update_ui(state, fn_get_q_actions(state))
 
             action = new_action
@@ -62,4 +62,4 @@ def impl_mgt(app_info):
 
         return continue_running
 
-    return fn_bind_fn_display_actions, fnRunSarsa
+    return fn_bind_fn_display_actions, fn_run_sarsa
