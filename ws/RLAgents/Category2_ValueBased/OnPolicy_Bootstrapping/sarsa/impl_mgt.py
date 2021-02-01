@@ -35,10 +35,10 @@ def impl_mgt(app_info):
         episode_num = 0
         while True:
             episode_num += 1
-            episode_status = runEpisode(display_mgr.fn_move_cursor)
+            episode_status = _fn_run_episode(display_mgr.fn_move_cursor)
             print('episode number: {}   status = {}'.format(episode_num, episode_status))
 
-    def runEpisode(fn_move_cursor):
+    def _fn_run_episode(fn_move_cursor):
         new_state = None
 
         state = _env.fn_reset_env()
