@@ -144,19 +144,9 @@ def display_mgt(strategy):
                                  text=button_name,
                                  command=button_action)
         bound_button.configure(width=10, height=2)
-        # bound_button.pack(pady=100) ###
         canvas.create_window(_width * _unit * button_x_offset, _height * _unit + 45,
                              window=bound_button)
 
-        # tkinter.Frame(height=15, width=740, bg='green').pack() ##
-
-    def _fn_create_label(canvas, button_x_offset, label_text=''):
-        widgit = tkinter.Label(bg="white",
-                                 text=label_text)
-        widgit.configure(width=10, height=2)
-        # bound_button.pack(pady=100) ###
-        canvas.create_window(
-                             window=widgit)
 
     def _fn_build_canvas(acton_dictionary):
         nonlocal _cursor
