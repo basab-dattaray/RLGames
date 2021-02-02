@@ -25,18 +25,29 @@ def agent_mgt(file_path):
         _fn_set_test_mode()
         return agent_mgr
 
+    @tracer(app_info, verboscity= 4)
+    def fn_change_args(change_args):
+        if change_args is not None:
+            for k, v in change_args.items():
+                app_info[k] = v
+                app_info.trace_mgr.fn_write(f'  app_info[{k}] = {v}')
+        agent_mgr.app_info = app_info
+        return agent_mgr
+
 
     agent_mgr = namedtuple('_',
                                 [
                                     'fn_setup_env',
                                     'fn_run_env',
                                     'fn_set_test_mode'
+                                    'fn_change_args',
                                     'APP_INFO',
                                 ]
                            )
     agent_mgr.fn_setup_env = fn_setup_env
     agent_mgr.fn_run_env = fn_run_env
     agent_mgr.fn_set_test_mode = fn_set_test_mode
+    agent_mgr.fn_change_args = fn_change_args
     agent_mgr.APP_INFO = app_info
 
     return agent_mgr
