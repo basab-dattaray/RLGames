@@ -1,5 +1,5 @@
 # from ws.Demos.Demo010_SelfPlay_AlphaZero.othello.demo_5.Small.app_info import app_info
-from ws.RLAgents.Category4_SelfPlay.DeepLearning_SelfPlay.agent_mgt import agent_mgt
+from ws.RLAgents.E_SelfPlay.DeepLearning_SelfPlay.agent_mgt import agent_mgt
 
 if __name__ == "__main__":
     agent_mgt( __file__). \

@@ -1,4 +1,6 @@
-from ws.RLAgents.Category1_ModelBased.Sampling.OnPolicy_Sampling.monte_carlo.agent_mgt import agent_mgt
+# from ws.RLAgents.A_ModelBased_Planning.Sampling.OnPolicy_Sampling.monte_carlo.agent_mgt import agent_mgt
+from ws.RLAgents.B_ValueBased.Sampling.OnPolicy_Sampling.monte_carlo.agent_mgt import agent_mgt
+
 
 def fn_exec_test():
     agent_mgr = agent_mgt(__file__). \

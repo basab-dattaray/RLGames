@@ -2,7 +2,7 @@
 from collections import namedtuple
 from time import sleep
 
-from ws.RLAgents.Category3_PolicyGradientBased.progress_mgt import progress_mgt
+from ws.RLAgents.D_PolicyGradientBased.progress_mgt import progress_mgt
 from ws.RLUtils.common.attr_mgt import attr_mgt
 
 from ws.RLUtils.common.module_loader import load_function

@@ -2,7 +2,7 @@ from ws.RLUtils.common.DotDict import DotDict
 
 app_info = DotDict(
   {
-    "STRATEGY": "Category2_ValueBased.DeepLearning_OffPolicy_Bootstrapping.dqn",
+    "STRATEGY": "C_ValueBase_WithFunctionApproximation.DeepLearning_OffPolicy_Bootstrapping.dqn",
 
     "NUM_EPISODES": 20,
     "BATCH_SIZE": 64,

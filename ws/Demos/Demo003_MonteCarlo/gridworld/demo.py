@@ -1,4 +1,4 @@
-from ws.RLAgents.Category1_ModelBased.Sampling.OnPolicy_Sampling.monte_carlo.agent_mgt import agent_mgt
+from ws.RLAgents.A_ModelBased_Planning.Sampling.OnPolicy_Sampling.monte_carlo.agent_mgt import agent_mgt
 
 if __name__ == "__main__":
 

@@ -1,4 +1,4 @@
-from ws.RLAgents.Category1_ModelBased.Bootstrapping.OnPolicy_Bootstrapping.sarsa.agent_mgt import agent_mgt
+from ws.RLAgents.A_ModelBased_Planning.Bootstrapping.OnPolicy_Bootstrapping.sarsa.agent_mgt import agent_mgt
 
 if __name__ == "__main__":
 

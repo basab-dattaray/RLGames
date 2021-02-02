@@ -1,7 +1,7 @@
 import torch
 
-from ws.RLAgents.Category3_PolicyGradientBased.misc import _fn_calculate_montecarlo_normalized_rewards
-from ws.RLAgents.Category3_PolicyGradientBased.Buffer import Buffer
+from ws.RLAgents.D_PolicyGradientBased.misc import _fn_calculate_montecarlo_normalized_rewards
+from ws.RLAgents.D_PolicyGradientBased.Buffer import Buffer
 from .ActorCritic import ActorCritic
 from .detail_mgt import detail_mgt
 from .model_mgt import model_mgt

@@ -5,13 +5,13 @@ from time import time
 
 import numpy
 
-from ws.RLAgents.Category4_SelfPlay.DeepLearning_SelfPlay.misc.neural_net_mgt import neural_net_mgt
-from ws.RLAgents.Category4_SelfPlay.DeepLearning_SelfPlay.play.greedy_player_mgt import greedy_player_mgt
-from ws.RLAgents.Category4_SelfPlay.DeepLearning_SelfPlay.play.animated_player_mgt import animated_player_mgt
-from ws.RLAgents.Category4_SelfPlay.DeepLearning_SelfPlay.play.random_player_mgt import random_player_mgt
-from ws.RLAgents.Category4_SelfPlay.DeepLearning_SelfPlay.play.playground_mgt import playground_mgt
+from ws.RLAgents.E_SelfPlay.DeepLearning_SelfPlay.misc.neural_net_mgt import neural_net_mgt
+from ws.RLAgents.E_SelfPlay.DeepLearning_SelfPlay.play.greedy_player_mgt import greedy_player_mgt
+from ws.RLAgents.E_SelfPlay.DeepLearning_SelfPlay.play.animated_player_mgt import animated_player_mgt
+from ws.RLAgents.E_SelfPlay.DeepLearning_SelfPlay.play.random_player_mgt import random_player_mgt
+from ws.RLAgents.E_SelfPlay.DeepLearning_SelfPlay.play.playground_mgt import playground_mgt
 from ws.RLUtils.algo_lib.search.monte_carlo_tree_search_mgt import monte_carlo_tree_search_mgt
-from ws.RLAgents.Category4_SelfPlay.DeepLearning_SelfPlay.train.training_mgt import training_mgt
+from ws.RLAgents.E_SelfPlay.DeepLearning_SelfPlay.train.training_mgt import training_mgt
 from ws.RLEnvironments.self_play_games.othello.game_mgt import game_mgt
 from ws.RLUtils.common.misc_functions import fn_get_elapsed_time
 

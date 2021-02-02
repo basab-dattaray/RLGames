@@ -2,11 +2,11 @@ import copy
 from collections import namedtuple
 import numpy as np
 
-from ws.RLAgents.Category4_SelfPlay.DeepLearning_SelfPlay.play.playground_mgt import playground_mgt
+from ws.RLAgents.E_SelfPlay.DeepLearning_SelfPlay.play.playground_mgt import playground_mgt
 
 from ws.RLUtils.algo_lib.search.monte_carlo_tree_search_mgt import monte_carlo_tree_search_mgt
-from ws.RLAgents.Category4_SelfPlay.DeepLearning_SelfPlay.train.sample_generator import fn_generate_samples
-from ws.RLAgents.Category4_SelfPlay.DeepLearning_SelfPlay.train.training_helper import fn_log_iteration_results
+from ws.RLAgents.E_SelfPlay.DeepLearning_SelfPlay.train.sample_generator import fn_generate_samples
+from ws.RLAgents.E_SelfPlay.DeepLearning_SelfPlay.train.training_helper import fn_log_iteration_results
 from ws.RLUtils.monitoring.tracing.tracer import tracer
 def training_mgt(nn_mgr_N, app_info):
     _TMP_MODEL_FILENAME = '_tmp'

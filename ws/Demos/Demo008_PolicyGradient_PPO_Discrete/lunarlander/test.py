@@ -1,4 +1,4 @@
-from ws.RLAgents.Category3_PolicyGradientBased.agent_mgt import agent_mgt
+from ws.RLAgents.D_PolicyGradientBased.agent_mgt import agent_mgt
 
 
 def fn_exec_test():

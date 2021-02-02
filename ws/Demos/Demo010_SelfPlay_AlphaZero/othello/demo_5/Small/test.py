@@ -1,4 +1,4 @@
-from ws.RLAgents.Category4_SelfPlay.DeepLearning_SelfPlay.agent_mgt import agent_mgt
+from ws.RLAgents.E_SelfPlay.DeepLearning_SelfPlay.agent_mgt import agent_mgt
 
 
 def fn_exec_test():

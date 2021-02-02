@@ -1,4 +1,4 @@
-from ws.RLAgents.Category2_ValueBased.DeepLearning_OffPolicy_Bootstrapping.dqn.agent_mgt import agent_mgt
+from ws.RLAgents.C_ValueBase_WithFunctionApproximation.DeepLearning_OffPolicy_Bootstrapping.dqn.agent_mgt import agent_mgt
 
 
 def fn_exec_test():
