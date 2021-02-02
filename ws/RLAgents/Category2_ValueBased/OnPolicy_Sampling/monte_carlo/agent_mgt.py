@@ -15,7 +15,7 @@ def agent_mgt(file_path):
         actions["run"] = fn_run
 
         fn_bind_fn_display_actions(actions)
-        return
+        return agent_mgr
 
     @tracer(app_info, verboscity= 4)
     def fn_set_test_mode():
