@@ -222,7 +222,7 @@ def display_mgt(strategy):
             _tk.arrows.append(_tk.canvas.create_image(origin_x, origin_y,
                                                                 image=_tk.right))
 
-    def fn_setup_gridwell(actions):
+    def fn_setup_ui(actions):
         nonlocal _actions
 
         _actions = actions
@@ -237,7 +237,7 @@ def display_mgt(strategy):
         _fn_append_rewards_to_canvas()
         _fn_render_on_canvas()
 
-    def fn_act():
+    def fn_run_ui():
         if _test_mode:
             for key, action in _actions.items():
                 action()
@@ -310,8 +310,8 @@ def display_mgt(strategy):
     _tk.title(app_title)
 
     ret_obj = namedtuple('_', [
-        'fn_setup_gridwell',
-        'fn_act',
+        'fn_setup_ui',
+        'fn_run_ui',
         'fn_move_cursor',
         'fn_show_policy_arrows',
         'fn_show_state_values',
@@ -329,8 +329,8 @@ def display_mgt(strategy):
         'fn_close',
     ])
 
-    ret_obj.fn_setup_gridwell = fn_setup_gridwell
-    ret_obj.fn_act = fn_act
+    ret_obj.fn_setup_ui = fn_setup_ui
+    ret_obj.fn_run_ui = fn_run_ui
     ret_obj.fn_move_cursor = fn_move_cursor
     ret_obj.fn_show_policy_arrows = fn_show_policy_arrows
     ret_obj.fn_show_state_values = fn_show_state_values

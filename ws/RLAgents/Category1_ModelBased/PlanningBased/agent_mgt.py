@@ -26,9 +26,9 @@ def agent_mgt(file_path):
         actions["plan"] = fn_apply
         actions["move"] = fn_move_per_policy
 
-        app_info.ENV.display_mgr.fn_setup_gridwell(actions)
+        app_info.ENV.display_mgr.fn_setup_ui(actions)
 
-        app_info.ENV.display_mgr.fn_act()
+        app_info.ENV.display_mgr.fn_run_ui()
         app_info.ENV.display_mgr.fn_close()
 
         return agent_mgr
