@@ -14,9 +14,9 @@ def agent_mgt(file_path):
         actions = OrderedDict()
         actions["run"] = fn_run
 
-        app_info.ENV.display_mgr.fn_init(actions)
+        app_info.ENV.display_mgr.fn_setup_gridwell(actions)
 
-        app_info.ENV.display_mgr.fn_act(actions)
+        app_info.ENV.display_mgr.fn_act()
         return agent_mgr
 
     @tracer(app_info, verboscity= 4)

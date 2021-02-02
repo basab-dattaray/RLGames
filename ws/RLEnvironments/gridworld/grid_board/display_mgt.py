@@ -42,6 +42,7 @@ def display_mgt(strategy):
 
     _test_mode = False
 
+    _actions = {}
     def fn_close():
         _tk.destroy()
 
@@ -221,23 +222,26 @@ def display_mgt(strategy):
             _tk.arrows.append(_tk.canvas.create_image(origin_x, origin_y,
                                                                 image=_tk.right))
 
-    def fn_init(acton_dictionary):
+    def fn_setup_gridwell(actions):
+        nonlocal _actions
+
+        _actions = actions
+
         _tk.geometry('{0}x{1}'.format(_width * _unit + _right_margin,
                                       _height * _unit + _bottom_margin))
         _tk.texts = []
         _tk.arrows = []
 
         (_tk.up, _tk.down, _tk.left, _tk.right), _tk.shapes = _fn_load_images()
-        _tk.canvas = _fn_build_canvas(acton_dictionary)
-
-    def fn_act(acton_dictionary):
-        if _test_mode:
-            for key, action in acton_dictionary.items():
-                action()
-            return
-
+        _tk.canvas = _fn_build_canvas(_actions)
         _fn_append_rewards_to_canvas()
         _fn_render_on_canvas()
+
+    def fn_act():
+        if _test_mode:
+            for key, action in _actions.items():
+                action()
+            return
         _tk.mainloop()
 
     def fn_move_cursor(stateStart, stateEnd=(0, 0)):
@@ -306,7 +310,7 @@ def display_mgt(strategy):
     _tk.title(app_title)
 
     ret_obj = namedtuple('_', [
-        'fn_init',
+        'fn_setup_gridwell',
         'fn_act',
         'fn_move_cursor',
         'fn_show_policy_arrows',
@@ -325,7 +329,7 @@ def display_mgt(strategy):
         'fn_close',
     ])
 
-    ret_obj.fn_init = fn_init
+    ret_obj.fn_setup_gridwell = fn_setup_gridwell
     ret_obj.fn_act = fn_act
     ret_obj.fn_move_cursor = fn_move_cursor
     ret_obj.fn_show_policy_arrows = fn_show_policy_arrows
