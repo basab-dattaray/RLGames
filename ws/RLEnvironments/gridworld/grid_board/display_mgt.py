@@ -42,6 +42,10 @@ def display_mgt(strategy):
 
     _test_mode = False
 
+    def fn_close():
+        _tk.destroy()
+
+
     def fn_set_test_mode():
         nonlocal _test_mode
         _test_mode = True
@@ -239,14 +243,11 @@ def display_mgt(strategy):
         if _test_mode:
             for key, action in acton_dictionary.items():
                 action()
+            return
 
         _fn_append_rewards_to_canvas()
         _fn_render_on_canvas()
         _tk.mainloop()
-        # if _test_mode:
-        #     _tk.quit()
-        # else:
-        #     _tk.mainloop()
 
     def fn_move_cursor(stateStart, stateEnd=(0, 0)):
         step = _fn_calculate_step(stateStart, stateEnd)
@@ -329,6 +330,7 @@ def display_mgt(strategy):
         'fn_compare_value_repos',
         'fn_get_state_actions',
         'fn_set_test_mode',
+        'fn_close',
     ])
 
     ret_obj.fn_init = fn_init
@@ -346,6 +348,7 @@ def display_mgt(strategy):
     ret_obj.fn_compare_value_repos = fn_compare_value_repos
     ret_obj.fn_get_state_actions = fn_get_state_actions
     ret_obj.fn_set_test_mode = fn_set_test_mode
+    ret_obj.fn_close = fn_close
     return ret_obj
 
 

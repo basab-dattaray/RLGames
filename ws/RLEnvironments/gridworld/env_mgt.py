@@ -84,7 +84,7 @@ def env_mgt(name, strategy= None):
         return ACTION_SIZE
 
     def fn_close():
-        pass
+        display_mgr.fn_close()
 
     def fn_set_active_state(current_state):
         nonlocal _current_state

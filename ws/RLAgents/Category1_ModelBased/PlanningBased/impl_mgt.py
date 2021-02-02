@@ -10,6 +10,7 @@ def impl_mgt(app_info):
 
     def fn_bind_fn_display_actions(acton_dictionary):
         display_mgr.fn_init(acton_dictionary)
+        display_mgr.fn_close()
 
     def fn_next_get_action(state):
         actions = _planning_mgr.fn_get_actions_given_state(state)
