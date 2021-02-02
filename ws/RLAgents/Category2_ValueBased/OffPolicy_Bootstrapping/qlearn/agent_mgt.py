@@ -8,12 +8,15 @@ from ws.RLUtils.setup.startup_mgt import startup_mgt
 def agent_mgt(file_path):
     app_info = startup_mgt(file_path, __file__)
     fn_run, _fn_set_test_mode = impl_mgt(app_info)
-    def fn_init():
+
+    def fn_setup_env():
         actions = OrderedDict()
         actions["run"] = fn_run
 
         app_info.ENV.display_mgr.fn_setup_ui(actions)
+        return agent_mgr
 
+    def fn_run_env():
         app_info.ENV.display_mgr.fn_run_ui()
         return agent_mgr
 
@@ -25,12 +28,14 @@ def agent_mgt(file_path):
 
     agent_mgr = namedtuple('_',
                                 [
-                                    'fn_init',
+                                    'fn_setup_env',
+                                    'fn_run_env',
                                     'fn_set_test_mode'
                                     'APP_INFO',
                                 ]
                            )
-    agent_mgr.fn_init = fn_init
+    agent_mgr.fn_setup_env = fn_setup_env
+    agent_mgr.fn_run_env = fn_run_env
     agent_mgr.fn_set_test_mode = fn_set_test_mode
     agent_mgr.APP_INFO = app_info
 
