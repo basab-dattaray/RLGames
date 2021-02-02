@@ -27,6 +27,8 @@ def agent_mgt(file_path):
         actions["move"] = fn_move_per_policy
 
         app_info.ENV.display_mgr.fn_init(actions)
+
+        app_info.ENV.display_mgr.fn_act(actions)
         app_info.ENV.display_mgr.fn_close()
 
         return agent_mgr

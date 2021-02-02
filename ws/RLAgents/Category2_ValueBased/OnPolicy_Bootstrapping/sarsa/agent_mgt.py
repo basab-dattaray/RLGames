@@ -14,6 +14,8 @@ def agent_mgt(file_path):
         actions["run"] = fn_run
 
         app_info.ENV.display_mgr.fn_init(actions)
+
+        app_info.ENV.display_mgr.fn_act(actions)
         return agent_mgr
 
     @tracer(app_info, verboscity= 4)

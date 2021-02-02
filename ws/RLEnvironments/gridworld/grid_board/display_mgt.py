@@ -230,6 +230,7 @@ def display_mgt(strategy):
         (_tk.up, _tk.down, _tk.left, _tk.right), _tk.shapes = _fn_load_images()
         _tk.canvas = _fn_build_canvas(acton_dictionary)
 
+    def fn_act(acton_dictionary):
         if _test_mode:
             for key, action in acton_dictionary.items():
                 action()
@@ -306,6 +307,7 @@ def display_mgt(strategy):
 
     ret_obj = namedtuple('_', [
         'fn_init',
+        'fn_act',
         'fn_move_cursor',
         'fn_show_policy_arrows',
         'fn_show_state_values',
@@ -324,6 +326,7 @@ def display_mgt(strategy):
     ])
 
     ret_obj.fn_init = fn_init
+    ret_obj.fn_act = fn_act
     ret_obj.fn_move_cursor = fn_move_cursor
     ret_obj.fn_show_policy_arrows = fn_show_policy_arrows
     ret_obj.fn_show_state_values = fn_show_state_values
