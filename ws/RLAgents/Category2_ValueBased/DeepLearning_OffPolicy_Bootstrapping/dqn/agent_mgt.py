@@ -66,9 +66,11 @@ def agent_mgt(caller_file):
         
     agent_mgr = namedtuple('_', [
         'fn_train',
+        'APP_INFO',
     ])
 
     agent_mgr.fn_train = fn_train
+    agent_mgr.APP_INFO = app_info
 
     return agent_mgr
 

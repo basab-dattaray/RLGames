@@ -28,7 +28,7 @@ def startup_mgt(demo_filepath, agent_filepath):
         base_dot_path, demo_dot_path = fn_get_rel_dot_folder_path(current_path= demo_folder_path, base_path=agent_filepath)
         fn_get_args = load_function(function_name="fn_get_args", module_name="ARGS", module_dot_path=demo_dot_path)
         app_info = fn_get_args()
-        app_info.ERROR_MESSAGE = None
+        app_info = _fn_init_arg_with_default_val(app_info, 'ERROR_MESSAGE', None)
         app_info = _fn_init_arg_with_default_val(app_info, 'BASE_DOT_PATH_', base_dot_path)
         app_info = _fn_init_arg_with_default_val(app_info, 'DEMO_FOLDER_PATH_', demo_folder_path)
         app_info = _fn_init_arg_with_default_val(app_info, 'DEMO_DOT_PATH_', demo_dot_path)

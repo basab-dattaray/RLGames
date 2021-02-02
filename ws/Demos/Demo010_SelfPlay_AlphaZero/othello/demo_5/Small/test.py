@@ -19,7 +19,7 @@ def fn_exec_test():
         fn_test_against_greedy(). \
         fn_test_against_random(). \
         fn_archive_log_file()
-    pass
+    return
 
 
 if __name__ == "__main__":

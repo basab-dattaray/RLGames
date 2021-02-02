@@ -25,11 +25,13 @@ def agent_mgt(file_path):
     agent_mgr = namedtuple('_',
                                 [
                                     'fn_init',
-                                    'fn_set_test_mode'
+                                    'fn_set_test_mode',
+                                    'APP_INFO',
                                 ]
                            )
     agent_mgr.fn_init = fn_init
     agent_mgr.fn_set_test_mode = fn_set_test_mode
+    agent_mgr.APP_INFO = app_info
 
     return agent_mgr
 

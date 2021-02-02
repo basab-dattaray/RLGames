@@ -119,5 +119,5 @@ def agent_mgt(file_path):
     agent_mgr.fn_show_args = fn_show_args
     agent_mgr.fn_measure_time_elapsed = fn_measure_time_elapsed
     agent_mgr.fn_archive_log_file = fn_archive_log_file
-    agent_mgr.arguments = app_info
+    agent_mgr.APP_INFO = app_info
     return agent_mgr

@@ -117,11 +117,13 @@ def agent_mgt(demo_path):
                                 [
                                     'fn_run_train',
                                     'fn_run_test'
-                                    'fn_set_test_mode'
+                                    'fn_set_test_mode',
+                                    'APP_INFO',
                                 ]
                            )
     agent_mgr.fn_run_train = fn_run_train
     agent_mgr.fn_run_test = fn_run_test
     agent_mgr.fn_set_test_mode = fn_set_test_mode
+    agent_mgr.APP_INFO = app_info
     return agent_mgr
 
