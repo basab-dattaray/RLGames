@@ -29,7 +29,7 @@ def agent_mgt(file_path):
         app_info.ENV.display_mgr.fn_setup_ui(actions)
 
         app_info.ENV.display_mgr.fn_run_ui()
-        app_info.ENV.display_mgr.fn_close()
+        # app_info.ENV.display_mgr.fn_close()
 
         return agent_mgr
 
