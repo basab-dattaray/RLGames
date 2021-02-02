@@ -26,7 +26,9 @@ def agent_mgt(file_path):
         actions["plan"] = fn_apply
         actions["move"] = fn_move_per_policy
 
-        fn_bind_fn_display_actions(actions)
+        app_info.ENV.display_mgr.fn_init(actions)
+        app_info.ENV.display_mgr.fn_close()
+
         return agent_mgr
 
     @tracer(app_info, verboscity= 4)

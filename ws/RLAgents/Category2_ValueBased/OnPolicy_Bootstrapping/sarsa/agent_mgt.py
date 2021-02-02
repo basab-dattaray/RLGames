@@ -8,12 +8,12 @@ from ws.RLUtils.setup.startup_mgt import startup_mgt
 
 def agent_mgt(file_path):
     app_info = startup_mgt(file_path, __file__)
-    fn_bind_fn_display_actions, fn_run, _fn_set_test_mode = impl_mgt(app_info)
+    _, fn_run, _fn_set_test_mode = impl_mgt(app_info)
     def fn_init():
         actions = OrderedDict()
         actions["run"] = fn_run
 
-        fn_bind_fn_display_actions(actions)
+        app_info.ENV.display_mgr.fn_init(actions)
         return agent_mgr
 
     @tracer(app_info, verboscity= 4)
