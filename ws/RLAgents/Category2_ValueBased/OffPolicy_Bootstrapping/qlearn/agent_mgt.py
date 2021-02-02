@@ -17,6 +17,9 @@ def agent_mgt(file_path):
         return agent_mgr
 
     def fn_run_env():
+        if 'TEST_MODE' in app_info:
+            if app_info.TEST_MODE:
+                app_info.ENV.display_mgr.fn_set_test_mode()
         app_info.ENV.display_mgr.fn_run_ui()
         return agent_mgr
 

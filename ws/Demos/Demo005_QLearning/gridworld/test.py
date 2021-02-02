@@ -2,19 +2,14 @@ from ws.RLAgents.Category2_ValueBased.OffPolicy_Bootstrapping.qlearn.agent_mgt i
 
 def fn_exec_test():
     agent_mgr = agent_mgt(__file__). \
-        fn_set_test_mode(). \
         fn_change_args(
-            {'TEST_MODE_': 1,}
+            {
+                'TEST_MODE': True,
+            }
         ). \
         fn_setup_env(). \
         fn_run_env()
     return agent_mgr.APP_INFO.ERROR_MESSAGE
-
-# def fn_exec_test():
-#     agent_mgr = agent_mgt(__file__). \
-#         fn_set_test_mode(). \
-#         fn_init()
-#     return agent_mgr.APP_INFO.ERROR_MESSAGE
 
 if __name__ == "__main__":
     fn_exec_test()
