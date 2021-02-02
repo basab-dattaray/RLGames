@@ -1,4 +1,4 @@
-from ws.RLAgents.Category2_ValueBased.OnPolicy_Bootstrapping.sarsa.agent_mgt import agent_mgt
+from ws.RLAgents.Category1_ModelBased.Bootstrapping.OnPolicy_Bootstrapping.sarsa.agent_mgt import agent_mgt
 
 
 def fn_exec_test():

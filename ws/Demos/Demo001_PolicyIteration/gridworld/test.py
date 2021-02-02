@@ -1,4 +1,4 @@
-from ws.RLAgents.Category1_ModelBased.PlanningBased.agent_mgt import agent_mgt
+from ws.RLAgents.Category1_ModelBased.BasedOnPlanning.agent_mgt import agent_mgt
 
 
 def fn_exec_test():
