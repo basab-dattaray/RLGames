@@ -1,11 +1,11 @@
 import torch
 
-from ws.RLAgents.D_PolicyGradientBased.DeepLearning_ProximalPolicyApproximation.continuous_action.Critic import Critic
+from ws.RLAgents.D_PolicyGradientBased.ProximalPolicyOptimization.continuous_action.Critic import Critic
 from ws.RLAgents.D_PolicyGradientBased.misc import _fn_calculate_montecarlo_normalized_rewards
 
 from ws.RLAgents.D_PolicyGradientBased.Buffer import Buffer
 from ws.RLUtils.common.module_loader import load_function
-from ws.RLAgents.D_PolicyGradientBased.DeepLearning_ProximalPolicyApproximation.model_mgt import model_mgt
+from ws.RLAgents.D_PolicyGradientBased.ProximalPolicyOptimization.model_mgt import model_mgt
 
 
 def impl_mgt(app_info):

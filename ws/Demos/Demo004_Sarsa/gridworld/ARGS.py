@@ -2,7 +2,7 @@ from ws.RLUtils.common.DotDict import DotDict
 
 app_info = DotDict(
   {
-    "STRATEGY": "C_ValueBase_WithFunctionApproximation.OnPolicy_Bootstrapping.sarsa",
+    "STRATEGY": "C_ValueBase_WithFunctionApproximation.OnPolicy.sarsa",
     "ENV_NAME": "Gridworld-v1",
     "AGENT_CONFIG": "gridwell_sarsa",
   }

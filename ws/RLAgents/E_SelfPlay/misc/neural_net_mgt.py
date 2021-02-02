@@ -1,12 +1,11 @@
 import os
-import sys
 import time
 from collections import namedtuple
 
 import numpy as np
 
-from ws.RLAgents.E_SelfPlay.DeepLearning_SelfPlay._game.othello._ml_lib.pytorch.NeuralNet import NeuralNet
-from ws.RLAgents.E_SelfPlay.DeepLearning_SelfPlay.misc.average_mgt import average_mgt
+from ws.RLAgents.E_SelfPlay._game.othello._ml_lib.pytorch.NeuralNet import NeuralNet
+from ws.RLAgents.E_SelfPlay.misc.average_mgt import average_mgt
 from ws.RLUtils.monitoring.tracing.progress_count_mgt import progress_count_mgt
 
 # sys.dir_path.append('../../')

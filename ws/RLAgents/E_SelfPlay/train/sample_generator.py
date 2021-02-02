@@ -3,7 +3,7 @@ from random import shuffle
 
 import numpy as np
 
-from ws.RLAgents.E_SelfPlay.DeepLearning_SelfPlay.train.training_helper import fn_save_train_examples
+from ws.RLAgents.E_SelfPlay.train.training_helper import fn_save_train_examples
 from ws.RLUtils.monitoring.tracing.progress_count_mgt import progress_count_mgt
 from ws.RLUtils.monitoring.tracing.tracer import tracer
 

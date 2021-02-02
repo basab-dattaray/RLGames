@@ -1,6 +1,6 @@
 import coloredlogs
 
-from ws.RLAgents.E_SelfPlay.DeepLearning_SelfPlay.agent_mgt import agent_mgt
+from ws.RLAgents.E_SelfPlay.agent_mgt import agent_mgt
 
 coloredlogs.install(level='INFO')
 

@@ -1,5 +1,5 @@
-# from ws.RLAgents.A_ModelBased_Planning.Bootstrapping.OffPolicy_Bootstrapping.qlearn.agent_mgt import agent_mgt
-from ws.RLAgents.B_ValueBased.Bootstrapping.OffPolicy_Bootstrapping.qlearn.agent_mgt import agent_mgt
+# from ws.RLAgents.A_ModelBased_Planning.Bootstrapping.OffPolicy.qlearn.agent_mgt import agent_mgt
+from ws.RLAgents.B_ValueBased.Bootstrapping.OffPolicy.qlearn.agent_mgt import agent_mgt
 
 
 def fn_exec_test():

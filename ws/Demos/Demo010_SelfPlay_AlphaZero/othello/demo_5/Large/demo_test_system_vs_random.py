@@ -1,4 +1,4 @@
-from ws.RLAgents.E_SelfPlay.DeepLearning_SelfPlay.agent_mgt import agent_mgt
+from ws.RLAgents.E_SelfPlay.agent_mgt import agent_mgt
 
 if __name__ == "__main__":
     agent_mgt(__file__). \

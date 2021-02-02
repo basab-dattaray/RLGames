@@ -2,7 +2,7 @@ from ws.RLUtils.common.DotDict import DotDict
 
 app_info = DotDict(
   {
-      "STRATEGY": "D_PolicyGradientBased.DeepLearning_ActorCritic.A2C",
+      "STRATEGY": "D_PolicyGradientBased.ActorCritic.A2C",
 
       "NUM_EPOCHS": 1,
       "NUM_EPISODES": 12000,

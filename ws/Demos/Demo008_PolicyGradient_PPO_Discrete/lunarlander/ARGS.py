@@ -2,7 +2,7 @@ from ws.RLUtils.common.DotDict import DotDict
 
 app_info = DotDict(
     {
-        "STRATEGY": "D_PolicyGradientBased.DeepLearning_ProximalPolicyApproximation.discrete_action",
+        "STRATEGY": "D_PolicyGradientBased.ProximalPolicyOptimization.discrete_action",
 
         "NUM_EPOCHS": 4,
         "NUM_EPISODES": 20000,
