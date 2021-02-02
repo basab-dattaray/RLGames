@@ -15,9 +15,6 @@ def impl_mgt(app_info):
         new_val = current_q + app_info.LEARNING_RATE * (new_q - current_q)
         fn_set_qval(state, action, new_val)
 
-    def fn_bind_fn_display_actions(acton_dictionary):
-        display_mgr.fn_init(acton_dictionary)
-
     def fn_set_test_mode():
         nonlocal  _test_mode
         _test_mode = True
@@ -61,4 +58,4 @@ def impl_mgt(app_info):
 
         return continue_running
 
-    return fn_bind_fn_display_actions, fn_q_learn, fn_set_test_mode
+    return fn_q_learn, fn_set_test_mode

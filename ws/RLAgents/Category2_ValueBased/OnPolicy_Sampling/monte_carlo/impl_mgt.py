@@ -14,10 +14,6 @@ def impl_mgt(app_info):
     )
     _test_mode = False
 
-    def fn_bind_fn_display_actions(acton_dictionary):
-
-        display_mgr.fn_init(acton_dictionary)
-
 
     def fn_set_test_mode():
         nonlocal  _test_mode
@@ -58,4 +54,4 @@ def impl_mgt(app_info):
 
         return value_table, continue_running
 
-    return fn_bind_fn_display_actions, fn_run_monte_carlo, fn_set_test_mode
+    return fn_run_monte_carlo, fn_set_test_mode

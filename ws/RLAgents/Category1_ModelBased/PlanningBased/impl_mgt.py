@@ -8,10 +8,6 @@ def impl_mgt(app_info):
     _planning_mgr = planning_mgt(app_info.ENV, app_info.DISCOUNT_FACTOR)
     display_mgr = app_info.ENV.display_mgr
 
-    def fn_bind_fn_display_actions(acton_dictionary):
-        display_mgr.fn_init(acton_dictionary)
-        display_mgr.fn_close()
-
     def fn_next_get_action(state):
         actions = _planning_mgr.fn_get_actions_given_state(state)
         best_action = np.random.choice(len(actions), p=actions)
@@ -39,4 +35,4 @@ def impl_mgt(app_info):
         display_mgr.fn_show_state_values(value_table)
         display_mgr.fn_show_policy_arrows(_policy_table)
 
-    return fn_bind_fn_display_actions, fn_move_per_policy, fn_apply_policy_iteration, fn_apply_value_iteration
+    return fn_move_per_policy, fn_apply_policy_iteration, fn_apply_value_iteration
