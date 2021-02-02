@@ -128,8 +128,8 @@ def startup_mgt(demo_filepath, agent_filepath):
     if fn_get_key_as_bool('AUTO_INTERRUPT_HANDLING'):
         interrupt_mgt(app_info)
 
-    if not fn_get_key_as_bool('TEST_MODE_'):
-        app_info.TEST_MODE_ = 0
+    # if not fn_get_key_as_bool('TEST_MODE_'):
+    #     app_info.TEST_MODE_ = 0
 
     return app_info
 
