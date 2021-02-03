@@ -8,7 +8,7 @@ def impl_mgt(app_info):
     fn_get_qval, fn_set_qval, fn_get_q_actions, fn_get_max_q_actions = qtable_mgt()
     _test_mode = False
 
-    def fnUpdateKnowledge(state, action, reward, next_state):
+    def _fn_update_knowledge(state, action, reward, next_state):
         current_q = fn_get_qval(state, action)
         new_q = reward + app_info.DISCOUNT_FACTOR * max(fn_get_q_actions(next_state))
 
@@ -43,7 +43,7 @@ def impl_mgt(app_info):
 
             new_state, reward, _, _ = app_info.ENV.fn_take_step(action)
 
-            fnUpdateKnowledge(state, action, reward, new_state)
+            _fn_update_knowledge(state, action, reward, new_state)
             continue_running = reward == 0
 
             # fn_update_ui(display_mgr.fn_show_qvalue, state)
