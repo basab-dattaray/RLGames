@@ -11,11 +11,8 @@ from .impl_mgt import impl_mgt
 def agent_mgt(caller_file):
     app_info = startup_mgt(caller_file, __file__)
     fn_load_weights = None
-    if app_info.ENV is not None:
-        _action_size = app_info.ENV.fn_get_action_size()
-        _state_size = app_info.ENV.fn_get_state_size()
-        fn_reset_env, fn_remember, fn_act, fn_replay, fn_save_weights, fn_load_weights = impl_mgt(app_info, _state_size,
-                                                                                        _action_size)
+
+    fn_reset_env, fn_remember, fn_act, fn_replay, fn_save_weights, fn_load_weights = impl_mgt(app_info)
 
     @tracer(app_info, verboscity= 4)
     def fn_change_args(change_args):

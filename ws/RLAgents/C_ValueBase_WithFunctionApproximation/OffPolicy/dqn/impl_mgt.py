@@ -11,7 +11,10 @@ import numpy as np
 import os
 
 
-def impl_mgt(app_info, state_size, action_size):
+def impl_mgt(app_info):
+    _action_size = app_info.ENV.fn_get_action_size()
+    _state_size = app_info.ENV.fn_get_state_size()
+
     _epsilon = app_info.EPSILON
     _gamma = app_info.GAMMA
     _batch_size = app_info.BATCH_SIZE
@@ -32,16 +35,16 @@ def impl_mgt(app_info, state_size, action_size):
 
     def fn_build_model():
         model = Sequential()
-        model.add(Dense(150, input_dim=state_size, activation=relu))
+        model.add(Dense(150, input_dim=_state_size, activation=relu))
         model.add(Dense(120, activation=relu))
-        model.add(Dense(action_size, activation=linear))
+        model.add(Dense(_action_size, activation=linear))
         model.compile(loss='mse', optimizer=Adam(lr=_learning_rate))
         return model
 
     def fnAct(state):
 
         if np.random.rand() <= _epsilon:
-            return random.randrange(action_size)
+            return random.randrange(_action_size)
         act_values = _model.predict(state)
         return np.argmax(act_values[0])
 
