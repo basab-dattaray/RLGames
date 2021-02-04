@@ -15,6 +15,8 @@ from ws.RLUtils.setup.interrupt_mgt import interrupt_mgt
 
 def startup_mgt(demo_filepath, agent_filepath):
     ARGS_PY = 'ARGS.py'
+    RESULTS_FOLDER_NAME = 'Results/'
+    AGENT_DIR_NAME = 'RLAgents'
     def _fn_init_arg_with_default_val(app_info, name, val):
         if app_info is None:
             app_info = {}
@@ -32,9 +34,11 @@ def startup_mgt(demo_filepath, agent_filepath):
         app_info = _fn_init_arg_with_default_val(app_info, 'BASE_DOT_PATH_', base_dot_path)
         app_info = _fn_init_arg_with_default_val(app_info, 'DEMO_FOLDER_PATH_', demo_folder_path)
         app_info = _fn_init_arg_with_default_val(app_info, 'DEMO_DOT_PATH_', demo_dot_path)
-        app_info = _fn_init_arg_with_default_val(app_info, 'RESULTS_REL_PATH', 'Results/')
+        app_info = _fn_init_arg_with_default_val(app_info, 'RESULTS_REL_PATH', RESULTS_FOLDER_NAME)
+
         results_folder_path = os.path.join(app_info.DEMO_FOLDER_PATH_, app_info.RESULTS_REL_PATH)
         app_info = _fn_init_arg_with_default_val(app_info, 'RESULTS_PATH_', results_folder_path)
+        app_info = _fn_init_arg_with_default_val(app_info, 'AGENTS_DOTPATH_', f'{base_dot_path}.{AGENT_DIR_NAME}')
         return app_info
 
     def _fn_setup_logging():

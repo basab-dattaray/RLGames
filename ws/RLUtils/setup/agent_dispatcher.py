@@ -48,7 +48,7 @@ def agent_dispatcher(file_path):
     export_functions.fn_measure_time_elapsed = fn_measure_time_elapsed
     export_functions.fn_archive_log_file = fn_archive_log_file
 
-    dispatch_dotpath = f'ws.RLAgents.{app_info.STRATEGY}'
+    dispatch_dotpath = f'{app_info.AGENTS_DOTPATH_}.{app_info.STRATEGY}'
 
     agent_mgt = load_function(function_name="agent_mgt", module_name="agent_mgt", module_dot_path=dispatch_dotpath)
 

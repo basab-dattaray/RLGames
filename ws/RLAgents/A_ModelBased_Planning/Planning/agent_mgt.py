@@ -45,37 +45,19 @@ def agent_mgt(app_info, common_functions):
         app_info.ENV.display_mgr.fn_run_ui()
         return agent_mgr
 
-    @tracer(app_info, verboscity=4)
-    def fn_set_test_mode():
-        app_info.ENV.display_mgr.fn_set_test_mode()
-        return agent_mgr
 
     agent_mgr = namedtuple('_',
                                 [
                                     'fn_setup_env',
                                     'fn_run_env',
-                                    'fn_set_test_mode'
                                     'fn_change_args',
                                     'APP_INFO',
                                 ]
                            )
     agent_mgr.fn_setup_env = fn_setup_env
     agent_mgr.fn_run_env = fn_run_env
-    agent_mgr.fn_set_test_mode = fn_set_test_mode
     agent_mgr.fn_change_args = common_functions.fn_change_args
     agent_mgr.APP_INFO = app_info
 
-    # agent_mgr = namedtuple('_',
-    #                        [
-    #                            'fn_init',
-    #                            'fn_change_args',
-    #                            'fn_set_test_mode'
-    #                            'APP_INFO',
-    #                        ]
-    #                        )
-    # agent_mgr.fn_init = fn_init
-    # agent_mgr.fn_change_args =  common_functions.fn_change_args
-    # agent_mgr.fn_set_test_mode = fn_set_test_mode
-    # agent_mgr.APP_INFO = app_info
 
     return agent_mgr
