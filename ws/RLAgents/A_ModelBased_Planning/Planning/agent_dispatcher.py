@@ -7,7 +7,7 @@ from ws.RLUtils.common.misc_functions import fn_get_elapsed_time
 from ws.RLUtils.monitoring.tracing.tracer import tracer
 from ws.RLUtils.setup.startup_mgt import startup_mgt
 
-def agent_mgt_wrapper(file_path):
+def agent_dispatcher(file_path):
     app_info = startup_mgt(file_path, __file__)
 
     @tracer(app_info, verboscity=4)

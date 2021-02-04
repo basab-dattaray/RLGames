@@ -1,8 +1,8 @@
-from ws.RLAgents.A_ModelBased_Planning.Planning.agent_mgt_wrapper import agent_mgt_wrapper
+from ws.RLAgents.A_ModelBased_Planning.Planning.agent_dispatcher import agent_dispatcher
 
 
 def fn_exec_test():
-    agent_mgr = agent_mgt_wrapper(__file__)
+    agent_mgr = agent_dispatcher(__file__)
     agent_mgr. \
         fn_set_test_mode(). \
         fn_init()
