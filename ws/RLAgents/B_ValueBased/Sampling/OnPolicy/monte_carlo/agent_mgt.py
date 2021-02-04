@@ -1,11 +1,10 @@
 from collections import OrderedDict, namedtuple
-
-from ws.RLUtils.monitoring.tracing.tracer import tracer
 from .impl_mgt import impl_mgt
-from ws.RLUtils.setup.startup_mgt import startup_mgt
 
 
 def agent_mgt(app_info, common_functions):
+    fn_run = impl_mgt(app_info)
+
     fn_run = impl_mgt(app_info)
 
     def fn_setup_env():
@@ -22,15 +21,6 @@ def agent_mgt(app_info, common_functions):
         app_info.ENV.display_mgr.fn_run_ui()
         return agent_mgr
 
-    @tracer(app_info, verboscity= 4)
-    def fn_change_args(change_args):
-        if change_args is not None:
-            for k, v in change_args.items():
-                app_info[k] = v
-                app_info.trace_mgr.fn_write(f'  app_info[{k}] = {v}')
-        agent_mgr.app_info = app_info
-        return agent_mgr
-
     agent_mgr = namedtuple('_',
                                 [
                                     'fn_setup_env',
@@ -43,5 +33,5 @@ def agent_mgt(app_info, common_functions):
     agent_mgr.fn_run_env = fn_run_env
     agent_mgr.fn_change_args = common_functions.fn_change_args
     agent_mgr.APP_INFO = app_info
-
     return agent_mgr
+

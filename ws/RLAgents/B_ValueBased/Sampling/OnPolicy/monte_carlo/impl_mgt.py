@@ -12,14 +12,7 @@ def impl_mgt(app_info):
         app_info.DISCOUNT_FACTOR,
         app_info.LEARNING_RATE,
     )
-    _test_mode = False
 
-
-    def fn_set_test_mode():
-        nonlocal  _test_mode
-        _test_mode = True
-
-        app_info.ENV.display_mgr.fn_set_test_mode()
 
     def fn_run_monte_carlo():
         _fn_clear_trace()
@@ -27,8 +20,9 @@ def impl_mgt(app_info):
             value_table, episode_status = _fn_run_episode(display_mgr.fn_move_cursor)
             if display_mgr.fn_show_state_values is not None:
                 display_mgr.fn_show_state_values(value_table)
-            if _test_mode: # ONLY 1 episode needed
-                break;
+            if 'TEST_MODE' in app_info:
+                if app_info.TEST_MODE: # ONLY 1 episode needed
+                    break
 
 
     def _fn_run_episode(fn_move_cursor):
@@ -54,4 +48,4 @@ def impl_mgt(app_info):
 
         return value_table, continue_running
 
-    return fn_run_monte_carlo, fn_set_test_mode
+    return fn_run_monte_carlo
