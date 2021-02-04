@@ -62,7 +62,7 @@ def startup_mgt(demo_filepath, agent_filepath):
 
         env = None
         if env_mgt is not None:
-            env = env_mgt(app_info.ENV_NAME)
+            env = env_mgt(app_info.ENV_NAME, app_info.STRATEGY)
             if env.ERROR_MESSAGE is not None:
                 app_info.ENV = None
                 app_info.ERROR_MESSAGE = f'FAILED in {app_info.DEMO_FOLDER_PATH_} <--  {env.ERROR_MESSAGE}'
