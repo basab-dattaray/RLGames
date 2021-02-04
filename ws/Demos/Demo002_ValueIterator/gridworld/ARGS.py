@@ -1,7 +1,7 @@
 from ws.RLUtils.common.DotDict import DotDict
 
 app_info = DotDict({
-    "STRATEGY": "A_ModelBased_Planning.Planning.value_iterator",
+    "STRATEGY": "A_ModelBased.Planning.value_iterator",
     "ENV_NAME": "Gridworld-v1",
     "AGENT_CONFIG": "gridwell_iteration_based",
 
