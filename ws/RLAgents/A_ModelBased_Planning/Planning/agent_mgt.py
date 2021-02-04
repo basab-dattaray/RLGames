@@ -18,16 +18,31 @@ def agent_mgt(app_info, common_functions):
     if iterator_name == 'value_iterator':
         fn_apply = fn_apply_value_iteration
 
-    def fn_init():
+    # def fn_init():
+    #     actions = OrderedDict()
+    #     actions["plan"] = fn_apply
+    #     actions["move"] = fn_move_per_policy
+    #
+    #     app_info.ENV.display_mgr.fn_setup_ui(actions)
+    #
+    #     app_info.ENV.display_mgr.fn_run_ui()
+    #     # app_info.ENV.display_mgr.fn_close()
+    #
+    #     return agent_mgr
+
+    def fn_setup_env():
         actions = OrderedDict()
         actions["plan"] = fn_apply
         actions["move"] = fn_move_per_policy
 
         app_info.ENV.display_mgr.fn_setup_ui(actions)
+        return agent_mgr
 
+    def fn_run_env():
+        if 'TEST_MODE' in app_info:
+            if app_info.TEST_MODE:
+                app_info.ENV.display_mgr.fn_set_test_mode()
         app_info.ENV.display_mgr.fn_run_ui()
-        # app_info.ENV.display_mgr.fn_close()
-
         return agent_mgr
 
     @tracer(app_info, verboscity=4)
@@ -36,16 +51,31 @@ def agent_mgt(app_info, common_functions):
         return agent_mgr
 
     agent_mgr = namedtuple('_',
-                           [
-                               'fn_init',
-                               'fn_change_args',
-                               'fn_set_test_mode'
-                               'APP_INFO',
-                           ]
+                                [
+                                    'fn_setup_env',
+                                    'fn_run_env',
+                                    'fn_set_test_mode'
+                                    'fn_change_args',
+                                    'APP_INFO',
+                                ]
                            )
-    agent_mgr.fn_init = fn_init
-    agent_mgr.fn_change_args =  common_functions.fn_change_args
+    agent_mgr.fn_setup_env = fn_setup_env
+    agent_mgr.fn_run_env = fn_run_env
     agent_mgr.fn_set_test_mode = fn_set_test_mode
+    agent_mgr.fn_change_args = common_functions.fn_change_args
     agent_mgr.APP_INFO = app_info
+
+    # agent_mgr = namedtuple('_',
+    #                        [
+    #                            'fn_init',
+    #                            'fn_change_args',
+    #                            'fn_set_test_mode'
+    #                            'APP_INFO',
+    #                        ]
+    #                        )
+    # agent_mgr.fn_init = fn_init
+    # agent_mgr.fn_change_args =  common_functions.fn_change_args
+    # agent_mgr.fn_set_test_mode = fn_set_test_mode
+    # agent_mgr.APP_INFO = app_info
 
     return agent_mgr
