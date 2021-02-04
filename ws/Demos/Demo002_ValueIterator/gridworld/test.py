@@ -1,4 +1,4 @@
-from ws.RLAgents.A_ModelBased_Planning.Planning.agent_dispatcher import agent_mgt
+from ws.RLUtils.setup.agent_dispatcher import agent_mgt
 
 
 def fn_exec_test():
