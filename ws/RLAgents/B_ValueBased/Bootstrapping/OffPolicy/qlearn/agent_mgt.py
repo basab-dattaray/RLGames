@@ -32,7 +32,6 @@ def agent_mgt(app_info, common_functions):
         agent_mgr.app_info = app_info
         return agent_mgr
 
-
     agent_mgr = namedtuple('_',
                                 [
                                     'fn_setup_env',

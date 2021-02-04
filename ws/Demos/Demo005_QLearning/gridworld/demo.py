@@ -1,6 +1,4 @@
-# from ws.RLAgents.B_ValueBased.Bootstrapping.OffPolicy.qlearn.agent_mgt import agent_mgt
 from ws.RLUtils.setup.agent_dispatcher import agent_dispatcher
-
 
 def fn_exec_test():
     agent_mgr = agent_dispatcher(__file__)
