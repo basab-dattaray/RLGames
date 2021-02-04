@@ -15,7 +15,7 @@ from ws.RLUtils.setup.interrupt_mgt import interrupt_mgt
 
 def startup_mgt(demo_filepath, agent_filepath):
     ARGS_PY = 'ARGS.py'
-    RESULTS_FOLDER_NAME = 'Results.1/'
+    RESULTS_FOLDER_NAME = 'Results'
     AGENT_DIR_NAME = 'RLAgents'
     def _fn_init_arg_with_default_val(app_info, name, val):
         if app_info is None:
@@ -82,7 +82,7 @@ def startup_mgt(demo_filepath, agent_filepath):
         current_time_id = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
         app_info.FULL_ARCHIVE_PATH_ = os.path.join(archive_container_path, current_time_id)
 
-        results_folder = os.path.join(app_info.DEMO_FOLDER_PATH_, "Results.1")
+        results_folder = os.path.join(app_info.DEMO_FOLDER_PATH_, RESULTS_FOLDER_NAME)
         if os.path.exists(results_folder) is False:
             os.makedirs(results_folder)
         app_info.RESULTS_PATH_ = results_folder
