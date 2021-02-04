@@ -2,8 +2,6 @@ from collections import OrderedDict, namedtuple
 
 from ws.RLUtils.monitoring.tracing.tracer import tracer
 from .impl_mgt import impl_mgt
-from ws.RLUtils.setup.startup_mgt import startup_mgt
-
 
 def agent_mgt(app_info, common_functions):
     fn_run = impl_mgt(app_info)

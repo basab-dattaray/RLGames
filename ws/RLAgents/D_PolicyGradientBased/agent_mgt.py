@@ -10,9 +10,10 @@ from ws.RLUtils.monitoring.tracing.tracer import tracer
 from ws.RLUtils.setup.startup_mgt import startup_mgt
 
 
-def agent_mgt(demo_path):
-    app_info = startup_mgt(demo_path, __file__)
+def agent_mgt(app_info, common_functions):
+    # fn_run = impl_mgt(app_info)
     fn_should_update_network= None
+
     if app_info.ENV is not None:
         fn_get_key_as_bool, fn_get_key_as_int, _ = attr_mgt(app_info)
         is_single_episode_result = fn_get_key_as_bool('REWARD_CALCULATED_FROM_SINGLE_EPISODES')
@@ -27,12 +28,12 @@ def agent_mgt(demo_path):
 
         fn_log = app_info.fn_log
 
-        _test_mode = False
+        # _test_mode = False
 
-    @tracer(app_info, verboscity= 4)
-    def fn_set_test_mode():
-        nonlocal  _test_mode
-        _test_mode = True
+    # @tracer(app_info, verboscity= 4)
+    # def fn_set_test_mode():
+    #     nonlocal  _test_mode
+    #     _test_mode = True
 
         # env.display_mgr.fn_set_test_mode()
     def fn_run(fn_show_training_progress,
@@ -50,8 +51,9 @@ def agent_mgt(demo_path):
 
             done = fn_has_reached_goal(running_reward, consecutive_goal_hits_needed_for_success)
             _episode_num += 1
-            if not _test_mode:
-                break
+            if 'TEST_MODE' in app_info:
+                if app_info.TEST_MODE: # ONLY 1 episode needed
+                    break
         chart.fn_close()
 
     def fn_run_episode(fn_should_update_network=None, do_render=False):
@@ -117,13 +119,13 @@ def agent_mgt(demo_path):
                                 [
                                     'fn_run_train',
                                     'fn_run_test'
-                                    'fn_set_test_mode',
+                                    'fn_change_args',
                                     'APP_INFO',
                                 ]
                            )
     agent_mgr.fn_run_train = fn_run_train
     agent_mgr.fn_run_test = fn_run_test
-    agent_mgr.fn_set_test_mode = fn_set_test_mode
+    agent_mgr.fn_change_args =  common_functions.fn_change_args
     agent_mgr.APP_INFO = app_info
     return agent_mgr
 
