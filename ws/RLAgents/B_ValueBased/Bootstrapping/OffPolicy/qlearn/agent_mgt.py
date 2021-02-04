@@ -5,8 +5,8 @@ from .impl_mgt import impl_mgt
 from ws.RLUtils.setup.startup_mgt import startup_mgt
 
 
-def agent_mgt(file_path):
-    app_info = startup_mgt(file_path, __file__)
+def agent_mgt(app_info, common_functions):
+    # app_info = startup_mgt(file_path, __file__)
     fn_run, _fn_set_test_mode = impl_mgt(app_info)
 
     def fn_setup_env():
@@ -50,7 +50,7 @@ def agent_mgt(file_path):
     agent_mgr.fn_setup_env = fn_setup_env
     agent_mgr.fn_run_env = fn_run_env
     agent_mgr.fn_set_test_mode = fn_set_test_mode
-    agent_mgr.fn_change_args = fn_change_args
+    agent_mgr.fn_change_args = common_functions.fn_change_args
     agent_mgr.APP_INFO = app_info
 
     return agent_mgr
