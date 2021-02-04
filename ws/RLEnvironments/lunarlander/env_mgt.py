@@ -1,6 +1,8 @@
 from collections import namedtuple
 
 import gym
+import numpy
+
 
 def env_mgt(name, strategy= None):
 
@@ -15,10 +17,13 @@ def env_mgt(name, strategy= None):
 
 
     def fn_reset_env():
-        return _env.reset()
+        state = _env.reset()
+        state = numpy.reshape(state, (1, _state_size))
+        return state
 
     def fn_take_step(action):
         next_state, reward, done, info = _env.step(action)
+        next_state = numpy.reshape(next_state, (1, _state_size))
         return next_state, reward, done, info
 
     def fn_render():

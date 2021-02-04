@@ -37,7 +37,7 @@ def agent_mgt(caller_file):
             loss = []
             for episode_num in range(1, num_episodes):
                 state = app_info.ENV.fn_reset_env()
-                state = np.reshape(state, (1, _state_size))
+                # state = np.reshape(state, (1, _state_size))
                 score = 0
 
                 for step_num in range(app_info.MAX_STEPS_PER_EPISODE):
@@ -45,7 +45,7 @@ def agent_mgt(caller_file):
                     app_info.ENV.fn_render()
                     next_state, reward, done, _ = app_info.ENV.fn_take_step(action)
                     score += reward
-                    next_state = np.reshape(next_state, (1, _state_size))
+                    # next_state = np.reshape(next_state, (1, _state_size))
                     fn_remember(state, action, reward, next_state, done)
                     state = next_state
                     fn_replay()
