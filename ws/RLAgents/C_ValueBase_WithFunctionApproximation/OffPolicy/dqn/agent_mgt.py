@@ -54,8 +54,9 @@ def agent_mgt(caller_file):
                         print("episode: {}/{}, num of steps: {}, score: {}".format(episode_num, num_episodes, step_num, score))
                         break
                 loss.append(score)
-                if app_info.TEST_MODE_:
-                    break
+                if 'TEST_MODE' in app_info:
+                    if app_info.TEST_MODE:  # ONLY 1 episode needed
+                        break
     
             return loss
     
