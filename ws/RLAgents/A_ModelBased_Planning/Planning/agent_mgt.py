@@ -4,7 +4,7 @@ from ws.RLAgents.A_ModelBased_Planning.Planning.impl_mgt import impl_mgt
 from ws.RLUtils.monitoring.tracing.tracer import tracer
 
 
-def agent_mgt(app_info, fn_change_args):
+def agent_mgt(app_info, common_functions):
     # app_info = startup_mgt(file_path, __file__)
 
     fn_move_per_policy, fn_apply_policy_iteration, fn_apply_value_iteration = impl_mgt(app_info)
@@ -44,7 +44,7 @@ def agent_mgt(app_info, fn_change_args):
                            ]
                            )
     agent_mgr.fn_init = fn_init
-    agent_mgr.fn_change_args = fn_change_args
+    agent_mgr.fn_change_args =  common_functions.fn_change_args
     agent_mgr.fn_set_test_mode = fn_set_test_mode
     agent_mgr.APP_INFO = app_info
 
