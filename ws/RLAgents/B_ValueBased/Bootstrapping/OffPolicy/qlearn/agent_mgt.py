@@ -7,7 +7,7 @@ from ws.RLUtils.setup.startup_mgt import startup_mgt
 
 def agent_mgt(app_info, common_functions):
     # app_info = startup_mgt(file_path, __file__)
-    fn_run, _fn_set_test_mode = impl_mgt(app_info)
+    fn_run = impl_mgt(app_info)
 
     def fn_setup_env():
         actions = OrderedDict()
@@ -24,11 +24,6 @@ def agent_mgt(app_info, common_functions):
         return agent_mgr
 
     @tracer(app_info, verboscity= 4)
-    def fn_set_test_mode():
-        _fn_set_test_mode()
-        return agent_mgr
-
-    @tracer(app_info, verboscity= 4)
     def fn_change_args(change_args):
         if change_args is not None:
             for k, v in change_args.items():
@@ -42,14 +37,12 @@ def agent_mgt(app_info, common_functions):
                                 [
                                     'fn_setup_env',
                                     'fn_run_env',
-                                    'fn_set_test_mode'
                                     'fn_change_args',
                                     'APP_INFO',
                                 ]
                            )
     agent_mgr.fn_setup_env = fn_setup_env
     agent_mgr.fn_run_env = fn_run_env
-    agent_mgr.fn_set_test_mode = fn_set_test_mode
     agent_mgr.fn_change_args = common_functions.fn_change_args
     agent_mgr.APP_INFO = app_info
 

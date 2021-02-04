@@ -15,12 +15,6 @@ def impl_mgt(app_info):
         new_val = current_q + app_info.LEARNING_RATE * (new_q - current_q)
         fn_set_qval(state, action, new_val)
 
-    def fn_set_test_mode():
-        nonlocal  _test_mode
-        _test_mode = True
-
-        app_info.ENV.display_mgr.fn_set_test_mode()
-
     def fn_q_learn():
         episode_num = 0
         while True:
@@ -59,4 +53,4 @@ def impl_mgt(app_info):
 
         return continue_running
 
-    return fn_q_learn, fn_set_test_mode
+    return fn_q_learn
