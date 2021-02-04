@@ -1,8 +1,7 @@
-from collections import OrderedDict, namedtuple
+from collections import namedtuple
 
-from ws.RLAgents.A_ModelBased_Planning.Planning.agent_mgt import agent_mgt
-from ws.RLAgents.A_ModelBased_Planning.Planning.impl_mgt import impl_mgt
 from ws.RLUtils.common.misc_functions import fn_get_elapsed_time
+from ws.RLUtils.common.module_loader import load_function
 
 from ws.RLUtils.monitoring.tracing.tracer import tracer
 from ws.RLUtils.setup.startup_mgt import startup_mgt
@@ -48,6 +47,10 @@ def agent_dispatcher(file_path):
     export_functions.fn_show_args = fn_show_args
     export_functions.fn_measure_time_elapsed = fn_measure_time_elapsed
     export_functions.fn_archive_log_file = fn_archive_log_file
+
+    dispatch_dotpath = f'ws.RLAgents.{app_info.STRATEGY}'
+
+    agent_mgt = load_function(function_name="agent_mgt", module_name="agent_mgt", module_dot_path=dispatch_dotpath)
 
     agent_mgr = agent_mgt(app_info, export_functions)
 
