@@ -13,17 +13,6 @@ def fn_exec_test():
         fn_run_env()
     return agent_mgr.APP_INFO.ERROR_MESSAGE
 
-    # agent_mgr = agent_mgt(__file__). \
-    #     fn_change_args(
-    #         {
-    #             'TEST_MODE': True,
-    #         }
-    #     ). \
-    #     fn_setup_env(). \
-    #     fn_run_env()
-    # return agent_mgr.APP_INFO.ERROR_MESSAGE
-
-
 if __name__ == "__main__":
     fn_exec_test()
 
