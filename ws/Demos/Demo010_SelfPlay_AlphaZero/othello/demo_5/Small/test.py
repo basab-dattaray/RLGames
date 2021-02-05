@@ -1,8 +1,8 @@
-from ws.RLAgents.E_SelfPlay.agent_mgt import agent_mgt
+
 from ws.RLUtils.setup.agent_dispatcher import agent_dispatcher
 
 
-def fn_exec_test():
+def fn_execute():
     agent_mgr = agent_dispatcher(__file__)
     agent_mgr. \
         fn_change_args({
@@ -25,7 +25,7 @@ def fn_exec_test():
 
 
 if __name__ == "__main__":
-    print(fn_exec_test())
+    print(fn_execute())
 
 
 

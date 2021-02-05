@@ -1,12 +1,9 @@
-import coloredlogs
 
-from ws.RLAgents.E_SelfPlay.agent_mgt import agent_mgt
+from ws.RLUtils.setup.agent_dispatcher import agent_dispatcher
 
-coloredlogs.install(level='INFO')
-
-if __name__ == "__main__":
-    agent_mgt(file_path= __file__). \
-        \
+def fn_execute():
+    agent_mgr = agent_dispatcher(__file__)
+    agent_mgr. \
         fn_reset(). \
         fn_change_args({
             'DO_LOAD_MODEL': False,
@@ -29,3 +26,8 @@ if __name__ == "__main__":
         fn_test_against_random(). \
         fn_measure_time_elapsed(). \
         fn_archive_log_file()
+    return agent_mgr.APP_INFO.ERROR_MESSAGE_
+
+
+if __name__ == "__main__":
+    print(fn_execute())
