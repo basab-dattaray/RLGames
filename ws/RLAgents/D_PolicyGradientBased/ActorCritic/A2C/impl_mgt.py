@@ -14,7 +14,7 @@ def impl_mgt(app_info):
 
     _model_actor_critic = ActorCritic(app_info).to(app_info.GPU_DEVICE)
 
-    fn_save_to_neural_net, fn_load_from_neural_net = model_mgt(_model_actor_critic)
+    fn_save_to_neural_net, fn_load_from_neural_net = model_mgt(app_info.RESULTS_PATH_, _model_actor_critic)
 
     _optimizer = torch.optim.Adam(_model_actor_critic.parameters(), lr=app_info.LEARNING_RATE, betas=(0.9, 0.999))
 

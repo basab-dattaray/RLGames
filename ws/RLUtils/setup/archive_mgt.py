@@ -30,7 +30,7 @@ def archive_mgt(results_path, archive_path, fn_log= None,  fn_log_reset= None, )
                 real_archive_path = os.path.join( archive_folder_path , 'AFTER')
 
             if fn_save_to_neural_net is not None:
-                fn_save_to_neural_net(result_folder_path)
+                fn_save_to_neural_net()
 
             if os.path.exists(real_archive_path):
                 shutil.rmtree(real_archive_path)

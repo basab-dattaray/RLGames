@@ -79,7 +79,7 @@ def agent_mgt(app_info, common_functions):
         if app_info.ENV is None:
             return agent_mgr
         if fn_load_from_neural_net is not None:
-            if fn_load_from_neural_net(app_info.RESULTS_PATH_):
+            if fn_load_from_neural_net():
                 fn_log('SUCCESS in loading model')
             else:
                 fn_log('FAILED in loading model')
@@ -94,10 +94,7 @@ def agent_mgt(app_info, common_functions):
             return agent_mgr
 
         if fn_load_from_neural_net is not None:
-            if fn_load_from_neural_net(app_info.RESULTS_PATH_):
-                # fn_log('SUCCESS in loading model')
-                pass
-            else:
+            if not fn_load_from_neural_net():
                 fn_log('FAILED in loading model')
                 return agent_mgr
 
