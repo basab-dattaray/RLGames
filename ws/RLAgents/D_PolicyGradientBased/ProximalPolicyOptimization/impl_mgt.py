@@ -21,8 +21,9 @@ def impl_mgt(app_info):
 
     device = app_info.GPU_DEVICE
 
-    target_pkgpath = app_info.AGENT_FOLDER_PATH
-    Actor = load_function('Actor', 'Actor', target_pkgpath)
+    # target_pkgpath = app_info.AGENT_FOLDER_PATH
+    # Actor = load_function('Actor', 'Actor', target_pkgpath)
+    Actor = load_mgt_function(loc_dotpath= app_info.AGENT_FOLDER_PATH, module_name='Actor')
     _model_actor = Actor(app_info).to(device)
     _model_critic = Critic(app_info).to(device)
     #

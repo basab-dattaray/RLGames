@@ -5,7 +5,7 @@ from time import sleep
 from ws.RLAgents.D_PolicyGradientBased.progress_mgt import progress_mgt
 from ws.RLUtils.common.attr_mgt import attr_mgt
 
-from ws.RLUtils.common.module_loader import load_function
+from ws.RLUtils.common.module_loader import load_function, load_mgt_function
 
 
 def agent_mgt(app_info, common_functions):
@@ -16,7 +16,8 @@ def agent_mgt(app_info, common_functions):
         fn_get_key_as_bool, fn_get_key_as_int, _ = attr_mgt(app_info)
         is_single_episode_result = fn_get_key_as_bool('REWARD_CALCULATED_FROM_SINGLE_EPISODES')
 
-        impl_mgt = load_function(function_name= 'impl_mgt', module_name='impl_mgt', module_dot_path= app_info.AGENT_FOLDER_PATH)
+        # impl_mgt = load_function(function_name= 'impl_mgt', module_name='impl_mgt', module_dot_path= app_info.AGENT_FOLDER_PATH)
+        impl_mgt = load_mgt_function(loc_dotpath=app_info.AGENT_FOLDER_PATH, module_name='impl_mgt')
 
         fn_act, fn_add_transition, fn_save_model, fn_load_model, fn_should_update_network = impl_mgt(app_info)
 

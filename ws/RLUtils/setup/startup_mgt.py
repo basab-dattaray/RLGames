@@ -6,7 +6,7 @@ from ws.RLUtils.common.DotDict import DotDict
 from ws.RLUtils.common.attr_mgt import attr_mgt
 from ws.RLUtils.common.folder_paths import fn_get_rel_dot_folder_path
 
-from ws.RLUtils.common.module_loader import load_function
+from ws.RLUtils.common.module_loader import load_function, load_mgt_function
 from ws.RLUtils.monitoring.tracing.call_trace_mgt import call_trace_mgt
 from ws.RLUtils.monitoring.tracing.log_mgt import log_mgt
 from ws.RLUtils.platform_libs.pytorch.device_selection import get_device

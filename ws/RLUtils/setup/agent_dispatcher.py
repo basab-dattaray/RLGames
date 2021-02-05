@@ -1,7 +1,7 @@
 from collections import namedtuple
 
 from ws.RLUtils.common.misc_functions import fn_get_elapsed_time
-from ws.RLUtils.common.module_loader import load_function
+from ws.RLUtils.common.module_loader import load_function, load_mgt_function
 
 from ws.RLUtils.setup.startup_mgt import startup_mgt
 
@@ -46,7 +46,8 @@ def agent_dispatcher(file_path):
 
     dispatch_dotpath = f'{app_info.AGENTS_DOTPATH_}.{app_info.STRATEGY}'
 
-    agent_mgt = load_function(function_name="agent_mgt", module_name="agent_mgt", module_dot_path=dispatch_dotpath)
+    # agent_mgt = load_function(function_name="agent_mgt", module_name="agent_mgt", module_dot_path=dispatch_dotpath)
+    agent_mgt = load_mgt_function(loc_dotpath=app_info.AGENT_FOLDER_PATH, module_name='agent_mgt')
 
     agent_mgr = agent_mgt(app_info, common_funcs)
 
