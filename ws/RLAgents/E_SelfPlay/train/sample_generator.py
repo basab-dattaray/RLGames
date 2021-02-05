@@ -8,7 +8,10 @@ from ws.RLUtils.monitoring.tracing.progress_count_mgt import progress_count_mgt
 from ws.RLUtils.monitoring.tracing.tracer import tracer
 
 
-def fn_generate_samples(app_info, iteration, generation_mcts):
+def fn_generate_samples(app_info,
+                        iteration,
+                        generation_mcts
+                        ):
     game_mgr = app_info.game_mgr
     training_samples_buffer = []
 

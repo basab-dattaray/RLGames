@@ -75,7 +75,10 @@ def training_mgt(nn_mgr_N, app_info):
                 app_info.fn_log()
                 return draws, nwins, pwins
 
-            training_samples = fn_generate_samples(app_info, iteration,  monte_carlo_tree_search_mgt(app_info.game_mgr, nn_mgr_N, app_info))
+            training_samples = fn_generate_samples(app_info,
+                                                   iteration,
+                                                   generation_mcts=monte_carlo_tree_search_mgt(app_info.game_mgr, nn_mgr_N, app_info)
+                                                   )
             draws, nwins, pwins = _fn_play_next_vs_previous(training_samples)
             fn_log_iteration_results(app_info, draws, iteration, nwins, pwins)
 

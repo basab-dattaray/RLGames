@@ -17,22 +17,17 @@ from ws.RLUtils.common.misc_functions import fn_get_elapsed_time
 
 from ws.RLUtils.monitoring.tracing.tracer import tracer
 
-
-def fn_setup_essential_managers(app_info):
+def agent_mgt(app_info, common_functions):
     app_info.game_mgr = game_mgt(app_info.BOARD_SIZE)
     neural_net_mgr = model_mgt(app_info.game_mgr, app_info.RESULTS_PATH_)
 
-    app_info.training_mgr = training_mgt(neural_net_mgr, app_info)
-    return app_info
+    training_mgr = training_mgt(neural_net_mgr, app_info)
 
-def agent_mgt(app_info, common_functions):
-
-    app_info = fn_setup_essential_managers(app_info)
 
     @tracer(app_info, verboscity= 4)
     def fn_train():
         nonlocal app_info
-        app_info.training_mgr.fn_execute_training_iterations()
+        training_mgr.fn_execute_training_iterations()
         return agent_mgr
 
     @tracer(app_info)
