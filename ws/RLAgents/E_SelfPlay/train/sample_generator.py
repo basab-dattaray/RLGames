@@ -9,10 +9,11 @@ from ws.RLUtils.monitoring.tracing.tracer import tracer
 
 
 def fn_generate_samples(app_info,
+                        game_mgr,
                         iteration,
                         generation_mcts
                         ):
-    game_mgr = app_info.game_mgr
+    # game_mgr = app_info.game_mgr
     training_samples_buffer = []
 
     def _fn_form_sample_data(current_player, run_result, training_samples):

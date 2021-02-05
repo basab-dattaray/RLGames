@@ -18,10 +18,10 @@ from ws.RLUtils.common.misc_functions import fn_get_elapsed_time
 from ws.RLUtils.monitoring.tracing.tracer import tracer
 
 def agent_mgt(app_info, common_functions):
-    app_info.game_mgr = game_mgt(app_info.BOARD_SIZE)
-    neural_net_mgr = model_mgt(app_info.game_mgr, app_info.RESULTS_PATH_)
+    game_mgr = game_mgt(app_info.BOARD_SIZE)
+    neural_net_mgr = model_mgt(game_mgr, app_info.RESULTS_PATH_)
 
-    training_mgr = training_mgt(neural_net_mgr, app_info)
+    training_mgr = training_mgt(game_mgr, neural_net_mgr, app_info)
 
 
     @tracer(app_info, verboscity= 4)
@@ -49,14 +49,14 @@ def agent_mgt(app_info, common_functions):
         return agent_mgr
 
     def fn_test(app_info, fn_player_policy, verbose=False, NUM_TEST_GAMES=2):
-        system_nn = model_mgt(app_info.game_mgr, app_info.RESULTS_PATH_)
+        system_nn = model_mgt(game_mgr, app_info.RESULTS_PATH_)
         if not system_nn.fn_load_model():
             return
 
-        system_mcts = monte_carlo_tree_search_mgt(app_info.game_mgr, system_nn, app_info)
+        system_mcts = monte_carlo_tree_search_mgt(game_mgr, system_nn, app_info)
         fn_system_policy = lambda state: numpy.argmax(system_mcts.fn_get_policy(state, do_random_selection=False))
-        fn_contender_policy = fn_player_policy(app_info.game_mgr)
-        playground = playground_mgt(fn_system_policy, fn_contender_policy, app_info.game_mgr,
+        fn_contender_policy = fn_player_policy(game_mgr)
+        playground = playground_mgt(fn_system_policy, fn_contender_policy, game_mgr,
                                     fn_display=game_mgt(app_info.BOARD_SIZE).fn_display,
                                     )
         system_wins, system_losses, draws = playground.fn_play_games(NUM_TEST_GAMES, verbose=verbose)

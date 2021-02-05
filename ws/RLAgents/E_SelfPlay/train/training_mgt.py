@@ -8,7 +8,7 @@ from ws.RLUtils.algo_lib.search.monte_carlo_tree_search_mgt import monte_carlo_t
 from ws.RLAgents.E_SelfPlay.train.sample_generator import fn_generate_samples
 from ws.RLAgents.E_SelfPlay.train.training_helper import fn_log_iteration_results
 from ws.RLUtils.monitoring.tracing.tracer import tracer
-def training_mgt(nn_mgr_N, app_info):
+def training_mgt(game_mgr, nn_mgr_N, app_info):
     _TMP_MODEL_FILENAME = '_tmp'
     nn_mgr_P = copy.deepcopy(nn_mgr_N)
 
@@ -22,7 +22,7 @@ def training_mgt(nn_mgr_N, app_info):
 
     @tracer(app_info)
     def fn_execute_training_iterations():
-        game_mgr = app_info.game_mgr
+        # game_mgr = app_info.game_mgr
 
         update_count = 0
         @tracer(app_info)
@@ -63,9 +63,9 @@ def training_mgt(nn_mgr_N, app_info):
             def _fn_play_next_vs_previous(training_samples):
                 nn_mgr_N.fn_save_model(_TMP_MODEL_FILENAME)
                 nn_mgr_P.fn_load_model(_TMP_MODEL_FILENAME)
-                pmcts = monte_carlo_tree_search_mgt(app_info.game_mgr, nn_mgr_P, app_info)
+                pmcts = monte_carlo_tree_search_mgt(game_mgr, nn_mgr_P, app_info)
                 nn_mgr_N.fn_adjust_model_from_examples(training_samples, app_info.NUM_EPOCHS)
-                nmcts = monte_carlo_tree_search_mgt(app_info.game_mgr, nn_mgr_N, app_info)
+                nmcts = monte_carlo_tree_search_mgt(game_mgr, nn_mgr_N, app_info)
                 playground = playground_mgt(
                     lambda state: np.argmax(pmcts.fn_get_policy(state, do_random_selection= False)),
                     lambda state: np.argmax(nmcts.fn_get_policy(state, do_random_selection= False)),
@@ -76,8 +76,9 @@ def training_mgt(nn_mgr_N, app_info):
                 return draws, nwins, pwins
 
             training_samples = fn_generate_samples(app_info,
+                                                   game_mgr,
                                                    iteration,
-                                                   generation_mcts=monte_carlo_tree_search_mgt(app_info.game_mgr, nn_mgr_N, app_info)
+                                                   generation_mcts=monte_carlo_tree_search_mgt(game_mgr, nn_mgr_N, app_info)
                                                    )
             draws, nwins, pwins = _fn_play_next_vs_previous(training_samples)
             fn_log_iteration_results(app_info, draws, iteration, nwins, pwins)
