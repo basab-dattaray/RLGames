@@ -6,6 +6,8 @@ app_info = DotDict(
   "ENV_NAME": "Gridworld-v1",
   "AGENT_CONFIG": "gridwell_qlearn",
 
+  "AUTO_ARCHIVE": 1,
+  "AUTO_INTERRUPT_HANDLING": 1,
 
   "DISPLAY": {
     "APP_NAME": "Q-learn",

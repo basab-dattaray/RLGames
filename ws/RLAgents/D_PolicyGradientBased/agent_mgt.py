@@ -86,7 +86,7 @@ def agent_mgt(app_info, common_functions):
                 fn_log('FAILED in loading model')
 
         fn_run(fn_show_training_progress, fn_should_update_network=fn_should_update_network)
-        archive_msg = app_info.fn_archive(fn_save_model= fn_save_model,)
+        archive_msg = app_info.fn_archive()
         fn_log(archive_msg)
         return agent_mgr
 

@@ -1,7 +1,6 @@
 import numpy as np
 
 from ws.RLUtils.algo_lib.planning.planning_mgt import planning_mgt
-from ws.RLEnvironments.gridworld.grid_board.display_mgt import display_mgt
 
 def impl_mgt(app_info):
 
@@ -26,12 +25,12 @@ def impl_mgt(app_info):
         display_mgr.fn_move_cursor(state)
 
     def fn_apply_policy_iteration():
-        value_table, policy_table = _planning_mgr.fnPolicyIterater()
+        value_table, policy_table = _planning_mgr.fn_policy_iterator()
         display_mgr.fn_show_state_values(value_table)
         display_mgr.fn_show_policy_arrows(policy_table)
 
     def fn_apply_value_iteration():
-        value_table, _policy_table = _planning_mgr.fnValueIterater()
+        value_table, _policy_table = _planning_mgr.fn_value_iterator()
         display_mgr.fn_show_state_values(value_table)
         display_mgr.fn_show_policy_arrows(_policy_table)
 

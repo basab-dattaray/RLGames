@@ -82,7 +82,7 @@ def agent_mgt(app_info, common_functions):
 
     @tracer(app_info, verboscity= 4)
     def fn_archive_log_file():
-        archive_msg = app_info.fn_archive(fn_save_model= app_info.neural_net_mgr.fn_save_model)
+        archive_msg = app_info.fn_archive()
         app_info.fn_log(archive_msg)
 
         return agent_mgr

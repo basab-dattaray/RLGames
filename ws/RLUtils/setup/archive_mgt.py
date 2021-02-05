@@ -11,7 +11,7 @@ def archive_mgt(app_info, fn_log= None,  fn_log_reset= None):
     _before_instance = True
     _start_time = time()
 
-    def fn_archive(fn_save_model= None, ):
+    def fn_archive():
         nonlocal  _before_instance
         try:
 
@@ -20,8 +20,8 @@ def archive_mgt(app_info, fn_log= None,  fn_log_reset= None):
             else:
                 real_archive_path = os.path.join( archive_folder_path , 'AFTER')
 
-            if fn_save_model is not None:
-                fn_save_model()
+            # if fn_save_model is not None:
+            #     fn_save_model()
 
             if os.path.exists(real_archive_path):
                 shutil.rmtree(real_archive_path)

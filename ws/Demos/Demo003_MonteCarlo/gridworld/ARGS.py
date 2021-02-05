@@ -6,6 +6,8 @@ app_info = DotDict(
     "ENV_NAME": "Gridworld-v1",
     "AGENT_CONFIG": "gridwell_monte_carlo",
 
+    "AUTO_ARCHIVE": 1,
+    "AUTO_INTERRUPT_HANDLING": 1,
   }
 )
 

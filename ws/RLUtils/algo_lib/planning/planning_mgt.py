@@ -91,19 +91,19 @@ def planning_mgt(env, discount_factor= 0.9):
         value_table = env.values_repo_mgr.fn_get_all_state_values()
         return value_table, policy_table
 
-    def fnPolicyIterater():
+    def fn_policy_iterator():
         return repeatEvalAndImprove(fn_run_policy)
 
-    def fnValueIterater():
+    def fn_value_iterator():
         return repeatEvalAndImprove(fn_calc_values)
 
     ret_obj = namedtuple('_', [
-        'fnPolicyIterater',
-        'fnValueIterater',
+        'fn_policy_iterator',
+        'fn_value_iterator',
         'fn_get_actions_given_state',
     ])
 
-    ret_obj.fnPolicyIterater = fnPolicyIterater
-    ret_obj.fnValueIterater = fnValueIterater
+    ret_obj.fn_policy_iterator = fn_policy_iterator
+    ret_obj.fn_value_iterator = fn_value_iterator
     ret_obj.fn_get_actions_given_state = fn_get_actions_given_state
     return ret_obj
