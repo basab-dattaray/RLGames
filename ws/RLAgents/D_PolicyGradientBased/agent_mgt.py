@@ -6,8 +6,6 @@ from ws.RLAgents.D_PolicyGradientBased.progress_mgt import progress_mgt
 from ws.RLUtils.common.attr_mgt import attr_mgt
 
 from ws.RLUtils.common.module_loader import load_function
-from ws.RLUtils.monitoring.tracing.tracer import tracer
-from ws.RLUtils.setup.startup_mgt import startup_mgt
 
 
 def agent_mgt(app_info, common_functions):
@@ -28,14 +26,6 @@ def agent_mgt(app_info, common_functions):
 
         fn_log = app_info.fn_log
 
-        # _test_mode = False
-
-    # @tracer(app_info, verboscity= 4)
-    # def fn_set_test_mode():
-    #     nonlocal  _test_mode
-    #     _test_mode = True
-
-        # env.display_mgr.fn_set_test_mode()
     def fn_run(fn_show_training_progress,
                supress_graph=False,
                fn_should_update_network=fn_should_update_network,

@@ -26,8 +26,9 @@ def fn_setup_essential_managers(app_info):
     app_info.training_mgr = training_mgt(app_info.neural_net_mgr, app_info)
     return app_info
 
-def agent_mgt(file_path):
-    app_info = startup_mgt(file_path, __file__)
+def agent_mgt(app_info, common_functions):
+    # app_info = startup_mgt(file_path, __file__)
+
     app_info = fn_setup_essential_managers(app_info)
 
     @tracer(app_info, verboscity= 4)
@@ -76,20 +77,20 @@ def agent_mgt(file_path):
             shutil.rmtree(app_info.RESULTS_PATH_)
         return agent_mgr
 
-    @tracer(app_info, verboscity= 4)
-    def fn_change_args(change_args):
-        if change_args is not None:
-            for k, v in change_args.items():
-                app_info[k] = v
-                app_info.trace_mgr.fn_write(f'  app_info[{k}] = {v}')
-        agent_mgr.app_info = app_info
-        return agent_mgr
-
-    @tracer(app_info, verboscity= 4)
-    def fn_show_args():
-        for k, v in app_info.items():
-            app_info.trace_mgr.fn_write(f'  app_info[{k}] = {v}')
-        return agent_mgr
+    # @tracer(app_info, verboscity= 4)
+    # def fn_change_args(change_args):
+    #     if change_args is not None:
+    #         for k, v in change_args.items():
+    #             app_info[k] = v
+    #             app_info.trace_mgr.fn_write(f'  app_info[{k}] = {v}')
+    #     agent_mgr.app_info = app_info
+    #     return agent_mgr
+    #
+    # @tracer(app_info, verboscity= 4)
+    # def fn_show_args():
+    #     for k, v in app_info.items():
+    #         app_info.trace_mgr.fn_write(f'  app_info[{k}] = {v}')
+    #     return agent_mgr
 
     @tracer(app_info, verboscity= 4)
     def fn_measure_time_elapsed():
@@ -115,8 +116,8 @@ def agent_mgt(file_path):
     agent_mgr.fn_test_against_human = fn_test_against_human
     agent_mgr.fn_test_against_random = fn_test_against_random
     agent_mgr.fn_test_against_greedy = fn_test_against_greedy
-    agent_mgr.fn_change_args = fn_change_args
-    agent_mgr.fn_show_args = fn_show_args
+    agent_mgr.fn_change_args = common_functions.fn_change_args
+    agent_mgr.fn_show_args = common_functions.fn_show_args
     agent_mgr.fn_measure_time_elapsed = fn_measure_time_elapsed
     agent_mgr.fn_archive_log_file = fn_archive_log_file
     agent_mgr.APP_INFO = app_info

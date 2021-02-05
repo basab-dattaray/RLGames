@@ -1,8 +1,10 @@
 from ws.RLAgents.E_SelfPlay.agent_mgt import agent_mgt
+from ws.RLUtils.setup.agent_dispatcher import agent_dispatcher
 
 
 def fn_exec_test():
-    agent_mgr = agent_mgt(__file__). \
+    agent_mgr = agent_dispatcher(__file__)
+    agent_mgr. \
         fn_change_args({
             'TEST_MODE_': 1,
             'NUM_TRAINING_ITERATIONS': 1,
