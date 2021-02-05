@@ -18,18 +18,6 @@ def agent_mgt(app_info, common_functions):
     if iterator_name == 'value_iterator':
         fn_apply = fn_apply_value_iteration
 
-    # def fn_init():
-    #     actions = OrderedDict()
-    #     actions["plan"] = fn_apply
-    #     actions["move"] = fn_move_per_policy
-    #
-    #     app_info.ENV.display_mgr.fn_setup_ui(actions)
-    #
-    #     app_info.ENV.display_mgr.fn_run_ui()
-    #     # app_info.ENV.display_mgr.fn_close()
-    #
-    #     return agent_mgr
-
     def fn_setup_env():
         actions = OrderedDict()
         actions["plan"] = fn_apply
