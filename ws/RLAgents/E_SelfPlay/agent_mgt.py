@@ -27,14 +27,12 @@ def fn_setup_essential_managers(app_info):
     return app_info
 
 def agent_mgt(app_info, common_functions):
-    # app_info = startup_mgt(file_path, __file__)
 
     app_info = fn_setup_essential_managers(app_info)
 
     @tracer(app_info, verboscity= 4)
     def fn_train():
         nonlocal app_info
-
         app_info.training_mgr.fn_execute_training_iterations()
         return agent_mgr
 
@@ -76,21 +74,6 @@ def agent_mgt(app_info, common_functions):
         if os.path.exists(app_info.RESULTS_PATH_):
             shutil.rmtree(app_info.RESULTS_PATH_)
         return agent_mgr
-
-    # @tracer(app_info, verboscity= 4)
-    # def fn_change_args(change_args):
-    #     if change_args is not None:
-    #         for k, v in change_args.items():
-    #             app_info[k] = v
-    #             app_info.trace_mgr.fn_write(f'  app_info[{k}] = {v}')
-    #     agent_mgr.app_info = app_info
-    #     return agent_mgr
-    #
-    # @tracer(app_info, verboscity= 4)
-    # def fn_show_args():
-    #     for k, v in app_info.items():
-    #         app_info.trace_mgr.fn_write(f'  app_info[{k}] = {v}')
-    #     return agent_mgr
 
     @tracer(app_info, verboscity= 4)
     def fn_measure_time_elapsed():

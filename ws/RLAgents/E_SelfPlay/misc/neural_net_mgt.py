@@ -58,7 +58,9 @@ def neural_net_mgt(game_mgr, model_folder_path):
             return False
 
     def _fn_get_untrained_model():
-        untrained_nn = NeuralNet(game_mgr, nn_args)
+        board_width = board_height = game_mgr.fn_get_board_size()
+        action_size = game_mgr.fn_get_action_size()
+        untrained_nn = NeuralNet(action_size, (board_width, board_height), nn_args)
 
         if nn_args.IS_CUDA:
             untrained_nn.cuda()
@@ -71,7 +73,6 @@ def neural_net_mgt(game_mgr, model_folder_path):
         optimizer = optim.Adam(nnet.parameters())
         fn_count_event, fn_stop_counting = progress_count_mgt('Epochs', num_epochs)
         for epoch in range(num_epochs):
-            # nn_args.trace_mgr.fn_write(f'Epoch {epoch + 1} of {nn_args.NUM_EPOCHS}')
             fn_count_event()
 
             nnet.train()

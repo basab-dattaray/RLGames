@@ -7,10 +7,10 @@ import torch.nn.functional as F
 
 
 class NeuralNet(nn.Module):
-    def __init__(self, game_mgr, nn_args):
+    def __init__(self, action_size, board_dimensions, nn_args):
         # game params
-        # self.board_x, self.board_y = game_mgr.fn_get_board_size(), game_mgr.fn_get_board_size()
-        # self.action_size = game_mgr.fn_get_action_size()
+        self.board_x, self.board_y = board_dimensions
+        self.action_size = action_size
         self.app_info = nn_args
 
         super(NeuralNet, self).__init__()
