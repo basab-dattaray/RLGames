@@ -13,10 +13,13 @@ from ws.RLUtils.platform_libs.pytorch.device_selection import get_device
 from ws.RLUtils.setup.archive_mgt import archive_mgt
 from ws.RLUtils.setup.interrupt_mgt import interrupt_mgt
 
-def startup_mgt(demo_filepath, agent_filepath):
-    ARGS_PY = 'ARGS.py'
-    RESULTS_FOLDER_NAME = 'Results'
-    AGENT_DIR_NAME = 'RLAgents'
+def startup_mgt(demo_filepath, agent_filepath,
+                ARGS_PY = 'ARGS.py',
+                RESULTS_FOLDER_NAME='Results',
+                AGENT_DIR_NAME='RLAgents',
+):
+
+
     def _fn_init_arg_with_default_val(app_info, name, val):
         if app_info is None:
             app_info = {}
@@ -116,8 +119,7 @@ def startup_mgt(demo_filepath, agent_filepath):
     _fn_setup_logging()
     _fn_setup_gpu()
     _fn_setup_env()
-    # if _fn_setup_env() is None:
-    #     return app_info
+
     _fn_load_agent_config()
 
     if fn_get_key_as_bool('AUTO_ARCHIVE'):
@@ -131,8 +133,6 @@ def startup_mgt(demo_filepath, agent_filepath):
     if fn_get_key_as_bool('AUTO_INTERRUPT_HANDLING'):
         interrupt_mgt(app_info)
 
-    # if not fn_get_key_as_bool('TEST_MODE_'):
-    #     app_info.TEST_MODE_ = 0
 
     return app_info
 
