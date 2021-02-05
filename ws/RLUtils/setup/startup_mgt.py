@@ -35,6 +35,7 @@ def startup_mgt(demo_filepath, agent_filepath):
         app_info = _fn_init_arg_with_default_val(app_info, 'DEMO_FOLDER_PATH_', demo_folder_path)
         app_info = _fn_init_arg_with_default_val(app_info, 'DEMO_DOT_PATH_', demo_dot_path)
         app_info = _fn_init_arg_with_default_val(app_info, 'RESULTS_REL_PATH', RESULTS_FOLDER_NAME)
+        app_info = _fn_init_arg_with_default_val(app_info, 'ERROR_MESSAGE_', None)
 
         results_folder_path = os.path.join(app_info.DEMO_FOLDER_PATH_, app_info.RESULTS_REL_PATH)
         app_info = _fn_init_arg_with_default_val(app_info, 'RESULTS_PATH_', results_folder_path)
@@ -62,10 +63,10 @@ def startup_mgt(demo_filepath, agent_filepath):
 
         env = None
         if env_mgt is not None:
-            env = env_mgt(app_info.ENV_NAME, app_info.STRATEGY)
-            if env.ERROR_MESSAGE is not None:
+            env, error_message = env_mgt(app_info.ENV_NAME, app_info.STRATEGY)
+            if error_message is not None:
                 app_info.ENV = None
-                app_info.ERROR_MESSAGE = f'FAILED in {app_info.DEMO_FOLDER_PATH_} <--  {env.ERROR_MESSAGE}'
+                app_info.ERROR_MESSAGE_ = f'FAILED in {app_info.DEMO_FOLDER_PATH_} <--  {error_message}'
                 return
             app_info.ACTION_DIMENSIONS = env.fn_get_action_size()
             app_info.STATE_DIMENSIONS = env.fn_get_state_size()

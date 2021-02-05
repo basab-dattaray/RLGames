@@ -19,11 +19,11 @@ def fn_exec_test():
         fn_test_against_greedy(). \
         fn_test_against_random(). \
         fn_archive_log_file()
-    return agent_mgr.APP_INFO.ERROR_MESSAGE
+    return agent_mgr.APP_INFO.ERROR_MESSAGE_
 
 
 if __name__ == "__main__":
-    fn_exec_test()
+    print(fn_exec_test())
 
 
 

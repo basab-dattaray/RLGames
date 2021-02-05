@@ -5,6 +5,7 @@ def fn_exec_test():
     agent_mgr = agent_dispatcher(__file__)
     agent_mgr. \
         fn_run_train()
+    return agent_mgr.APP_INFO.ERROR_MESSAGE_
 
 if __name__ == "__main__":
-    fn_exec_test()
+    print(fn_exec_test())

@@ -5,7 +5,7 @@ def fn_exec_test():
     agent_mgr. \
         fn_setup_env(). \
         fn_run_env()
-    return agent_mgr.APP_INFO.ERROR_MESSAGE
+    return agent_mgr.APP_INFO.ERROR_MESSAGE_
 
 if __name__ == "__main__":
-    fn_exec_test()
+    print(fn_exec_test())

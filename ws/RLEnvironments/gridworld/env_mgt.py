@@ -150,4 +150,4 @@ def env_mgt(name, strategy= None):
 
     ret_obj.ERROR_MESSAGE = None
 
-    return ret_obj
+    return ret_obj, None
