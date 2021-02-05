@@ -5,7 +5,7 @@ from time import time
 
 import numpy
 
-from ws.RLAgents.E_SelfPlay.misc.neural_net_mgt import neural_net_mgt
+from ws.RLAgents.E_SelfPlay.misc.model_mgt import model_mgt
 from ws.RLAgents.E_SelfPlay.play.greedy_player_mgt import greedy_player_mgt
 from ws.RLAgents.E_SelfPlay.play.animated_player_mgt import animated_player_mgt
 from ws.RLAgents.E_SelfPlay.play.random_player_mgt import random_player_mgt
@@ -21,7 +21,7 @@ from ws.RLUtils.setup.startup_mgt import startup_mgt
 
 def fn_setup_essential_managers(app_info):
     app_info.game_mgr = game_mgt(app_info.BOARD_SIZE)
-    app_info.neural_net_mgr = neural_net_mgt(app_info.game_mgr, app_info.RESULTS_PATH_)
+    app_info.neural_net_mgr = model_mgt(app_info.game_mgr, app_info.RESULTS_PATH_)
 
     app_info.training_mgr = training_mgt(app_info.neural_net_mgr, app_info)
     return app_info
@@ -55,7 +55,7 @@ def agent_mgt(app_info, common_functions):
         return agent_mgr
 
     def fn_test(app_info, fn_player_policy, verbose=False, NUM_TEST_GAMES=2):
-        system_nn = neural_net_mgt(app_info.game_mgr, app_info.RESULTS_PATH_)
+        system_nn = model_mgt(app_info.game_mgr, app_info.RESULTS_PATH_)
         if not system_nn.fn_load_model():
             return
 

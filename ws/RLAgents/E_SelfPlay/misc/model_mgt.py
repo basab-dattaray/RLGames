@@ -15,7 +15,7 @@ from ws.RLUtils.common.DotDict import *
 import torch
 import torch.optim as optim
 
-def neural_net_mgt(game_mgr, model_folder_path):
+def model_mgt(game_mgr, model_folder_path):
     nn_args = DotDict({
         'BATCH_SIZE': 64,
         'IS_CUDA': torch.cuda.is_available(),
