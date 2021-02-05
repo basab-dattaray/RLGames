@@ -19,9 +19,9 @@ def archive_mgt(app_info, fn_log= None,  fn_log_reset= None):
                 real_archive_path = os.path.join( archive_folder_path , 'BEFORE')
             else:
                 real_archive_path = os.path.join( archive_folder_path , 'AFTER')
-
-            # if fn_save_model is not None:
-            #     fn_save_model()
+            if 'fn_save_model' in  app_info:
+                if app_info.fn_save_model is not None:
+                    app_info.fn_save_model()
 
             if os.path.exists(real_archive_path):
                 shutil.rmtree(real_archive_path)

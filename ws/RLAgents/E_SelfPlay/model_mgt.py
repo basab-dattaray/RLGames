@@ -9,7 +9,7 @@ from ws.RLAgents.E_SelfPlay.average_mgt import average_mgt
 from ws.RLUtils.monitoring.tracing.progress_count_mgt import progress_count_mgt
 
 # sys.dir_path.append('../../')
-from ws.RLUtils.common.DotDict import *
+from ws.RLUtils.common.app_info_lib import *
 
 
 import torch

@@ -1,4 +1,4 @@
-from ws.RLUtils.common.DotDict import DotDict
+from ws.RLUtils.common.app_info_lib import DotDict
 
 app_info = DotDict({
     "STRATEGY": "A_ModelBased.Planning.value_iterator",

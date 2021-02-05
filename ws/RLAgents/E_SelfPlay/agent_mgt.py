@@ -13,6 +13,7 @@ from ws.RLAgents.E_SelfPlay.play.playground_mgt import playground_mgt
 from ws.RLUtils.algo_lib.search.monte_carlo_tree_search_mgt import monte_carlo_tree_search_mgt
 from ws.RLAgents.E_SelfPlay.train.training_mgt import training_mgt
 from ws.RLEnvironments.self_play_games.othello.game_mgt import game_mgt
+from ws.RLUtils.common.app_info_lib import fn_init_arg_with_default_val
 from ws.RLUtils.common.misc_functions import fn_get_elapsed_time
 
 from ws.RLUtils.monitoring.tracing.tracer import tracer
@@ -20,6 +21,8 @@ from ws.RLUtils.monitoring.tracing.tracer import tracer
 def agent_mgt(app_info, common_functions):
     game_mgr = game_mgt(app_info.BOARD_SIZE)
     neural_net_mgr = model_mgt(game_mgr, app_info.RESULTS_PATH_)
+    app_info = fn_init_arg_with_default_val(app_info, 'fn_save_model', neural_net_mgr.fn_save_model)
+    # app_info.fn_save_model = neural_net_mgr.fn_save_model
 
     training_mgr = training_mgt(game_mgr, neural_net_mgr, app_info)
 
