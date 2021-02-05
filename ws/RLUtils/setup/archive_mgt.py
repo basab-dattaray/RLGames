@@ -9,7 +9,7 @@ def archive_mgt(results_path, archive_path, fn_log= None,  fn_log_reset= None, )
     _before_instance = True
     _start_time = time()
 
-    def fn_archive(result_folder_path= None, archive_folder_path= None, fn_save_to_neural_net= None, ):
+    def fn_archive(result_folder_path= None, archive_folder_path= None, fn_save_model= None, ):
         nonlocal  _before_instance
         try:
             if archive_folder_path is None:
@@ -29,8 +29,8 @@ def archive_mgt(results_path, archive_path, fn_log= None,  fn_log_reset= None, )
             else:
                 real_archive_path = os.path.join( archive_folder_path , 'AFTER')
 
-            if fn_save_to_neural_net is not None:
-                fn_save_to_neural_net()
+            if fn_save_model is not None:
+                fn_save_model()
 
             if os.path.exists(real_archive_path):
                 shutil.rmtree(real_archive_path)

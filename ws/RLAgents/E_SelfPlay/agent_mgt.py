@@ -5,7 +5,7 @@ from time import time
 
 import numpy
 
-from ws.RLAgents.E_SelfPlay.misc.model_mgt import model_mgt
+from ws.RLAgents.E_SelfPlay.model_mgt import model_mgt
 from ws.RLAgents.E_SelfPlay.play.greedy_player_mgt import greedy_player_mgt
 from ws.RLAgents.E_SelfPlay.play.animated_player_mgt import animated_player_mgt
 from ws.RLAgents.E_SelfPlay.play.random_player_mgt import random_player_mgt
@@ -16,7 +16,6 @@ from ws.RLEnvironments.self_play_games.othello.game_mgt import game_mgt
 from ws.RLUtils.common.misc_functions import fn_get_elapsed_time
 
 from ws.RLUtils.monitoring.tracing.tracer import tracer
-from ws.RLUtils.setup.startup_mgt import startup_mgt
 
 
 def fn_setup_essential_managers(app_info):
@@ -83,7 +82,7 @@ def agent_mgt(app_info, common_functions):
 
     @tracer(app_info, verboscity= 4)
     def fn_archive_log_file():
-        archive_msg = app_info.fn_archive(archive_folder_path=app_info.FULL_ARCHIVE_PATH_, fn_save_to_neural_net= app_info.neural_net_mgr.fn_save_model)
+        archive_msg = app_info.fn_archive(archive_folder_path=app_info.FULL_ARCHIVE_PATH_, fn_save_model= app_info.neural_net_mgr.fn_save_model)
         app_info.fn_log(archive_msg)
 
         return agent_mgr

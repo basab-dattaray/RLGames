@@ -31,7 +31,7 @@ def impl_mgt(app_info):
     _buffer = Buffer()
     _update_interval_count = 0
 
-    fn_save_to_neural_net, fn_load_from_neural_net = model_mgt(app_info.RESULTS_PATH_, _model_actor, _model_critic)
+    fn_save_model, fn_load_model = model_mgt(app_info.RESULTS_PATH_, _model_actor, _model_critic)
 
     def fn_act(state):
         action = fn_pick_action(state, _buffer, _model_old_actor)
@@ -74,4 +74,4 @@ def impl_mgt(app_info):
 
         _buffer.clear_buffer()
 
-    return fn_act, fn_add_transition, fn_save_to_neural_net, fn_load_from_neural_net, fn_should_update_network
+    return fn_act, fn_add_transition, fn_save_model, fn_load_model, fn_should_update_network

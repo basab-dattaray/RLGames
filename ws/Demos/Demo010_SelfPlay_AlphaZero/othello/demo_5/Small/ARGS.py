@@ -1,7 +1,7 @@
 from ws.RLUtils.common.DotDict import DotDict
 
 app_info = DotDict({
-    'STRATEGY': 'E_SelfPlay.DeepLearning_SelfPlay',
+    'STRATEGY': 'E_SelfPlay',
     'NUM_TRAINING_ITERATIONS': 3,
     'NUM_TRAINING_EPISODES': 3,
     'NUM_OF_ITERATION_SUCCESSES_FOR_MODEL_UPGRADE': 1,

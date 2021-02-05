@@ -5,7 +5,7 @@ import torch
 MODEL_NAME = 'ModelActorCritic.tar'
 def model_mgt(model_folder_path, model_actor_critic):
 
-    def fn_load_from_neural_net():
+    def fn_load_model():
 
         if not os.path.exists(model_folder_path):
             return False
@@ -22,11 +22,11 @@ def model_mgt(model_folder_path, model_actor_critic):
         return True
 
 
-    def fn_save_to_neural_net():
+    def fn_save_model():
 
         if os.path.exists(model_folder_path) is False:
             os.makedirs(model_folder_path)
         actor_critic_path = os.path.join(model_folder_path, MODEL_NAME)
         torch.save(model_actor_critic.state_dict(), actor_critic_path)
 
-    return fn_save_to_neural_net, fn_load_from_neural_net
+    return fn_save_model, fn_load_model

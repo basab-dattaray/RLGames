@@ -7,7 +7,7 @@ MODEL_ACTOR_NAME = 'ModelActor.tar'
 MODEL_CRITIC_NAME = 'ModelCritic.tar'
 def model_mgt(model_folder_path, model_actor, model_critic):
 
-    def fn_load_from_neural_net():
+    def fn_load_model():
         try:
             actor_dict = torch.load(os.path.join(model_folder_path, MODEL_ACTOR_NAME))
             model_actor.load_state_dict(actor_dict)
@@ -17,7 +17,7 @@ def model_mgt(model_folder_path, model_actor, model_critic):
         except Exception as x:
             return False
 
-    def fn_save_to_neural_net():
+    def fn_save_model():
         if os.path.exists(model_folder_path) is False:
             os.makedirs(model_folder_path)
 
@@ -27,4 +27,4 @@ def model_mgt(model_folder_path, model_actor, model_critic):
         critic_path = os.path.join(model_folder_path, MODEL_CRITIC_NAME)
         torch.save(model_critic.state_dict(), critic_path)
 
-    return fn_save_to_neural_net, fn_load_from_neural_net
+    return fn_save_model, fn_load_model

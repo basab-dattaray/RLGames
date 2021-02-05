@@ -29,7 +29,7 @@ def agent_dispatcher(file_path):
 
     def fn_archive_log_file():
         archive_msg = app_info.fn_archive(archive_folder_path=app_info.FULL_ARCHIVE_PATH_,
-                                          fn_save_to_neural_net=app_info.neural_net_mgr.fn_save_model)
+                                          fn_save_model=app_info.neural_net_mgr.fn_save_model)
         app_info.fn_log(archive_msg)
 
     common_funcs = namedtuple('_',

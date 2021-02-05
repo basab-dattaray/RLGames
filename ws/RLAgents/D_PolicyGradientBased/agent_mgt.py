@@ -18,7 +18,7 @@ def agent_mgt(app_info, common_functions):
 
         impl_mgt = load_function(function_name= 'impl_mgt', module_name='impl_mgt', module_dot_path= app_info.AGENT_FOLDER_PATH)
 
-        fn_act, fn_add_transition, fn_save_to_neural_net, fn_load_from_neural_net, fn_should_update_network = impl_mgt(app_info)
+        fn_act, fn_add_transition, fn_save_model, fn_load_model, fn_should_update_network = impl_mgt(app_info)
 
         chart, fn_show_training_progress, fn_has_reached_goal = progress_mgt(app_info)
 
@@ -78,14 +78,14 @@ def agent_mgt(app_info, common_functions):
     def fn_run_train():
         if app_info.ENV is None:
             return agent_mgr
-        if fn_load_from_neural_net is not None:
-            if fn_load_from_neural_net():
+        if fn_load_model is not None:
+            if fn_load_model():
                 fn_log('SUCCESS in loading model')
             else:
                 fn_log('FAILED in loading model')
 
         fn_run(fn_show_training_progress, fn_should_update_network=fn_should_update_network)
-        archive_msg = app_info.fn_archive(fn_save_to_neural_net= fn_save_to_neural_net,)
+        archive_msg = app_info.fn_archive(fn_save_model= fn_save_model,)
         fn_log(archive_msg)
         return agent_mgr
 
@@ -93,8 +93,8 @@ def agent_mgt(app_info, common_functions):
         if app_info.ENV is None:
             return agent_mgr
 
-        if fn_load_from_neural_net is not None:
-            if not fn_load_from_neural_net():
+        if fn_load_model is not None:
+            if not fn_load_model():
                 fn_log('FAILED in loading model')
                 return agent_mgr
 
