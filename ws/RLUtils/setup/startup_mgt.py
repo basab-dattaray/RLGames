@@ -123,8 +123,7 @@ def startup_mgt(demo_filepath, agent_filepath,
 
     if fn_get_key_as_bool('AUTO_ARCHIVE'):
         app_info.fn_archive = archive_mgt(
-            results_path= app_info.RESULTS_PATH_,
-            archive_path=app_info.FULL_ARCHIVE_PATH_,
+            app_info,
             fn_log=app_info.fn_log,
             fn_log_reset = app_info.fn_log_reset,
         )
