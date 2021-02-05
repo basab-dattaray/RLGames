@@ -44,10 +44,7 @@ def agent_dispatcher(file_path):
     common_funcs.fn_measure_time_elapsed = fn_measure_time_elapsed
     common_funcs.fn_archive_log_file = fn_archive_log_file
 
-    dispatch_dotpath = f'{app_info.AGENTS_DOTPATH_}.{app_info.STRATEGY}'
-
-    # agent_mgt = load_function(function_name="agent_mgt", module_name="agent_mgt", module_dot_path=dispatch_dotpath)
-    agent_mgt = load_mgt_function(loc_dotpath=app_info.AGENT_FOLDER_PATH, module_name='agent_mgt')
+    agent_mgt = load_mgt_function(loc_dotpath=app_info.AGENT_DOT_PATH, module_name='agent_mgt')
 
     agent_mgr = agent_mgt(app_info, common_funcs)
 

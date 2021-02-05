@@ -12,18 +12,14 @@ def impl_mgt(app_info):
 
     _gamma = app_info.GAMMA
 
-    # target_pkgpath = app_info.AGENT_FOLDER_PATH
-
-    # detail_mgt = load_function('detail_mgt', 'detail_mgt', target_pkgpath)
-    detail_mgt = load_mgt_function(loc_dotpath= app_info.AGENT_FOLDER_PATH, module_name='detail_mgt')
+    detail_mgt = load_mgt_function(loc_dotpath= app_info.AGENT_DOT_PATH, module_name='detail_mgt')
 
     fn_actor_loss_eval, fn_pick_action, fn_evaluate = detail_mgt(app_info)
 
     device = app_info.GPU_DEVICE
 
-    # target_pkgpath = app_info.AGENT_FOLDER_PATH
-    # Actor = load_function('Actor', 'Actor', target_pkgpath)
-    Actor = load_mgt_function(loc_dotpath= app_info.AGENT_FOLDER_PATH, module_name='Actor')
+
+    Actor = load_mgt_function(loc_dotpath= app_info.AGENT_DOT_PATH, module_name='Actor')
     _model_actor = Actor(app_info).to(device)
     _model_critic = Critic(app_info).to(device)
     #
