@@ -50,9 +50,7 @@ def startup_mgt(demo_filepath, agent_filepath):
 
     def _fn_setup_env():
         subpackage_name = None
-        if 'ENV_NAME' not in app_info.keys():
-                print("ENV_NAME is missing")
-        else:
+        if 'ENV_NAME' in app_info.keys():
             repo_name_parts = app_info.ENV_NAME.lower().rsplit('-', 1)
             app_info.ENV_REPO = repo_name_parts[0]
             subpackage_name = 'ws.RLEnvironments.' + app_info.ENV_REPO
