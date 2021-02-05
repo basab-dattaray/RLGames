@@ -15,7 +15,7 @@ from ws.RLUtils.common.DotDict import *
 import torch
 import torch.optim as optim
 
-def neural_net_mgt(game_mgr, model_folder):
+def neural_net_mgt(game_mgr, model_folder_path):
     nn_args = DotDict({
         'BATCH_SIZE': 64,
         'IS_CUDA': torch.cuda.is_available(),
@@ -25,13 +25,9 @@ def neural_net_mgt(game_mgr, model_folder):
 
     _MODEL_NAME = 'model.tar'
 
-    # results_path= None, model_file_name= None
-
-    def fn_save_model(model_folder_path= None, model_file_name= None):
+    def fn_save_model(model_file_name= None):
         if model_file_name is None:
             model_file_name = _MODEL_NAME
-        if model_folder_path is None:
-            model_folder_path = model_folder
         filepath = os.path.join(model_folder_path, model_file_name)
         if not os.path.exists(model_folder_path):
             os.mkdir(model_folder_path)
@@ -40,11 +36,9 @@ def neural_net_mgt(game_mgr, model_folder):
             'state_dict': nnet.state_dict(),
         }, filepath)
 
-    def fn_load_model(model_folder_path= None, model_file_name= None):
+    def fn_load_model(model_file_name= None):
         if model_file_name is None:
             model_file_name = _MODEL_NAME
-        if model_folder_path is None:
-            model_folder_path = model_folder
 
         filepath = os.path.join(model_folder_path, model_file_name)
 
