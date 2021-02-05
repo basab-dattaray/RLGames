@@ -4,7 +4,7 @@ from ws.RLAgents.D_PolicyGradientBased.ProximalPolicyOptimization.continuous_act
 from ws.RLAgents.D_PolicyGradientBased.misc import _fn_calculate_montecarlo_normalized_rewards
 
 from ws.RLAgents.D_PolicyGradientBased.Buffer import Buffer
-from ws.RLUtils.common.module_loader import load_function
+from ws.RLUtils.common.module_loader import load_function, load_mgt_function
 from ws.RLAgents.D_PolicyGradientBased.ProximalPolicyOptimization.model_mgt import model_mgt
 
 
@@ -12,9 +12,11 @@ def impl_mgt(app_info):
 
     _gamma = app_info.GAMMA
 
-    target_pkgpath = app_info.AGENT_FOLDER_PATH
+    # target_pkgpath = app_info.AGENT_FOLDER_PATH
 
-    detail_mgt = load_function('detail_mgt', 'detail_mgt', target_pkgpath)
+    # detail_mgt = load_function('detail_mgt', 'detail_mgt', target_pkgpath)
+    detail_mgt = load_mgt_function(loc_dotpath= app_info.AGENT_FOLDER_PATH, module_name='detail_mgt')
+
     fn_actor_loss_eval, fn_pick_action, fn_evaluate = detail_mgt(app_info)
 
     device = app_info.GPU_DEVICE

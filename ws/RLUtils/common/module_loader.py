@@ -26,3 +26,6 @@ def load_function(function_name, module_name, module_dot_path, package_tag=None)
 
     fn_obj = getattr(obj, function_name)
     return fn_obj
+
+def load_mgt_function(loc_dotpath, module_name):
+    return load_function(module_name, module_name, loc_dotpath)
