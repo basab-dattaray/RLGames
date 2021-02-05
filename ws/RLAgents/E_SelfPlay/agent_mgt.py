@@ -20,9 +20,9 @@ from ws.RLUtils.monitoring.tracing.tracer import tracer
 
 def fn_setup_essential_managers(app_info):
     app_info.game_mgr = game_mgt(app_info.BOARD_SIZE)
-    app_info.neural_net_mgr = model_mgt(app_info.game_mgr, app_info.RESULTS_PATH_)
+    neural_net_mgr = model_mgt(app_info.game_mgr, app_info.RESULTS_PATH_)
 
-    app_info.training_mgr = training_mgt(app_info.neural_net_mgr, app_info)
+    app_info.training_mgr = training_mgt(neural_net_mgr, app_info)
     return app_info
 
 def agent_mgt(app_info, common_functions):

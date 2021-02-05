@@ -14,7 +14,7 @@ def training_mgt(nn_mgr_N, app_info):
 
     def _fn_try_to_load_model():
         if app_info.DO_LOAD_MODEL:
-            if not app_info.neural_net_mgr.fn_load_model():
+            if not nn_mgr_N.fn_load_model():
                 app_info.fn_log('*** unable to load model')
             else:
                 app_info.fn_log('!!! loaded model')

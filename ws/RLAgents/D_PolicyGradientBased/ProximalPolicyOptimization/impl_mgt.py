@@ -31,6 +31,7 @@ def impl_mgt(app_info):
     _update_interval_count = 0
 
     fn_save_model, fn_load_model = model_mgt(app_info.RESULTS_PATH_, _model_actor, _model_critic)
+    app_info.fn_save_model = fn_save_model
 
     def fn_act(state):
         action = fn_pick_action(state, _buffer, _model_old_actor)
