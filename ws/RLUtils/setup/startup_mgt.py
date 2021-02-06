@@ -2,7 +2,6 @@ import os
 import shutil
 from datetime import datetime
 
-from ws.RLUtils.common.app_info_lib import DotDict, fn_init_arg_with_default_val
 from ws.RLUtils.common.attr_mgt import attr_mgt
 from ws.RLUtils.common.folder_paths import fn_get_rel_dot_folder_path
 
@@ -24,15 +23,15 @@ def startup_mgt(demo_filepath, agent_filepath,
         base_dot_path, demo_dot_path = fn_get_rel_dot_folder_path(current_path= demo_folder_path, base_path=agent_filepath)
         fn_get_args = load_function(function_name="fn_get_args", module_name="ARGS", module_dot_path=demo_dot_path)
         app_info = fn_get_args()
-        app_info = fn_init_arg_with_default_val(app_info, 'BASE_DOT_PATH_', base_dot_path)
-        app_info = fn_init_arg_with_default_val(app_info, 'DEMO_FOLDER_PATH_', demo_folder_path)
-        app_info = fn_init_arg_with_default_val(app_info, 'DEMO_DOT_PATH_', demo_dot_path)
-        app_info = fn_init_arg_with_default_val(app_info, 'RESULTS_REL_PATH', RESULTS_FOLDER_NAME)
-        app_info = fn_init_arg_with_default_val(app_info, 'ERROR_MESSAGE_', None)
+        app_info.BASE_DOT_PATH_ = base_dot_path
+        app_info.DEMO_FOLDER_PATH_ = demo_folder_path
+        app_info.DEMO_DOT_PATH_ = demo_dot_path
+        app_info.RESULTS_REL_PATH = RESULTS_FOLDER_NAME
+        app_info.ERROR_MESSAGE_ = None
 
         results_folder_path = os.path.join(app_info.DEMO_FOLDER_PATH_, app_info.RESULTS_REL_PATH)
-        app_info = fn_init_arg_with_default_val(app_info, 'RESULTS_PATH_', results_folder_path)
-        app_info = fn_init_arg_with_default_val(app_info, 'AGENTS_DOTPATH_', f'{base_dot_path}.{AGENT_DIR_NAME}')
+        app_info.RESULTS_PATH_ = results_folder_path
+        app_info.AGENTS_DOTPATH_ = f'{base_dot_path}.{AGENT_DIR_NAME}'
         return app_info
 
     def _fn_setup_logging():

@@ -5,6 +5,7 @@ from time import time
 
 import numpy
 
+# from ws.RLAgents.E_SelfPlay.model_mgt import model_mgt
 from ws.RLAgents.E_SelfPlay.model_mgt import model_mgt
 from ws.RLAgents.E_SelfPlay.play.greedy_player_mgt import greedy_player_mgt
 from ws.RLAgents.E_SelfPlay.play.animated_player_mgt import animated_player_mgt
@@ -13,7 +14,7 @@ from ws.RLAgents.E_SelfPlay.play.playground_mgt import playground_mgt
 from ws.RLUtils.algo_lib.search.monte_carlo_tree_search_mgt import monte_carlo_tree_search_mgt
 from ws.RLAgents.E_SelfPlay.train.training_mgt import training_mgt
 from ws.RLEnvironments.self_play_games.othello.game_mgt import game_mgt
-from ws.RLUtils.common.app_info_lib import fn_init_arg_with_default_val
+# from ws.RLUtils.common.app_info_lib import fn_init_arg_with_default_val
 from ws.RLUtils.common.misc_functions import fn_get_elapsed_time
 
 from ws.RLUtils.monitoring.tracing.tracer import tracer
@@ -21,7 +22,7 @@ from ws.RLUtils.monitoring.tracing.tracer import tracer
 def agent_mgt(app_info, common_functions):
     game_mgr = game_mgt(app_info.BOARD_SIZE)
     neural_net_mgr = model_mgt(game_mgr, app_info.RESULTS_PATH_)
-    app_info = fn_init_arg_with_default_val(app_info, 'fn_save_model', neural_net_mgr.fn_save_model)
+    app_info.fn_save_model = neural_net_mgr.fn_save_model
     # app_info.fn_save_model = neural_net_mgr.fn_save_model
 
     training_mgr = training_mgt(game_mgr, neural_net_mgr, app_info)
@@ -78,12 +79,12 @@ def agent_mgt(app_info, common_functions):
         start_time = fn_get_elapsed_time(start_time, app_info.trace_mgr.fn_write)
         return agent_mgr
 
-    @tracer(app_info, verboscity= 4)
-    def fn_archive_log_file():
-        archive_msg = app_info.fn_archive()
-        app_info.fn_log(archive_msg)
-
-        return agent_mgr
+    # @tracer(app_info, verboscity= 4)
+    # def fn_archive_log_file():
+    #     archive_msg = app_info.fn_archive()
+    #     app_info.fn_log(archive_msg)
+    #
+    #     return agent_mgr
 
     start_time = time()
 
@@ -99,6 +100,6 @@ def agent_mgt(app_info, common_functions):
     agent_mgr.fn_change_args = common_functions.fn_change_args
     agent_mgr.fn_show_args = common_functions.fn_show_args
     agent_mgr.fn_measure_time_elapsed = fn_measure_time_elapsed
-    agent_mgr.fn_archive_log_file = fn_archive_log_file
+    agent_mgr.fn_archive_log_file = common_functions.fn_archive_log_file
     agent_mgr.APP_INFO = app_info
     return agent_mgr
