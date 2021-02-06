@@ -3,7 +3,7 @@ import os
 import torch
 
 MODEL_NAME = 'ModelActorCritic.tar'
-def model_mgt(model_folder_path, model_actor_critic):
+def model_persistance_mgt(model_folder_path, model_actor_critic):
 
     def fn_load_model():
 

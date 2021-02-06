@@ -5,7 +5,7 @@ from ws.RLAgents.D_PolicyGradientBased.misc import _fn_calculate_montecarlo_norm
 
 from ws.RLAgents.D_PolicyGradientBased.Buffer import Buffer
 from ws.RLUtils.common.module_loader import load_function, load_mgt_function
-from ws.RLAgents.D_PolicyGradientBased.ProximalPolicyOptimization.model_mgt import model_mgt
+from ws.RLAgents.D_PolicyGradientBased.ProximalPolicyOptimization.model_persistance_mgt import model_persistance_mgt
 
 
 def impl_mgt(app_info):
@@ -30,7 +30,7 @@ def impl_mgt(app_info):
     _buffer = Buffer()
     _update_interval_count = 0
 
-    fn_save_model, fn_load_model = model_mgt(app_info.RESULTS_PATH_, _model_actor, _model_critic)
+    fn_save_model, fn_load_model = model_persistance_mgt(app_info.RESULTS_PATH_, _model_actor, _model_critic)
     app_info.fn_save_model = fn_save_model
 
     def fn_act(state):

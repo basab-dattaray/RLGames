@@ -4,7 +4,7 @@ from ws.RLAgents.D_PolicyGradientBased.misc import _fn_calculate_montecarlo_norm
 from ws.RLAgents.D_PolicyGradientBased.Buffer import Buffer
 from .ActorCritic import ActorCritic
 from .detail_mgt import detail_mgt
-from .model_mgt import model_mgt
+from .model_persistance_mgt import model_persistance_mgt
 
 
 def impl_mgt(app_info):
@@ -14,7 +14,7 @@ def impl_mgt(app_info):
 
     _model_actor_critic = ActorCritic(app_info).to(app_info.GPU_DEVICE)
 
-    fn_save_model, fn_load_model = model_mgt(app_info.RESULTS_PATH_, _model_actor_critic)
+    fn_save_model, fn_load_model = model_persistance_mgt(app_info.RESULTS_PATH_, _model_actor_critic)
     app_info.fn_save_model = fn_save_model
 
     _optimizer = torch.optim.Adam(_model_actor_critic.parameters(), lr=app_info.LEARNING_RATE, betas=(0.9, 0.999))
