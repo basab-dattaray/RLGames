@@ -29,7 +29,6 @@ def agent_mgt(app_info, common_functions):
 
     @tracer(app_info, verboscity= 4)
     def fn_train():
-        # nonlocal app_info
         training_mgr.fn_execute_training_iterations()
         return agent_mgr
 
@@ -72,13 +71,19 @@ def agent_mgt(app_info, common_functions):
             shutil.rmtree(app_info.RESULTS_PATH_)
         return agent_mgr
 
-
-
-
     agent_mgr = namedtuple('_',
-                           ['fn_reset', 'fn_train', 'fn_test_against_human', 'fn_test_againt_random', 'fn_test_against_greedy',
-                            'fn_change_args', 'fn_show_args', 'fn_archive_log_file',
-                            'app_info'])
+                            [
+                               'fn_reset',
+                                'fn_train',
+                                'fn_test_against_human',
+                                'fn_test_againt_random',
+                                'fn_test_against_greedy',
+                                'fn_change_args',
+                                'fn_show_args',
+                                'fn_archive_log_file',
+                                'app_info'
+                           ]
+                           )
     agent_mgr.fn_reset = fn_reset
     agent_mgr.fn_train = fn_train
     agent_mgr.fn_test_against_human = fn_test_against_human
