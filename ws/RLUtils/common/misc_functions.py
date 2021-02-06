@@ -20,13 +20,15 @@ def arg_max(next_state):
     return random.choice(max_index_list)
 
 
-def fn_get_elapsed_time(start_time, fn_record= None):
-    end_time = time()
-    time_diff = int(end_time - start_time)
-    mins = math.floor(time_diff / 60)
-    secs = time_diff % 60
-    if fn_record is not None:
-        fn_record(f'start_time:{start_time}')
-        fn_record(f'end_time:{end_time}')
-        fn_record(f'Time elapsed:    minutes: {mins}    seconds: {secs}')
-    return end_time
+# def fn_get_elapsed_time(start_time):
+#     end_time = time()
+#     time_diff = int(end_time - start_time)
+#     mins = math.floor(time_diff / 60)
+#     secs = time_diff % 60
+#     time_stats = f'Time elapsed:    minutes: {mins}    seconds: {secs}  -----  (start_time:{start_time}, end_time:{end_time})'
+#     # if fn_record is not None:
+#     #     fn_record(f'start_time:{start_time}')
+#     #     fn_record(f'end_time:{end_time}')
+#     #     fn_record(f'Time elapsed:    minutes: {mins}    seconds: {secs}')
+#
+#     return time_stats

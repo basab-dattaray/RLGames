@@ -1,6 +1,7 @@
 import os
 import shutil
 from datetime import datetime
+from time import time
 
 from ws.RLUtils.common.attr_mgt import attr_mgt
 from ws.RLUtils.common.folder_paths import fn_get_rel_dot_folder_path
@@ -28,6 +29,7 @@ def startup_mgt(demo_filepath, agent_filepath,
         app_info.DEMO_DOT_PATH_ = demo_dot_path
         app_info.RESULTS_REL_PATH = RESULTS_FOLDER_NAME
         app_info.ERROR_MESSAGE_ = None
+        app_info.START_TIME_ = time()
 
         results_folder_path = os.path.join(app_info.DEMO_FOLDER_PATH_, app_info.RESULTS_REL_PATH)
         app_info.RESULTS_PATH_ = results_folder_path

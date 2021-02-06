@@ -1,6 +1,5 @@
 from collections import namedtuple
 
-from ws.RLUtils.common.misc_functions import fn_get_elapsed_time
 from ws.RLUtils.common.module_loader import load_function, load_mgt_function
 
 from ws.RLUtils.setup.startup_mgt import startup_mgt
@@ -22,11 +21,6 @@ def agent_dispatcher(file_path):
             app_info.trace_mgr.fn_write(f'  app_info[{k}] = {v}')
         return agent_mgr
 
-    def fn_measure_time_elapsed(start_time):
-
-        start_time = fn_get_elapsed_time(start_time, app_info.trace_mgr.fn_write)
-        return agent_mgr
-
     def fn_archive_log_file():
         archive_msg = app_info.fn_archive()
         app_info.fn_log(archive_msg)
@@ -35,12 +29,10 @@ def agent_dispatcher(file_path):
                                   [
                                       'fn_change_args',
                                       'fn_show_args',
-                                      'fn_measure_time_elapsed',
                                       'fn_archive_log_file',
                                   ])
     common_funcs.fn_change_args = fn_change_args
     common_funcs.fn_show_args = fn_show_args
-    common_funcs.fn_measure_time_elapsed = fn_measure_time_elapsed
     common_funcs.fn_archive_log_file = fn_archive_log_file
 
     agent_mgt = load_mgt_function(loc_dotpath=app_info.AGENT_DOT_PATH, module_name='agent_mgt')

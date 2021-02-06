@@ -14,8 +14,7 @@ from ws.RLAgents.E_SelfPlay.play.playground_mgt import playground_mgt
 from ws.RLUtils.algo_lib.search.monte_carlo_tree_search_mgt import monte_carlo_tree_search_mgt
 from ws.RLAgents.E_SelfPlay.train.training_mgt import training_mgt
 from ws.RLEnvironments.self_play_games.othello.game_mgt import game_mgt
-# from ws.RLUtils.common.app_info_lib import fn_init_arg_with_default_val
-from ws.RLUtils.common.misc_functions import fn_get_elapsed_time
+
 
 from ws.RLUtils.monitoring.tracing.tracer import tracer
 
@@ -30,7 +29,7 @@ def agent_mgt(app_info, common_functions):
 
     @tracer(app_info, verboscity= 4)
     def fn_train():
-        nonlocal app_info
+        # nonlocal app_info
         training_mgr.fn_execute_training_iterations()
         return agent_mgr
 
@@ -73,24 +72,12 @@ def agent_mgt(app_info, common_functions):
             shutil.rmtree(app_info.RESULTS_PATH_)
         return agent_mgr
 
-    @tracer(app_info, verboscity= 4)
-    def fn_measure_time_elapsed():
-        nonlocal start_time
-        start_time = fn_get_elapsed_time(start_time, app_info.trace_mgr.fn_write)
-        return agent_mgr
 
-    # @tracer(app_info, verboscity= 4)
-    # def fn_archive_log_file():
-    #     archive_msg = app_info.fn_archive()
-    #     app_info.fn_log(archive_msg)
-    #
-    #     return agent_mgr
 
-    start_time = time()
 
     agent_mgr = namedtuple('_',
                            ['fn_reset', 'fn_train', 'fn_test_against_human', 'fn_test_againt_random', 'fn_test_against_greedy',
-                            'fn_change_args', 'fn_show_args', 'fn_measure_time_elapsed', 'fn_archive_log_file',
+                            'fn_change_args', 'fn_show_args', 'fn_archive_log_file',
                             'app_info'])
     agent_mgr.fn_reset = fn_reset
     agent_mgr.fn_train = fn_train
@@ -99,7 +86,6 @@ def agent_mgt(app_info, common_functions):
     agent_mgr.fn_test_against_greedy = fn_test_against_greedy
     agent_mgr.fn_change_args = common_functions.fn_change_args
     agent_mgr.fn_show_args = common_functions.fn_show_args
-    agent_mgr.fn_measure_time_elapsed = fn_measure_time_elapsed
     agent_mgr.fn_archive_log_file = common_functions.fn_archive_log_file
     agent_mgr.APP_INFO = app_info
     return agent_mgr

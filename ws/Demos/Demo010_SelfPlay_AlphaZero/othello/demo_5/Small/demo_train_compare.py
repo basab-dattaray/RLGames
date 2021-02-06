@@ -13,7 +13,6 @@ def fn_execute():
         fn_train(). \
         fn_test_against_greedy(). \
         fn_test_against_random(). \
-        fn_measure_time_elapsed(). \
         \
         fn_reset(). \
         fn_change_args({
@@ -24,7 +23,6 @@ def fn_execute():
         fn_train(). \
         fn_test_against_greedy(). \
         fn_test_against_random(). \
-        fn_measure_time_elapsed(). \
         fn_archive_log_file()
     return agent_mgr.APP_INFO.ERROR_MESSAGE_
 

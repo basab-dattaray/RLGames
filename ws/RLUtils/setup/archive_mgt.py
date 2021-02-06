@@ -1,15 +1,24 @@
+import math
 import os
 import shutil
+from datetime import datetime
 from time import time
-
-from ws.RLUtils.common.misc_functions import fn_get_elapsed_time
-
 
 def archive_mgt(app_info, fn_log= None,  fn_log_reset= None):
     result_folder_paths = app_info.RESULTS_PATH_
     archive_folder_path = app_info.FULL_ARCHIVE_PATH_
     _before_instance = True
     _start_time = time()
+
+    def fn_get_elapsed_time(start_time):
+        end_time = time()
+        time_diff = int(end_time - start_time)
+        mins = math.floor(time_diff / 60)
+        secs = time_diff % 60
+        start_time_human = datetime.fromtimestamp(start_time).strftime("%H:%M:%S")
+        end_time_human = datetime.fromtimestamp(end_time).strftime("%H:%M:%S")
+        time_stats = f'Time elapsed:    minutes: {mins}    seconds: {secs}  -----  (start_time:{start_time_human}, end_time:{end_time_human})'
+        return time_stats
 
     def fn_archive():
         nonlocal  _before_instance
@@ -27,7 +36,9 @@ def archive_mgt(app_info, fn_log= None,  fn_log_reset= None):
                 shutil.rmtree(real_archive_path)
 
             if not _before_instance:
-                end_time = fn_get_elapsed_time(_start_time, fn_log)
+                time_stats = fn_get_elapsed_time(start_time= app_info.START_TIME_)
+                app_info.fn_log(time_stats)
+
 
             shutil.copytree(result_folder_paths, real_archive_path, symlinks=False, ignore=None)
 
