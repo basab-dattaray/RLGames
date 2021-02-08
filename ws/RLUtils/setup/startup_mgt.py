@@ -85,6 +85,7 @@ def startup_mgt(demo_filepath, agent_filepath,
             os.remove(results_args_py_path)
         args_py_path = os.path.join(app_info.DEMO_FOLDER_PATH_, ARGS_PY)
         shutil.copy(args_py_path, app_info.RESULTS_PATH_)
+        shutil.copy(demo_filepath, app_info.RESULTS_PATH_)
 
     def _fn_setup_gpu():
         app_info.GPU_DEVICE = get_device(app_info)
