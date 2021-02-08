@@ -68,7 +68,6 @@ def startup_mgt(demo_filepath, agent_filepath,
     def _fn_setup_paths_in_app_info():
         app_info.AGENTS_DOT_PATH_ = app_info.BASE_DOT_PATH_ + '.RLAgents'
         app_info.AGENTS_CONFIG_DOT_PATH = app_info.BASE_DOT_PATH_ + '.RLAgents' + '._CommonAgentConfigurations'
-
         app_info.AGENT_DOT_PATH = f'{app_info.AGENTS_DOT_PATH_}.{app_info.STRATEGY}'
 
         archive_container_path = app_info.DEMO_FOLDER_PATH_.replace('Demos', 'ARCHIVES')
