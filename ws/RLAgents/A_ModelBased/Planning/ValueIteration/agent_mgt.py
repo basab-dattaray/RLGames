@@ -8,19 +8,10 @@ def agent_mgt(app_info, common_functions):
     # app_info = startup_mgt(file_path, __file__)
 
     fn_move_per_policy, fn_apply_policy_iteration, fn_apply_value_iteration = impl_mgt(app_info)
-    strategy = app_info.STRATEGY
-    right_dot_index = strategy.rfind('.')
-    iterator_name = strategy[right_dot_index + 1:]
-
-    fn_apply = None
-    if iterator_name == 'PolicyIteration':
-        fn_apply = fn_apply_policy_iteration
-    if iterator_name == 'ValueIteration':
-        fn_apply = fn_apply_value_iteration
 
     def fn_setup_env():
         actions = OrderedDict()
-        actions["plan"] = fn_apply
+        actions["plan"] = fn_apply_value_iteration
         actions["move"] = fn_move_per_policy
 
         app_info.ENV.display_mgr.fn_setup_ui(actions)
