@@ -8,7 +8,8 @@ def exec_mgt(base_path, file_prefix='test', file_postfix='.py'):
     _failures = 0
     def fn_traverse_dir(dir_path):
         nonlocal _total_count, _failures
-        for item in os.listdir(dir_path):
+        sorted_list = sorted(os.listdir(dir_path))
+        for item in sorted_list:
             abspath_item = os.path.join(dir_path, item)
             if os.path.isfile(abspath_item):
                 if item.startswith(file_prefix) and item.endswith(file_postfix):
