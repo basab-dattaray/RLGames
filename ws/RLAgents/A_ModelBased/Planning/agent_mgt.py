@@ -13,9 +13,9 @@ def agent_mgt(app_info, common_functions):
     iterator_name = strategy[right_dot_index + 1:]
 
     fn_apply = None
-    if iterator_name == 'policy_iterator':
+    if iterator_name == 'PolicyIteration':
         fn_apply = fn_apply_policy_iteration
-    if iterator_name == 'value_iterator':
+    if iterator_name == 'ValueIteration':
         fn_apply = fn_apply_value_iteration
 
     def fn_setup_env():
