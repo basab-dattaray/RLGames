@@ -70,12 +70,12 @@ def planning_mgt(env, discount_factor= 0.9):
                     max_index.clear()
                     max_index.append(action)
 
-            prob = 1 / len(max_index)
-
             result = [0] * env.fn_get_action_size()
 
+            prob = 1 / len(max_index)
             for index in max_index:
                 result[index] = prob
+
             env.policy_repo_mgr.fn_set_policy_state_value(state, result)
         policy_table = env.policy_repo_mgr.fn_fetch_policy_table()
         return policy_table

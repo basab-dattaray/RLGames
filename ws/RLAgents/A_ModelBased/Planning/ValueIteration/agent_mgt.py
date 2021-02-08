@@ -1,7 +1,6 @@
 from collections import OrderedDict, namedtuple
 
 from ws.RLAgents.A_ModelBased.Planning.impl_mgt import impl_mgt
-from ws.RLUtils.monitoring.tracing.tracer import tracer
 
 
 def agent_mgt(app_info, common_functions):

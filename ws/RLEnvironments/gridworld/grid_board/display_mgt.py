@@ -240,7 +240,8 @@ def display_mgt(strategy):
     def fn_run_ui():
         if _test_mode:
             for key, action in _actions.items():
-                action()
+                if action is not None:
+                    action()
             return
         _tk.mainloop()
 

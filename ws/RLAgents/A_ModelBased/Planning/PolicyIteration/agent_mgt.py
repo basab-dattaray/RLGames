@@ -9,6 +9,7 @@ def agent_mgt(app_info, common_functions):
 
     def fn_setup_env():
         actions = OrderedDict()
+        actions["reset"] = None
         actions["plan"] = fn_apply_policy_iteration
         actions["move"] = fn_move_per_policy
 
