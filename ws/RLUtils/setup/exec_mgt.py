@@ -27,7 +27,9 @@ def exec_mgt(base_path, file_prefix='test', file_postfix='.py'):
                             print(f'ERROR: {error_msg}')
 
                         _total_count = _total_count + 1
-                        print(f'{_total_count}: *@*@*@ *@*@*@ *@*@*@ *@*@*@ *@*@*@ *@*@*@ *@*@*@ *@*@*@ *@*@*@ EXECUTED: {module_dot_path}')
+
+                        print('')
+                        print(f'\033[1m{_total_count}: *** EXECUTED: {module_dot_path}\033[0m ')
                         print('')
 
                     # with open(abspath_item) as source_file:
