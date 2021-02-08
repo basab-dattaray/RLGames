@@ -1,6 +1,6 @@
 import numpy as np
 
-from ws.RLUtils.algo_lib.planning.planning_mgt import planning_mgt
+from ws.RLAgents.A_ModelBased.Planning.planning_mgt import planning_mgt
 
 def impl_mgt(app_info):
 

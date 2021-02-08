@@ -1,6 +1,6 @@
 from collections import namedtuple
 
-from ws.RLUtils.algo_lib.search.cache_mgt import cache_mgt
+from ws.RLAgents.E_SelfPlay.search.cache_mgt import cache_mgt
 
 
 def cache2_mgt():

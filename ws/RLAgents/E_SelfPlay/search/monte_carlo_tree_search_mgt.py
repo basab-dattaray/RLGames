@@ -1,7 +1,7 @@
 from collections import namedtuple
 
-from ws.RLUtils.algo_lib.search.policy_mgt import policy_mgt
-from ws.RLUtils.algo_lib.search.search_helper import search_helper
+from ws.RLAgents.E_SelfPlay.search.policy_mgt import policy_mgt
+from ws.RLAgents.E_SelfPlay.search.search_helper import search_helper
 
 
 def monte_carlo_tree_search_mgt(

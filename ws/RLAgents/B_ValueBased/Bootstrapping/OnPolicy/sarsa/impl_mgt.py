@@ -1,6 +1,4 @@
-
-from ws.RLEnvironments.gridworld.grid_board.display_mgt import display_mgt
-from ws.RLUtils.algo_lib.policy_based.qtable_mgt import qtable_mgt
+from ws.RLAgents.B_ValueBased.Bootstrapping.qtable_mgt import qtable_mgt
 
 def impl_mgt(app_info):
     _env = app_info.ENV

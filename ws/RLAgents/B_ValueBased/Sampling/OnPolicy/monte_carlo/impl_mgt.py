@@ -1,7 +1,4 @@
-
-from ws.RLEnvironments.gridworld.grid_board.display_mgt import display_mgt
-
-from ws.RLUtils.algo_lib.policy_based.montecarlo_trace_mgt import montecarlo_trace_mgt
+from ws.RLAgents.B_ValueBased.Sampling.OnPolicy.monte_carlo.montecarlo_trace_mgt import montecarlo_trace_mgt
 
 
 def impl_mgt(app_info):
