@@ -4,7 +4,6 @@ from ws.RLAgents.A_ModelBased.Planning.impl_mgt import impl_mgt
 
 
 def agent_mgt(app_info, common_functions):
-    # app_info = startup_mgt(file_path, __file__)
 
     implementation = impl_mgt(app_info)
     def fn_setup_env():
@@ -12,19 +11,11 @@ def agent_mgt(app_info, common_functions):
         actions["reset"] = implementation.fn_apply_reset
         actions["improve policy"] = implementation.fn_apply_reset
         actions["apply policy"] = implementation.fn_apply_reset
-        actions["plan"] = implementation.fn_apply_value_iteration
+        actions["plan"] = implementation.fn_display_therafter(implementation.Planner.fn_value_iterator)
         actions["move"] = implementation.fn_move_per_policy
 
         app_info.ENV.Display.fn_setup_ui(actions)
         return agent_mgr
-    # def fn_setup_env():
-    #     actions = OrderedDict()
-    #     actions["reset"] = fn_apply_reset
-    #     actions["plan"] = fn_apply_value_iteration
-    #     actions["move"] = fn_move_per_policy
-    #
-    #     app_info.ENV.Display.fn_setup_ui(actions)
-    #     return agent_mgr
 
     def fn_run_env():
         if 'TEST_MODE' in app_info:
