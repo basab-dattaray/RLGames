@@ -11,7 +11,7 @@ def planning_mgt(env, discount_factor= 0.9):
         actions = env.Policy.fn_get_policy_state_value(state)
         return actions
 
-    def fn_run_policy():
+    def fn_update_state_values_given_policy():
 
         for state in env.fn_get_all_states():
             env.fn_set_active_state(state)
@@ -29,7 +29,7 @@ def planning_mgt(env, discount_factor= 0.9):
 
             env.StateValues.fn_set_state_value(state, value)
 
-    def fn_calc_values():
+    def fn_update_state_max_values_given_policy():
 
         for state in env.fn_get_all_states():
 
@@ -92,18 +92,22 @@ def planning_mgt(env, discount_factor= 0.9):
         return value_table, policy_table
 
     def fn_policy_iterator():
-        return repeatEvalAndImprove(fn_run_policy)
+        return repeatEvalAndImprove(fn_update_state_values_given_policy)
 
     def fn_value_iterator():
-        return repeatEvalAndImprove(fn_calc_values)
+        return repeatEvalAndImprove(fn_update_state_max_values_given_policy)
 
     ret_obj = namedtuple('_', [
         'fn_policy_iterator',
         'fn_value_iterator',
         'fn_get_actions_given_state',
+        'fn_update_state_values_given_policy',
+        'fn_update_state_max_values_given_policy',
     ])
 
     ret_obj.fn_policy_iterator = fn_policy_iterator
     ret_obj.fn_value_iterator = fn_value_iterator
     ret_obj.fn_get_actions_given_state = fn_get_actions_given_state
+    ret_obj.fn_update_state_values_given_policy = fn_update_state_values_given_policy
+    ret_obj.fn_update_state_max_values_given_policy = fn_update_state_max_values_given_policy
     return ret_obj
