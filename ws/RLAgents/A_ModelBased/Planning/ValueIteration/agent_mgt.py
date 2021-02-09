@@ -6,10 +6,11 @@ from ws.RLAgents.A_ModelBased.Planning.impl_mgt import impl_mgt
 def agent_mgt(app_info, common_functions):
     # app_info = startup_mgt(file_path, __file__)
 
-    fn_move_per_policy, fn_apply_policy_iteration, fn_apply_value_iteration, _ = impl_mgt(app_info)
+    fn_move_per_policy, fn_apply_policy_iteration, fn_apply_value_iteration, fn_apply_reset = impl_mgt(app_info)
 
     def fn_setup_env():
         actions = OrderedDict()
+        actions["reset"] = fn_apply_reset
         actions["plan"] = fn_apply_value_iteration
         actions["move"] = fn_move_per_policy
 
