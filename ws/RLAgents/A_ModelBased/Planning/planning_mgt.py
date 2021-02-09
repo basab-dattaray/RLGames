@@ -101,6 +101,7 @@ def planning_mgt(env, discount_factor= 0.9):
         'fn_policy_iterator',
         'fn_value_iterator',
         'fn_get_actions_given_state',
+        'fn_run_policy_improvement',
         'fn_update_state_values_given_policy',
         'fn_update_state_max_values_given_policy',
     ])
@@ -108,6 +109,7 @@ def planning_mgt(env, discount_factor= 0.9):
     ret_obj.fn_policy_iterator = fn_policy_iterator
     ret_obj.fn_value_iterator = fn_value_iterator
     ret_obj.fn_get_actions_given_state = fn_get_actions_given_state
+    ret_obj.fn_run_policy_improvement = fn_run_policy_improvement
     ret_obj.fn_update_state_values_given_policy = fn_update_state_values_given_policy
     ret_obj.fn_update_state_max_values_given_policy = fn_update_state_max_values_given_policy
     return ret_obj
