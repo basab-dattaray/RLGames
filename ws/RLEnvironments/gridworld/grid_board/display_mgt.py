@@ -251,22 +251,22 @@ def display_mgt(strategy):
         _tk.canvas.move(_cursor, step[0] * _unit, step[1] * _unit)
         _fn_render_on_canvas()
 
-    def fn_show_policy_arrows(policy_table):
+    def fn_show_policy_arrows(policy_table, show= True):
         for i in _tk.arrows:
             _tk.canvas.delete(i)
+        if show:
+            for i in range(_height):
+                for j in range(_width):
+                    _fn_draw_arrow(i, j, policy_table[i][j])
 
-        for i in range(_height):
-            for j in range(_width):
-                _fn_draw_arrow(i, j, policy_table[i][j])
-
-    def fn_show_state_values(value_table):
+    def fn_show_state_values(value_table, show= True):
         for i in _tk.texts:
             _tk.canvas.delete(i)
-
-        for i in range(_height):
-            for j in range(_width):
-                val = round(value_table[i][j], 8)
-                _fn_append_text_canvas(i, j, val)
+        if show:
+            for i in range(_height):
+                for j in range(_width):
+                    val = round(value_table[i][j], 8)
+                    _fn_append_text_canvas(i, j, val)
         _fn_append_rewards_to_canvas()
         _fn_render_on_canvas()
 

@@ -37,7 +37,7 @@ def impl_mgt(app_info):
     def fn_apply_reset():
         app_info.ENV.fn_reset_env()
         StateValues, Policy = app_info.ENV.fn_get_internal_info()
-        Display.fn_show_state_values(StateValues.fn_get_all_state_values())
-        # Display.fn_show_policy_arrows(Policy.fn_fetch_policy_table())
+        Display.fn_show_state_values(StateValues.fn_get_all_state_values(), show= False)
+        Display.fn_show_policy_arrows(Policy.fn_fetch_policy_table(), show= False)
 
     return fn_move_per_policy, fn_apply_policy_iteration, fn_apply_value_iteration, fn_apply_reset
