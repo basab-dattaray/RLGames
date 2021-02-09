@@ -9,14 +9,14 @@ def agent_mgt(app_info, common_functions):
         actions = OrderedDict()
         actions["run"] = fn_run
 
-        app_info.ENV.display_mgr.fn_setup_ui(actions)
+        app_info.ENV.Display.fn_setup_ui(actions)
         return agent_mgr
 
     def fn_run_env():
         if 'TEST_MODE' in app_info:
             if app_info.TEST_MODE:
-                app_info.ENV.display_mgr.fn_set_test_mode()
-        app_info.ENV.display_mgr.fn_run_ui()
+                app_info.ENV.Display.fn_set_test_mode()
+        app_info.ENV.Display.fn_run_ui()
         return agent_mgr
 
     agent_mgr = namedtuple('_',

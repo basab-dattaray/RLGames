@@ -19,12 +19,15 @@ def env_mgt(name, strategy= None):
 
     _all_states = None
     _current_state = None
-    display_mgr = display_mgt(strategy)
-    _values_repo_mgr = values_repo_mgt(display_mgr)
-    _policy_repo_mgr = policy_table_mgt(ACTION_SIZE, _width, _height)
+    Display = display_mgt(strategy)
+    _values_repo_mgr =None
+    _policy_repo_mgr = None
 
     def fn_reset_env():
         nonlocal  _reward,  _all_states, _current_state
+        nonlocal _values_repo_mgr, _policy_repo_mgr
+        _values_repo_mgr = values_repo_mgt(Display)
+        _policy_repo_mgr = policy_table_mgt(ACTION_SIZE, _width, _height)
 
         _reward = [[0] * _width for _ in range(_height)]
 
@@ -41,6 +44,9 @@ def env_mgt(name, strategy= None):
 
         _current_state = [0, 0]
         return _current_state
+
+    def fn_get_internal_info():
+        return _values_repo_mgr, _policy_repo_mgr
 
     def _fn_env_step(action):
         nonlocal _current_state
@@ -84,7 +90,7 @@ def env_mgt(name, strategy= None):
         return ACTION_SIZE
 
     def fn_close():
-        display_mgr.fn_close()
+        Display.fn_close()
 
     def fn_set_active_state(current_state):
         nonlocal _current_state
@@ -109,13 +115,16 @@ def env_mgt(name, strategy= None):
 
     fn_reset_env()
     ret_obj = namedtuple('_', [
-        'display_mgr',
+
+        'Display',
         'fn_reset_env',
         'fn_take_step',
         'fn_render',
         'fn_get_state_size',
         'fn_get_action_size',
         'fn_close',
+
+        'fn_get_internal_info',
 
         'fn_set_active_state',
         'fn_get_all_states',
@@ -124,14 +133,14 @@ def env_mgt(name, strategy= None):
         'fn_get_config',
         'fn_get_strategy',
         'fn_is_goal_reached',
-        'values_repo_mgr',
-        'policy_repo_mgr',
+        'StateValues',
+        'Policy',
         'ERROR_MESSAGE',
     ])
 
-    ret_obj.display_mgr = display_mgr
-    ret_obj.values_repo_mgr = _values_repo_mgr
-    ret_obj.policy_repo_mgr = _policy_repo_mgr
+    ret_obj.Display = Display
+    ret_obj.StateValues = _values_repo_mgr
+    ret_obj.Policy = _policy_repo_mgr
 
     ret_obj.fn_reset_env = fn_reset_env
     ret_obj.fn_take_step = fn_take_step
@@ -139,6 +148,8 @@ def env_mgt(name, strategy= None):
     ret_obj.fn_get_state_size = fn_get_state_size
     ret_obj.fn_get_action_size = fn_get_action_size
     ret_obj.fn_close = fn_close
+
+    ret_obj.fn_get_internal_info = fn_get_internal_info
 
     ret_obj.fn_set_active_state = fn_set_active_state
     ret_obj.fn_get_all_states = fn_get_all_states

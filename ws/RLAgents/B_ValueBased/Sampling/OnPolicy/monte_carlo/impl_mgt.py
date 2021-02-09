@@ -2,7 +2,7 @@ from ws.RLAgents.B_ValueBased.Sampling.OnPolicy.monte_carlo.montecarlo_trace_mgt
 
 
 def impl_mgt(app_info):
-    display_mgr = app_info.ENV.display_mgr
+    Display = app_info.ENV.Display
     _fn_clear_trace, _fn_get_epsilon_greedy_action, _fn_trace_interaction, _fn_update_values_repo_from_trace = montecarlo_trace_mgt(
         app_info.ENV,
         app_info.EPSILON,
@@ -14,9 +14,9 @@ def impl_mgt(app_info):
     def fn_run_monte_carlo():
         _fn_clear_trace()
         for episode in range(app_info.NUM_EPISODES):
-            value_table, episode_status = _fn_run_episode(display_mgr.fn_move_cursor)
-            if display_mgr.fn_show_state_values is not None:
-                display_mgr.fn_show_state_values(value_table)
+            value_table, episode_status = _fn_run_episode(Display.fn_move_cursor)
+            if Display.fn_show_state_values is not None:
+                Display.fn_show_state_values(value_table)
             if 'TEST_MODE' in app_info:
                 if app_info.TEST_MODE: # ONLY 1 episode needed
                     break

@@ -2,10 +2,10 @@ import copy
 from collections import namedtuple
 
 
-def values_repo_mgt(display_mgr):
+def values_repo_mgt(Display):
 
     _prev_value_table = None
-    _value_table = display_mgr.fn_create_value_repo()
+    _value_table = Display.fn_create_value_repo()
 
     def fn_set_state_value(state, value):
         nonlocal _value_table
@@ -28,7 +28,7 @@ def values_repo_mgt(display_mgr):
             _prev_value_table = copy.deepcopy(_value_table)
             return True
 
-        return display_mgr.fn_compare_value_repos(_prev_value_table, _value_table)
+        return Display.fn_compare_value_repos(_prev_value_table, _value_table)
 
     ret_obj = namedtuple('_', [
         'fn_set_state_value',

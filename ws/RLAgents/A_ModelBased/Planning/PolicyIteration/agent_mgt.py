@@ -5,22 +5,22 @@ from ws.RLAgents.A_ModelBased.Planning.impl_mgt import impl_mgt
 
 def agent_mgt(app_info, common_functions):
 
-    fn_move_per_policy, fn_apply_policy_iteration, fn_apply_value_iteration = impl_mgt(app_info)
+    fn_move_per_policy, fn_apply_policy_iteration, fn_apply_value_iteration, fn_apply_reset = impl_mgt(app_info)
 
     def fn_setup_env():
         actions = OrderedDict()
-        actions["reset"] = None
+        actions["reset"] = fn_apply_reset
         actions["plan"] = fn_apply_policy_iteration
         actions["move"] = fn_move_per_policy
 
-        app_info.ENV.display_mgr.fn_setup_ui(actions)
+        app_info.ENV.Display.fn_setup_ui(actions)
         return agent_mgr
 
     def fn_run_env():
         if 'TEST_MODE' in app_info:
             if app_info.TEST_MODE:
-                app_info.ENV.display_mgr.fn_set_test_mode()
-        app_info.ENV.display_mgr.fn_run_ui()
+                app_info.ENV.Display.fn_set_test_mode()
+        app_info.ENV.Display.fn_run_ui()
         return agent_mgr
 
 

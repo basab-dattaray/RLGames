@@ -3,7 +3,7 @@ from ws.RLAgents.B_ValueBased.Bootstrapping.qtable_mgt import qtable_mgt
 def impl_mgt(app_info):
     _env = app_info.ENV
 
-    display_mgr = app_info.ENV.display_mgr
+    Display = app_info.ENV.Display
     fn_get_qval, fn_set_qval, fn_get_q_actions, fn_get_max_q_actions = qtable_mgt()
 
     def _fn_update_knowledge(state, action, reward, next_state, next_action):
@@ -17,7 +17,7 @@ def impl_mgt(app_info):
         episode_num = 0
         while True:
             episode_num += 1
-            episode_status = _fn_run_episode(display_mgr.fn_move_cursor)
+            episode_status = _fn_run_episode(Display.fn_move_cursor)
             print('episode number: {}   status = {}'.format(episode_num, episode_status))
             if 'TEST_MODE' in app_info:
                 if app_info.TEST_MODE: # ONLY 1 episode needed
@@ -29,7 +29,7 @@ def impl_mgt(app_info):
 
         state = _env.fn_reset_env()
         action = fn_get_max_q_actions(state, app_info.EPSILON)
-        display_mgr.fn_update_ui(state, fn_get_q_actions(state))
+        Display.fn_update_ui(state, fn_get_q_actions(state))
         continue_running  = True
         while continue_running:
             new_state, reward, done, _ = _env.fn_take_step(action)
@@ -39,7 +39,7 @@ def impl_mgt(app_info):
 
             new_action = fn_get_max_q_actions(new_state, app_info.EPSILON)
             _fn_update_knowledge(state, action, reward, new_state, new_action)
-            display_mgr.fn_update_ui(state, fn_get_q_actions(state))
+            Display.fn_update_ui(state, fn_get_q_actions(state))
 
             action = new_action
             state = new_state
