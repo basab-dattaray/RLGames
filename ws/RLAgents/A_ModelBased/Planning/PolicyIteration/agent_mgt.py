@@ -5,15 +5,15 @@ from ws.RLAgents.A_ModelBased.Planning.impl_mgt import impl_mgt
 
 def agent_mgt(app_info, common_functions):
 
-    fn_move_per_policy, fn_apply_policy_iteration, fn_apply_value_iteration, fn_apply_reset = impl_mgt(app_info)
+    implementation = impl_mgt(app_info)
 
     def fn_setup_env():
         actions = OrderedDict()
-        actions["reset"] = fn_apply_reset
-        actions["improve policy"] = fn_apply_reset
-        actions["apply policy"] = fn_apply_reset
-        actions["plan"] = fn_apply_policy_iteration
-        actions["move"] = fn_move_per_policy
+        actions["reset"] = implementation.fn_apply_reset
+        actions["improve policy"] = implementation.fn_apply_reset
+        actions["apply policy"] = implementation.fn_apply_reset
+        actions["plan"] = implementation.fn_apply_policy_iteration
+        actions["move"] = implementation.fn_move_per_policy
 
         app_info.ENV.Display.fn_setup_ui(actions)
         return agent_mgr
