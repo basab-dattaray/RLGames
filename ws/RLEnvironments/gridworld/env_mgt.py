@@ -75,7 +75,7 @@ def env_mgt(name, strategy= None):
         return _values_repo_mgr, _policy_repo_mgr
 
     def _fn_env_step(action):
-        nonlocal _current_state
+        # nonlocal _current_state
         one = 1
         next_state_x = _current_state[0]
         next_state_y = _current_state[1]

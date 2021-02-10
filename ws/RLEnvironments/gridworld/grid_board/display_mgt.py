@@ -299,10 +299,12 @@ def display_mgt(strategy, env):
         _tk.canvas = _fn_build_canvas(_actions)
         _fn_append_rewards_to_canvas()
         _fn_render_on_canvas()
+        fn_display_planning_data()
+
+    def fn_display_planning_data():
         StateValues, Policy = env.fn_get_internal_info()
         values = StateValues.fn_get_all_state_values()
         fn_show_state_values(values)
-
         policy = Policy.fn_fetch_policy_table()
         fn_show_policy_arrows(policy)
 
@@ -318,13 +320,13 @@ def display_mgt(strategy, env):
     _tk.title(app_title)
 
     ret_obj = namedtuple('_', [
-        # 'DisplayStructure',
         'Config',
         'fn_setup_ui',
         'fn_run_ui',
         'fn_move_cursor',
         'fn_show_policy_arrows',
         'fn_show_state_values',
+        'fn_display_planning_data',
 
         'fn_show_qvalue',
         'fn_is_target_state_reached',
@@ -346,6 +348,7 @@ def display_mgt(strategy, env):
     ret_obj.fn_move_cursor = fn_move_cursor
     ret_obj.fn_show_policy_arrows = fn_show_policy_arrows
     ret_obj.fn_show_state_values = fn_show_state_values
+    ret_obj.fn_display_planning_data = fn_display_planning_data
 
     ret_obj.fn_show_qvalue = fn_show_qvalue
     ret_obj.fn_is_target_state_reached = fn_is_target_state_reached
