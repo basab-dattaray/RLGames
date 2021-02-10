@@ -16,7 +16,6 @@ def env_mgt(name, strategy= None):
     _current_state = None
 
     ret_obj = namedtuple('_', [
-
         'Display',
         'fn_reset_env',
         'fn_take_step',
@@ -39,8 +38,8 @@ def env_mgt(name, strategy= None):
         'ERROR_MESSAGE',
     ])
     Display = display_mgt(strategy, env= ret_obj)
-    config = Display.Config
 
+    config = Display.Config
     _board_blockers = config.DISPLAY['BOARD_BLOCKERS']
     _board_goal = config.DISPLAY['BOARD_GOAL']
     _width = config.DISPLAY['WIDTH']
@@ -59,9 +58,9 @@ def env_mgt(name, strategy= None):
         _reward = [[0] * _width for _ in range(_height)]
 
         for blocker in _board_blockers:
-            _reward[blocker['y']][blocker['x']] = blocker['reward']  # for square
+            _reward[blocker['y']][blocker['x']] = blocker['reward']
 
-        _reward[_board_goal['y']][_board_goal['x']] = _board_goal['reward']  # for triangle
+        _reward[_board_goal['y']][_board_goal['x']] = _board_goal['reward']
         _all_states = []
 
         for x in range(_width):

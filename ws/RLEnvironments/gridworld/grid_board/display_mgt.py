@@ -46,7 +46,6 @@ def display_mgt(strategy, env):
     def fn_close():
         _tk.destroy()
 
-
     def fn_set_test_mode():
         nonlocal _test_mode
         _test_mode = True
@@ -282,6 +281,7 @@ def display_mgt(strategy, env):
             button_x_offset += .20
 
         _canvas.pack()
+
         return _canvas
 
 
@@ -299,6 +299,12 @@ def display_mgt(strategy, env):
         _tk.canvas = _fn_build_canvas(_actions)
         _fn_append_rewards_to_canvas()
         _fn_render_on_canvas()
+        StateValues, Policy = env.fn_get_internal_info()
+        values = StateValues.fn_get_all_state_values()
+        fn_show_state_values(values)
+
+        policy = Policy.fn_fetch_policy_table()
+        fn_show_policy_arrows(policy)
 
     def fn_run_ui():
         if _test_mode:
