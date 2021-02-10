@@ -11,7 +11,7 @@ def planning_mgt(env, discount_factor= 0.9):
         actions = env.Policy.fn_get_policy_state_value(state)
         return actions
 
-    def fn_update_state_values_given_policy():
+    def fn_update_state_weighted_values_given_policy():
 
         for state in env.fn_get_all_states():
             env.fn_set_active_state(state)
@@ -20,20 +20,13 @@ def planning_mgt(env, discount_factor= 0.9):
                 env.StateValues.fn_set_state_value(state, 0.0)
                 continue
 
-            value = 0.0
-            for action in env.fn_value_table_possible_actions():
-                next_state, reward, _, _= env.fn_take_step(action, planning_mode = True)
+            average_value = 0.0
+            action_value_list = fn_get_action_values()
+            for action, value in action_value_list:
+                average_value += fn_get_actions_given_state(state)[action] * value
 
-                next_value = env.StateValues.fn_get_state_value(next_state)
-                x = fn_get_actions_given_state(state)
-                value = value + fn_get_actions_given_state(state)[action] * (reward + discount_factor * next_value)
+            env.StateValues.fn_set_state_value(state, average_value)
 
-            # value_list = fn_get_action_values()
-            # value = 0.0
-            # for action in env.fn_value_table_possible_actions():
-            #     value += fn_get_actions_given_state(state)[action]
-
-            env.StateValues.fn_set_state_value(state, value)
         return env.StateValues.fn_get_all_state_values(), None
 
     def fn_update_state_max_values_given_policy():
@@ -105,7 +98,7 @@ def planning_mgt(env, discount_factor= 0.9):
         return value_table, policy_table
 
     def fn_policy_iterator():
-        return fn_repeat_policy_improvement_and_evaluation(fn_update_state_values_given_policy)
+        return fn_repeat_policy_improvement_and_evaluation(fn_update_state_weighted_values_given_policy)
 
     def fn_value_iterator():
         return fn_repeat_policy_improvement_and_evaluation(fn_update_state_max_values_given_policy)
@@ -123,6 +116,6 @@ def planning_mgt(env, discount_factor= 0.9):
     ret_obj.fn_value_iterator = fn_value_iterator
     ret_obj.fn_get_actions_given_state = fn_get_actions_given_state
     ret_obj.fn_run_policy_improvement = fn_run_policy_improvement
-    ret_obj.fn_update_state_values_given_policy = fn_update_state_values_given_policy
+    ret_obj.fn_update_state_values_given_policy = fn_update_state_weighted_values_given_policy
     ret_obj.fn_update_state_max_values_given_policy = fn_update_state_max_values_given_policy
     return ret_obj
