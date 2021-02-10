@@ -18,7 +18,7 @@ def values_repo_mgt(Display):
         nonlocal _value_table
         _value_table = table
 
-    def fn_get_all_state_values():
+    def fn_fetch_state_values():
         return _value_table
 
     def fn_has_state_changed():
@@ -41,7 +41,7 @@ def values_repo_mgt(Display):
     ret_obj.fn_get_state_value = fn_get_state_value
     ret_obj.fn_set_all_state_values = fn_set_all_state_values
 
-    ret_obj.fn_get_all_state_values = fn_get_all_state_values
+    ret_obj.fn_fetch_state_values = fn_fetch_state_values
     ret_obj.fn_has_any_state_changed = fn_has_state_changed
 
     return ret_obj

@@ -38,7 +38,7 @@ def montecarlo_trace_mgt(env, epsilon, discount_factor, learning_rate):
                 new_val = (value + learning_rate * (G_t - value))
                 env.StateValues.fn_set_state_value(state, new_val)
                 continue
-        val_table = env.StateValues.fn_get_all_state_values()
+        val_table = env.StateValues.fn_fetch_state_values()
         return val_table
 
     return fnClearTrace, fnGetEpsilonGreedyAction, fnTraceInteraction, fnUpdateValueTableFromTrace

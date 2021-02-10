@@ -39,7 +39,7 @@ def impl_mgt(app_info):
         app_info.ENV.fn_reset_env()
         StateValues, Policy = app_info.ENV.fn_get_internal_info()
 
-        values = StateValues.fn_get_all_state_values()
+        values = StateValues.fn_fetch_state_values()
         Display.fn_show_state_values(values)
 
         policy = Policy.fn_fetch_policy_table()

@@ -26,7 +26,7 @@ def planning_mgt(env, discount_factor= 0.9):
                 average_value += fn_get_actions_given_state(state)[action] * value
 
             env.StateValues.fn_set_state_value(state, average_value)
-        state_values = env.StateValues.fn_get_all_state_values()
+        state_values = env.StateValues.fn_fetch_state_values()
         return state_values, None
 
     def fn_update_state_max_of_values_given_policy():
@@ -45,7 +45,7 @@ def planning_mgt(env, discount_factor= 0.9):
             max_value = round(max(value_list), 2)
 
             env.StateValues.fn_set_state_value(state, max_value)
-        state_values = env.StateValues.fn_get_all_state_values()
+        state_values = env.StateValues.fn_fetch_state_values()
         return state_values, None
 
     def fn_get_action_values():
@@ -90,13 +90,14 @@ def planning_mgt(env, discount_factor= 0.9):
 
     def fn_repeat_policy_improvement_and_evaluation(apply_policy):
         while True:
-            _, policy_table = fn_run_policy_improvement()
+            _, _ = fn_run_policy_improvement()
 
-            state_values, policy = apply_policy()
+            _, _ = apply_policy()
 
             if not env.StateValues.fn_has_any_state_changed():
                 break
-        value_table = env.StateValues.fn_get_all_state_values()
+        value_table = env.StateValues.fn_fetch_state_values()
+        policy_table = env.Policy.fn_fetch_policy_table()
         return value_table, policy_table
 
     def fn_policy_iterator():
