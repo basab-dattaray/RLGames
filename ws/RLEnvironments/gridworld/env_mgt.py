@@ -26,6 +26,7 @@ def env_mgt(name, strategy= None):
     def fn_reset_env():
         nonlocal  _reward,  _all_states, _current_state
         nonlocal _values_repo_mgr, _policy_repo_mgr
+
         _values_repo_mgr = values_repo_mgt(Display)
         _policy_repo_mgr = policy_table_mgt(ACTION_SIZE, _width, _height)
 

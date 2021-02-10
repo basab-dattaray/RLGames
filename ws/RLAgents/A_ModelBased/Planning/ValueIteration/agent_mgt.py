@@ -8,9 +8,11 @@ def agent_mgt(app_info, common_functions):
     implementation = impl_mgt(app_info)
     def fn_setup_env():
         actions = OrderedDict()
-        actions["reset"] = implementation.fn_reset_planner
-        actions["improve policy"] = implementation.fn_reset_planner
-        actions["apply policy"] = implementation.fn_reset_planner
+        actions["reset"] = implementation.fn_display_therafter(implementation.fn_reset_planner)
+        actions["improve policy"] = implementation.fn_display_therafter(
+            implementation.Planner.fn_run_policy_improvement)
+        actions["apply policy"] = implementation.fn_display_therafter(
+            implementation.Planner.fn_update_state_max_of_values_given_policy)
         actions["plan"] = implementation.fn_display_therafter(implementation.Planner.fn_value_iterator)
         actions["move"] = implementation.fn_move_per_policy
 
