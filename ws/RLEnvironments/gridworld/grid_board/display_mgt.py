@@ -18,7 +18,7 @@ COORD_DOWN = (42, 77)  # down
 
 LOW_NUMBER = -999999
 
-def display_mgt(strategy):
+def display_mgt(strategy, env):
 
     _tk = tkinter.Tk()
     config = CONFIG.fn_get_config()
@@ -149,35 +149,6 @@ def display_mgt(strategy):
                              window=bound_button)
 
 
-    def _fn_build_canvas(acton_dictionary):
-        nonlocal _cursor
-
-        # create lines
-        for col in range(0, (_width + 1) * _unit, _unit):  # 0~400 by 80
-            x0, y0, x1, y1 = col, 0, col, _height * _unit
-            _canvas.create_line(x0, y0, x1, y1)
-
-        for row in range(0, (_height + 1) * _unit, _unit):  # 0~400 by 80
-            x0, y0, x1, y1 = 0, row, _width * _unit, row
-            _canvas.create_line(x0, y0, x1, y1)
-
-        _cursor = _canvas.create_image(_unit / 2, _unit / 2, image=_tk.shapes[2])
-        for blocker in _board_blockers:
-            pix_x, pix_y = calc_pixels(_unit, blocker['x'], blocker['y'])
-            _canvas.create_image(pix_x, pix_y, image=_tk.shapes[0])
-
-        pix_x, pix_y = calc_pixels(_unit, _board_goal['x'], _board_goal['y'])
-        _canvas.create_image(pix_x, pix_y, image=_tk.shapes[1])
-
-        button_x_offset = .10
-        for label, fn in acton_dictionary.items():
-            _fn_create_button(_canvas, button_x_offset, label, fn)
-            button_x_offset += .20
-
-        _canvas.pack()
-        return _canvas
-
-
     def _fn_load_images():
         rwd = os.path.dirname(__file__)
         image_dir = os.path.join(rwd, 'img')
@@ -222,28 +193,6 @@ def display_mgt(strategy):
             _tk.arrows.append(_tk.canvas.create_image(origin_x, origin_y,
                                                                 image=_tk.right))
 
-    def fn_setup_ui(actions):
-        nonlocal _actions
-
-        _actions = actions
-
-        _tk.geometry('{0}x{1}'.format(_width * _unit + _right_margin,
-                                      _height * _unit + _bottom_margin))
-        _tk.texts = []
-        _tk.arrows = []
-
-        (_tk.up, _tk.down, _tk.left, _tk.right), _tk.shapes = _fn_load_images()
-        _tk.canvas = _fn_build_canvas(_actions)
-        _fn_append_rewards_to_canvas()
-        _fn_render_on_canvas()
-
-    def fn_run_ui():
-        if _test_mode:
-            for key, action in _actions.items():
-                if action is not None:
-                    action()
-            return
-        _tk.mainloop()
 
     def fn_move_cursor(stateStart, stateEnd=(0, 0)):
         step = _fn_calculate_step(stateStart, stateEnd)
@@ -300,17 +249,70 @@ def display_mgt(strategy):
         new_y = state[1] + next_state[1]
         return new_x, new_y
 
-    def fn_update_ui(state, actions):
+    def fn_update_qvalue(state, actions):
         if fn_show_qvalue is not None:
             fn_show_qvalue(state, actions)
 
     def fn_is_goal_reached(state):
         return True if state == [_board_goal['x'], _board_goal['y']] else False
 
+    def _fn_build_canvas(acton_dictionary):
+        nonlocal _cursor
+
+        # create lines
+        for col in range(0, (_width + 1) * _unit, _unit):  # 0~400 by 80
+            x0, y0, x1, y1 = col, 0, col, _height * _unit
+            _canvas.create_line(x0, y0, x1, y1)
+
+        for row in range(0, (_height + 1) * _unit, _unit):  # 0~400 by 80
+            x0, y0, x1, y1 = 0, row, _width * _unit, row
+            _canvas.create_line(x0, y0, x1, y1)
+
+        _cursor = _canvas.create_image(_unit / 2, _unit / 2, image=_tk.shapes[2])
+        for blocker in _board_blockers:
+            pix_x, pix_y = calc_pixels(_unit, blocker['x'], blocker['y'])
+            _canvas.create_image(pix_x, pix_y, image=_tk.shapes[0])
+
+        pix_x, pix_y = calc_pixels(_unit, _board_goal['x'], _board_goal['y'])
+        _canvas.create_image(pix_x, pix_y, image=_tk.shapes[1])
+
+        button_x_offset = .10
+        for label, fn in acton_dictionary.items():
+            _fn_create_button(_canvas, button_x_offset, label, fn)
+            button_x_offset += .20
+
+        _canvas.pack()
+        return _canvas
+
+
+    def fn_setup_ui(actions):
+        nonlocal _actions
+
+        _actions = actions
+
+        _tk.geometry('{0}x{1}'.format(_width * _unit + _right_margin,
+                                      _height * _unit + _bottom_margin))
+        _tk.texts = []
+        _tk.arrows = []
+
+        (_tk.up, _tk.down, _tk.left, _tk.right), _tk.shapes = _fn_load_images()
+        _tk.canvas = _fn_build_canvas(_actions)
+        _fn_append_rewards_to_canvas()
+        _fn_render_on_canvas()
+
+    def fn_run_ui():
+        if _test_mode:
+            for key, action in _actions.items():
+                if action is not None:
+                    action()
+            return
+        _tk.mainloop()
+
     app_title = _fn_get_app_title()
     _tk.title(app_title)
 
     ret_obj = namedtuple('_', [
+        'DisplayStructure',
         'fn_setup_ui',
         'fn_run_ui',
         'fn_move_cursor',
@@ -321,7 +323,7 @@ def display_mgt(strategy):
         'fn_is_target_state_reached',
         'fn_get_start_state',
         'fn_run_next_move',
-        'fn_update_ui',
+        'fn_update_qvalue',
         'fn_is_goal_reached',
         'fn_create_value_repo',
         'fn_compare_value_repos',
@@ -330,6 +332,7 @@ def display_mgt(strategy):
         'fn_close',
     ])
 
+    ret_obj.DisplayStructure = _display_info
     ret_obj.fn_setup_ui = fn_setup_ui
     ret_obj.fn_run_ui = fn_run_ui
     ret_obj.fn_move_cursor = fn_move_cursor
@@ -340,7 +343,7 @@ def display_mgt(strategy):
     ret_obj.fn_is_target_state_reached = fn_is_target_state_reached
     ret_obj.fn_get_start_state = fn_get_start_state
     ret_obj.fn_run_next_move = fn_run_next_move
-    ret_obj.fn_update_ui = fn_update_ui
+    ret_obj.fn_update_qvalue = fn_update_qvalue
     ret_obj.fn_is_goal_reached = fn_is_goal_reached
     ret_obj.fn_create_value_repo = fn_create_value_repo
     ret_obj.fn_compare_value_repos = fn_compare_value_repos

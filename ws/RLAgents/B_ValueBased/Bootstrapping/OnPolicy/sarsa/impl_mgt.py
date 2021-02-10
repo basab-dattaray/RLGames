@@ -29,7 +29,7 @@ def impl_mgt(app_info):
 
         state = _env.fn_reset_env()
         action = fn_get_max_q_actions(state, app_info.EPSILON)
-        Display.fn_update_ui(state, fn_get_q_actions(state))
+        Display.fn_update_qvalue(state, fn_get_q_actions(state))
         continue_running  = True
         while continue_running:
             new_state, reward, done, _ = _env.fn_take_step(action)
@@ -39,7 +39,7 @@ def impl_mgt(app_info):
 
             new_action = fn_get_max_q_actions(new_state, app_info.EPSILON)
             _fn_update_knowledge(state, action, reward, new_state, new_action)
-            Display.fn_update_ui(state, fn_get_q_actions(state))
+            Display.fn_update_qvalue(state, fn_get_q_actions(state))
 
             action = new_action
             state = new_state

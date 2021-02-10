@@ -1,7 +1,10 @@
 from collections import namedtuple
 
 
-def policy_table_mgt(action_size, width, height):
+def policy_table_mgt(display_mgr, action_size):
+
+    width = display_mgr.DisplayStructure['WIDTH']
+    height = display_mgr.DisplayStructure['HEIGHT']
 
     init_policy = [1/ action_size] * action_size # [.25, .25, .25, .25]
     _policy_table = [[init_policy] * width for _ in range(height)]

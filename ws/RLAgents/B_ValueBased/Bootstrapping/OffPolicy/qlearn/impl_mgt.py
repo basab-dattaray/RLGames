@@ -26,8 +26,8 @@ def impl_mgt(app_info):
 
     def _fn_run_episode():
         state = app_info.ENV.fn_reset_env()
-        # fn_update_ui(Display.fn_show_qvalue, state)
-        Display.fn_update_ui(state, fn_get_q_actions(state))
+        # fn_update_qvalue(Display.fn_show_qvalue, state)
+        Display.fn_update_qvalue(state, fn_get_q_actions(state))
 
         continue_running = True
         while continue_running:
@@ -39,8 +39,8 @@ def impl_mgt(app_info):
             _fn_update_knowledge(state, action, reward, new_state)
             continue_running = reward == 0
 
-            # fn_update_ui(Display.fn_show_qvalue, state)
-            Display.fn_update_ui(state, fn_get_q_actions(state))
+            # fn_update_qvalue(Display.fn_show_qvalue, state)
+            Display.fn_update_qvalue(state, fn_get_q_actions(state))
 
             if Display.fn_move_cursor is not None:
                 Display.fn_move_cursor(state, new_state)
