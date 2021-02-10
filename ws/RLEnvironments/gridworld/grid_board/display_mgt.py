@@ -313,6 +313,7 @@ def display_mgt(strategy, env):
 
     ret_obj = namedtuple('_', [
         'DisplayStructure',
+        'Config',
         'fn_setup_ui',
         'fn_run_ui',
         'fn_move_cursor',
@@ -333,6 +334,7 @@ def display_mgt(strategy, env):
     ])
 
     ret_obj.DisplayStructure = _display_info
+    ret_obj.Config = config
     ret_obj.fn_setup_ui = fn_setup_ui
     ret_obj.fn_run_ui = fn_run_ui
     ret_obj.fn_move_cursor = fn_move_cursor
