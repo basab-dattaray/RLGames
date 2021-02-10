@@ -29,8 +29,10 @@ def impl_mgt(app_info):
     def fn_display_therafter(fn):
         def augmented_fn():
             value_table, policy_table = fn()
-            Display.fn_show_state_values(value_table)
-            Display.fn_show_policy_arrows(policy_table)
+            if value_table is not None:
+                Display.fn_show_state_values(value_table)
+            if policy_table is not None:
+                Display.fn_show_policy_arrows(policy_table)
         return augmented_fn
 
     def fn_reset_planner():

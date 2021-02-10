@@ -28,6 +28,7 @@ def planning_mgt(env, discount_factor= 0.9):
                 value = value + fn_get_actions_given_state(state)[action] * (reward + discount_factor * next_value)
 
             env.StateValues.fn_set_state_value(state, value)
+        return env.StateValues.fn_get_all_state_values(), None
 
     def fn_update_state_max_values_given_policy():
 
@@ -78,11 +79,11 @@ def planning_mgt(env, discount_factor= 0.9):
 
             env.Policy.fn_set_policy_state_value(state, result)
         policy_table = env.Policy.fn_fetch_policy_table()
-        return policy_table
+        return None, policy_table
 
     def repeatEvalAndImprove(evalFunction):
         while True:
-            policy_table = fn_run_policy_improvement()
+            _, policy_table = fn_run_policy_improvement()
 
             evalFunction()
 
