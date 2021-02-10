@@ -8,12 +8,7 @@ from ws.RLEnvironments.gridworld.grid_board.values_repo_mgt import values_repo_m
 
 def env_mgt(name, strategy= None):
     ACTION_SIZE = 4
-    config = CONFIG.fn_get_config()
 
-    _board_blockers = config.DISPLAY['BOARD_BLOCKERS']
-    _board_goal = config.DISPLAY['BOARD_GOAL']
-    _width = config.DISPLAY['WIDTH']
-    _height = config.DISPLAY['HEIGHT']
 
     _reward = None
 
@@ -44,6 +39,13 @@ def env_mgt(name, strategy= None):
         'ERROR_MESSAGE',
     ])
     Display = display_mgt(strategy, env= ret_obj)
+    config = Display.Config
+
+    _board_blockers = config.DISPLAY['BOARD_BLOCKERS']
+    _board_goal = config.DISPLAY['BOARD_GOAL']
+    _width = config.DISPLAY['WIDTH']
+    _height = config.DISPLAY['HEIGHT']
+
     _values_repo_mgr =None
     _policy_repo_mgr = None
 
