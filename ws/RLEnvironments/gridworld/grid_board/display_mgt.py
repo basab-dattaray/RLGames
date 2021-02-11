@@ -285,29 +285,31 @@ def display_mgt(strategy):
         return _canvas
 
 
-    def fn_setup_ui(actions, env= None):
+    def fn_setup_ui(actions= None, env= None):
         nonlocal _actions
 
-        _actions = actions
+        if actions is not None:
+            _actions = actions
 
-        _tk.geometry('{0}x{1}'.format(_width * _unit + _right_margin,
-                                      _height * _unit + _bottom_margin))
-        _tk.texts = []
-        _tk.arrows = []
+            _tk.geometry('{0}x{1}'.format(_width * _unit + _right_margin,
+                                          _height * _unit + _bottom_margin))
+            _tk.texts = []
+            _tk.arrows = []
 
-        (_tk.up, _tk.down, _tk.left, _tk.right), _tk.shapes = _fn_load_images()
-        _tk.canvas = _fn_build_canvas(_actions)
-        _fn_append_rewards_to_canvas()
-        _fn_render_on_canvas()
+            (_tk.up, _tk.down, _tk.left, _tk.right), _tk.shapes = _fn_load_images()
+            _tk.canvas = _fn_build_canvas(_actions)
+            _fn_append_rewards_to_canvas()
+            _fn_render_on_canvas()
         if env is not None:
             fn_display_planning_data(env)
 
     def fn_display_planning_data(env):
-        Values, Policy = env.fn_get_internal_info()
-        values = Values.fn_fetch_state_values()
-        fn_show_state_values(values)
-        policy = Policy.fn_fetch_policy_table()
-        fn_show_policy_arrows(policy)
+        # Values, Policy = env.fn_get_internal_info()
+        # values = Values.fn_fetch_state_values()
+        # fn_show_state_values(values)
+        # policy = Policy.fn_fetch_policy_table()
+        # fn_show_policy_arrows(policy)
+        pass
 
     def fn_run_ui():
         if _test_mode:

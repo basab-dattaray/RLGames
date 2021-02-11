@@ -8,7 +8,30 @@ from ws.RLEnvironments.gridworld.grid_board.values_repo_mgt import values_repo_m
 
 def env_mgt(name, strategy= None):
     ACTION_SIZE = 4
+    ret_obj = namedtuple('_', [
+        'Display',
+        'Values',
+        'Policy',
 
+        'fn_reset_env',
+        'fn_take_step',
+        'fn_render',
+        'fn_get_state_size',
+        'fn_get_action_size',
+        'fn_close',
+
+        'fn_get_internal_info',
+
+        'fn_set_active_state',
+        'fn_get_all_states',
+        'fn_value_table_possible_actions',
+        'fn_get_allowed_moves',
+        'fn_get_config',
+        'fn_get_strategy',
+        'fn_is_goal_reached',
+
+        'ERROR_MESSAGE',
+    ])
 
     _reward = None
 
@@ -33,6 +56,8 @@ def env_mgt(name, strategy= None):
 
         Values = values_repo_mgt(Display)
         Policy = policy_table_mgt(Display, ACTION_SIZE)
+
+        Display.fn_setup_ui(env= ret_obj)
 
         _reward = [[0] * _width for _ in range(_height)]
 
@@ -120,30 +145,7 @@ def env_mgt(name, strategy= None):
 
     fn_reset_env()
 
-    ret_obj = namedtuple('_', [
-        'Display',
-        'Values',
-        'Policy',
 
-        'fn_reset_env',
-        'fn_take_step',
-        'fn_render',
-        'fn_get_state_size',
-        'fn_get_action_size',
-        'fn_close',
-
-        'fn_get_internal_info',
-
-        'fn_set_active_state',
-        'fn_get_all_states',
-        'fn_value_table_possible_actions',
-        'fn_get_allowed_moves',
-        'fn_get_config',
-        'fn_get_strategy',
-        'fn_is_goal_reached',
-
-        'ERROR_MESSAGE',
-    ])
 
     ret_obj.Display = Display
     ret_obj.Values = Values
