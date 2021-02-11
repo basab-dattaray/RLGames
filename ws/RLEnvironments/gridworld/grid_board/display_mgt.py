@@ -239,11 +239,11 @@ def display_mgt(strategy):
     def fn_get_start_state():
         return [0, 0]
 
-    def fn_run_next_move(env, state, fnNextGetAction):
+    def fn_run_next_move(fn_get_allowed_moves, state, fnNextGetAction):
         action = fnNextGetAction(state)
         if action < 0:
             return None
-        next_state = env.fn_get_allowed_moves()[action]
+        next_state = fn_get_allowed_moves()[action]
         new_x = state[0] + next_state[0]
         new_y = state[1] + next_state[1]
         return new_x, new_y
