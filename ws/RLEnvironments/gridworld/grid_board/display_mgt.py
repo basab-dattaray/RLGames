@@ -302,8 +302,8 @@ def display_mgt(strategy, env):
         fn_display_planning_data()
 
     def fn_display_planning_data():
-        StateValues, Policy = env.fn_get_internal_info()
-        values = StateValues.fn_fetch_state_values()
+        Values, Policy = env.fn_get_internal_info()
+        values = Values.fn_fetch_state_values()
         fn_show_state_values(values)
         policy = Policy.fn_fetch_policy_table()
         fn_show_policy_arrows(policy)

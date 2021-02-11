@@ -17,6 +17,9 @@ def env_mgt(name, strategy= None):
 
     ret_obj = namedtuple('_', [
         'Display',
+        'Values',
+        'Policy',
+
         'fn_reset_env',
         'fn_take_step',
         'fn_render',
@@ -33,8 +36,7 @@ def env_mgt(name, strategy= None):
         'fn_get_config',
         'fn_get_strategy',
         'fn_is_goal_reached',
-        'StateValues',
-        'Policy',
+
         'ERROR_MESSAGE',
     ])
     Display = display_mgt(strategy, env= ret_obj)
@@ -45,14 +47,14 @@ def env_mgt(name, strategy= None):
     _width = config.DISPLAY['WIDTH']
     _height = config.DISPLAY['HEIGHT']
 
-    _values_repo_mgr =None
+    Values =None
     _policy_repo_mgr = None
 
     def fn_reset_env():
         nonlocal  _reward,  _all_states, _current_state
-        nonlocal _values_repo_mgr, _policy_repo_mgr
+        nonlocal Values, _policy_repo_mgr
 
-        _values_repo_mgr = values_repo_mgt(Display)
+        Values = values_repo_mgt(Display)
         _policy_repo_mgr = policy_table_mgt(Display, ACTION_SIZE)
 
         _reward = [[0] * _width for _ in range(_height)]
@@ -72,7 +74,7 @@ def env_mgt(name, strategy= None):
         return _current_state
 
     def fn_get_internal_info():
-        return _values_repo_mgr, _policy_repo_mgr
+        return Values, _policy_repo_mgr
 
     def _fn_env_step(action):
         # nonlocal _current_state
@@ -143,7 +145,7 @@ def env_mgt(name, strategy= None):
 
 
     ret_obj.Display = Display
-    ret_obj.StateValues = _values_repo_mgr
+    ret_obj.Values = Values
     ret_obj.Policy = _policy_repo_mgr
 
     ret_obj.fn_reset_env = fn_reset_env

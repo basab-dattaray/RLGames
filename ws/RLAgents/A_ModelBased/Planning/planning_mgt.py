@@ -17,7 +17,7 @@ def planning_mgt(env, discount_factor= 0.9):
             env.fn_set_active_state(state)
 
             if env.fn_is_goal_reached(state):
-                env.StateValues.fn_set_state_value(state, 0.0)
+                env.Values.fn_set_state_value(state, 0.0)
                 continue
 
             average_value = 0.0
@@ -25,8 +25,8 @@ def planning_mgt(env, discount_factor= 0.9):
             for action, value in action_value_list:
                 average_value += fn_get_actions_given_state(state)[action] * value
 
-            env.StateValues.fn_set_state_value(state, average_value)
-        state_values = env.StateValues.fn_fetch_state_values()
+            env.Values.fn_set_state_value(state, average_value)
+        state_values = env.Values.fn_fetch_state_values()
         return state_values, None
 
     def fn_update_state_max_of_values_given_policy():
@@ -34,7 +34,7 @@ def planning_mgt(env, discount_factor= 0.9):
         for state in env.fn_get_all_states():
 
             if env.fn_is_goal_reached(state):
-                env.StateValues.fn_set_state_value(state, 0)
+                env.Values.fn_set_state_value(state, 0)
                 continue
 
             env.fn_set_active_state(state)
@@ -44,15 +44,15 @@ def planning_mgt(env, discount_factor= 0.9):
 
             max_value = round(max(value_list), 2)
 
-            env.StateValues.fn_set_state_value(state, max_value)
-        state_values = env.StateValues.fn_fetch_state_values()
+            env.Values.fn_set_state_value(state, max_value)
+        state_values = env.Values.fn_fetch_state_values()
         return state_values, None
 
     def fn_get_action_values():
         value_list = []
         for action in env.fn_value_table_possible_actions():
             next_state, reward, _, _ = env.fn_take_step(action, planning_mode=True)
-            next_value = env.StateValues.fn_get_state_value(next_state)
+            next_value = env.Values.fn_get_state_value(next_state)
             value_list.append((action, (reward + discount_factor * next_value)))
         return value_list
 
@@ -68,7 +68,7 @@ def planning_mgt(env, discount_factor= 0.9):
 
             for action in range(env.fn_get_action_size()):
                 next_state, reward, _, _ = env.fn_take_step(action, planning_mode = True)
-                next_value = env.StateValues.fn_get_state_value(next_state)
+                next_value = env.Values.fn_get_state_value(next_state)
                 total_reward = reward + discount_factor * next_value
 
                 if total_reward == value: # there can be multiple maximums
@@ -94,9 +94,9 @@ def planning_mgt(env, discount_factor= 0.9):
 
             _, _ = apply_policy()
 
-            if not env.StateValues.fn_has_any_state_changed():
+            if not env.Values.fn_has_any_state_changed():
                 break
-        value_table = env.StateValues.fn_fetch_state_values()
+        value_table = env.Values.fn_fetch_state_values()
         policy_table = env.Policy.fn_fetch_policy_table()
         return value_table, policy_table
 

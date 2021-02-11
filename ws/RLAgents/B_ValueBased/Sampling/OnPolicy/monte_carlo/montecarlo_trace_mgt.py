@@ -17,7 +17,7 @@ def montecarlo_trace_mgt(env, epsilon, discount_factor, learning_rate):
         if rn < epsilon:
             selected_action = np.random.choice(len(env.fn_get_allowed_moves()))
         else:
-            actions = env.Display.fn_get_state_actions(state, env.fn_get_action_size(), env.StateValues.fn_get_state_value)
+            actions = env.Display.fn_get_state_actions(state, env.fn_get_action_size(), env.Values.fn_get_state_value)
             selected_action = arg_max(actions)
         return selected_action
 
@@ -34,11 +34,11 @@ def montecarlo_trace_mgt(env, epsilon, discount_factor, learning_rate):
                 visit_state.append(state)
                 reward = trace[1]
                 G_t = discount_factor * (reward + G_t)
-                value = env.StateValues.fn_get_state_value(state)
+                value = env.Values.fn_get_state_value(state)
                 new_val = (value + learning_rate * (G_t - value))
-                env.StateValues.fn_set_state_value(state, new_val)
+                env.Values.fn_set_state_value(state, new_val)
                 continue
-        val_table = env.StateValues.fn_fetch_state_values()
+        val_table = env.Values.fn_fetch_state_values()
         return val_table
 
     return fnClearTrace, fnGetEpsilonGreedyAction, fnTraceInteraction, fnUpdateValueTableFromTrace
