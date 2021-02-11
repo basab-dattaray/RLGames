@@ -18,7 +18,7 @@ COORD_DOWN = (42, 77)  # down
 
 LOW_NUMBER = -999999
 
-def display_mgt(strategy, env):
+def display_mgt(strategy):
 
     _tk = tkinter.Tk()
     config = CONFIG.fn_get_config()
@@ -285,7 +285,7 @@ def display_mgt(strategy, env):
         return _canvas
 
 
-    def fn_setup_ui(actions):
+    def fn_setup_ui(actions, env= None):
         nonlocal _actions
 
         _actions = actions
@@ -299,9 +299,10 @@ def display_mgt(strategy, env):
         _tk.canvas = _fn_build_canvas(_actions)
         _fn_append_rewards_to_canvas()
         _fn_render_on_canvas()
-        fn_display_planning_data()
+        if env is not None:
+            fn_display_planning_data(env)
 
-    def fn_display_planning_data():
+    def fn_display_planning_data(env):
         Values, Policy = env.fn_get_internal_info()
         values = Values.fn_fetch_state_values()
         fn_show_state_values(values)
