@@ -12,7 +12,7 @@ def agent_mgt(app_info, common_functions):
         actions["reset"] = implementation.fn_display_therafter(implementation.Planner.fn_reset)
         # actions["reset"] = implementation.fn_display_therafter(implementation.fn_reset_planner)
         actions["improve policy"] = implementation.fn_display_therafter(implementation.Planner.fn_run_policy_improvement)
-        actions["apply policy"] = implementation.fn_display_therafter(implementation.Planner.fn_update_state_weighted_values_given_policy)
+        actions["apply policy"] = implementation.fn_display_therafter(implementation.Planner.fn_update_state_value_by_choosing_weighted_average_of_actions)
         actions["plan"] = implementation.fn_display_therafter(implementation.Planner.fn_policy_iterator)
         actions["move"] = implementation.fn_move_per_policy
 

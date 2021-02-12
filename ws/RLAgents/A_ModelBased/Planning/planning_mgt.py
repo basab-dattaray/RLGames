@@ -18,7 +18,7 @@ def planning_mgt(env, discount_factor= 0.9):
         actions = env.Policy.fn_get_policy_state_value(state)
         return actions
 
-    def fn_update_state_weighted_values_given_policy():
+    def fn_update_state_value_by_choosing_weighted_average_of_actions():
 
         for state in env.fn_get_all_states():
             env.fn_set_active_state(state)
@@ -36,7 +36,7 @@ def planning_mgt(env, discount_factor= 0.9):
         state_values = env.Values.fn_fetch_state_values()
         return state_values, None
 
-    def fn_update_state_max_of_values_given_policy():
+    def fn_update_state_value_by_choosing_best_action():
 
         for state in env.fn_get_all_states():
 
@@ -108,10 +108,10 @@ def planning_mgt(env, discount_factor= 0.9):
         return value_table, policy_table
 
     def fn_policy_iterator():
-        return fn_repeat_policy_improvement_and_evaluation(fn_update_state_weighted_values_given_policy)
+        return fn_repeat_policy_improvement_and_evaluation(fn_update_state_value_by_choosing_weighted_average_of_actions)
 
     def fn_value_iterator():
-        return fn_repeat_policy_improvement_and_evaluation(fn_update_state_max_of_values_given_policy)
+        return fn_repeat_policy_improvement_and_evaluation(fn_update_state_value_by_choosing_best_action)
 
     ret_obj = namedtuple('_', [
         'fn_reset',
@@ -119,14 +119,14 @@ def planning_mgt(env, discount_factor= 0.9):
         'fn_value_iterator',
         'fn_get_actions_given_state',
         'fn_run_policy_improvement',
-        'fn_update_state_weighted_values_given_policy',
-        'fn_update_state_max_of_values_given_policy',
+        'fn_update_state_value_by_choosing_weighted_average_of_actions',
+        'fn_update_state_value_by_choosing_best_action',
     ])
     ret_obj.fn_reset = fn_reset
     ret_obj.fn_policy_iterator = fn_policy_iterator
     ret_obj.fn_value_iterator = fn_value_iterator
     ret_obj.fn_get_actions_given_state = fn_get_actions_given_state
     ret_obj.fn_run_policy_improvement = fn_run_policy_improvement
-    ret_obj.fn_update_state_weighted_values_given_policy = fn_update_state_weighted_values_given_policy
-    ret_obj.fn_update_state_max_of_values_given_policy = fn_update_state_max_of_values_given_policy
+    ret_obj.fn_update_state_value_by_choosing_weighted_average_of_actions = fn_update_state_value_by_choosing_weighted_average_of_actions
+    ret_obj.fn_update_state_value_by_choosing_best_action = fn_update_state_value_by_choosing_best_action
     return ret_obj
