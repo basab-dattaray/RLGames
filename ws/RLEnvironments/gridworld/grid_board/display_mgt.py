@@ -137,13 +137,7 @@ def display_mgt(strategy):
         _tk.canvas.tag_raise(_cursor)
         _tk.update()
 
-    def _fn_create_button(canvas, button_x_offset, button_name, button_action):
-        bound_button = tkinter.Button(bg="white",
-                                 text=button_name,
-                                 command=button_action)
-        bound_button.configure(width=12, height=2)
-        canvas.create_window(_width * _unit * button_x_offset, _height * _unit + 45,
-                             window=bound_button)
+
 
     def fn_move_cursor(stateStart, stateEnd=(0, 0)):
 
@@ -260,6 +254,14 @@ def display_mgt(strategy):
 
         def _fn_build_canvas(acton_dictionary):
             nonlocal _cursor
+
+            def _fn_create_button(canvas, button_x_offset, button_name, button_action):
+                bound_button = tkinter.Button(bg="white",
+                                              text=button_name,
+                                              command=button_action)
+                bound_button.configure(width=12, height=2)
+                canvas.create_window(_width * _unit * button_x_offset, _height * _unit + 45,
+                                     window=bound_button)
 
             # create lines
             for col in range(0, (_width + 1) * _unit, _unit):  # 0~400 by 80
