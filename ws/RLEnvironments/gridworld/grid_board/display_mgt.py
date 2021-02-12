@@ -300,21 +300,6 @@ def display_mgt(strategy):
             _tk.canvas = _fn_build_canvas(_actions)
             _fn_append_rewards_to_canvas()
             _fn_render_on_canvas()
-        if env is not None:
-            fn_display_planning_data(env)
-
-    def fn_reset_ui():
-        _tk.canvas = _fn_build_canvas(_actions)
-        _fn_append_rewards_to_canvas()
-        _fn_render_on_canvas()
-
-    def fn_display_planning_data(env):
-        # Values, Policy = env.fn_get_internal_info()
-        # values = Values.fn_fetch_state_values()
-        # fn_show_state_values(values)
-        # policy = Policy.fn_fetch_policy_table()
-        # fn_show_policy_arrows(policy)
-        pass
 
     def fn_run_ui():
         if _test_mode:
@@ -330,12 +315,10 @@ def display_mgt(strategy):
     ret_obj = namedtuple('_', [
         'Config',
         'fn_setup_ui',
-        'fn_reset_ui',
         'fn_run_ui',
         'fn_move_cursor',
         'fn_show_policy_arrows',
         'fn_show_state_values',
-        'fn_display_planning_data',
 
         'fn_show_qvalue',
         'fn_is_target_state_reached',
@@ -350,15 +333,12 @@ def display_mgt(strategy):
         'fn_close',
     ])
 
-    # ret_obj.DisplayStructure = _display_info
     ret_obj.Config = config
     ret_obj.fn_setup_ui = fn_setup_ui
-    ret_obj.fn_reset_ui = fn_reset_ui
     ret_obj.fn_run_ui = fn_run_ui
     ret_obj.fn_move_cursor = fn_move_cursor
     ret_obj.fn_show_policy_arrows = fn_show_policy_arrows
     ret_obj.fn_show_state_values = fn_show_state_values
-    ret_obj.fn_display_planning_data = fn_display_planning_data
 
     ret_obj.fn_show_qvalue = fn_show_qvalue
     ret_obj.fn_is_target_state_reached = fn_is_target_state_reached
