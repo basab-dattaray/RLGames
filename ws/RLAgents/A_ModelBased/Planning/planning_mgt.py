@@ -5,6 +5,9 @@ def planning_mgt(env, discount_factor= 0.9):
     LOW_NUMBER = -9999999999
     _env_config = env.fn_get_config()
 
+    def fn_reset():
+        return None, None
+
     def fn_get_actions_given_state(state):
         if env.fn_is_goal_reached(state):
             return None
@@ -107,6 +110,7 @@ def planning_mgt(env, discount_factor= 0.9):
         return fn_repeat_policy_improvement_and_evaluation(fn_update_state_max_of_values_given_policy)
 
     ret_obj = namedtuple('_', [
+        'fn_reset',
         'fn_policy_iterator',
         'fn_value_iterator',
         'fn_get_actions_given_state',
@@ -114,7 +118,7 @@ def planning_mgt(env, discount_factor= 0.9):
         'fn_update_state_weighted_values_given_policy',
         'fn_update_state_max_of_values_given_policy',
     ])
-
+    ret_obj.fn_reset = fn_reset
     ret_obj.fn_policy_iterator = fn_policy_iterator
     ret_obj.fn_value_iterator = fn_value_iterator
     ret_obj.fn_get_actions_given_state = fn_get_actions_given_state
