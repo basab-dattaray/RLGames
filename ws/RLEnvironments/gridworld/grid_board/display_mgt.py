@@ -145,22 +145,6 @@ def display_mgt(strategy):
         canvas.create_window(_width * _unit * button_x_offset, _height * _unit + 45,
                              window=bound_button)
 
-
-    def _fn_load_images():
-        rwd = os.path.dirname(__file__)
-        image_dir = os.path.join(rwd, 'img')
-
-        up = PhotoImage(Image.open(image_dir + "/up.png").resize((13, 13)))
-        right = PhotoImage(Image.open(image_dir + "/right.png").resize((13, 13)))
-        left = PhotoImage(Image.open(image_dir + "/left.png").resize((13, 13)))
-        down = PhotoImage(Image.open(image_dir + "/down.png").resize((13, 13)))
-        rectangle = PhotoImage(Image.open(image_dir + "/penalty_box.png").resize((65, 65)))
-        triangle = PhotoImage(Image.open(image_dir + "/reward_box.png").resize((65, 65)))
-        circle = PhotoImage(Image.open(image_dir + "/cursor.png").resize((32, 32)))
-        return (up, down, left, right), (rectangle, triangle, circle)
-
-
-
     def fn_move_cursor(stateStart, stateEnd=(0, 0)):
 
         stepX, stepY = stateEnd[0] - stateStart[0], stateEnd[1] - stateStart[1]
@@ -288,6 +272,19 @@ def display_mgt(strategy):
 
     def fn_setup_ui(actions= None):
         nonlocal _actions
+
+        def _fn_load_images():
+            rwd = os.path.dirname(__file__)
+            image_dir = os.path.join(rwd, 'img')
+
+            up = PhotoImage(Image.open(image_dir + "/up.png").resize((13, 13)))
+            right = PhotoImage(Image.open(image_dir + "/right.png").resize((13, 13)))
+            left = PhotoImage(Image.open(image_dir + "/left.png").resize((13, 13)))
+            down = PhotoImage(Image.open(image_dir + "/down.png").resize((13, 13)))
+            rectangle = PhotoImage(Image.open(image_dir + "/penalty_box.png").resize((65, 65)))
+            triangle = PhotoImage(Image.open(image_dir + "/reward_box.png").resize((65, 65)))
+            circle = PhotoImage(Image.open(image_dir + "/cursor.png").resize((32, 32)))
+            return (up, down, left, right), (rectangle, triangle, circle)
 
         if actions is not None:
             _actions = actions
