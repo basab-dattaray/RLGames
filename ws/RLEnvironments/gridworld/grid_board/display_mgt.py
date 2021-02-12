@@ -49,8 +49,8 @@ def display_mgt(strategy):
         nonlocal _test_mode
         _test_mode = True
 
-    def fn_create_value_repo():
-        return [[0.0] * _width for _ in range(_height)]
+    # def fn_create_value_repo():
+    #     return [[0.0] * _width for _ in range(_height)]
 
     def fn_compare_value_repos(repo1, repo2):
         for col in range(0, _height):
@@ -325,7 +325,7 @@ def display_mgt(strategy):
         'fn_update_qvalue',
         'fn_is_goal_reached',
         'fn_create_value_repo',
-        'fn_compare_value_repos',
+        # 'fn_compare_value_repos',
         'fn_get_state_actions',
         'fn_set_test_mode',
         'fn_close',
@@ -344,7 +344,7 @@ def display_mgt(strategy):
     ret_obj.fn_run_next_move = fn_run_next_move
     ret_obj.fn_update_qvalue = fn_update_qvalue
     ret_obj.fn_is_goal_reached = fn_is_goal_reached
-    ret_obj.fn_create_value_repo = fn_create_value_repo
+    # ret_obj.fn_create_value_repo = fn_create_value_repo
     ret_obj.fn_compare_value_repos = fn_compare_value_repos
     ret_obj.fn_get_state_actions = fn_get_state_actions
     ret_obj.fn_set_test_mode = fn_set_test_mode
