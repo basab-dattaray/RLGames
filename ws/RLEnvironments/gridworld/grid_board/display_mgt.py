@@ -220,8 +220,6 @@ def display_mgt(strategy):
     def fn_is_goal_reached(state):
         return True if state == [_board_goal['x'], _board_goal['y']] else False
 
-
-
     def fn_setup_ui(actions= None):
         nonlocal _actions
 

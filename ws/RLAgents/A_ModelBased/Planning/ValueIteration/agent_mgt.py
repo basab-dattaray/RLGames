@@ -13,7 +13,7 @@ def agent_mgt(app_info, common_functions):
             implementation.Planner.fn_run_policy_improvement)
         actions["apply policy"] = implementation.fn_display_therafter(
             implementation.Planner.fn_update_state_value_by_choosing_best_action)
-        actions["plan"] = implementation.fn_display_therafter(implementation.Planner.fn_value_iterator)
+        actions["complete plan"] = implementation.fn_display_therafter(implementation.Planner.fn_value_iterator)
         actions["move"] = implementation.fn_move_per_policy
 
         implementation.fn_show_grid(actions)
