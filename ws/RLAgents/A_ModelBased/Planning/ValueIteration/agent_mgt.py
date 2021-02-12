@@ -18,6 +18,11 @@ def agent_mgt(app_info, common_functions):
         actions["move"] = implementation.fn_move_per_policy
 
         app_info.ENV.Display.fn_setup_ui(actions, app_info.ENV)
+        Values, Policy = app_info.ENV.fn_get_internal_info()
+        values = Values.fn_fetch_state_values()
+        app_info.ENV.Display.fn_show_state_values(values)
+        policy = Policy.fn_fetch_policy_table()
+        app_info.ENV.Display.fn_show_policy_arrows(policy)
         return agent_mgr
 
     def fn_run_env():
