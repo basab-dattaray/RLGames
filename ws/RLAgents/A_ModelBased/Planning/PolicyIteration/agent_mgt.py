@@ -16,7 +16,7 @@ def agent_mgt(app_info, common_functions):
         actions["plan"] = implementation.fn_display_therafter(implementation.Planner.fn_policy_iterator)
         actions["move"] = implementation.fn_move_per_policy
 
-        app_info.ENV.Display.fn_setup_ui(actions, app_info.ENV)
+        app_info.ENV.Display.fn_setup_ui(actions)
 
         implementation.fn_show_grid(actions)
         return agent_mgr

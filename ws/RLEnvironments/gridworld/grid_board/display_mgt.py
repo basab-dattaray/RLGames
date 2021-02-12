@@ -285,7 +285,7 @@ def display_mgt(strategy):
         return _canvas
 
 
-    def fn_setup_ui(actions= None, env= None):
+    def fn_setup_ui(actions= None):
         nonlocal _actions
 
         if actions is not None:
