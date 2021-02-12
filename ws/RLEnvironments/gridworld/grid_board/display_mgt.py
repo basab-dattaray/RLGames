@@ -32,7 +32,6 @@ def display_mgt(strategy):
         width=_width * _unit,
         # bg= 'white'
     )
-
     _cursor = None
 
     _board_blockers = _display_info['BOARD_BLOCKERS']
