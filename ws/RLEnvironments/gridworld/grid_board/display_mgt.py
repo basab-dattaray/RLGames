@@ -51,7 +51,7 @@ def display_mgt(strategy):
         _test_mode = True
 
     def fn_create_value_repo():
-        return [[0.0] * _width for _ in range(_width)]
+        return [[0.0] * _width for _ in range(_height)]
 
     def fn_compare_value_repos(repo1, repo2):
         for col in range(0, _height):
@@ -107,44 +107,33 @@ def display_mgt(strategy):
 
     _fn_filter_canvas_text = canvas_text_mgt(_canvas)
 
-
-
-    def _fn_show_qvalue_directions(state, stateAction, coord):
-        x = coord[0] + _unit * state[0]
-        y = coord[1] + _unit * state[1]
-        val = round(stateAction, 2)
-        font = ('Helvetica', str(10), 'normal')
-        text_ref = _tk.canvas.create_text(x, y, fill="black", text=str(val),
-                                               font=font, anchor="nw")
-        return text_ref
-
     def _fn_append_rewards_to_canvas():
+        def _fn_append_reward_to_canvas(row, col, contents, font='Helvetica', size=10,
+                                        style='bold', anchor="nw"):
+            origin_x, origin_y = 45, 50
+            x, y = origin_x + (_unit * row), origin_y + (_unit * col)
+            font = (font, str(size), style)
+            text = _tk.canvas.create_text(x, y, fill="yellow", text=contents,
+                                          font=font, anchor=anchor)
+            _tk.texts.append(text)
+
         _fn_append_reward_to_canvas(_board_goal['x'], _board_goal['y'], str(_board_goal['reward']))
         for blocker in _board_blockers:
             _fn_append_reward_to_canvas(blocker['x'], blocker['y'], str(blocker['reward']))
 
-    def _fn_append_reward_to_canvas(row, col, contents, font='Helvetica', size=10,
-                             style='bold', anchor="nw"):
-        origin_x, origin_y = 45, 50
-        x, y = origin_x + (_unit * row), origin_y + (_unit * col)
-        font = (font, str(size), style)
-        text = _tk.canvas.create_text(x, y, fill="yellow", text=contents,
-                                           font=font, anchor=anchor)
-        _tk.texts.append(text)
 
-    def _fn_render_on_canvas():
+
+    def fn_render_on_canvas():
         time.sleep(0.1)
         _tk.canvas.tag_raise(_cursor)
         _tk.update()
-
-
 
     def fn_move_cursor(stateStart, stateEnd=(0, 0)):
 
         stepX, stepY = stateEnd[0] - stateStart[0], stateEnd[1] - stateStart[1]
 
         _tk.canvas.move(_cursor, stepX * _unit, stepY * _unit)
-        _fn_render_on_canvas()
+        fn_render_on_canvas()
 
     def fn_show_policy_arrows(policy_table, show= True):
 
@@ -195,9 +184,18 @@ def display_mgt(strategy):
                     val = round(value_table[i][j], 8)
                     _fn_append_text_canvas(i, j, val)
         _fn_append_rewards_to_canvas()
-        _fn_render_on_canvas()
+        fn_render_on_canvas()
 
     def fn_show_qvalue(state, q_actions):
+
+        def _fn_show_qvalue_directions(state, stateAction, coord):
+            x = coord[0] + _unit * state[0]
+            y = coord[1] + _unit * state[1]
+            val = round(stateAction, 2)
+            font = ('Helvetica', str(10), 'normal')
+            text_ref = _tk.canvas.create_text(x, y, fill="black", text=str(val),
+                                              font=font, anchor="nw")
+            return text_ref
         stateStr = str(state)
 
         q_action_list = list(q_actions)
@@ -208,7 +206,7 @@ def display_mgt(strategy):
 
         _fn_filter_canvas_text(stateStr, refs)
         _fn_append_rewards_to_canvas()
-        _fn_render_on_canvas()
+        fn_render_on_canvas()
 
     def fn_is_target_state_reached(state):
         if state == (_board_goal['x'], _board_goal['y']):
@@ -300,7 +298,7 @@ def display_mgt(strategy):
             (_tk.up, _tk.down, _tk.left, _tk.right), _tk.shapes = _fn_load_images()
             _tk.canvas = _fn_build_canvas(_actions)
             _fn_append_rewards_to_canvas()
-            _fn_render_on_canvas()
+            fn_render_on_canvas()
 
     def fn_run_ui():
         if _test_mode:
