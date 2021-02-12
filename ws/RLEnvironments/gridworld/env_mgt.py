@@ -54,10 +54,9 @@ def env_mgt(name, strategy= None):
         nonlocal  _reward,  _all_states, _current_state
         nonlocal Values, Policy
 
-        Values = values_repo_mgt(Display)
+        Values = values_repo_mgt(_width, _height)
         Policy = policy_table_mgt(Display, ACTION_SIZE)
 
-        # Display.fn_setup_ui(env= ret_obj)
 
         _reward = [[0] * _width for _ in range(_height)]
 

@@ -2,14 +2,16 @@ import copy
 from collections import namedtuple
 
 
-def values_repo_mgt(Display):
+def values_repo_mgt(width= None, height= None):
+    def fn_create_value_repo():
+        return [[0.0] * width for _ in range(height)]
 
     _prev_value_table = None
-    _value_table = Display.fn_create_value_repo()
+    _value_table = fn_create_value_repo()
 
     def fn_reset():
         nonlocal _value_table
-        _value_table = Display.fn_create_value_repo()
+        _value_table = fn_create_value_repo()
 
     def fn_set_state_value(state, value):
         nonlocal _value_table
@@ -28,11 +30,20 @@ def values_repo_mgt(Display):
     def fn_has_state_changed():
         nonlocal _prev_value_table
 
+        def fn_compare_value_repos(repo1, repo2):
+            for col in range(0, height):
+                for row in range(0, width):
+                    if repo1[col][row] != repo2[col][row]:
+                        repo1[col][row] = repo2[col][row]
+                        return True
+            return False
+
         if _prev_value_table is None:
             _prev_value_table = copy.deepcopy(_value_table)
             return True
 
-        return Display.fn_compare_value_repos(_prev_value_table, _value_table)
+        result = fn_compare_value_repos(_prev_value_table, _value_table)
+        return result
 
     ret_obj = namedtuple('_', [
         'fn_reset',
