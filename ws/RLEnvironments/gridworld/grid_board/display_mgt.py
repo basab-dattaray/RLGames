@@ -159,14 +159,7 @@ def display_mgt(strategy):
         circle = PhotoImage(Image.open(image_dir + "/cursor.png").resize((32, 32)))
         return (up, down, left, right), (rectangle, triangle, circle)
 
-    def _fn_append_text_canvas(col, row, contents, font='Helvetica', size=10,
-                           style='normal', anchor="nw"):
-        origin_x, origin_y = 10, 85
-        x, y = origin_x + (_unit * row), origin_y + (_unit * col)
-        font = (font, str(size), style)
-        text = _tk.canvas.create_text(x, y, fill="black", text=contents,
-                                           font=font, anchor=anchor)
-        _tk.texts.append(text)
+
 
     def fn_move_cursor(stateStart, stateEnd=(0, 0)):
 
@@ -207,6 +200,15 @@ def display_mgt(strategy):
                     _fn_draw_arrow(i, j, policy_table[i][j])
 
     def fn_show_state_values(value_table, show= True):
+        def _fn_append_text_canvas(col, row, contents, font='Helvetica', size=10,
+                                   style='normal', anchor="nw"):
+            origin_x, origin_y = 10, 85
+            x, y = origin_x + (_unit * row), origin_y + (_unit * col)
+            font = (font, str(size), style)
+            text = _tk.canvas.create_text(x, y, fill="black", text=contents,
+                                          font=font, anchor=anchor)
+            _tk.texts.append(text)
+
         for i in _tk.texts:
             _tk.canvas.delete(i)
         if show:
