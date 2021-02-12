@@ -107,9 +107,7 @@ def display_mgt(strategy):
 
     _fn_filter_canvas_text = canvas_text_mgt(_canvas)
 
-    def _fn_calculate_step(state, newState):
-        stepX, stepY = newState[0] - state[0], newState[1] - state[1]
-        return stepX, stepY
+
 
     def _fn_show_qvalue_directions(state, stateAction, coord):
         x = coord[0] + _unit * state[0]
@@ -194,9 +192,10 @@ def display_mgt(strategy):
 
 
     def fn_move_cursor(stateStart, stateEnd=(0, 0)):
-        step = _fn_calculate_step(stateStart, stateEnd)
 
-        _tk.canvas.move(_cursor, step[0] * _unit, step[1] * _unit)
+        stepX, stepY = stateEnd[0] - stateStart[0], stateEnd[1] - stateStart[1]
+
+        _tk.canvas.move(_cursor, stepX * _unit, stepY * _unit)
         _fn_render_on_canvas()
 
     def fn_show_policy_arrows(policy_table, show= True):
