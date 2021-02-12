@@ -240,34 +240,6 @@ def display_mgt(strategy):
     def fn_is_goal_reached(state):
         return True if state == [_board_goal['x'], _board_goal['y']] else False
 
-    def _fn_build_canvas(acton_dictionary):
-        nonlocal _cursor
-
-        # create lines
-        for col in range(0, (_width + 1) * _unit, _unit):  # 0~400 by 80
-            x0, y0, x1, y1 = col, 0, col, _height * _unit
-            _canvas.create_line(x0, y0, x1, y1)
-
-        for row in range(0, (_height + 1) * _unit, _unit):  # 0~400 by 80
-            x0, y0, x1, y1 = 0, row, _width * _unit, row
-            _canvas.create_line(x0, y0, x1, y1)
-
-        _cursor = _canvas.create_image(_unit / 2, _unit / 2, image=_tk.shapes[2])
-        for blocker in _board_blockers:
-            pix_x, pix_y = calc_pixels(_unit, blocker['x'], blocker['y'])
-            _canvas.create_image(pix_x, pix_y, image=_tk.shapes[0])
-
-        pix_x, pix_y = calc_pixels(_unit, _board_goal['x'], _board_goal['y'])
-        _canvas.create_image(pix_x, pix_y, image=_tk.shapes[1])
-
-        button_x_offset = .10
-        for label, fn in acton_dictionary.items():
-            _fn_create_button(_canvas, button_x_offset, label, fn)
-            button_x_offset += .20
-
-        _canvas.pack()
-
-        return _canvas
 
 
     def fn_setup_ui(actions= None):
@@ -285,6 +257,35 @@ def display_mgt(strategy):
             triangle = PhotoImage(Image.open(image_dir + "/reward_box.png").resize((65, 65)))
             circle = PhotoImage(Image.open(image_dir + "/cursor.png").resize((32, 32)))
             return (up, down, left, right), (rectangle, triangle, circle)
+
+        def _fn_build_canvas(acton_dictionary):
+            nonlocal _cursor
+
+            # create lines
+            for col in range(0, (_width + 1) * _unit, _unit):  # 0~400 by 80
+                x0, y0, x1, y1 = col, 0, col, _height * _unit
+                _canvas.create_line(x0, y0, x1, y1)
+
+            for row in range(0, (_height + 1) * _unit, _unit):  # 0~400 by 80
+                x0, y0, x1, y1 = 0, row, _width * _unit, row
+                _canvas.create_line(x0, y0, x1, y1)
+
+            _cursor = _canvas.create_image(_unit / 2, _unit / 2, image=_tk.shapes[2])
+            for blocker in _board_blockers:
+                pix_x, pix_y = calc_pixels(_unit, blocker['x'], blocker['y'])
+                _canvas.create_image(pix_x, pix_y, image=_tk.shapes[0])
+
+            pix_x, pix_y = calc_pixels(_unit, _board_goal['x'], _board_goal['y'])
+            _canvas.create_image(pix_x, pix_y, image=_tk.shapes[1])
+
+            button_x_offset = .10
+            for label, fn in acton_dictionary.items():
+                _fn_create_button(_canvas, button_x_offset, label, fn)
+                button_x_offset += .20
+
+            _canvas.pack()
+
+            return _canvas
 
         if actions is not None:
             _actions = actions
