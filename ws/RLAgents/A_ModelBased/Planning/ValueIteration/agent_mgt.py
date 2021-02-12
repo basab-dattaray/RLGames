@@ -17,13 +17,16 @@ def agent_mgt(app_info, common_functions):
         actions["plan"] = implementation.fn_display_therafter(implementation.Planner.fn_value_iterator)
         actions["move"] = implementation.fn_move_per_policy
 
-        app_info.ENV.Display.fn_setup_ui(actions, app_info.ENV)
-        Values, Policy = app_info.ENV.fn_get_internal_info()
-        values = Values.fn_fetch_state_values()
-        app_info.ENV.Display.fn_show_state_values(values)
-        policy = Policy.fn_fetch_policy_table()
-        app_info.ENV.Display.fn_show_policy_arrows(policy)
+        implementation.fn_show_grid(actions)
         return agent_mgr
+
+    # def fn_show_grid(actions):
+    #     app_info.ENV.Display.fn_setup_ui(actions, app_info.ENV)
+    #     Values, Policy = app_info.ENV.fn_get_internal_info()
+    #     values = Values.fn_fetch_state_values()
+    #     app_info.ENV.Display.fn_show_state_values(values)
+    #     policy = Policy.fn_fetch_policy_table()
+    #     app_info.ENV.Display.fn_show_policy_arrows(policy)
 
     def fn_run_env():
         if 'TEST_MODE' in app_info:

@@ -47,7 +47,13 @@ def impl_mgt(app_info):
 
         return values, policy
 
-
+    def fn_show_grid(actions):
+        app_info.ENV.Display.fn_setup_ui(actions, app_info.ENV)
+        Values, Policy = app_info.ENV.fn_get_internal_info()
+        values = Values.fn_fetch_state_values()
+        app_info.ENV.Display.fn_show_state_values(values)
+        policy = Policy.fn_fetch_policy_table()
+        app_info.ENV.Display.fn_show_policy_arrows(policy)
 
     ret_obj = namedtuple('_',
                          [
@@ -55,10 +61,12 @@ def impl_mgt(app_info):
                              'fn_display_therafter',
                              'fn_move_per_policy',
                              'fn_reset_planner',
+                             'fn_show_grid',
                          ])
     ret_obj.Planner = _planner
     ret_obj.fn_display_therafter = fn_display_therafter
     ret_obj.fn_move_per_policy = fn_move_per_policy
     ret_obj.fn_reset_planner = fn_reset_planner
+    ret_obj.fn_show_grid = fn_show_grid
 
     return ret_obj
