@@ -10,6 +10,10 @@ def policy_table_mgt(display_mgr, action_size):
     _policy_table = [[init_policy] * width for _ in range(height)]
     pass
 
+    def fn_reset():
+        nonlocal _policy_table
+        _policy_table = [[init_policy] * width for _ in range(height)]
+
     def fn_get_policy_state_value(state):
         return _policy_table[state[1]][state[0]]
 
@@ -21,11 +25,12 @@ def policy_table_mgt(display_mgr, action_size):
         return _policy_table
 
     ret_obj = namedtuple('_', [
+        'fn_reset',
         'fn_get_policy_state_value',
         'fn_set_policy_state_value',
         'fn_fetch_policy_table',
     ])
-
+    ret_obj.fn_reset = fn_reset
     ret_obj.fn_get_policy_state_value = fn_get_policy_state_value
     ret_obj.fn_set_policy_state_value = fn_set_policy_state_value
     ret_obj.fn_fetch_policy_table = fn_fetch_policy_table

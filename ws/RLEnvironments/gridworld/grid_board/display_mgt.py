@@ -303,6 +303,11 @@ def display_mgt(strategy):
         if env is not None:
             fn_display_planning_data(env)
 
+    def fn_reset_ui():
+        _tk.canvas = _fn_build_canvas(_actions)
+        _fn_append_rewards_to_canvas()
+        _fn_render_on_canvas()
+
     def fn_display_planning_data(env):
         # Values, Policy = env.fn_get_internal_info()
         # values = Values.fn_fetch_state_values()
@@ -325,6 +330,7 @@ def display_mgt(strategy):
     ret_obj = namedtuple('_', [
         'Config',
         'fn_setup_ui',
+        'fn_reset_ui',
         'fn_run_ui',
         'fn_move_cursor',
         'fn_show_policy_arrows',
@@ -347,6 +353,7 @@ def display_mgt(strategy):
     # ret_obj.DisplayStructure = _display_info
     ret_obj.Config = config
     ret_obj.fn_setup_ui = fn_setup_ui
+    ret_obj.fn_reset_ui = fn_reset_ui
     ret_obj.fn_run_ui = fn_run_ui
     ret_obj.fn_move_cursor = fn_move_cursor
     ret_obj.fn_show_policy_arrows = fn_show_policy_arrows

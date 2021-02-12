@@ -6,7 +6,11 @@ def planning_mgt(env, discount_factor= 0.9):
     _env_config = env.fn_get_config()
 
     def fn_reset():
-        return None, None
+        env.Values.fn_reset()
+        env.Policy.fn_reset()
+        value_table = env.Values.fn_fetch_state_values()
+        policy_table = env.Policy.fn_fetch_policy_table()
+        return value_table, policy_table
 
     def fn_get_actions_given_state(state):
         if env.fn_is_goal_reached(state):
