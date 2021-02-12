@@ -57,7 +57,7 @@ def env_mgt(name, strategy= None):
         Values = values_repo_mgt(_width, _height)
         width = config.DISPLAY['WIDTH']
         height = config.DISPLAY['HEIGHT']
-        Policy = policy_table_mgt(Display, width, height, ACTION_SIZE)
+        Policy = policy_table_mgt(width, height, ACTION_SIZE)
 
 
         _reward = [[0] * _width for _ in range(_height)]
