@@ -168,29 +168,6 @@ def display_mgt(strategy):
                                            font=font, anchor=anchor)
         _tk.texts.append(text)
 
-    def _fn_draw_arrow(col, row, policy):
-
-        if col == _board_goal['y'] and row == _board_goal['x']:
-            return
-
-        if policy[0] > 0:  # up
-            origin_x, origin_y = 50 + (_unit * row), 10 + (_unit * col)
-            _tk.arrows.append(_tk.canvas.create_image(origin_x, origin_y,
-                                                                image=_tk.up))
-        if policy[1] > 0:  # down
-            origin_x, origin_y = 50 + (_unit * row), 90 + (_unit * col)
-            _tk.arrows.append(_tk.canvas.create_image(origin_x, origin_y,
-                                                                image=_tk.down))
-        if policy[2] > 0:  # left
-            origin_x, origin_y = 10 + (_unit * row), 50 + (_unit * col)
-            _tk.arrows.append(_tk.canvas.create_image(origin_x, origin_y,
-                                                                image=_tk.left))
-        if policy[3] > 0:  # right
-            origin_x, origin_y = 90 + (_unit * row), 50 + (_unit * col)
-            _tk.arrows.append(_tk.canvas.create_image(origin_x, origin_y,
-                                                                image=_tk.right))
-
-
     def fn_move_cursor(stateStart, stateEnd=(0, 0)):
 
         stepX, stepY = stateEnd[0] - stateStart[0], stateEnd[1] - stateStart[1]
@@ -199,6 +176,29 @@ def display_mgt(strategy):
         _fn_render_on_canvas()
 
     def fn_show_policy_arrows(policy_table, show= True):
+
+        def _fn_draw_arrow(col, row, policy):
+
+            if col == _board_goal['y'] and row == _board_goal['x']:
+                return
+
+            if policy[0] > 0:  # up
+                origin_x, origin_y = 50 + (_unit * row), 10 + (_unit * col)
+                _tk.arrows.append(_tk.canvas.create_image(origin_x, origin_y,
+                                                          image=_tk.up))
+            if policy[1] > 0:  # down
+                origin_x, origin_y = 50 + (_unit * row), 90 + (_unit * col)
+                _tk.arrows.append(_tk.canvas.create_image(origin_x, origin_y,
+                                                          image=_tk.down))
+            if policy[2] > 0:  # left
+                origin_x, origin_y = 10 + (_unit * row), 50 + (_unit * col)
+                _tk.arrows.append(_tk.canvas.create_image(origin_x, origin_y,
+                                                          image=_tk.left))
+            if policy[3] > 0:  # right
+                origin_x, origin_y = 90 + (_unit * row), 50 + (_unit * col)
+                _tk.arrows.append(_tk.canvas.create_image(origin_x, origin_y,
+                                                          image=_tk.right))
+
         for i in _tk.arrows:
             _tk.canvas.delete(i)
         if show:
