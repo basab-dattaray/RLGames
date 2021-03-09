@@ -9,7 +9,7 @@ from ws.RLAgents.E_SelfPlay.model_mgt import model_mgt
 from ws.RLAgents.E_SelfPlay.play.greedy_player_mgt import greedy_player_mgt
 from ws.RLAgents.E_SelfPlay.play.animated_player_mgt import animated_player_mgt
 from ws.RLAgents.E_SelfPlay.play.random_player_mgt import random_player_mgt
-from ws.RLAgents.E_SelfPlay.play.playground_mgt import playground_mgt
+from ws.RLAgents.E_SelfPlay.train.playground_mgt import playground_mgt
 from ws.RLAgents.E_SelfPlay.search.monte_carlo_tree_search_mgt import monte_carlo_tree_search_mgt
 from ws.RLAgents.E_SelfPlay.train.training_mgt import training_mgt
 from ws.RLEnvironments.self_play_games.othello.game_mgt import game_mgt

@@ -3,7 +3,7 @@ from collections import namedtuple
 import numpy as np
 
 from ws.RLAgents.E_SelfPlay.model_mgt import model_mgt
-from ws.RLAgents.E_SelfPlay.play.playground_mgt import playground_mgt
+from ws.RLAgents.E_SelfPlay.train.playground_mgt import playground_mgt
 
 from ws.RLAgents.E_SelfPlay.search.monte_carlo_tree_search_mgt import monte_carlo_tree_search_mgt
 from ws.RLAgents.E_SelfPlay.train.sample_generator import fn_generate_samples
