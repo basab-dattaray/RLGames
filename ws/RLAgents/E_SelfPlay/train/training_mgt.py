@@ -2,14 +2,21 @@ import copy
 from collections import namedtuple
 import numpy as np
 
+from ws.RLAgents.E_SelfPlay.model_mgt import model_mgt
 from ws.RLAgents.E_SelfPlay.play.playground_mgt import playground_mgt
 
 from ws.RLAgents.E_SelfPlay.search.monte_carlo_tree_search_mgt import monte_carlo_tree_search_mgt
 from ws.RLAgents.E_SelfPlay.train.sample_generator import fn_generate_samples
 from ws.RLAgents.E_SelfPlay.train.training_helper import fn_log_iteration_results
 from ws.RLUtils.monitoring.tracing.tracer import tracer
-def training_mgt(game_mgr, nn_mgr_N, app_info):
+def training_mgt(game_mgr, app_info):
+
     _TMP_MODEL_FILENAME = '_tmp'
+
+    nn_mgr_N = model_mgt(game_mgr, app_info.RESULTS_PATH_)
+    neural_net_mgr = model_mgt(game_mgr, app_info.RESULTS_PATH_)
+    app_info.fn_save_model = neural_net_mgr.fn_save_model
+
     nn_mgr_P = copy.deepcopy(nn_mgr_N)
 
     def _fn_try_to_load_model():
