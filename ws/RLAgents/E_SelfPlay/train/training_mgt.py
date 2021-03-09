@@ -70,9 +70,9 @@ def training_mgt(game_mgr, app_info):
             def _fn_play_next_vs_previous(training_samples):
                 nn_mgr_N.fn_save_model(_TMP_MODEL_FILENAME)
                 nn_mgr_P.fn_load_model(_TMP_MODEL_FILENAME)
-                pmcts = monte_carlo_tree_search_mgt(game_mgr, nn_mgr_P, app_info)
+                pmcts = monte_carlo_tree_search_mgt(app_info, nn_mgr_P, game_mgr,)
                 nn_mgr_N.fn_adjust_model_from_examples(training_samples, app_info.NUM_EPOCHS)
-                nmcts = monte_carlo_tree_search_mgt(game_mgr, nn_mgr_N, app_info)
+                nmcts = monte_carlo_tree_search_mgt( app_info, nn_mgr_N, game_mgr,)
                 playground = playground_mgt(
                     lambda state: np.argmax(pmcts.fn_get_policy(state, do_random_selection= False)),
                     lambda state: np.argmax(nmcts.fn_get_policy(state, do_random_selection= False)),
@@ -85,7 +85,7 @@ def training_mgt(game_mgr, app_info):
             training_samples = fn_generate_samples(app_info,
                                                    game_mgr,
                                                    iteration,
-                                                   generation_mcts=monte_carlo_tree_search_mgt(game_mgr, nn_mgr_N, app_info)
+                                                   generation_mcts=monte_carlo_tree_search_mgt(app_info,  nn_mgr_N, game_mgr,)
                                                    )
             draws, nwins, pwins = _fn_play_next_vs_previous(training_samples)
             fn_log_iteration_results(app_info, draws, iteration, nwins, pwins)

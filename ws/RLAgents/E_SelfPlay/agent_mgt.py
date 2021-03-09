@@ -52,7 +52,7 @@ def agent_mgt(app_info, common_functions):
         if not system_nn.fn_load_model():
             return
 
-        system_mcts = monte_carlo_tree_search_mgt(game_mgr, system_nn, app_info)
+        system_mcts = monte_carlo_tree_search_mgt(app_info, system_nn, game_mgr,)
         fn_system_policy = lambda state: numpy.argmax(system_mcts.fn_get_policy(state, do_random_selection=False))
         fn_contender_policy = fn_player_policy(game_mgr)
         playground = playground_mgt(fn_system_policy, fn_contender_policy, game_mgr,

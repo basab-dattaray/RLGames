@@ -5,9 +5,9 @@ from ws.RLAgents.E_SelfPlay.search.search_helper import search_helper
 
 
 def monte_carlo_tree_search_mgt(
-    game_mgr,
-    neural_net_mgr,
     app_info,
+    neural_net_mgr,
+    game_mgr,
 ):
 
     search_utils = search_helper(

@@ -24,10 +24,6 @@ def fn_generate_samples(app_info,
         return sample_data
 
     def _fn_generate_samples_for_an_iteration():
-        all_samples_from_iteration = []
-        current_pieces = game_mgr.fn_get_init_board()
-        curPlayer = 1
-        episode_step = 0
 
         def _fn_run_one_episode(current_pieces, cur_player_index, episode_step):
             samples_from_episodes = []
@@ -49,6 +45,11 @@ def fn_generate_samples(app_info,
 
             current_pieces = next_pieces
             return samples_from_episodes, current_pieces, next_player_index
+
+        all_samples_from_iteration = []
+        current_pieces = game_mgr.fn_get_init_board()
+        curPlayer = 1
+        episode_step = 0
 
         while True:
             episode_step += 1
