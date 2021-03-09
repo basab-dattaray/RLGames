@@ -30,7 +30,7 @@ def monte_carlo_tree_search_mgt(
         if s_results != 0:
             return - s_results
 
-        state_val = search_utils.fn_visit_new_state_as_warrented(state)
+        state_val = search_utils.fn_visit_new_state_as_warranted(state)
         if state_val is not None:
             return -state_val
 
