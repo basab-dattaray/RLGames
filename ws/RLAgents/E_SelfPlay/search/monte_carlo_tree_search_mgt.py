@@ -12,8 +12,8 @@ def monte_carlo_tree_search_mgt(
 
     search_utils = search_helper(
         app_info,
+        neural_net_mgr,
         game_mgr,
-        neural_net_mgr
     )
 
     def fn_get_mcts_counts(state):
@@ -40,15 +40,15 @@ def monte_carlo_tree_search_mgt(
         )
 
         next_state = game_mgr.fn_get_next_state(state, player= 1, action= best_action)
-        next_state_canonical = game_mgr.fn_get_canonical_form(next_state, player= -1)
+        next_state_opponent_perspective = game_mgr.fn_get_canonical_form(next_state, player= -1)
 
-        state_val = fn_search(next_state_canonical)
+        state_val_opponent_perspective = fn_search(next_state_opponent_perspective)
 
-        search_utils.fn_expand_if_needed(state_key, best_action, state_val)
+        search_utils.fn_expand_if_needed(state_key, best_action, state_val_opponent_perspective)
 
-        search_utils.fn_update_state_during_backprop(state_key, best_action, state_val)
+        search_utils.fn_update_state_during_backprop(state_key, best_action, state_val_opponent_perspective)
 
-        return -state_val
+        return -state_val_opponent_perspective
 
     mcts_mgr = namedtuple('_', ['fn_get_policy'])
 

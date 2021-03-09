@@ -9,8 +9,8 @@ from ws.RLAgents.E_SelfPlay.search.cache2_mgt import cache2_mgt
 
 def search_helper(
         app_info,
-        game_mgr,
         neural_net_mgr,
+        game_mgr,
 ):
     EPS = 1e-8
 
