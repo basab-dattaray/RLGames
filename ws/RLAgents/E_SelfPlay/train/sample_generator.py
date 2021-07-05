@@ -64,8 +64,8 @@ def fn_generate_samples(app_info,
             if game_status != 0 or curPlayer is None:
                 return _fn_form_sample_data(curPlayer, game_status, all_samples_from_iteration)
 
-    @tracer(app_info)
-    def _fn_generate_all_samples():
+    # @tracer(app_info)
+    def _fn_generate_samples_for_iteration():
         samples_for_iteration = deque([], maxlen=app_info.SAMPLE_BUFFER_SIZE)
         fn_count_event, fn_stop_counting = progress_count_mgt('Episodes', app_info.NUM_TRAINING_EPISODES)
 
@@ -78,7 +78,7 @@ def fn_generate_samples(app_info,
         fn_stop_counting()
         return samples_for_iteration
 
-    all_samples = _fn_generate_all_samples()
+    all_samples = _fn_generate_samples_for_iteration()
     training_samples_buffer.append(all_samples)
 
     if len(training_samples_buffer) > app_info.SAMPLE_HISTORY_BUFFER_SIZE:

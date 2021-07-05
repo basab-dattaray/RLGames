@@ -1,6 +1,7 @@
 import pytest
 
-from ws.RLAgents.self_play.alpha_zero.search.recursive.cache_mgt import cache_mgt
+# from ws.RLAgents.self_play.alpha_zero.search.recursive.cache_mgt import cache_mgt
+from ws.RLAgents.E_SelfPlay.search.cache_mgt import cache_mgt
 
 
 def test_fn_get_state():
