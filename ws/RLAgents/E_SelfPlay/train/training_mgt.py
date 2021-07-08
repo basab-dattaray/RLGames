@@ -14,8 +14,8 @@ def training_mgt(game_mgr, app_info):
     _TMP_MODEL_FILENAME = '_tmp'
 
     nn_mgr_N = model_mgt(game_mgr, app_info.RESULTS_PATH_)
-    neural_net_mgr = model_mgt(game_mgr, app_info.RESULTS_PATH_)
-    app_info.fn_save_model = neural_net_mgr.fn_save_model
+    # neural_net_mgr = model_mgt(game_mgr, app_info.RESULTS_PATH_)
+    app_info.fn_save_model = nn_mgr_N.fn_save_model
 
     nn_mgr_P = copy.deepcopy(nn_mgr_N)
 
