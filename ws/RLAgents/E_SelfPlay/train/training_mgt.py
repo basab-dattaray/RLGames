@@ -74,8 +74,8 @@ def training_mgt(game_mgr, app_info):
                 nn_mgr_N.fn_adjust_model_from_examples(training_samples, app_info.NUM_EPOCHS)
                 nmcts = monte_carlo_tree_search_mgt( app_info, nn_mgr_N, game_mgr,)
                 playground = playground_mgt(
-                    lambda state: np.argmax(pmcts.fn_get_policy(state, do_random_selection= False)),
                     lambda state: np.argmax(nmcts.fn_get_policy(state, do_random_selection= False)),
+                    lambda state: np.argmax(pmcts.fn_get_policy(state, do_random_selection= False)),
                     game_mgr
                 )
                 pwins, nwins, draws = playground.fn_play_games(app_info.NUM_GAMES_FOR_MODEL_COMPARISON)
